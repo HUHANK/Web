@@ -3,13 +3,24 @@
 <head>
 	<meta charset="utf-8">
 	<title>登录</title>
+	
+	<script type="text/javascript" src="js/basic/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+
 	<style type="text/css">
 		body{
-			text-align: center;
+			margin: 0 auto;
+			//text-align: center;
+			background-color: #C2E6FF;
 		}
 		#dlogin{
-			//background-color: gray;
+			background-color: #C2E6FF;
+			position: absolute;
+			top: 30%;
+			left: 10%;
 			margin: 0 auto;
+
+			text-align: center;
 			width: 260px;
 			height: 120px;
 			border: 2px solid gray;
@@ -18,12 +29,13 @@
 			margin-top: 10px;
 		}
 	</style>
+
 </head>
 <body>
 	<div id="dlogin">
 		<div class="zdiv"><strong>用户名:&nbsp</strong><input type="text" name="UserName"></div>
 		<div class="zdiv"><strong>密&nbsp&nbsp&nbsp码:&nbsp</strong><input type="text" name="Passwd"></div>
-		<div class="zdiv"><input type="button" name="" value="提交"></div>
+		<div class="zdiv"><button type="submit" id="btn_submit">提交</button></div>
 	</div>
 </body>
 </html>

@@ -1,0 +1,34 @@
+body{
+	margin: 0;
+}
+
+.cframe{
+	margin: 0;
+}
+
+#iframe_top{
+	width: 90%;
+	height: 40px;
+	background-color: #A2FF9B;
+
+	float: right;
+}
+
+#iframe_left{
+	width: 10%;
+	height: 760px;
+	//background-color: #F5FDCF;
+
+	//display: inline-block;
+	float: left;
+	text-align: center;
+}
+
+#iframe_right{
+	width: 90%;
+	height: 700px;
+	background-color: #A2AFFB;
+
+	//display: inline-block;
+	float: right;
+}
