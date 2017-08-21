@@ -32,3 +32,14 @@ body{
 	//display: inline-block;
 	float: right;
 }
+
+h3{
+	margin: 0;
+}
+
+#iframe_left div{
+	margin: 0;
+	padding: 10px 2px;
+	//height: 20px;
+	background-color: gray;
+}
