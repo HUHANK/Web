@@ -37,18 +37,32 @@ function resize() {
 }
 
 function initTitle() {
-	// var iframe_left = $("#iframe_left");
-	// iframe_left.append('<div><h2>自选</h2></div>');
-	// iframe_left.append('<div><h2>个股</h2></div>');
+	var ifr_left_div_bcolor = '#FFFFFF';
+	var mouse_over_color = '#A8B3FC';
 
-	// $("#iframe_left div h2").css({
-	// 	margin: '0',
-	// 	padding: '10px 2px'
-	// });
+	$("#iframe_left_div").css({
+		'background-color': ifr_left_div_bcolor
+	});
+	$("#iframe_left div").mouseover(function(event) {
+		/* Act on the event */
+		$(this).css({
+			'background-color': mouse_over_color
+		});
+	});
+	$("#iframe_left div").mouseout(function(event) {
+		/* Act on the event */
+		$(this).css({
+			'background-color': ifr_left_div_bcolor	
+		});
+	});
 }
 
-function mouseOnTitle() {
-	
+function grid() {
+
+}
+
+function getConfig(Key1, Key2) {
+
 }
 
 
