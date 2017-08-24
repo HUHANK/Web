@@ -7,8 +7,16 @@ function main() {
 	//init
 	initTitle();
 
+	test();
 
+}
 
+function test() {
+	console.log("-------------------------------------------------------START");
+	$.post("http://127.0.0.1:5000/test/", "{ABCEFGHIJKLMN}", function(result){
+		console.log(result);
+	});
+	console.log("-------------------------------------------------------  END");
 }
 
 function resize() {
