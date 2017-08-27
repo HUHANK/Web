@@ -27,7 +27,7 @@ body{
 #iframe_right{
 	width: 90%;
 	height: 700px;
-	background-color: #A2AFFB;
+	background-color: #D3E5E0;
 
 	//display: inline-block;
 	float: right;
@@ -42,4 +42,8 @@ h3{
 	padding: 10px 2px;
 	//height: 20px;
 	//background-color: #C3C5C5;
+}
+
+#iframe_right tbody tr{
+	background-color: red;
 }

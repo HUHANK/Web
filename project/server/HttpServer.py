@@ -2,6 +2,7 @@
 
 import BaseHTTPServer
 from config import *
+from RouteHandler import *
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
@@ -19,10 +20,14 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             #print self.headers
             nbytes = int(self.headers['Content-Length'])
             data = self.rfile.read(nbytes)
-            print "data:" + data
 
-            content = u"你好世界!"
-            content = content.encode("UTF-8")
+            url = str(self.path).replace("/", "")
+            if Options.get('url', None) is not None and Options['url'].get(url, None) is not None:
+                content = Options['url'][url](data)
+            else:
+                content = u""
+
+            #content = content.encode("UTF-8")
             #SEND
             self.send_response(200)
             self.send_header("Conten-type", "text/html")
@@ -30,7 +35,6 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             self.send_header("Conten-Length",str(len(content)))
             self.end_headers()
             self.wfile.write(content)
-            #self.finish()
 
 def start_server(port):
     print "Now Start HttpServer: PORT="+str(port) + "..."
@@ -38,4 +42,8 @@ def start_server(port):
     http_server.serve_forever()
 
 if __name__ == "__main__":
+    #init mysql
+    Options['mysql'] = MySQLOption();
+
+    print Options
     start_server(HTTP_SERVER_PORT)
