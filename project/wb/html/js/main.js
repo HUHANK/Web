@@ -3,6 +3,8 @@ window.onload = main;
 
 function main() {
 
+	init();
+
 	$("#pre-page").click(function(event) {
 		/* Act on the event */
 		turn_pre_page();
@@ -18,10 +20,13 @@ function main() {
 	console.info($.cookie("AAAA"));
 }
 
+function init() {
+	$.cookie("now-page-no", null);
+}
+
 function turn_pre_page() {
-	console.info("AAAAAAAAAA");
 	var no = $.cookie("now-page-no");
-	if (no == null) return;
+	if (isNaN(no) || typeof(no)=="undefined" || !no ) return;
 	if (no === "1") {
 		alert("已经是首页");
 		return;
@@ -37,9 +42,11 @@ function turn_pre_page() {
 }
 
 function turn_next_page() {
-	console.info("BBBBBBBB");
+	
 	var no = $.cookie("now-page-no");
-	if (no === "") no = "0";
+	console.info(no);
+	if (isNaN(no) || typeof(no)=="undefined" || !no ) 
+		no = "0";
 	no = parseInt(no);
 	no = no + 1;
 	$.cookie("now-page-no", no+'', {expires: 7});
@@ -47,7 +54,7 @@ function turn_next_page() {
 
 	console.info($.cookie("now-page-no"));
 	var params = new Object();
-	params.page = 1;
+	params.page = no;
 	params.page_size = 20;
 	getUrlData("/test/", JSON.stringify(params), getWeekReports);
 }
