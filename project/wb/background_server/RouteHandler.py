@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+import json
 from wrap import  route
 from MySQL_db import *
 
@@ -16,4 +17,5 @@ def test(data):
     sql = "select * from WEEK_REPORT limit %s, %s" % (start, param['page_size'])
     db = Options['mysql']
     result = db.select(sql)
+    result = json.dumps(result)
     return result

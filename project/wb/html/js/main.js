@@ -14,14 +14,96 @@ function main() {
 		turn_next_page();
 	});
 
+	$(".head .btn").click(function(event) {
+		// console.info($(this).offset().top);
+		// console.info($(this).offset().left);
+		// console.info(parseInt($(this).css('width')));
+		// console.info(parseInt($(this).css('height')));
+		draw_drop_down_box(
+			$(this),
+			$(this).offset().top+parseInt($(this).css('height')), 
+			$(this).offset().left,
+			200,
+			200 );
+	});
+
 	turn_next_page();
 
-	$.cookie("AAAA", "huyouliang");
-	console.info($.cookie("AAAA"));
+	console.info($.parseJSON(SysModules));
 }
 
 function init() {
 	$.cookie("now-page-no", null);
+}
+
+function draw_drop_down_box(obj, top, left, width, height) {
+	$(".drop-down-box").css({
+		'display': 'block',
+		'background': '#88D2A5',
+		'position': 'fixed',
+		'top': top+"px",
+		'left': left+"px",
+		'width': width+'px',
+		'height': height+'px'
+	});
+	var id = obj.parent().attr('id');
+	var data;
+	if (id === 'sys-module') {
+		data = SysModules;
+	}
+	if (id === 'style') {
+		data = Types;
+	}
+	if (id === 'property') {
+		data = Propertys;
+	}
+	if (id === 'emp') {
+		data = EmpNames;
+	}
+	data = $.parseJSON(data);
+	//console.info(data);
+	var html = "";
+	for( var i=0; i<data.length; i++){
+		html = html + "<label>"+data[i][0]+"</label>";
+	}
+	
+	$(".drop-down-box .dhead").html(html);
+	var label = $(".drop-down-box .dhead label");
+	label.attr("class", "drop-down-box-head-lab");
+	label.css("margin", "5px");
+	label.click(function(event) {
+		var vl = $(this).attr("value");
+		if (typeof(vl) == "undefined" || vl == 'N') {
+			$(this).attr("value", "Y");
+			$(this).css("background", "#25E5D5");
+			$(this).css("font-weight", "bold");
+		}else{
+			$(this).css("background", "");
+			$(this).attr("value", "N");
+			$(this).css("font-weight", "");
+		}
+		//console.info($(this).text());
+		// vl = obj.prev("input").val();
+		// if (vl.length == 0){
+		// 	vl = $(this).text();
+		// }else {
+		// 	var sear = new RegExp($(this).text());
+		// 	if (!sear.test(vl)) {
+		// 		vl = vl +","+$(this).text();
+		// 	}
+		// }
+		// obj.prev("input").val(vl);
+	});
+
+	$(".dbottom-btn").click(function(event) {
+		$(".drop-down-box").css('display', 'none');
+		var val = $(this).attr('value');
+		if (val === 'cancle') {
+
+		}else if(val === 'ok') {
+			
+		}
+	});
 }
 
 function turn_pre_page() {

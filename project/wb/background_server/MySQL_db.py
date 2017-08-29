@@ -75,7 +75,7 @@ class MySQLOption:
             datas.append(new_row)
         out_map['datas'] = datas
 
-        out_map = json.dumps(out_map)
+        #out_map = json.dumps(out_map)
         return out_map
 
 

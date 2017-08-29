@@ -15,7 +15,8 @@ MYSQL_DB   = 'weekreportsys'
 
 
 
-
+#
+JS_DIR = 'E:/Git_WorkSpace/GitHub/Web/project/wb/html/js/init.js'
 
 
 
