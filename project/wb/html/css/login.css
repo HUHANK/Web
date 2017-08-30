@@ -36,5 +36,52 @@ body{
 }
 
 .body {
-	height: 600px;
+}
+
+.log-box{
+	margin-top: 200px;
+	margin-bottom: 200px;
+	margin-left: 400px;
+	width: 300px;
+	//height: 250px;
+	border: 1px solid black;
+	
+}
+
+.log-box-a{
+	background-color: #000000;
+	color: white;
+	font-size: 1.2em;
+	height: 2em;
+	padding-left: 1em;
+	padding-top: 0.5em;
+}
+
+.log-box-b{
+	background-color:#5FD2D5;
+	height: 7px; 
+}
+
+.log-box-c{
+	height: 200px;
+	text-align: center;
+}
+
+.log-box-c input{
+	margin-top: 20px;
+	width: 200px;
+	height: 30px;
+}
+
+.log-box-c div{
+	margin-top: 20px;
+}
+
+.log-box-c button{
+	width: 205px;
+	height: 40px;
+	font-size: 1.2em;
+	background-color: #63E0E4;
+	border: 1px solid gray;
+	color: white;
 }
