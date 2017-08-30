@@ -6,19 +6,13 @@ function main() {
 	init();
 
 	$("#pre-page").click(function(event) {
-		/* Act on the event */
 		turn_pre_page();
 	});
 	$("#next-page").click(function(event) {
-		/* Act on the event */
 		turn_next_page();
 	});
 
 	$(".head .btn").click(function(event) {
-		// console.info($(this).offset().top);
-		// console.info($(this).offset().left);
-		// console.info(parseInt($(this).css('width')));
-		// console.info(parseInt($(this).css('height')));
 		draw_drop_down_box(
 			$(this),
 			$(this).offset().top+parseInt($(this).css('height')), 
@@ -71,6 +65,7 @@ function draw_drop_down_box(obj, top, left, width, height) {
 	var label = $(".drop-down-box .dhead label");
 	label.attr("class", "drop-down-box-head-lab");
 	label.css("margin", "5px");
+
 	label.click(function(event) {
 		var vl = $(this).attr("value");
 		if (typeof(vl) == "undefined" || vl == 'N') {
@@ -98,10 +93,25 @@ function draw_drop_down_box(obj, top, left, width, height) {
 	$(".dbottom-btn").click(function(event) {
 		$(".drop-down-box").css('display', 'none');
 		var val = $(this).attr('value');
+
+		var str = obj.prev("input").val();
 		if (val === 'cancle') {
 
 		}else if(val === 'ok') {
-			
+			var chils = $(this).parent().parent().prev().children();
+			for(var i=0; i<chils.length; i++) {
+				if ($(chils[i]).attr("value") == "Y") {
+					if (str.length == 0) {
+						str  = $(chils[i]).text();
+					}else {
+						var sear = new RegExp($(chils[i]).text());
+						if (!sear.test(str)) {
+							str = str +"," + $(chils[i]).text();
+						}
+					}
+				}
+			}
+			obj.prev("input").val(str);
 		}
 	});
 }
