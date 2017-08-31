@@ -1,0 +1,108 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+.wrap {
+	background-color: white;
+}
+
+.header {
+	background-color: #000;
+	height: 5em;
+}
+
+.header h2{
+	margin: 0;
+	color: white;
+	padding: 0;
+	font-size: 1.2em;
+	position: relative;
+	top: 27.5px;
+	//margin-top:1.9em;
+	margin-left: 1em;
+}
+
+.footer {
+	text-align: center;
+	color: #ced4d9;
+	margin-top: 5px;
+	border-top: 1px solid  #ced4d9;
+}
+
+.footer div{
+	font-size: 0.9em;
+	margin-top: 10px;
+}
+
+ul, li{
+	list-style: none;
+}
+
+.body {
+
+}
+
+.sidebar{
+	width: 210px;
+	height: 700px;
+	border: solid 1px #000;
+	overflow: auto;
+	float: left;
+	//display: none;
+}
+
+.main{
+	height: 700px;
+	//background-color: gray;
+
+	//display: none;
+	overflow: auto;
+}
+
+.sidebar .inactive {
+	background: url('../images/off.png') no-repeat 184px center;
+}
+
+.sidebar .inactives{
+	background: url('../images/on.png') no-repeat 184px center;
+}
+
+.sidebar .ej{
+	display: none;
+}
+
+.sidebar .sj{
+	display: none;
+}
+
+.sidebar li div:hover{
+	background-color: green;
+}
+
+.sidebar ul ul{
+	padding-left: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+.test{
+	display: none;
+}
+
+.left{
+	width: 300px;
+	float: left;
+	border: 2px solid yellow;
+}
+
+.right{
+	border: 2px solid red;
+}
