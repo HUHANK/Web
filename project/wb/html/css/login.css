@@ -70,7 +70,9 @@ body{
 .log-box-c input{
 	margin-top: 20px;
 	width: 200px;
-	height: 30px;
+	height: 20px;
+	border-radius: 10px;
+	padding: 5px;
 }
 
 .log-box-c div{
@@ -84,4 +86,5 @@ body{
 	background-color: #63E0E4;
 	border: 1px solid gray;
 	color: white;
+	border-radius: 5px;
 }
