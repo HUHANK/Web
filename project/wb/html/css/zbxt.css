@@ -5,7 +5,8 @@
 
 .header {
 	background-color: #000;
-	height: 5em;
+	//height: 5em;
+	overflow: hidden;
 }
 
 .header h2{
@@ -13,10 +14,23 @@
 	color: white;
 	padding: 0;
 	font-size: 1.2em;
-	position: relative;
-	top: 27.5px;
+	//position: relative;
+	//top: 27.5px;
 	//margin-top:1.9em;
 	margin-left: 1em;
+	margin-top: 20px;
+}
+
+.header .subhead{
+	color: white;
+	font-family: "微软雅黑";
+	font-size: 14px;
+	overflow: hidden;
+}
+.header .subhead span{
+	display: inline-block;
+	float: right;
+	margin-left: 20px;
 }
 
 .footer {
@@ -30,3 +44,161 @@
 	font-size: 0.9em;
 	margin-top: 10px;
 }
+
+
+.navbar{
+	overflow: hidden;
+	background-color: #626262;
+	color: white;
+	font-weight: bold;
+	font-size: 18px;
+	border-bottom: 3px solid #1BD9DA;
+}
+.navbar ul{
+	list-style-type: none;
+}
+.navbar ul li{
+	display: inline;
+	//background-color: #63E0E4;
+	float: left;
+	width: 120px;
+	padding: 4px;
+	text-align: center;
+}
+.navbar ul .clicked{
+	background-color: #1BD9DA;
+}
+.navbar ul li:hover{
+	background-color: #1BD9DA;
+}
+
+
+.home-page {
+	margin-left: 20px;
+	//display: none;
+}
+
+.home-page h2{
+	color: #555555;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 10px;
+}
+.home-page table{
+	border-collapse: collapse;
+	font-size: 15px;
+	margin-top: 20px;
+}
+
+.home-page thead{
+	color: #505050;
+	background-color: #C5C8C8;
+}
+.home-page tbody{
+	color: #666666;
+}
+.home-page th, td{
+	border: 1px solid #D7D7D7;
+	padding: 4px;
+}
+/* .home-page tbody .row:hover{
+	background-color: #B9FFFE;
+} */
+.query{
+	display: none;
+}
+.query .sidebar{
+	width: 200px;
+	//background-color: #EDEDED;
+	//border-left: 3px solid #1BD9DA;
+	//border-right: 3px solid #1BD9DA;
+	//border-bottom: 3px solid #1BD9DA;
+	border: 1px solid #949696;
+	cursor: default;
+	float: left;
+	overflow: auto;
+
+	height: 700px;
+}
+
+.query .sidebar .yj{
+	border-bottom: 1px solid #949696;
+	padding: 2px;
+	font-weight: bold;
+	background-color: #C4C4C4;
+}
+.query .sidebar .ej{
+	display: none;
+	padding: 2px;
+	padding-bottom: 8px;
+	padding-top: 8px;
+	border-bottom: 1px solid #949696;
+}
+.query .sidebar .yj:hover{
+	background-color: #CCFFFF;
+}
+.query .sidebar .ej span{
+	display: inline-block;
+	cursor: pointer;
+	padding: 1px;
+	margin: 2px;
+}
+.query .sidebar .ej span[style="all"]{
+	font-weight: bold;
+}
+.query .sidebar .ej span[style="unit"]{
+	color: #6A6D6F;
+}
+.query .sidebar .ej .select{
+	color: white;
+	background-color: #094E4E;
+}
+.query .sidebar .ej span:hover{
+	background-color: #CCFFFF;
+}
+
+.query .result{
+
+}
+
+.query .result table{
+	border-collapse: collapse;
+	font-size: 15px;
+	cursor: default;
+}
+.query .result table th, td{
+	border: 1px solid #D7D7D7;
+	padding: 4px;
+}
+
+.query .result table thead{
+	background-color: #CBCECE;
+}
+.query .result table tbody tr:hover{
+	background-color: #E3E7EA;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

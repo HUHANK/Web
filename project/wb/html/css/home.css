@@ -48,6 +48,7 @@
 
 .body thead{
 	color: #505050
+	background: red;
 }
 
 .body tbody{
