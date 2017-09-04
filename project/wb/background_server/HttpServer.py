@@ -8,16 +8,16 @@ from InitJSDefinition import *
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_GET(self):
-        print "GET"
+        #print "GET"
         self.process(2)
 
     def do_POST(self):
-        print "---POST---"
+        #print "---POST---"
         self.process(1)
 
     def process(self, type):
         if 1 == type:#POST
-            print self.path
+            #print self.path
             #print self.headers
             nbytes = int(self.headers['Content-Length'])
             data = self.rfile.read(nbytes)
@@ -47,5 +47,6 @@ if __name__ == "__main__":
     Options['mysql'] = MySQLOption();
 
     print Options
-    initJS()
+    #initJS()
+
     start_server(HTTP_SERVER_PORT)

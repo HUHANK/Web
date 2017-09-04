@@ -27,3 +27,9 @@ function draw_table(obj, headers, datas) {
 	$(obj).html(html);
 }
 
+function post_data(path, data, func) {
+	var surl = "http://127.0.0.1:5000";
+	var u = surl + path;
+	$.post(u, data, func);
+}
+

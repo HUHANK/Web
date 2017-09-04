@@ -1,7 +1,11 @@
 window.onload = main;
 
+Options = new Object();
 
 function main() {
+	Options.SeesionID = $.cookie("htzq_SessionID");
+	//console.info(window.Options);
+	data_protect();
 	navbar();
 	query();
 }
@@ -87,6 +91,26 @@ function sidebar() {
 			$(this).addClass("select");
 		}
 	});
+}
+
+function data_protect(){
+	update_sjwh_dict();
+}
+
+function update_sjwh_dict(){
+	//获取系统说明列表
+	var pam = new Object();
+	pam.method = "GET";
+	post_data("/dict", JSON.stringify(pam), function(d) {
+		window.Options.Dicts = $.parseJSON(d);
+		//console.info(window.Options);
+	});
+
+	console.info(window.Options);
+	var headers = [];
+	headers[0] = window.Options.Dicts.SysModule.note;
+	draw_table($(".sjwh .dict .sysm"), headers, Dicts.SysModule.data);
+
 }
 
 

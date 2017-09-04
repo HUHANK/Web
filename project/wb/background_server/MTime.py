@@ -1,23 +1,23 @@
+# -*- coding:utf-8 -*-
 
-import datetime, calendar
-import uuid
+import datetime, calendar, time
 
+def getNowTimestamp():
+    return time.time()
+
+#YYYY-MM-DD
 def getYearWeek(strdate):
     date = datetime.datetime.strptime(strdate, '%Y-%m-%d')
     YearWeek = date.isocalendar()
-    return YearWeek[1]
+    return YearWeek
 
 def getNowYearWeek():
     date = datetime.datetime.now()
-    return date.isocalendar()[1]
+    return date.isocalendar()
 
-def getDayInWeekMonday():
-    week_num = datetime.datetime.now().weekday()
-    Monday = datetime.datetime.now() + datetime.timedelta(days=-week_num)
-    Monday = str(Monday)[0:10]
-    return Monday
-
-
+#获取某个星期的第一天日期
+# getWeekFirstday("2017#34")
+#
 def getWeekFirstday(weekflag):
     year_str = weekflag[0:4]
     week_str = weekflag[5:]
@@ -36,25 +36,33 @@ def getWeekFirstday(weekflag):
         Monday = (yearstart + datetime.timedelta(days=daydelat)).date()
     return Monday
 
+#
+# 获取该日期是这一年的第几天
+# YYYY-MM-DD
 def getYearDay(strdate):
     dt = datetime.datetime.strptime(strdate, "%Y-%m-%d")
     return dt.strftime("%j")
 
+#
+# 根据年，天获取日期
+#
 def getDateByDay(year,day):
     fir_day = datetime.datetime(year,1,1)
     zone = datetime.timedelta(days=day-1)
     return datetime.datetime.strftime(fir_day + zone, "%Y-%m-%d")
 
-print getYearWeek("2017-07-30")
-print getNowYearWeek()
-print getDayInWeekMonday()
-print getWeekFirstday("2017#34")
-print getYearDay("2017-08-30")
-print getDateByDay(2017, 241)
-cal = calendar.month(2017, 8)
-print cal
 
-print calendar.monthrange(2017, 8)
-print calendar.weekday(2017, 8, 21)
 
-print str(uuid.uuid4())
+
+
+
+
+
+
+
+
+
+
+
+
+

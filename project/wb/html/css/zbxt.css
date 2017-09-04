@@ -72,7 +72,6 @@
 	background-color: #1BD9DA;
 }
 
-
 .home-page {
 	margin-left: 20px;
 	//display: none;
@@ -83,6 +82,9 @@
 	margin-top: 20px;
 	margin-bottom: 20px;
 	margin-left: 10px;
+}
+table{
+	border-collapse: collapse;
 }
 .home-page table{
 	border-collapse: collapse;
@@ -98,6 +100,11 @@
 	color: #666666;
 }
 .home-page th, td{
+	border: 1px solid #D7D7D7;
+	padding: 4px;
+}
+
+table th, td{
 	border: 1px solid #D7D7D7;
 	padding: 4px;
 }
@@ -178,6 +185,10 @@
 	background-color: #E3E7EA;
 }
 
+
+.add-zb{
+	display: none;
+}
 
 
 

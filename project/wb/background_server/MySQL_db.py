@@ -30,7 +30,6 @@ class MySQLOption:
                 port=MYSQL_PORT,charset='utf8'
             )
 
-
     def select(self,sql):
         self.connect()
         if sql is None:
@@ -74,11 +73,26 @@ class MySQLOption:
                 """
             datas.append(new_row)
         out_map['datas'] = datas
-
-        #out_map = json.dumps(out_map)
         return out_map
 
+    def update(self, sql):
+        self.connect()
+        if sql is None:
+            print 'The param sql is None!'
+            return None
+        cursor = self.conn.cursor()
 
+        ret = True
+        try:
+            cursor.execute(sql)
+            self.conn.commit()
+        except MySQLdb.Error, e:
+            print "Error:%s" % str(e)
+            self.conn.rollback()
+            cursor.close()
+            ret = False
+        cursor.close()
+        return ret
 
 
 
