@@ -33,3 +33,25 @@ function post_data(path, data, func) {
 	$.post(u, data, func);
 }
 
+function sync_post_data(path, data, func) {
+	var surl = "http://127.0.0.1:5000";
+	var u = surl + path;
+	$.ajax({
+		url: 	u,
+		async: 	false,
+		type: 	"POST",
+		data: 	data,
+		success: func,
+		dataType: "json"
+	});
+}
+
+//将一维数组转成二维数组
+function array_1d22d(arr) {
+	var ret = [];
+	for (var i=0; i<arr.length; i++) {
+		ret[i] = [];
+		ret[i][0] = arr[i];
+	}
+	return ret;
+}

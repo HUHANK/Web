@@ -101,16 +101,44 @@ function update_sjwh_dict(){
 	//获取系统说明列表
 	var pam = new Object();
 	pam.method = "GET";
-	post_data("/dict", JSON.stringify(pam), function(d) {
-		window.Options.Dicts = $.parseJSON(d);
-		//console.info(window.Options);
+	sync_post_data("/dict", JSON.stringify(pam), function(d) {
+		console.info(d);
+		Options.Dicts = d;
 	});
 
-	console.info(window.Options);
 	var headers = [];
-	headers[0] = window.Options.Dicts.SysModule.note;
-	draw_table($(".sjwh .dict .sysm"), headers, Dicts.SysModule.data);
+	headers[0] = Options.Dicts.SysModule.note;
+	draw_table($(".sjwh .dict .sysm"), headers, array_1d22d(Options.Dicts.SysModule.data));
 
+	headers[0] = Options.Dicts.Type.note;
+	draw_table($(".sjwh .dict .type"), headers, array_1d22d(Options.Dicts.Type.data));
+
+	headers[0] = Options.Dicts.Property.note;
+	draw_table($(".sjwh .dict .property"), headers, array_1d22d(Options.Dicts.Property.data));
+
+	var html = '<input type="text" name="">';
+	$(".sjwh .dict .sysm").append(html).children("input").addClass('sysm-input');
+	$(".sjwh .dict .type").append(html).children("input").addClass('type-input');
+	$(".sjwh .dict .property").append(html).children("input").addClass('property-input');
+
+	$(".sjwh .dict div input").keydown(function(event) {
+		/* Act on the event */
+		if (event.keyCode == 13) {
+			console.info($(this).attr("class"));
+			var pam = new Object();
+			pam.method = "ADD";
+			if ($(this).attr("class") == "sysm-input") {
+				pam.key = "SysModule";
+			} else if ($(this).attr("class") == "type-input") {
+				pam.key = "Type";
+			} else if ($(this).attr("class") == "property-input") {
+				pam.key = "Property";
+			}
+			pam.value = $(this).val();
+			post_data("/dict", JSON.stringify(pam), function(d){});
+			update_sjwh_dict();
+		}
+	});
 }
 
 

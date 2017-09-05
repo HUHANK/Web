@@ -82,6 +82,7 @@ def getdict(data):
             sql = "SELECT NOTE FROM dictionary where DIC_TYPE = 1 and TABLE_NAME='%s' and COL_NAME = '%s'" % (tbname, colname)
             r = db.select(sql)
             r = r['datas']
+            print r
             sql = ""
             for j in range(len(r)):
                 sql += r[j][0]
@@ -90,6 +91,24 @@ def getdict(data):
                 if r[j].strip() == "":
                     del r[j]
             result[colname]["data"] = r
+    if method == "ADD":
+        value = data.get("value", None)
+        key = data.get("key", None)
+        if key is None:
+            return ""
+        sql = "select NOTE from dictionary where DIC_TYPE=1 and TABLE_NAME = 'work_detail' and COL_NAME = '%s'" % (key)
+        ret = db.select(sql)
+        ret = ret['datas'][0][0]
+        if ret.find(value) < 0 :
+            ret = ret + value + ","
+            sql = "update dictionary set Note = '%s' where DIC_TYPE=1 and TABLE_NAME = 'work_detail' and COL_NAME = '%s'" % (ret,key)
+            db.update(sql)
+        if key == "SysModule":
+            pass
+        if key == "Type":
+            pass
+        if key == "Property":
+            pass
     #print result
     return json.dumps(result)
 

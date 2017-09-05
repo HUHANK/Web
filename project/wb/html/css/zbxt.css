@@ -185,9 +185,22 @@ table th, td{
 	background-color: #E3E7EA;
 }
 
-
 .add-zb{
 	display: none;
+}
+
+.sjwh .dict{
+	overflow: hidden;
+}
+.sjwh .dict div table{
+	width: 160px;
+}
+.sjwh .dict div input{
+	width: 160px;
+}
+.sjwh .dict div{
+	width: 200px;
+	float: left;
 }
 
 

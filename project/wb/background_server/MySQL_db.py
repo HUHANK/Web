@@ -29,6 +29,7 @@ class MySQLOption:
                 passwd=MYSQL_PWD,db=MYSQL_DB,
                 port=MYSQL_PORT,charset='utf8'
             )
+            self.conn.autocommit(True)
 
     def select(self,sql):
         self.connect()
@@ -85,10 +86,10 @@ class MySQLOption:
         ret = True
         try:
             cursor.execute(sql)
-            self.conn.commit()
+            #self.conn.commit()
         except MySQLdb.Error, e:
             print "Error:%s" % str(e)
-            self.conn.rollback()
+            #self.conn.rollback()
             cursor.close()
             ret = False
         cursor.close()
