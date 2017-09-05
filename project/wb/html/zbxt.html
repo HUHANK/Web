@@ -7,6 +7,7 @@
 
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="plug-in/jedate/jedate.js"></script>
 	<script type="text/javascript" src="js/pubfunc.js"></script>
 	<script type="text/javascript" src="js/init.js"></script>
 	<script type="text/javascript" src="js/zbxt.js"></script>
@@ -23,7 +24,7 @@
 	<div class="title">
 		<div class="navbar">
 			<ul>
-				<li class="clicked" value="HomePage">首页</li>
+				<li value="HomePage">首页</li>
 				<li value="Query">查询</li>
 				<li value="WZB">写周报</li>
 				<li value="SZWH">数据维护</li>
@@ -218,7 +219,63 @@
 			</div>
 			<h3>编辑周报</h3>
 			<div class="edit">
-				
+				<fieldset class="zq"><legend>周期选择</legend>
+					<button>本周</button>
+					<button>下周</button>
+				</fieldset>
+				<fieldset class="sx"><legend>属性编辑</legend>
+					<div>
+						<label class="lab">系统(模块)</label>
+						<label></label>
+					</div>
+
+					<div>
+						<label class="lab">类型</label>
+						<label></label>
+					</div>
+
+					<div>
+						<label class="lab">跟踪号</label>
+						<label></label>
+					</div>
+
+					<div>
+						<label class="lab">工作内容</label>
+						<label></label>
+					</div>
+
+					<div>
+						<label class="lab">性质</label>
+						<label></label>
+					</div>
+
+					<div>
+						<label class="lab">工作进度</label>
+						<label>
+							<select>
+								<option>0</option>
+								<option>10</option>
+								<option>20</option>
+								<option>30</option>
+								<option>40</option>
+								<option>50</option>
+								<option>60</option>
+								<option>70</option>
+								<option>80</option>
+								<option>90</option>
+								<option>100</option>
+							</select>
+						</label>
+					</div>
+
+					<div>
+						<label class="lab">开始日期</label>
+						<label><input class="datainp" id="dateinfo" type="text" placeholder="请选择" readonly=""></label>
+					</div>
+				</fieldset>
+				<fieldset class="bz"><legend>备注(问题或阻碍)</legend>
+					<input type="text" name="">
+				</fieldset>
 			</div>
 		</div>
 

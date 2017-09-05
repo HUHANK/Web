@@ -1,13 +1,47 @@
 window.onload = main;
 
 Options = new Object();
+var NavbarIndexCookies = "HTZQ_NavbarIndex";
 
 function main() {
 	Options.SeesionID = $.cookie("htzq_SessionID");
-	//console.info(window.Options);
-	data_protect();
+	var index = $.cookie(NavbarIndexCookies);
+	if (typeof index == "undefined") 
+		index = 1;
+	initNavbar(index);
 	navbar();
-	query();
+	//query();
+}
+
+function initNavbar(index){
+	console.info(typeof index);
+	index = parseInt(index)
+	switch(index)
+	{
+		case 1:
+			$(".body .home-page").css("display", "block");
+
+			break;
+		case 2:
+			$(".body .query").css("display", "block");
+
+			break;
+		case 3:
+			$(".body .add-zb").css("display", "block");
+			add_zb();
+			break;
+		case 4:
+			$(".body .sjwh").css("display", "block");
+			data_protect();
+			break;
+	}
+	$(".title .navbar ul li").each(function(i, data){
+		//console.info(i);
+		//console.info($(data));
+		if (i+1 == index) {
+			$(data).addClass("clicked");
+		}
+	});
 }
 
 function navbar() {
@@ -23,17 +57,33 @@ function navbar() {
 		if (value == "HomePage") {
 			$(".body .home-page").css("display", "block");
 			
+			$(".body .add-zb").css("display", "none");
 			$(".body .query").css("display", "none");
+			$(".body .sjwh").css("display", "none");
+			$.cookie(NavbarIndexCookies, 1);
 		} else if (value == "Query"){
 			$(".body .query").css("display", "block");
 
 			$(".body .home-page").css("display", "none");
+			$(".body .sjwh").css("display", "none");
+			$(".body .add-zb").css("display", "none");
+			$.cookie(NavbarIndexCookies, 2);
 		} else if (value == "WZB") {
+			$(".body .add-zb").css("display", "block");
+
 			$(".body .home-page").css("display", "none");
 			$(".body .query").css("display", "none");
+			$(".body .sjwh").css("display", "none");
+			$.cookie(NavbarIndexCookies, 3);
+			add_zb();
 		} else if (value == "SZWH") {
+			$(".body .sjwh").css("display", "block");
+
 			$(".body .home-page").css("display", "none");
 			$(".body .query").css("display", "none");
+			$(".body .add-zb").css("display", "none");
+			$.cookie(NavbarIndexCookies, 4);
+			data_protect();
 		}
 
 	});
@@ -142,7 +192,23 @@ function update_sjwh_dict(){
 }
 
 
+function add_zb() {
+	console.info("add_zb");
+	// jeDate({
+	// 	dateCell:"#dateinfo",
+	// 	format:"YYYY-MM-DD hh:mm:ss",
+	// 	isinitVal: true,
+	// 	isTime: true,
+	// 	minDate: "2014-01-01 00:00:00",
+	// 	okfun:function(val){alert(val)}
+	// });
 
+	$("#dateinfo").jeDate({
+            format:"YYYY-MM-DD",
+            isTime:false, 
+            minDate:"2014-09-19 00:00:00"
+        })
+}
 
 
 

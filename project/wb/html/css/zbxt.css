@@ -74,7 +74,7 @@
 
 .home-page {
 	margin-left: 20px;
-	//display: none;
+	display: none;
 }
 
 .home-page h2{
@@ -187,8 +187,41 @@ table th, td{
 
 .add-zb{
 	display: none;
+	margin: 10px;
+	font-family: "微软雅黑";
+}
+.add-zb .edit{
+	width: 700px;
+}
+.add-zb .edit fieldset{
+	padding: 5px;
+}
+.add-zb .edit .zq{
+	text-align: center;
+}
+.add-zb .edit .zq legend{
+	text-align: left;
+}
+.add-zb .edit .zq button{
+	width: 100px;
+	height: 30px;
+	margin: 0px 20px;
+}
+.add-zb .edit .sx div{
+	margin: 5px 0px;
+}
+.add-zb .edit .sx label{
+	display: inline-block;
+}
+.add-zb .edit .sx .lab{
+	width: 100px;
+	text-align: right;
+	margin-right: 10px;
 }
 
+.sjwh{
+	display: none;
+}
 .sjwh .dict{
 	overflow: hidden;
 }
