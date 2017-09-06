@@ -193,21 +193,17 @@ function update_sjwh_dict(){
 
 
 function add_zb() {
-	console.info("add_zb");
-	// jeDate({
-	// 	dateCell:"#dateinfo",
-	// 	format:"YYYY-MM-DD hh:mm:ss",
-	// 	isinitVal: true,
-	// 	isTime: true,
-	// 	minDate: "2014-01-01 00:00:00",
-	// 	okfun:function(val){alert(val)}
-	// });
-
-	$("#dateinfo").jeDate({
-            format:"YYYY-MM-DD",
-            isTime:false, 
-            minDate:"2014-09-19 00:00:00"
-        })
+	
+	jeDate.skin('gray');
+	jeDate({
+		dateCell:"#dateinfo",//isinitVal:true,
+		format:"YYYY-MM-DD",
+		isTime:false, //isClear:false,
+		isinitVal:true,
+		minDate:"2014-10-19 00:00:00",
+		maxDate:"2018-11-8 00:00:00"
+	})
+	
 }
 
 
