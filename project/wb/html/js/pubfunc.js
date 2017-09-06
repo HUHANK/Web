@@ -27,6 +27,17 @@ function draw_table(obj, headers, datas) {
 	$(obj).html(html);
 }
 
+function draw_drop_down_box_select(obj, datas) {
+	var shtml = "<select>";
+	for( var i=0; i<datas.length; i++ ){
+		shtml = shtml + "<option>" + datas[i] + "</option>";
+	}
+	shtml = shtml + "</select>";
+	$(obj).html(shtml);
+}
+
+
+
 function post_data(path, data, func) {
 	var surl = "http://127.0.0.1:5000";
 	var u = surl + path;

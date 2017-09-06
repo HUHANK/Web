@@ -193,7 +193,7 @@ function update_sjwh_dict(){
 
 
 function add_zb() {
-	
+	/*初始化日历控件*/
 	jeDate.skin('gray');
 	jeDate({
 		dateCell:"#dateinfo",//isinitVal:true,
@@ -203,7 +203,18 @@ function add_zb() {
 		minDate:"2014-10-19 00:00:00",
 		maxDate:"2018-11-8 00:00:00"
 	})
+
+	/*获取字典信息*/
+	var pam = new Object();
+	pam.method = "GET";
+	sync_post_data("/dict", JSON.stringify(pam), function(d) {
+		console.info(d);
+		Options.Dicts = d;
+	});
 	
+	draw_drop_down_box_select($(".add-zb .edit .sx .xtmk"), Options.Dicts.SysModule.data);
+	draw_drop_down_box_select($(".add-zb .edit .sx .lx"), Options.Dicts.Type.data);
+	draw_drop_down_box_select($(".add-zb .edit .sx .xz"), Options.Dicts.Property.data);
 }
 
 
