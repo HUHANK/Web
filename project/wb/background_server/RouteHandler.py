@@ -37,14 +37,17 @@ def login(data):
         ret = db.select(sql)
         if ret['datas'][0][0] > 0 :
             sql = "UPDATE user set LAST_LOGIN_TIME = CURRENT_TIMESTAMP() WHERE UNAME='%s' and UPWD='%s'" % (param['UserName'], param['PassWord'])
-            if db.update(sql) == False :
+            if db.update(sql) < 0 :
                 print u"跟新user表时间出错！"
             rs['result'] = "OK"
             rs["note"] = ""
             rs["sessionid"] = str(uuid.uuid4())
 
-            se = addSession(rs["sessionid"])
-            se["user_name"] = param['UserName'];
+            sdata = {}
+            sdata["UserName"] = param['UserName']
+            sdata["login_time"] = getNowTimestamp()
+            se = addSession(rs["sessionid"], sdata)
+            se["user_name"] = param['UserName']
             se["login_time"] = getNowTimestamp()
         else:
             rs['result'] = "NO"
@@ -110,6 +113,64 @@ def getdict(data):
         if key == "Property":
             pass
     #print result
+    return json.dumps(result)
+
+@route("/report/")
+def reportProcess(data):
+    data = json.loads(data)
+    sessionData = findSession(data.get("SessionID", ""))
+    if sessionData is None:
+        return ""
+    userName = sessionData.get("UserName", "")
+    db = Options['mysql']
+    (Year, Week, Day) = getNowYearWeek()
+
+    if data["method"] == "ADD":
+        sql = "INSERT INTO work_detail(SysModule,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note) VALUES(" \
+              "'%s', '%s','%s','%s','%s',%s, '%s', %s, '%s')" %(data['SysModule'], data['Type'], data["TraceNo"], data["WorkDetail"], \
+                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Notes"])
+        id = db.update(sql)
+
+        sql = "SELECT UID FROM user where UNAME = '%s'" %(userName)
+        ret = db.select(sql)
+        UID = ret["datas"][0][0]
+        Week = Week + data.get("week", 0)
+        sql = "INSERT INTO user_work(UID,WID, YEAR, WEEK) VALUES(%s, %s, %s, %s)" % (UID, id, Year, Week)
+        db.update(sql)
+        return ""
+    elif data["method"] == "GET":
+        Week = Week + data.get("week", 0)
+        headers = ["跟踪号","系统", "类型", "工作内容", "性质", "进度"]
+        sql = "SELECT C.TraceNo, C.SysModule, C.Type, C.Detail, C.Property, C.ProgressRate " \
+              "FROM user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C ON A.WID = C.id " \
+              "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
+        ret = db.select(sql)
+        result = {}
+        result['header'] = headers
+        result['data'] = ret["datas"]
+        return json.dumps(result)
+    return ""
+
+@route("/home")
+def getHomeData(data):
+    data = json.loads(data)
+    print data
+    sessionData = findSession(data.get("SessionID", ""))
+    if sessionData is None:
+        print "用户没有登录！"
+        return ""
+    userName = sessionData.get("UserName", "")
+    db = Options['mysql']
+    (Year, Week, Day) = getNowYearWeek()
+    headers = ["跟踪号", "系统", "类型", "工作内容", "性质", "进度"]
+    sql = "SELECT C.TraceNo, C.SysModule, C.Type, C.Detail, C.Property, C.ProgressRate " \
+          "FROM user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C ON A.WID = C.id " \
+          "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
+    ret = db.select(sql)
+    result = {}
+    result["bzgz"] = {}
+    result["bzgz"]['header'] = headers
+    result["bzgz"]['data'] = ret["datas"]
     return json.dumps(result)
 
 

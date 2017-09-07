@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50527
 File Encoding         : 65001
 
-Date: 2017-09-06 17:33:29
+Date: 2017-09-07 17:21:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -69,19 +69,20 @@ CREATE TABLE `user` (
   `NOTE` varchar(128) NOT NULL,
   PRIMARY KEY (`UID`),
   UNIQUE KEY `index` (`UNAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin', 'admin', '2017-09-06 17:17:48', '测试用户');
+INSERT INTO `user` VALUES ('1', 'admin', 'admin', '2017-09-07 17:18:33', '测试用户');
+INSERT INTO `user` VALUES ('2', 'test', 'test', '0000-00-00 00:00:00', '测试用户2');
 
 -- ----------------------------
 -- Table structure for user_work
 -- ----------------------------
 DROP TABLE IF EXISTS `user_work`;
 CREATE TABLE `user_work` (
-  `UID` int(11) NOT NULL,
+  `UID` int(11) unsigned NOT NULL,
   `WID` int(11) NOT NULL,
   `YEAR` int(11) NOT NULL,
   `WEEK` int(11) NOT NULL,
@@ -91,6 +92,10 @@ CREATE TABLE `user_work` (
 -- ----------------------------
 -- Records of user_work
 -- ----------------------------
+INSERT INTO `user_work` VALUES ('1', '20', '2017', '36');
+INSERT INTO `user_work` VALUES ('1', '21', '2017', '37');
+INSERT INTO `user_work` VALUES ('1', '23', '2017', '36');
+INSERT INTO `user_work` VALUES ('1', '24', '2017', '37');
 
 -- ----------------------------
 -- Table structure for work_detail
@@ -107,9 +112,15 @@ CREATE TABLE `work_detail` (
   `StartDate` varchar(16) NOT NULL DEFAULT '',
   `NeedDays` double NOT NULL DEFAULT '0',
   `Note` varchar(512) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `index_1` (`TraceNo`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of work_detail
 -- ----------------------------
+INSERT INTO `work_detail` VALUES ('18', '集中交易核心系统', '监管需求', '发的说法', '佛挡杀佛', '单元测试', '0', '2017-09-07', '1', '咖点发烧');
+INSERT INTO `work_detail` VALUES ('20', '集中交易核心系统', '监管需求', '#6754', '发的说法发大水啊阿斯顿复读', '单元测试', '40', '2017-09-07', '1', '啊发撒的发生地方');
+INSERT INTO `work_detail` VALUES ('21', '集中交易核心系统', '监管需求', '#7654', '范德萨发发大水啊发撒的发 affair', '单元测试', '50', '2017-10-18', '1', '发撒旦法');
+INSERT INTO `work_detail` VALUES ('23', '集中交易核心系统', '监管需求', '#7375', '范德萨发发大水啊发撒的发 affair', '单元测试', '70', '2017-10-18', '3', '发撒旦法');
+INSERT INTO `work_detail` VALUES ('24', '集中交易核心系统', '监管需求', '#7395', '范德萨发发大水啊发撒的发 affair', '单元测试', '10', '2017-10-18', '3', '发撒旦法');

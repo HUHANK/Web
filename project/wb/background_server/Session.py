@@ -1,10 +1,10 @@
 # -*- coding:utf-8 -*-
 from config import *
 
-def addSession(sid):
+def addSession(sid, sdata):
     if Options.get("session", None) is None :
         Options["session"] = {}
-    Options["session"][str(sid)] = {}
+    Options["session"][str(sid)] = sdata
     return  Options["session"][str(sid)]
 
 def findSession(sid):

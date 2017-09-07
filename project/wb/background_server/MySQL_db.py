@@ -59,19 +59,6 @@ class MySQLOption:
             new_row = []
             for col in row:
                 new_row.append(col)
-                """
-                print type(col)
-                print type(col) == types.ObjectType
-                if type(col) == types.IntType or \
-                    type(col) == types.FloatType or \
-                    type(col) == types.LongType:
-                    new_row.append(col)
-                elif type(col) == types.StringType:
-                    new_row.append(col)
-                elif isinstance(col, datetime.date):
-                    new_row.append(col.strftime('%Y-%m-%d'))
-                    raise exceptions.TypeError,'unknow type:%s, value:%s' %(dir(type(col))), str(col)
-                """
             datas.append(new_row)
         out_map['datas'] = datas
         return out_map
@@ -84,16 +71,19 @@ class MySQLOption:
         cursor = self.conn.cursor()
 
         ret = True
+        id = -1;
         try:
             cursor.execute(sql)
-            #self.conn.commit()
+            id = self.conn.insert_id()
         except MySQLdb.Error, e:
             print "Error:%s" % str(e)
-            #self.conn.rollback()
             cursor.close()
             ret = False
         cursor.close()
-        return ret
+        if ret :
+            return id;
+        else:
+            return id
 
 
 

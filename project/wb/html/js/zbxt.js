@@ -5,12 +5,28 @@ var NavbarIndexCookies = "HTZQ_NavbarIndex";
 
 function main() {
 	Options.SeesionID = $.cookie("htzq_SessionID");
+	GInit();
 	var index = $.cookie(NavbarIndexCookies);
 	if (typeof index == "undefined") 
 		index = 1;
 	initNavbar(index);
 	navbar();
 	//query();
+}
+
+function GInit(){
+	/*初始化日历控件*/
+	jeDate.skin('gray');
+	jeDate({
+		dateCell:"#dateinfo",//isinitVal:true,
+		format:"YYYY-MM-DD",
+		isTime:false, //isClear:false,
+		isinitVal:true,
+		minDate:"2014-10-19 00:00:00",
+		maxDate:"2020-11-8 00:00:00"
+	})
+	/*动态加载CSS文件*/
+	$("<link>").attr({ rel: "stylesheet",type: "text/css",href: "css/zbxt.css"}).appendTo("head");
 }
 
 function initNavbar(index){
@@ -20,11 +36,11 @@ function initNavbar(index){
 	{
 		case 1:
 			$(".body .home-page").css("display", "block");
-
+			home_page();
 			break;
 		case 2:
 			$(".body .query").css("display", "block");
-
+			query();
 			break;
 		case 3:
 			$(".body .add-zb").css("display", "block");
@@ -36,8 +52,6 @@ function initNavbar(index){
 			break;
 	}
 	$(".title .navbar ul li").each(function(i, data){
-		//console.info(i);
-		//console.info($(data));
 		if (i+1 == index) {
 			$(data).addClass("clicked");
 		}
@@ -61,6 +75,7 @@ function navbar() {
 			$(".body .query").css("display", "none");
 			$(".body .sjwh").css("display", "none");
 			$.cookie(NavbarIndexCookies, 1);
+			home_page();
 		} else if (value == "Query"){
 			$(".body .query").css("display", "block");
 
@@ -68,6 +83,7 @@ function navbar() {
 			$(".body .sjwh").css("display", "none");
 			$(".body .add-zb").css("display", "none");
 			$.cookie(NavbarIndexCookies, 2);
+			query();
 		} else if (value == "WZB") {
 			$(".body .add-zb").css("display", "block");
 
@@ -91,24 +107,6 @@ function navbar() {
 
 function query() {
 	sidebar();
-
-	var headers = [];
-	var i = 0;
-	headers[i++] = "ID";
-	headers[i++] = "系统模块";
-	headers[i++] = "类型";
-	headers[i++] = "跟踪号";
-	headers[i++] = "工作内容";
-	headers[i++] = "性质";
-	headers[i++] = "人员";
-	headers[i++] = "进度";
-	headers[i++] = "开始日期";
-	headers[i++] = "后续人日";
-	headers[i++] = "备注";
-
-	var datas = $.parseJSON(TDatas);
-
-	draw_table($(".body .query .result"), headers, datas);
 }
 
 function sidebar() {
@@ -193,32 +191,104 @@ function update_sjwh_dict(){
 
 
 function add_zb() {
-	/*初始化日历控件*/
-	jeDate.skin('gray');
-	jeDate({
-		dateCell:"#dateinfo",//isinitVal:true,
-		format:"YYYY-MM-DD",
-		isTime:false, //isClear:false,
-		isinitVal:true,
-		minDate:"2014-10-19 00:00:00",
-		maxDate:"2018-11-8 00:00:00"
-	})
+	
+	$(".add-zb .edit .zq button").click(function(){
+		$(this).parent().children().each(function(index, data){
+			$(data).removeClass("btn_clicked")
+		});
+		$(this).addClass('btn_clicked');
+	});
+
+	add_zb_update();
 
 	/*获取字典信息*/
 	var pam = new Object();
 	pam.method = "GET";
 	sync_post_data("/dict", JSON.stringify(pam), function(d) {
-		console.info(d);
 		Options.Dicts = d;
 	});
 	
 	draw_drop_down_box_select($(".add-zb .edit .sx .xtmk"), Options.Dicts.SysModule.data);
 	draw_drop_down_box_select($(".add-zb .edit .sx .lx"), Options.Dicts.Type.data);
 	draw_drop_down_box_select($(".add-zb .edit .sx .xz"), Options.Dicts.Property.data);
+
+	
+	$(".add-zb .edit .btn-submit").click(add_zb_btn_submit);
 }
 
+function add_zb_update() {
+	var param = new Object();
+	param.SessionID = Options.SeesionID;
+	param.method = "GET";
+	param.week = 0;
+	/*添加本周工作*/
+	post_data("/report/", JSON.stringify(param), function(d) {
+		d = $.parseJSON(d);
+		if (d.data.length>0)
+			draw_table($(".add-zb .bzgz"), d.header, d.data);
+		else{
+			$(".add-zb .bzgz").html("<span>暂无记录</span>")
+		}
+	});
 
+	/*添加下周工作*/
+	param.week = 1;
+	post_data("/report/", JSON.stringify(param), function(d) {
+		d = $.parseJSON(d);
+		if (d.data.length > 0)
+			draw_table($(".add-zb .xzgz"), d.header, d.data);
+		else {
+			$(".add-zb .xzgz").html("<span>暂无记录</span>")
+		}
+	});
+}
 
+function add_zb_btn_submit(event) {
+	var param = new Object();
+	$(".add-zb .edit .zq button").each(function(index, data){
+		if ($(data).attr("class") == "btn_clicked") {
+			if ($(data).attr("value") == "now")
+				param.week = 0;
+			else if ($(data).attr("value") == "next")
+				param.week = 1;
+		}
+	})
+
+	param.SysModule = $(".add-zb .edit .sx .xtmk select").val();
+	param.Type = $(".add-zb .edit .sx .lx select").val();
+	param.TraceNo = $(".add-zb .edit .sx .gzh input").val();
+	param.WorkDetail = $(".add-zb .edit .sx .gzln input").val();
+	param.Property = $(".add-zb .edit .sx .xz select").val();
+	param.ProgressRate = $(".add-zb .edit .sx .gzjd select").val();
+	param.StartDate = $(".add-zb .edit .sx .ksrq input").val();
+	param.NeedDays = $(".add-zb .edit .sx .hxrr input").val();
+	param.Notes = $(".add-zb .edit .bz input").val();
+	param.SessionID = Options.SeesionID;
+
+	if ($(this).attr("class") == "btn-submit") {
+		param.method = "ADD";
+		console.info(param);
+		sync_post_data("/report/", JSON.stringify(param), function(d) {
+			console.info(d);
+		});
+	}
+	add_zb_update();
+}
+
+function home_page() {
+	var param = new Object();
+	param.SessionID = Options.SeesionID;
+	post_data("/home/", JSON.stringify(param), function(d) {
+		d = $.parseJSON(d);
+		d = d.bzgz;
+		console.info(d);
+		if (d.data.length>0)
+			draw_table($(".home-page .wdbzgz"), d.header, d.data);
+		else{
+			$(".home-page .wdbzgz").html("<span>暂无记录</span>")
+		}
+	});
+}
 
 
 

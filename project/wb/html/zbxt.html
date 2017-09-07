@@ -3,8 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>周报管理系统</title>
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css">
-
+	
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
 	<script type="text/javascript" src="plug-in/jedate/jedate.min.js"></script>
@@ -35,128 +34,8 @@
 	<div class="body">
 		<div class="home-page">
 			<div><h2>我的本周工作</h2></div>
-			<div>
-				<table>
-					<thead>
-						<tr>
-							<th></th>
-							<th>#</th>
-							<th>系统(模块)</th>
-							<th>类型</th>
-							<th>工作内容</th>
-							<th>工作进度</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td rowspan="2">上周未完成</td>
-							<td class="row">7564</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">需求开发</td>
-							<td class="row">[HTWT-20170804]批前对账未检查转融通利息业务数据</td>
-							<td class="row">40%</td>
-						</tr>
-						<tr>
-							<td class="row">7568</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">需求开发</td>
-							<td class="row">[HTWT-20170803]深港通分拆合并临时代码可用额度处理逻辑优化——设计开发</td>
-							<td class="row">40%</td>
-						</tr>
-						<tr>
-							<td rowspan="2">本周未完成</td>
-							<td class="row">7564</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">需求开发</td>
-							<td class="row">[HTWT-20170804]批前对账未检查转融通利息业务数据</td>
-							<td class="row">40%</td>
-						</tr>
-						<tr>
-							<td class="row">7568</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">需求开发</td>
-							<td class="row">[HTWT-20170803]深港通分拆合并临时代码可用额度处理逻辑优化——设计开发</td>
-							<td class="row">40%</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
-			<div class="table2">
-				<table>
-					<thead>
-						<tr>
-							<th>优先级</th>
-							<th>#</th>
-							<th>系统(模块)</th>
-							<th>类型</th>
-							<th>工作内容</th>
-							<th>工作进度</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td rowspan="2">紧急</td>
-							<td class="row">5261</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">问题单</td>
-							<td class="row">深中登SJSJG文件中的TGZX-股份注销没有录入权益表的问题</td>
-							<td class="row">50%</td>
-						</tr>
-						<tr>
-							<td class="row">5261</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">问题单</td>
-							<td class="row">深中登SJSJG文件中的TGZX-股份注销没有录入权益表的问题</td>
-							<td class="row">50%</td>
-						</tr>
-						<tr>
-							<td rowspan="2">高</td>
-							<td class="row">5282</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">问题单</td>
-							<td class="row">废弃债券（证券代码里无）有质押红冲后日终又被恢复</td>
-							<td class="row">80%</td>
-						</tr>
-						<tr>
-							<td class="row">5282</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">问题单</td>
-							<td class="row">废弃债券（证券代码里无）有质押红冲后日终又被恢复</td>
-							<td class="row">80%</td>
-						</tr>
-						<tr>
-							<td rowspan="2">普通</td>
-							<td class="row">6282</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">问题单</td>
-							<td class="row">[HTWT-20170704]批前对账不平（4618-中登协议冻结）</td>
-							<td class="row">40%</td>
-						</tr>
-						<tr>
-							<td class="row">6282</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">问题单</td>
-							<td class="row">[HTWT-20170704]批前对账不平（4618-中登协议冻结）</td>
-							<td class="row">40%</td>
-						</tr>
-						<tr>
-							<td rowspan="2">低</td>
-							<td class="row">8182</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">问题单</td>
-							<td class="row">融资融券清算回滚</td>
-							<td class="row">50%</td>
-						</tr>
-						<tr>
-							<td class="row">8182</td>
-							<td class="row">集中交易核心系统</td>
-							<td class="row">问题单</td>
-							<td class="row">融资融券清算回滚</td>
-							<td class="row">50%</td>
-						</tr>
-					</tbody>
-				</table>
+			<div class="wdbzgz">
+				
 			</div>
 		</div>
 
@@ -220,8 +99,8 @@
 			<h3>编辑周报</h3>
 			<div class="edit">
 				<fieldset class="zq"><legend>周期选择</legend>
-					<button>本周</button>
-					<button>下周</button>
+					<button value="now" class="btn_clicked">本周</button>
+					<button value="next">下周</button>
 				</fieldset>
 				<fieldset class="sx"><legend>属性编辑</legend>
 					<div>
@@ -251,7 +130,7 @@
 
 					<div>
 						<label class="lab">工作进度</label>
-						<label>
+						<label class="gzjd">
 							<select>
 								<option>0</option>
 								<option>10</option>
@@ -270,13 +149,19 @@
 
 					<div>
 						<label class="lab">开始日期</label>
-						<label><input class="datainp" id="dateinfo" type="text" placeholder="请选择" readonly=""></label>
+						<label class="ksrq"><input class="datainp" id="dateinfo" type="text" placeholder="请选择" readonly=""></label>
+					</div>
+
+					<div>
+						<label class="lab">后续人日</label>
+						<label class="hxrr"><input type="text" name=""></label>
 					</div>
 				</fieldset>
 				<fieldset class="bz"><legend>备注(问题或阻碍)</legend>
 					<input type="text" name="">
 				</fieldset>
-				<button>提交</button><button>跟新</button>
+				<button class="btn-submit">提交</button>
+				<button class="btn-update">跟新</button>
 			</div>
 		</div>
 

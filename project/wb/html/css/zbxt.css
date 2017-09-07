@@ -2,6 +2,13 @@
 	margin: 0;
 	padding: 0;
 }
+table{
+	border-collapse: collapse;
+}
+table th, td{
+	border: 1px solid #D7D7D7;
+	padding: 4px;
+}
 
 .header {
 	background-color: #000;
@@ -45,7 +52,7 @@
 	margin-top: 10px;
 }
 
-
+/*-------------------------------NAVBAR-------------------------------------*/
 .navbar{
 	overflow: hidden;
 	background-color: #626262;
@@ -72,47 +79,25 @@
 	background-color: #1BD9DA;
 }
 
+/*-----------------------------------HOME-----------------------------------*/
 .home-page {
 	margin-left: 20px;
 	display: none;
 }
-
 .home-page h2{
 	color: #555555;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	margin-left: 10px;
 }
-table{
-	border-collapse: collapse;
-}
-.home-page table{
-	border-collapse: collapse;
-	font-size: 15px;
-	margin-top: 20px;
-}
 
-.home-page thead{
-	color: #505050;
-	background-color: #C5C8C8;
-}
-.home-page tbody{
-	color: #666666;
-}
-.home-page th, td{
-	border: 1px solid #D7D7D7;
-	padding: 4px;
-}
 
-table th, td{
-	border: 1px solid #D7D7D7;
-	padding: 4px;
-}
-/* .home-page tbody .row:hover{
-	background-color: #B9FFFE;
-} */
+
+
+/*---------------------------------------------------------------------*/
 .query{
 	display: none;
+	overflow: hidden;
 }
 .query .sidebar{
 	width: 200px;
@@ -185,6 +170,7 @@ table th, td{
 	background-color: #E3E7EA;
 }
 
+/*------------------------------------ADD_ZB--------------------------------------*/
 .add-zb{
 	display: none;
 	margin: 10px;
@@ -195,6 +181,7 @@ table th, td{
 }
 .add-zb .edit fieldset{
 	padding: 5px;
+	border: 1px solid gray;
 }
 .add-zb .edit .zq{
 	text-align: center;
@@ -206,6 +193,10 @@ table th, td{
 	width: 100px;
 	height: 30px;
 	margin: 0px 20px;
+	border: none;
+}
+.add-zb .edit .zq .btn_clicked{
+	background-color: #1BD9DA;
 }
 .add-zb .edit .sx div{
 	margin: 5px 0px;
@@ -219,6 +210,7 @@ table th, td{
 	margin-right: 10px;
 }
 
+/*------------------------------------SJWH-------------------------------------*/
 .sjwh{
 	display: none;
 }
