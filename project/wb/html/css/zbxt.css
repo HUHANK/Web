@@ -2,14 +2,36 @@
 	margin: 0;
 	padding: 0;
 }
+body{
+	cursor: default;
+}
 table{
 	border-collapse: collapse;
+	font-family: "微软雅黑";
 }
-table th, td{
+table th,td{
 	border: 1px solid #D7D7D7;
-	padding: 4px;
+	padding: 8px;
 }
-
+table thead{
+	font-size: 14px;
+	color: #505050;
+	background-color: #EEEEEE;
+}
+table th{
+	font-weight: bold;
+}
+table tbody{
+	color: #666666;
+	font-size: 14px;
+}
+table tbody .jjss{
+	background-color: #F6F7F8;
+}
+table tbody tr:hover{
+	background-color: #D2E4F6;
+}
+/*---------------------------------------------------------------------------------*/
 .header {
 	background-color: #000;
 	//height: 5em;
@@ -21,9 +43,7 @@ table th, td{
 	color: white;
 	padding: 0;
 	font-size: 1.2em;
-	//position: relative;
-	//top: 27.5px;
-	//margin-top:1.9em;
+	font-weight: bold;
 	margin-left: 1em;
 	margin-top: 20px;
 }
@@ -84,13 +104,17 @@ table th, td{
 	margin-left: 20px;
 	display: none;
 }
-.home-page h2{
+.home-page h3{
 	color: #555555;
+	font-size: 1.2em;
+	font-weight: bold;
 	margin-top: 20px;
 	margin-bottom: 20px;
 	margin-left: 10px;
 }
-
+.home-page .wdbzgz{
+	margin-bottom: 20px;
+}
 
 
 
@@ -153,35 +177,33 @@ table th, td{
 
 }
 
-.query .result table{
-	border-collapse: collapse;
-	font-size: 15px;
-	cursor: default;
-}
-.query .result table th, td{
-	border: 1px solid #D7D7D7;
-	padding: 4px;
-}
-
-.query .result table thead{
-	background-color: #CBCECE;
-}
-.query .result table tbody tr:hover{
-	background-color: #E3E7EA;
-}
-
 /*------------------------------------ADD_ZB--------------------------------------*/
 .add-zb{
 	display: none;
 	margin: 10px;
 	font-family: "微软雅黑";
 }
+.add-zb h3{
+	color: #555555;
+	font-size: 1.2em;
+	font-weight: bold;
+	margin-top: 20px;
+	margin-bottom: 20px;
+	margin-left: 10px;
+}
 .add-zb .edit{
 	width: 700px;
+	border: 1px solid #E0E2E3;
+	padding: 10px;
+	font-size: 14px;
+	margin-bottom: 10px;
 }
 .add-zb .edit fieldset{
 	padding: 5px;
-	border: 1px solid gray;
+	border: 1px solid #E0E2E3;
+}
+.add-zb .edit fieldset legend{
+	color: #333333;
 }
 .add-zb .edit .zq{
 	text-align: center;
@@ -209,7 +231,37 @@ table th, td{
 	text-align: right;
 	margin-right: 10px;
 }
-
+.add-zb .edit .sx .xlk select{
+	width: 200px;
+}
+.add-zb .edit .sx .gzln input{
+	width: 550px;
+}
+.add-zb .edit .bz textarea{
+	width: 100%;
+	height: 50px;
+}
+.add-zb .btn-submit{
+	border: none;
+	background-color: #2996CC;
+	font-size: 12px;
+	width: 56px;
+	height: 30px;
+	border-radius: 4px;
+	color: white;
+}
+.add-zb .btn-update{
+	font-size: 12px;
+	border: none;
+	background-color: white;
+	color: #2996CC;
+}
+.add-zb .btn-submit:hover{
+	background-color: #3DA0D1;
+}
+.add-zb .btn-update:hover{
+	text-decoration: underline;
+}
 /*------------------------------------SJWH-------------------------------------*/
 .sjwh{
 	display: none;
@@ -227,7 +279,10 @@ table th, td{
 	width: 200px;
 	float: left;
 }
-
+.sjwh .dict table tbody{
+	height: 200px;
+	overflow: auto;
+}
 
 
 

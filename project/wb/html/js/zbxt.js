@@ -4,14 +4,28 @@ Options = new Object();
 var NavbarIndexCookies = "HTZQ_NavbarIndex";
 
 function main() {
-	Options.SeesionID = $.cookie("htzq_SessionID");
+	Options.SessionID = $.cookie("htzq_SessionID");
 	GInit();
+	InitHeader();
 	var index = $.cookie(NavbarIndexCookies);
 	if (typeof index == "undefined") 
 		index = 1;
 	initNavbar(index);
 	navbar();
-	//query();
+}
+
+function InitHeader() {
+	var param = new Object();
+	param.SessionID = Options.SessionID;
+	post_data("/baseinfo/", JSON.stringify(param), function(d) {
+		d = $.parseJSON(d);
+		var txt = "你好，" + d.UserName + "！";
+		$(".header .subhead .yhxs").text(txt);
+
+		txt = d.Date + "(第" + d.Week + "周)";
+		$(".header .subhead .rqxs").text(txt);
+
+	});
 }
 
 function GInit(){
@@ -27,10 +41,15 @@ function GInit(){
 	})
 	/*动态加载CSS文件*/
 	$("<link>").attr({ rel: "stylesheet",type: "text/css",href: "css/zbxt.css"}).appendTo("head");
+
+	Options.QueryCondition = new Object();
+	Options.QueryCondition.User = [];
+	Options.QueryCondition.SysModule = [];
+	Options.QueryCondition.Property = [];
+	Options.QueryCondition.Type = [];
 }
 
 function initNavbar(index){
-	console.info(typeof index);
 	index = parseInt(index)
 	switch(index)
 	{
@@ -66,7 +85,6 @@ function navbar() {
 		});
 		//添加clicked的class
 		$(this).addClass("clicked");
-		console.info($(this).attr("value"));
 		var value = $(this).attr("value");
 		if (value == "HomePage") {
 			$(".body .home-page").css("display", "block");
@@ -110,6 +128,49 @@ function query() {
 }
 
 function sidebar() {
+	var param = new Object();
+	param.method = "GET";
+	sync_post_data("/dict/", JSON.stringify(param), function(d) {
+		Options.Dicts = d;
+	});
+	
+	param.name = "all";
+	sync_post_data("/getuserinfo/", JSON.stringify(param), function(d) {
+		Options.UserInfo = d;
+	});
+
+	function sidebar_add_unit(obj, header, data, n) {
+		var shtml = '<div class="yj" name="' + n + '">' + header + '</div>';
+		shtml += '<div class="ej" name="' + n + '">';
+		shtml += '<span style="all">全选</span>';
+		for( var i=0; i<data.length; i++ ) {
+			shtml += '<span style="unit">' + data[i] + '</span>';
+		}
+		shtml += '</div>';
+		$(obj).append(shtml);
+	}
+	var data = [];
+	for(var i=0; i<Options.UserInfo.length; i++) {
+		data[i] = Options.UserInfo[i][1];
+	}
+	//$(".query .sidebar").children().remove();
+	$(".query .sidebar").html("");
+	sidebar_add_unit($(".query .sidebar"), "部门人员", data, "User");
+
+	sidebar_add_unit($(".query .sidebar"), 
+				Options.Dicts.SysModule.note, 
+				Options.Dicts.SysModule.data,
+				"SysModule");
+	sidebar_add_unit($(".query .sidebar"), 
+				Options.Dicts.Type.note, 
+				Options.Dicts.Type.data,
+				"Type");
+	sidebar_add_unit($(".query .sidebar"), 
+				Options.Dicts.Property.note, 
+				Options.Dicts.Property.data,
+				"Property");
+	/*--------------------------------------------------*/
+
 	$(".query .sidebar .yj").click(function() {
 		var ej = $(this).next();
 		if (ej.css("display") == "block"){
@@ -120,25 +181,87 @@ function sidebar() {
 	});
 
 	$('.query .sidebar .ej span[style="all"]').click(function() {
+		var key = $(this).parent().attr("name");
 		if ($(this).attr("class") == "sel") {
 			$(this).removeClass("sel");
 			$(this).siblings().each(function(index, data){
 				$(data).removeClass("select");
+				deal_query_condition(1, key, $(data).text());
 			});
 		} else {
 			$(this).addClass("sel");
 			$(this).siblings().each(function(index, data){
 				$(data).addClass("select");
+				deal_query_condition(0, key, $(data).text());
 			});
 		}
 	});
 	$('.query .sidebar .ej span[style="unit"]').click(function() {
+		var key = $(this).parent().attr("name");
 		if ($(this).attr("class") == "select") {
 			$(this).removeClass("select");
+			deal_query_condition(1, key, $(this).text());
 		} else {
 			$(this).addClass("select");
+			deal_query_condition(0, key, $(this).text());
 		}
 	});
+}
+
+/*type:0 add type:1 delete*/
+function deal_query_condition(type, key, value) {
+	var qs;
+	var NeedQueryBackground = 1;
+	if (type == 0) {
+		//add
+		if ("User" == key) {
+			qs = Options.QueryCondition.User;
+			/*把用户的中文名转成对应的用户ID*/
+			for(var i=0; i<Options.UserInfo.length; i++){
+				if(Options.UserInfo[i][1] == value) {
+					value = Options.UserInfo[i][0];
+				}
+			}
+		} else if ("SysModule" == key) {
+			qs = Options.QueryCondition.SysModule;
+		} else if ("Property" == key) {
+			qs = Options.QueryCondition.Property;
+		} else if ("Type" == key) {
+			qs = Options.QueryCondition.Type;
+		}
+		for(var i=0; i<qs.length; i++) {
+			if (qs[i] == value) {
+				NeedQueryBackground = 0;
+			}
+		}
+		if (NeedQueryBackground == 1) {
+			qs.push(value);
+		}
+	} else if (type == 1) {
+		//delete
+		if ("User" == key) {
+			qs = Options.QueryCondition.User;
+			/*把用户的中文名转成对应的用户ID*/
+			for(var i=0; i<Options.UserInfo.length; i++){
+				if(Options.UserInfo[i][1] == value) {
+					value = Options.UserInfo[i][0];
+				}
+			}
+		} else if ("SysModule" == key) {
+			qs = Options.QueryCondition.SysModule;
+		} else if ("Property" == key) {
+			qs = Options.QueryCondition.Property;
+		} else if ("Type" == key) {
+			qs = Options.QueryCondition.Type;
+		}
+		for(var i=0; i<qs.length; i++) {
+			if (qs[i] == value) {
+				//delete qs[i];
+				qs.splice(i, 1);
+			}
+		}
+	}
+
 }
 
 function data_protect(){
@@ -150,7 +273,6 @@ function update_sjwh_dict(){
 	var pam = new Object();
 	pam.method = "GET";
 	sync_post_data("/dict", JSON.stringify(pam), function(d) {
-		console.info(d);
 		Options.Dicts = d;
 	});
 
@@ -172,7 +294,6 @@ function update_sjwh_dict(){
 	$(".sjwh .dict div input").keydown(function(event) {
 		/* Act on the event */
 		if (event.keyCode == 13) {
-			console.info($(this).attr("class"));
 			var pam = new Object();
 			pam.method = "ADD";
 			if ($(this).attr("class") == "sysm-input") {
@@ -204,7 +325,7 @@ function add_zb() {
 	/*获取字典信息*/
 	var pam = new Object();
 	pam.method = "GET";
-	sync_post_data("/dict", JSON.stringify(pam), function(d) {
+	sync_post_data("/dict/", JSON.stringify(pam), function(d) {
 		Options.Dicts = d;
 	});
 	
@@ -213,12 +334,12 @@ function add_zb() {
 	draw_drop_down_box_select($(".add-zb .edit .sx .xz"), Options.Dicts.Property.data);
 
 	
-	$(".add-zb .edit .btn-submit").click(add_zb_btn_submit);
+	$(".add-zb .btn-submit").click(add_zb_btn_submit);
 }
 
 function add_zb_update() {
 	var param = new Object();
-	param.SessionID = Options.SeesionID;
+	param.SessionID = Options.SessionID;
 	param.method = "GET";
 	param.week = 0;
 	/*添加本周工作*/
@@ -263,13 +384,11 @@ function add_zb_btn_submit(event) {
 	param.StartDate = $(".add-zb .edit .sx .ksrq input").val();
 	param.NeedDays = $(".add-zb .edit .sx .hxrr input").val();
 	param.Notes = $(".add-zb .edit .bz input").val();
-	param.SessionID = Options.SeesionID;
+	param.SessionID = Options.SessionID;
 
 	if ($(this).attr("class") == "btn-submit") {
 		param.method = "ADD";
-		console.info(param);
 		sync_post_data("/report/", JSON.stringify(param), function(d) {
-			console.info(d);
 		});
 	}
 	add_zb_update();
@@ -277,11 +396,10 @@ function add_zb_btn_submit(event) {
 
 function home_page() {
 	var param = new Object();
-	param.SessionID = Options.SeesionID;
+	param.SessionID = Options.SessionID;
 	post_data("/home/", JSON.stringify(param), function(d) {
 		d = $.parseJSON(d);
 		d = d.bzgz;
-		console.info(d);
 		if (d.data.length>0)
 			draw_table($(".home-page .wdbzgz"), d.header, d.data);
 		else{

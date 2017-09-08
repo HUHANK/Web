@@ -23,3 +23,5 @@ JS_DIR = 'E:/Git_WorkSpace/GitHub/Web/project/wb/html/js/init.js'
 # Global Value Defined
 Options = {}
 
+SESSION_DATA_PATH="session.data"
+

@@ -4,6 +4,7 @@ import BaseHTTPServer
 from config import *
 from RouteHandler import *
 from InitJSDefinition import *
+from Session import  *
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
@@ -44,8 +45,8 @@ def start_server(port):
 
 if __name__ == "__main__":
     #init mysql
-    Options['mysql'] = MySQLOption();
-
+    Options['mysql'] = MySQLOption()
+    initSession()
     print Options
     #initJS()
 

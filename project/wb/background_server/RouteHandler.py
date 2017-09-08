@@ -6,22 +6,12 @@ from MySQL_db import *
 from Session import *
 import uuid
 from MTime import *
+from PubFunc import *
 
 
 @route("/")
 def index(data) :
     return data
-
-
-@route("/test/")
-def test(data):
-    param = json.loads(data)
-    start = (param['page']-1)*param['page_size']
-    sql = "select * from WEEK_REPORT limit %s, %s" % (start, param['page_size'])
-    db = Options['mysql']
-    result = db.select(sql)
-    result = json.dumps(result)
-    return result
 
 @route("/login")
 def login(data):
@@ -49,6 +39,9 @@ def login(data):
             se = addSession(rs["sessionid"], sdata)
             se["user_name"] = param['UserName']
             se["login_time"] = getNowTimestamp()
+            #print Options["session"]
+            #print json.dumps(Options["session"])
+            WriteFile(SESSION_DATA_PATH, json.dumps(Options["session"]))
         else:
             rs['result'] = "NO"
             rs["note"] = u"用户密码不对！"
@@ -58,12 +51,24 @@ def login(data):
 
     return json.dumps(rs)
 
-@route("/baseinfo")
+@route("/baseinfo/")
 def baseinfo(data):
+    db = Options['mysql']
+    data = json.loads(data)
+    sessionData = findSession(data.get("SessionID", ""))
+    if sessionData is None:
+        print "baseinfo 用户没有登录！"
+        return ""
+    userName = sessionData.get("UserName", "")
     ret = {}
-    (year, day) = getNowYearWeek()
-    ret["Year"] = year
-    ret["Day"] = day
+    sql = "select NOTE from user where UNAME='%s'" % (userName)
+    res = db.select(sql)
+    ret["UserName"] = res["datas"][0][0]
+
+    ret["Date"] = getNowDate1()
+    (year, week, day) = getNowYearWeek()
+    ret["Week"] = week
+    return json.dumps(ret)
 
 @route("/dict")
 def getdict(data):
@@ -120,6 +125,7 @@ def reportProcess(data):
     data = json.loads(data)
     sessionData = findSession(data.get("SessionID", ""))
     if sessionData is None:
+        print u"用户未登录！"
         return ""
     userName = sessionData.get("UserName", "")
     db = Options['mysql']
@@ -154,7 +160,6 @@ def reportProcess(data):
 @route("/home")
 def getHomeData(data):
     data = json.loads(data)
-    print data
     sessionData = findSession(data.get("SessionID", ""))
     if sessionData is None:
         print "用户没有登录！"
@@ -173,6 +178,19 @@ def getHomeData(data):
     result["bzgz"]['data'] = ret["datas"]
     return json.dumps(result)
 
+@route("getuserinfo")
+def getUserInfo(data):
+    data = json.loads(data)
+    db = Options['mysql']
+
+    if data.get("method", "") == "GET" :
+        if data["name"].lower() == "all":
+            sql = "select UID, NOTE from user"
+            ret = db.select(sql)
+            ret = json.dumps(ret["datas"])
+            return ret
+
+    return ""
 
 
 

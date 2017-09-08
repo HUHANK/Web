@@ -52,7 +52,9 @@ def getDateByDay(year,day):
     return datetime.datetime.strftime(fir_day + zone, "%Y-%m-%d")
 
 
-
+#
+def getNowDate1():
+    return datetime.datetime.strftime(datetime.datetime.now(), "%Y年%m月%d日")
 
 
 

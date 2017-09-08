@@ -25,6 +25,12 @@ function draw_table(obj, headers, datas) {
 
 	var html = "<table>" + thead + tbody + "</table>";
 	$(obj).html(html);
+	$(obj).children("table").children("tbody").children("tr").each(function(index, data){
+		if (index % 2 == 0) {
+			//$(data).css("background-color", "#F6F7F8");
+			$(data).addClass("jjss");
+		}
+	});
 }
 
 function draw_drop_down_box_select(obj, datas) {
