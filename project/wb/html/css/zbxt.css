@@ -36,6 +36,7 @@ table tbody tr:hover{
 	background-color: #000;
 	//height: 5em;
 	overflow: hidden;
+	width: 100%;
 }
 
 .header h2{

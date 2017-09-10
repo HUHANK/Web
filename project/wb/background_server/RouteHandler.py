@@ -21,7 +21,7 @@ def login(data):
 
     ret = db.select(sql)
     rs = {}
-    print ret['datas'][0][0]
+    #print ret['datas'][0][0]
     if (ret['datas'][0][0] > 0) :
         sql = "select count(*) from user where UNAME='%s' and UPWD='%s'" % (param['UserName'], param['PassWord'])
         ret = db.select(sql)
@@ -90,7 +90,7 @@ def getdict(data):
             sql = "SELECT NOTE FROM dictionary where DIC_TYPE = 1 and TABLE_NAME='%s' and COL_NAME = '%s'" % (tbname, colname)
             r = db.select(sql)
             r = r['datas']
-            print r
+            #print r
             sql = ""
             for j in range(len(r)):
                 sql += r[j][0]
@@ -131,6 +131,7 @@ def reportProcess(data):
     db = Options['mysql']
     (Year, Week, Day) = getNowYearWeek()
 
+    #print data
     if data["method"] == "ADD":
         sql = "INSERT INTO work_detail(SysModule,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note) VALUES(" \
               "'%s', '%s','%s','%s','%s',%s, '%s', %s, '%s')" %(data['SysModule'], data['Type'], data["TraceNo"], data["WorkDetail"], \
@@ -178,7 +179,7 @@ def getHomeData(data):
     result["bzgz"]['data'] = ret["datas"]
     return json.dumps(result)
 
-@route("getuserinfo")
+@route("/getuserinfo")
 def getUserInfo(data):
     data = json.loads(data)
     db = Options['mysql']
@@ -192,8 +193,128 @@ def getUserInfo(data):
 
     return ""
 
+@route("/query")
+def queryData(data):
+    data = json.loads(data)
+    #print data
+    headers = ["ID", "用户名", "系统(模块)", "类型", "跟踪号", "工作内容","性质", "进度", "开始日期", "后续人日", "备注"]
+    sql = "select  B.id, C.NOTE, SysModule, Type, TraceNo, Detail, " \
+          "Property, ProgressRate, StartDate, NeedDays, B.Note " \
+          "from user_work A left join work_detail B on A.WID = B.id " \
+          " left join user C on A.UID = C.UID "
+    scond = iArray2Str(data["User"])
+    if len(scond) > 0:
+        scond = " where A.UID in ("+scond+") "
+
+    ret = sArray2Str(data["SysModule"])
+    if len(ret) > 0:
+        if len(scond) > 0:
+            scond += "and SysModule in (" + ret + ") "
+        else:
+            scond += "where SysModule in (" + ret + ") "
+
+    ret = sArray2Str(data["Property"])
+    if len(ret) > 0:
+        if len(scond) > 0:
+            scond += "and Property in (" + ret + ") "
+        else:
+            scond += "where Property in (" + ret + ") "
+
+    ret = sArray2Str(data["Type"])
+    if len(ret) > 0:
+        if len(scond) > 0:
+            scond += "and Type in (" + ret + ") "
+        else:
+            scond += "where Type in (" + ret + ") "
+
+    sql += scond + " limit " + str(data["Page"]*data["PageSize"]) + ", " + str(data["PageSize"])
+    db = Options['mysql']
+
+    ret = db.select(sql)
+    res = {}
+    res["header"] = headers
+    res["data"] = ret["datas"]
+
+    return json.dumps(res)
 
 
+@route("/query1")
+def queryData(data):
+    #print data
+    data = json.loads(data)
+    print "---------",data
+    headers = ["ID", "用户名", "系统(模块)", "类型", "跟踪号", "工作内容","性质", "进度", "开始日期", "后续人日", "备注"]
+    sql = "select  B.id, C.NOTE as UserName, SysModule, Type, TraceNo, Detail, " \
+          "Property, ProgressRate, StartDate, NeedDays, B.Note " \
+          "from user_work A left join work_detail B on A.WID = B.id " \
+          " left join user C on A.UID = C.UID "
+    sqlt = "select   count(1) " \
+          "from user_work A left join work_detail B on A.WID = B.id " \
+          " left join user C on A.UID = C.UID "
+    scond = iArray2Str(data["User"])
+    if len(scond) > 0:
+        scond = " where A.UID in ("+scond+") "
+
+    ret = sArray2Str(data["SysModule"])
+    if len(ret) > 0:
+        if len(scond) > 0:
+            scond += "and SysModule in (" + ret + ") "
+        else:
+            scond += "where SysModule in (" + ret + ") "
+
+    ret = sArray2Str(data["Property"])
+    if len(ret) > 0:
+        if len(scond) > 0:
+            scond += "and Property in (" + ret + ") "
+        else:
+            scond += "where Property in (" + ret + ") "
+
+    ret = sArray2Str(data["Type"])
+    if len(ret) > 0:
+        if len(scond) > 0:
+            scond += "and Type in (" + ret + ") "
+        else:
+            scond += "where Type in (" + ret + ") "
+
+    sql += scond + " limit " + str(data["Page"]*data["PageSize"]) + ", " + str(data["PageSize"])
+    db = Options['mysql']
+
+    ret = db.select(sql)
+
+    field_name = []
+    for i in range(len(ret["fields"])):
+        field_name.append( ret["fields"][i]["name"] )
+    #print field_name
+    res = {}
+    res["rows"] = []
+    for v in ret["datas"]:
+        tmp = {}
+        for i in range(len(v)):
+            tmp[field_name[i]] = v[i]
+        res["rows"].append(tmp)
+    #print res
+
+    sql = sqlt + scond
+    ret = db.select(sql)
+    #print ret
+    res["totalCount"] = ret["datas"][0][0]
+    #res["total"] = (data["PageSize"] >= res["totalCount"] ? res["totalCount"] :
+    if data["PageSize"] >= res["totalCount"] :
+        res["total"] = res["totalCount"]
+    else:
+        res["total"] = data["PageSize"]
+
+    if int(res["total"]) != 0:
+        res["totalPage"] = int(res["totalCount"]) % int(res["total"])
+        if int(res["totalCount"]) % int(res["total"]) == 0:
+            res["totalPage"] = int(res["totalCount"]) / int(res["total"])
+        else:
+            res["totalPage"] = (int(res["totalCount"]) / int(res["total"])) + 1
+    else:
+        res["totalPage"] = 0
+
+    print res
+    return json.dumps(res)
 
 
 

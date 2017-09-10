@@ -5,6 +5,9 @@ from config import *
 from RouteHandler import *
 from InitJSDefinition import *
 from Session import  *
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 

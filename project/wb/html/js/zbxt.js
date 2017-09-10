@@ -47,6 +47,8 @@ function GInit(){
 	Options.QueryCondition.SysModule = [];
 	Options.QueryCondition.Property = [];
 	Options.QueryCondition.Type = [];
+	Options.QueryCondition.Page = 0;
+	Options.QueryCondition.PageSize = 10;
 }
 
 function initNavbar(index){
@@ -195,6 +197,7 @@ function sidebar() {
 				deal_query_condition(0, key, $(data).text());
 			});
 		}
+		query_update_data(0);
 	});
 	$('.query .sidebar .ej span[style="unit"]').click(function() {
 		var key = $(this).parent().attr("name");
@@ -205,7 +208,10 @@ function sidebar() {
 			$(this).addClass("select");
 			deal_query_condition(0, key, $(this).text());
 		}
+		query_update_data(0);
 	});
+
+	query_update_data(0);
 }
 
 /*type:0 add type:1 delete*/
@@ -262,6 +268,57 @@ function deal_query_condition(type, key, value) {
 		}
 	}
 
+	
+
+}
+
+function query_update_data(page) {
+	var param = Options.QueryCondition;
+	param.Page = page;
+	console.info(param);
+	post_data("/query1/", JSON.stringify(param), function(d) {
+		d = $.parseJSON(d);
+		//draw_table($(".query .result .box"), d.header, d.data); 
+		$(".query .result .box").html("");
+		console.info(d);
+		jeui.use(["jeTable", "jeCheck"], function() {
+		$(".query .result .box").jeTable({
+			height:"600",
+			isPage: false,
+			datas: d.rows,
+			// pageField:{
+			// 	pageIndex:{field:"size",num:1},
+	  //           pageSize:{field:"pagesize",num:15},
+	  //           ellipsis:true,
+	  //           dataCount:"totalCount",
+	  //           pageCount:"totalPage" 
+			// },
+			columnSort:[],
+			columns:[
+				{name:"ID", 		field:"id", 		width:"40", align: "center", isShow:true, renderer:""},
+				{name:"用户名", 		field:"UserName", 	width:"60", align: "center"},
+				{name:"系统(模块)",	field:"SysModule", 	width:"140", align: "center"},
+				{name:"类型", 		field:"Type", 		width:"70", align: "center"},
+				{name:"跟踪号", 		field:"TraceNo", 	width:"60", align: "center"},
+				{name:"工作内容", 	field:"Detail", 	width:"300", align: "center"},
+				{name:"性质", 		field:"Property", 	width:"70", align: "center"},
+				{name:"进度", 		field:"ProgressRate", width:"40", align: "center"},
+				{name:"开始日期", 	field:"StartDate", 	width:"100", align: "center"},
+				{name:"后续人日", 	field:"NeedDays", 	width:"70", align: "center"},
+				{name:"备注", 		field:"Note", 		width:"300", align: "center"}
+			],
+			itemfun:function(elem, data) {
+				elem.on('dblclick', function(event) {
+					event.preventDefault();
+					/* Act on the event */
+				});
+			}
+		});
+		});
+
+
+	});
+	
 }
 
 function data_protect(){
@@ -383,7 +440,7 @@ function add_zb_btn_submit(event) {
 	param.ProgressRate = $(".add-zb .edit .sx .gzjd select").val();
 	param.StartDate = $(".add-zb .edit .sx .ksrq input").val();
 	param.NeedDays = $(".add-zb .edit .sx .hxrr input").val();
-	param.Notes = $(".add-zb .edit .bz input").val();
+	param.Notes = $(".add-zb .edit .bz textarea").val();
 	param.SessionID = Options.SessionID;
 
 	if ($(this).attr("class") == "btn-submit") {
