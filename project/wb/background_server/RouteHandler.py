@@ -90,7 +90,6 @@ def getdict(data):
             sql = "SELECT NOTE FROM dictionary where DIC_TYPE = 1 and TABLE_NAME='%s' and COL_NAME = '%s'" % (tbname, colname)
             r = db.select(sql)
             r = r['datas']
-            #print r
             sql = ""
             for j in range(len(r)):
                 sql += r[j][0]
@@ -117,7 +116,6 @@ def getdict(data):
             pass
         if key == "Property":
             pass
-    #print result
     return json.dumps(result)
 
 @route("/report/")
@@ -131,7 +129,6 @@ def reportProcess(data):
     db = Options['mysql']
     (Year, Week, Day) = getNowYearWeek()
 
-    #print data
     if data["method"] == "ADD":
         sql = "INSERT INTO work_detail(SysModule,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note) VALUES(" \
               "'%s', '%s','%s','%s','%s',%s, '%s', %s, '%s')" %(data['SysModule'], data['Type'], data["TraceNo"], data["WorkDetail"], \
@@ -163,7 +160,7 @@ def getHomeData(data):
     data = json.loads(data)
     sessionData = findSession(data.get("SessionID", ""))
     if sessionData is None:
-        print "用户没有登录！"
+        print u"用户没有登录！"
         return ""
     userName = sessionData.get("UserName", "")
     db = Options['mysql']
@@ -242,7 +239,6 @@ def queryData(data):
 def queryData(data):
     #print data
     data = json.loads(data)
-    print "---------",data
     headers = ["ID", "用户名", "系统(模块)", "类型", "跟踪号", "工作内容","性质", "进度", "开始日期", "后续人日", "备注"]
     sql = "select  B.id, C.NOTE as UserName, SysModule, Type, TraceNo, Detail, " \
           "Property, ProgressRate, StartDate, NeedDays, B.Note " \
@@ -309,11 +305,13 @@ def queryData(data):
         if int(res["totalCount"]) % int(res["total"]) == 0:
             res["totalPage"] = int(res["totalCount"]) / int(res["total"])
         else:
-            res["totalPage"] = (int(res["totalCount"]) / int(res["total"])) + 1
+            if int(res["totalCount"]) <= int(res["total"]):
+                res["totalPage"] = 1;
+            else:
+                res["totalPage"] = (int(res["totalCount"]) / int(res["total"])) + 1
     else:
         res["totalPage"] = 0
 
-    print res
     return json.dumps(res)
 
 

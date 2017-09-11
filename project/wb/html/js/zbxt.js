@@ -48,7 +48,7 @@ function GInit(){
 	Options.QueryCondition.Property = [];
 	Options.QueryCondition.Type = [];
 	Options.QueryCondition.Page = 0;
-	Options.QueryCondition.PageSize = 10;
+	Options.QueryCondition.PageSize = 25;
 }
 
 function initNavbar(index){
@@ -126,6 +126,28 @@ function navbar() {
 }
 
 function query() {
+	$(".query .result .ztl button").click(function(){
+		var pageIndex = parseInt($(".query .result .ztl .pageIndex").text());
+		var totalPage = parseInt($(".query .result .ztl .totalPage").text());
+		if ($(this).attr("value") == "pre") {
+
+			if (pageIndex <= 1) {
+				alert("已经是第一页");
+				return;
+			} else {
+				pageIndex = pageIndex - 1;
+			}
+		}
+		else if ($(this).attr("value") == "next") {
+			if (pageIndex >= totalPage) {
+				alert("已经是最后一页");
+				return ;
+			} else {
+				pageIndex = pageIndex + 1;
+			}
+		}
+		query_update_data(pageIndex - 1);
+	});
 	sidebar();
 }
 
@@ -275,47 +297,43 @@ function deal_query_condition(type, key, value) {
 function query_update_data(page) {
 	var param = Options.QueryCondition;
 	param.Page = page;
-	console.info(param);
 	post_data("/query1/", JSON.stringify(param), function(d) {
 		d = $.parseJSON(d);
 		//draw_table($(".query .result .box"), d.header, d.data); 
 		$(".query .result .box").html("");
-		console.info(d);
+
 		jeui.use(["jeTable", "jeCheck"], function() {
-		$(".query .result .box").jeTable({
-			height:"600",
-			isPage: false,
-			datas: d.rows,
-			// pageField:{
-			// 	pageIndex:{field:"size",num:1},
-	  //           pageSize:{field:"pagesize",num:15},
-	  //           ellipsis:true,
-	  //           dataCount:"totalCount",
-	  //           pageCount:"totalPage" 
-			// },
-			columnSort:[],
-			columns:[
-				{name:"ID", 		field:"id", 		width:"40", align: "center", isShow:true, renderer:""},
-				{name:"用户名", 		field:"UserName", 	width:"60", align: "center"},
-				{name:"系统(模块)",	field:"SysModule", 	width:"140", align: "center"},
-				{name:"类型", 		field:"Type", 		width:"70", align: "center"},
-				{name:"跟踪号", 		field:"TraceNo", 	width:"60", align: "center"},
-				{name:"工作内容", 	field:"Detail", 	width:"300", align: "center"},
-				{name:"性质", 		field:"Property", 	width:"70", align: "center"},
-				{name:"进度", 		field:"ProgressRate", width:"40", align: "center"},
-				{name:"开始日期", 	field:"StartDate", 	width:"100", align: "center"},
-				{name:"后续人日", 	field:"NeedDays", 	width:"70", align: "center"},
-				{name:"备注", 		field:"Note", 		width:"300", align: "center"}
-			],
-			itemfun:function(elem, data) {
-				elem.on('dblclick', function(event) {
-					event.preventDefault();
-					/* Act on the event */
-				});
-			}
-		});
+			$(".query .result .box").jeTable({
+				height:"740",
+				isPage: false,
+				datas: d.rows,
+				columnSort:[],
+				columns:[
+					{name:"ID", 		field:"id", 		width:"40", align: "center", isShow:true, renderer:""},
+					{name:"用户名", 		field:"UserName", 	width:"60", align: "center"},
+					{name:"系统(模块)",	field:"SysModule", 	width:"140", align: "center"},
+					{name:"类型", 		field:"Type", 		width:"70", align: "center"},
+					{name:"跟踪号", 		field:"TraceNo", 	width:"60", align: "center"},
+					{name:"工作内容", 	field:"Detail", 	width:"300", align: "center"},
+					{name:"性质", 		field:"Property", 	width:"70", align: "center"},
+					{name:"进度", 		field:"ProgressRate", width:"40", align: "center"},
+					{name:"开始日期", 	field:"StartDate", 	width:"100", align: "center"},
+					{name:"后续人日", 	field:"NeedDays", 	width:"70", align: "center"},
+					{name:"备注", 		field:"Note", 		width:"300", align: "center"}
+				],
+				itemfun:function(elem, data) {
+					elem.on('dblclick', function(event) {
+						event.preventDefault();
+						/* Act on the event */
+					});
+				}
+			});
 		});
 
+		console.info(d);
+		$(".query .result .ztl .totalPage").text(d.totalPage);
+		$(".query .result .ztl .totalCount").text(d.totalCount);
+		$(".query .result .ztl .pageIndex").text(page+1);
 
 	});
 	

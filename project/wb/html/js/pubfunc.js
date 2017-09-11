@@ -43,15 +43,16 @@ function draw_drop_down_box_select(obj, datas) {
 }
 
 
+var HostUrl = "http://127.0.0.1:5001";
 
 function post_data(path, data, func) {
-	var surl = "http://127.0.0.1:5000";
+	var surl = HostUrl;
 	var u = surl + path;
 	$.post(u, data, func);
 }
 
 function sync_post_data(path, data, func) {
-	var surl = "http://127.0.0.1:5000";
+	var surl = HostUrl;
 	var u = surl + path;
 	$.ajax({
 		url: 	u,

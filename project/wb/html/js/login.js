@@ -9,7 +9,7 @@ function main() {
 		data.PassWord = $("input[type=password]").val();
 		data = JSON.stringify(data);
 
-		post_data("/login", data, function(d){
+		post_data("/login/", data, function(d){
 			ret = $.parseJSON(d);
 			console.info(ret);
 			if (ret.result == "OK") {

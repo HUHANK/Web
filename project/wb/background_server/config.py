@@ -1,13 +1,13 @@
 # -*- coding:utf-8 -*-
 
-HTTP_SERVER_PORT = 5000
+HTTP_SERVER_PORT = 5001
 
 
 
 
 
 #MySQL Config
-MYSQL_HOST = '127.0.0.1'
+MYSQL_HOST = '10.10.14.36'
 MYSQL_PORT = 3306
 MYSQL_USER = 'root'
 MYSQL_PWD  = '123456'

@@ -135,7 +135,7 @@ table tbody tr:hover{
 	float: left;
 	overflow: auto;
 
-	height: 700px;
+	height: 800px;
 }
 
 .query .sidebar .yj{
@@ -175,7 +175,29 @@ table tbody tr:hover{
 }
 
 .query .result{
-
+	
+}
+.query .result .ztl{
+	text-align: right;
+	background-color: #F2F2F2;
+}
+.query .result .ztl .ssp{
+	margin-right: 10px;
+	font-size: 14px;
+}
+.query .result .ztl button{
+	border: 1px solid #DADADA;
+	background-color: white;
+	border-radius: 4px;
+	font-size: 14px;
+	padding: 2px;
+	margin-right: 6px;
+}
+.query .result .ztl button:hover{
+	color: #0074D9;
+}
+.query .result .ztl .totalPage, .totalCount, .pageIndex{
+	color: #BB0000;
 }
 
 /*------------------------------------ADD_ZB--------------------------------------*/
