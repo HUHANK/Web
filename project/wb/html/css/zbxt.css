@@ -214,6 +214,7 @@ table tbody tr:hover{
 	margin-bottom: 20px;
 	margin-left: 10px;
 }
+
 .add-zb .edit{
 	width: 700px;
 	border: 1px solid #E0E2E3;
@@ -285,6 +286,7 @@ table tbody tr:hover{
 .add-zb .btn-update:hover{
 	text-decoration: underline;
 }
+
 /*------------------------------------SJWH-------------------------------------*/
 .sjwh{
 	display: none;

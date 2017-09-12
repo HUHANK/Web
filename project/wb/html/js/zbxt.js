@@ -340,7 +340,28 @@ function query_update_data(page) {
 }
 
 function data_protect(){
-	update_sjwh_dict();
+	//update_sjwh_dict();
+	$(".sjwh .sidebar li").click(function(){
+		$(".sjwh .sidebar li").each(function(index, data){
+			$(data).removeClass("on");
+		});
+		$(this).addClass("on");
+	});
+
+	jeui.use(["jeCheck"], function(){
+		$(".sjwh .wrap .bmgl table").jeCheck({
+            jename:"chunk",
+            attrName:[false,"勾选"], 
+            itemfun: function(elem,bool) {
+                console.log(bool)
+                //console.log(elem.prop('checked'))
+            },
+            success:function(elem){
+                jeui.chunkSelect(elem,'.sjwh .wrap .bmgl table thead input','on')
+                
+            }
+        })
+	});
 }
 
 function update_sjwh_dict(){
