@@ -34,4 +34,5 @@
 .sjwh .wrap .bmgl{
 	overflow: hidden;
 	width: 400px;
+	display: none;
 }

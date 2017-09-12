@@ -362,6 +362,13 @@ function data_protect(){
             }
         })
 	});
+
+	$(".sjwh .wrap .bmgl button").click(function() {
+		if ($(this).attr("name") == "add") {
+			pop_box("添加部门", 400, 200, test_html);
+			
+		}
+	});
 }
 
 function update_sjwh_dict(){

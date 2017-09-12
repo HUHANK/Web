@@ -73,3 +73,51 @@ function array_1d22d(arr) {
 	}
 	return ret;
 }
+
+
+function pop_box(stitle, w, h, html) {
+	jeui.use(["jquery", "jeBox"], function(){
+		jeBox.open({
+			title: stitle,
+			closeBtn:true,
+			maskClose:true,
+			boxSize:[w+"px", h+"px"],
+			content: html,
+			boxStyle:{
+						border:"1px solid #81BA25",
+						"border-radius":"4px"
+					}
+		});
+	});
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
