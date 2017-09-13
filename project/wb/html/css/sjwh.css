@@ -23,7 +23,7 @@
 	display: none;
 }
 
-.sjwh .wrap .mmxg form{
+.sjwh .wrap .mmxg .main{
 	margin: 0 auto;
 	width: 300px;
 	height: 400px;
@@ -31,8 +31,17 @@
 	margin-top: 200px;
 }
 
+.sjwh .wrap .mmxg .ts{
+	border: 1px solid red;
+}
+
 .sjwh .wrap .bmgl{
 	overflow: hidden;
-	width: 400px;
+	//width: 400px;
+	display: none;
+}
+
+.sjwh .wrap .xzgl{
+	overflow: hidden;
 	display: none;
 }

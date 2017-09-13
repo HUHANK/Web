@@ -75,7 +75,7 @@ function array_1d22d(arr) {
 }
 
 
-function pop_box(stitle, w, h, html) {
+function pop_box(stitle, w, h, html, succfunc, endfunc) {
 	jeui.use(["jquery", "jeBox"], function(){
 		jeBox.open({
 			title: stitle,
@@ -83,16 +83,22 @@ function pop_box(stitle, w, h, html) {
 			maskClose:true,
 			boxSize:[w+"px", h+"px"],
 			content: html,
+			zIndex: 2,
 			boxStyle:{
 						border:"1px solid #81BA25",
 						"border-radius":"4px"
-					}
+					},
+			success:succfunc,
+			endfun: endfunc
 		});
 	});
 }
 
-
-
+function je_table(obj, opts) {
+	jeui.use(["jeTable", "jeCheck"], function() {
+	        	$(obj).jeTable(opts);
+	});        		
+}
 
 
 

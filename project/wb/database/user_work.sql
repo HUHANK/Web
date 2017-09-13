@@ -1,0 +1,14 @@
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (1, -1, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (5, -1, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (9, -1, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (23, -1, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (28, -1, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (1, 20, 2017, 36);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (1, 21, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (1, 23, 2017, 36);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (1, 24, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (23, 25, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (23, 29, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (5, 31, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (28, 33, 2017, 37);
+INSERT INTO `user_work` (`UID`, `WID`, `YEAR`, `WEEK`) VALUES (9, 48, 2017, 37);

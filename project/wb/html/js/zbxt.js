@@ -49,6 +49,17 @@ function GInit(){
 	Options.QueryCondition.Type = [];
 	Options.QueryCondition.Page = 0;
 	Options.QueryCondition.PageSize = 25;
+	GUpdateBaseinfo();
+	
+}
+
+function GUpdateBaseinfo(){
+	var param = new Object();
+	param.SessionID = Options.SessionID;
+	sync_post_data("/baseinfo/", JSON.stringify(param), function(d){
+		g_ALL_USER = d.Users;
+		g_ALL_DEPART = d.Departs;
+	});
 }
 
 function initNavbar(index){
@@ -330,7 +341,7 @@ function query_update_data(page) {
 			});
 		});
 
-		console.info(d);
+		//console.info(d);
 		$(".query .result .ztl .totalPage").text(d.totalPage);
 		$(".query .result .ztl .totalCount").text(d.totalCount);
 		$(".query .result .ztl .pageIndex").text(page+1);
@@ -346,14 +357,208 @@ function data_protect(){
 			$(data).removeClass("on");
 		});
 		$(this).addClass("on");
+
+		if ($(this).attr("name") == "mmxg") {
+			$(".sjwh .wrap .mmxg").css("display", "block");
+			$(".sjwh .wrap .bmgl").css("display", "none");
+			$(".sjwh .wrap .xzgl").css("display", "none");
+			$(".sjwh .wrap .qxgl").css("display", "none");
+			$(".sjwh .wrap .zdwh").css("display", "none");
+		} else if ($(this).attr("name") == "bmgl") {
+			$(".sjwh .wrap .mmxg").css("display", "none");
+			$(".sjwh .wrap .bmgl").css("display", "block");
+			$(".sjwh .wrap .xzgl").css("display", "none");
+			$(".sjwh .wrap .qxgl").css("display", "none");
+			$(".sjwh .wrap .zdwh").css("display", "none");
+			sjwh_bmgl_update();
+		} else if ($(this).attr("name") == "xzgl") {
+			$(".sjwh .wrap .mmxg").css("display", "none");
+			$(".sjwh .wrap .bmgl").css("display", "none");
+			$(".sjwh .wrap .xzgl").css("display", "block");
+			$(".sjwh .wrap .qxgl").css("display", "none");
+			$(".sjwh .wrap .zdwh").css("display", "none");
+			sjwh_xzgl_update();
+		} else if ($(this).attr("name") == "qxgl") {
+			$(".sjwh .wrap .mmxg").css("display", "none");
+			$(".sjwh .wrap .bmgl").css("display", "none");
+			$(".sjwh .wrap .xzgl").css("display", "none");
+			$(".sjwh .wrap .qxgl").css("display", "block");
+			$(".sjwh .wrap .zdwh").css("display", "none");
+		} else if ($(this).attr("name") == "zdwh") {
+			$(".sjwh .wrap .mmxg").css("display", "none");
+			$(".sjwh .wrap .bmgl").css("display", "none");
+			$(".sjwh .wrap .xzgl").css("display", "none");
+			$(".sjwh .wrap .qxgl").css("display", "none");
+			$(".sjwh .wrap .zdwh").css("display", "block");
+		}
+	});
+/*-----------------------密码修改---------------------------*/
+	var mmxg = $(".sjwh .wrap .mmxg");
+	mmxg.find(".submit").click(function(){
+		var jmm = mmxg.find(".jmm");
+		var xmm1 = mmxg.find(".xmm1");
+		var xmm2 = mmxg.find(".xmm2");
+		if ( jmm.val() == "") {
+			jmm.addClass('ts');
+			return;
+		}
+		if (xmm1.val() == "") {
+			xmm1.addClass('ts');
+			return;
+		}
+		if (xmm2.val() == "") {
+			xmm2.addClass('ts');
+			return;
+		}
+		if (xmm1.val() != xmm2.val()) {
+			jeui.use(["jquery", "jeBox"], function(){
+				pop_box("ERROR", 200, 120, "确认密码不能与新密码不一致!");
+			})
+		}
+
+		var param = new Object();
+		param.SessionID = Options.SessionID;
+		param.OldPwd = jmm.val();
+		param.NewPwd = xmm1.val();
+
+		sync_post_data("/sjwh_xgmm/", JSON.stringify(param), function(d){
+			if (d.ErrCode == 0) {
+				d.msg = d.msg + "请重新登录！";
+				pop_box("SUCCESS", 200, 120, d.msg, null, function(){
+					window.location.href = "login.html";
+				});
+			}else{
+				pop_box("FAILED", 200, 120, d.msg);
+			}
+		});
+
+	});
+/*-----------------------部门管理---------------------------*/
+	$(".sjwh .wrap .bmgl button").click(function() {
+		if ($(this).attr("name") == "add") {
+			pop_box("添加部门", 400, 200, bmgl_add_html, function(){
+				//console.log($("#je-popup-box-wrap .submit"));
+				var shtml = "";
+				for(var i=0; i<g_ALL_USER.length; i++){
+					shtml += "<option>"+g_ALL_USER[i].cname+"</option>";
+				}
+				$("#je-popup-box-wrap .manager").html(shtml);
+
+				jeui.use(["jeSelect"], function(){
+					$("#je-popup-box-wrap select").jeSelect({
+						sosList:true
+					});
+				});
+				$("#je-popup-box-wrap .submit").click(function() {
+					var depart = $("#je-popup-box-wrap .depart");
+					var manager = $("#je-popup-box-wrap .manager");
+					if (depart.val().length < 1) {
+						depart.addClass('ts');
+						return ;
+					}
+					var  param = new Object();
+					param.method = "ADD";
+					param.SessionID  = Options.SessionID;
+					param.depart = depart.val();
+					var mid = 0;
+					for(var i=0; i<g_ALL_USER.length; i++){
+						if( manager.val() == g_ALL_USER[i].cname){
+							mid = g_ALL_USER[i].id;
+							break;
+						}
+					}
+					param.manager = mid;
+
+					sync_post_data("/sjwh_bmgl/", JSON.stringify(param), function(d){
+						if(d.ErrCode == 0) {
+							depart.val("");
+							sjwh_bmgl_update();
+							GUpdateBaseinfo();
+						}
+					});
+				});
+			});
+		}
 	});
 
+/*-----------------------小组管理---------------------------*/
+	$(".sjwh .wrap .xzgl button").click(function() {
+		if ($(this).attr("name") == "add") {
+			pop_box("添加小组", 400, 260, xzgl_add_html, function(){
+				var shtml = "";
+				for(var i=0; i<g_ALL_USER.length; i++){
+					shtml += "<option>"+g_ALL_USER[i].cname+"</option>";
+				}
+				$("#je-popup-box-wrap .manager").html(shtml);
+
+				shtml = "";
+				for(var i=0; i<g_ALL_DEPART.length; i++) {
+					shtml += "<option>"+g_ALL_DEPART[i].name+"</option>";
+				}
+				$("#je-popup-box-wrap .depart").html(shtml);
+
+				jeui.use(["jeSelect"], function(){
+					$("#je-popup-box-wrap select").jeSelect({
+						sosList:true
+					});
+				});
+
+				$("#je-popup-box-wrap .submit").click(function() {
+					var depart = $("#je-popup-box-wrap .depart");
+					var group = $("#je-popup-box-wrap .group");
+					var manager = $("#je-popup-box-wrap .manager");
+					if (group.val() == "") {
+						group.addClass('ts');
+						return ;
+					}
+					
+					var depart_id = -1;
+					for(var i =0; i<g_ALL_DEPART.length; i++){
+						if (depart.val() == g_ALL_DEPART[i].name){
+							depart_id = g_ALL_DEPART[i].id;
+							break;
+						}
+					}
+					var uid = -1;
+					for(var i = 0; i<g_ALL_USER.length; i++){
+						if (manager.val() == g_ALL_USER[i].cname) {
+							uid = g_ALL_USER[i].id;
+							break;
+						}
+					}
+					if (depart_id < 0 || uid < 0) {
+						pop_box("ERROR", 200, 120, "内存中的字典数据不是最新的，请刷新跟新！");
+						return;
+					}
+
+					var  param = new Object();
+					param.method = "ADD";
+					param.SessionID  = Options.SessionID;
+					param.name = group.val();
+					param.manager = uid;
+					param.depart = depart_id;
+
+					sync_post_data("/sjwh_xzgl/", JSON.stringify(param), function(d){
+						if(d.ErrCode == 0) {
+							group.val("");
+							sjwh_xzgl_update();
+							GUpdateBaseinfo();
+						}
+					});
+				});
+
+			});
+		}
+	});
+
+
+/*-----------------------test---------------------------*/
 	jeui.use(["jeCheck"], function(){
 		$(".sjwh .wrap .bmgl table").jeCheck({
             jename:"chunk",
             attrName:[false,"勾选"], 
             itemfun: function(elem,bool) {
-                console.log(bool)
+                //console.log(bool)
                 //console.log(elem.prop('checked'))
             },
             success:function(elem){
@@ -363,10 +568,153 @@ function data_protect(){
         })
 	});
 
-	$(".sjwh .wrap .bmgl button").click(function() {
-		if ($(this).attr("name") == "add") {
-			pop_box("添加部门", 400, 200, test_html);
-			
+/*-----------------------test---------------------------*/
+}
+
+function sjwh_bmgl_update() {
+	var param = new Object();
+	param.SessionID = Options.SessionID;
+	param.method = "GET";
+
+	sync_post_data("/sjwh_bmgl/", JSON.stringify(param), function(d){
+		if (d.ErrCode == 0) {
+			je_table($(".sjwh .wrap .bmgl .table"),{
+				width:"453",
+				isPage: false,
+				datas:d.data,
+				columnSort:[],
+				columns:[
+					{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
+						field:"id", 
+						width: "50", 
+						align: "center",
+						renderer:function(obj, rowidex) {
+        					return '<input type="checkbox" name="checkbox" jename="chunk">';
+        				}
+					},
+					{name: "ID", field: "id", width: "40", align:"center"},
+					{name: "部门名称", field: "name", width: "140", align:"center"},
+					{name: "部门负责人", field: "manager", width: "120", align:"center"},
+					{name:"操作", field:'id', width:"100", align:"center", 
+						renderer:function(obj, rowidex) {
+							//console.log(obj);
+                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
+    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button>';
+                    	}
+                	}
+				],
+				itemfun:function(elem,data){
+
+				},
+				success:function(elCell, tbody) {
+					elCell.jeCheck({
+		                jename:"chunk",
+		                checkCls:"je-check",
+		                itemfun: function(elem,bool) {
+		                    //alert(elem.attr("jename")
+		                },
+		                success:function(elem){
+		                    jeui.chunkSelect(elem,".sjwh .wrap .bmgl .table .gocheck",'on')
+		                }
+		            });
+
+					$(".sjwh .wrap .bmgl .table button").click(function(){
+						var param = new Object();
+						param.SessionID  = Options.SessionID;
+						if ($(this).attr("type") == "delete") {
+							param.method = "DELETE";
+							param.id = $(this).attr("name");
+							sync_post_data("/sjwh_bmgl/", JSON.stringify(param), function(d){
+								if (d.ErrCode == 0) {
+									sjwh_bmgl_update();
+									GUpdateBaseinfo();
+								} else {
+									pop_box("ERROR", 200, 120, d.msg);
+								}
+							});
+						}
+						else if ($(this).attr("type") == "edit") {
+
+						}
+					});
+				}	
+			});
+		}else {
+			pop_box("ERROR", 200, 120, d.msg);
+		}
+	});
+}
+
+function sjwh_xzgl_update() {
+	var param = new Object();
+	param.SessionID = Options.SessionID;
+	param.method = "GET";
+
+	sync_post_data("/sjwh_xzgl/", JSON.stringify(param), function(d){
+		//console.log(d);
+		if (d.ErrCode == 0){
+			je_table($(".sjwh .wrap .xzgl .table"),{
+				width:"573",
+				isPage: false,
+				datas:d.data,
+				columnSort:[],
+				columns:[
+					{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
+						field:"id", 
+						width: "50", 
+						align: "center",
+						renderer:function(obj, rowidex) {
+        					return '<input type="checkbox" name="checkbox" jename="chunk">';
+        				}
+					},
+					{name: "ID", field: "id", width: "40", align:"center"},
+					{name: "小组名称", field: "name", width: "140", align:"center"},
+					{name: "小组负责人", field: "manager", width: "120", align: "center"},
+					{name: "所属部门", field: "depart", width: "120", align: "center"},
+					{name:"操作", field:'id', width:"100", align:"center", 
+						renderer:function(obj, rowidex) {
+							//console.log(obj);
+                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
+    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button>';
+                    	}
+                	}
+				],
+				itemfun:function(elem,data){
+
+				},
+				success:function(elCell, tbody) {
+					elCell.jeCheck({
+		                jename:"chunk",
+		                checkCls:"je-check",
+		                itemfun: function(elem,bool) {
+		                    //alert(elem.attr("jename")
+		                },
+		                success:function(elem){
+		                    jeui.chunkSelect(elem,".sjwh .wrap .xzgl .table .gocheck",'on')
+		                }
+		            });
+
+					$(".sjwh .wrap .xzgl .table button").click(function(){
+						var param = new Object();
+						param.SessionID  = Options.SessionID;
+						if ($(this).attr("type") == "delete") {
+							param.method = "DELETE";
+							param.id = $(this).attr("name");
+							sync_post_data("/sjwh_xzgl/", JSON.stringify(param), function(d){
+								if (d.ErrCode == 0) {
+									sjwh_xzgl_update();
+									GUpdateBaseinfo();
+								} else {
+									pop_box("ERROR", 200, 120, d.msg);
+								}
+							});
+						}
+						else if ($(this).attr("type") == "edit") {
+
+						}
+					});
+				}	
+			});
 		}
 	});
 }

@@ -63,6 +63,31 @@ class MySQLOption:
         out_map['datas'] = datas
         return out_map
 
+    def select2(self, sql):
+        self.connect()
+        if sql is None:
+            print 'The param sql is None!'
+            return None
+        self.conn.query(sql)
+        r = self.conn.store_result()
+        out_map = {'total': r.num_rows(), 'field_count': r.num_fields()}
+        fields = []
+        (field_info) = r.describe()
+
+        for item in field_info:
+            fields.append(item[0])
+
+        datas = []
+        for i in range(r.num_rows()):
+            (row,) = r.fetch_row()
+            new_row = {}
+            for j in range(len(row)):
+                new_row[fields[j]] = row[j]
+            datas.append(new_row)
+        out_map["data"] = datas
+        return out_map
+
+
     def update(self, sql):
         self.connect()
         if sql is None:
@@ -71,7 +96,7 @@ class MySQLOption:
         cursor = self.conn.cursor()
 
         ret = True
-        id = -1;
+        id = -1
         try:
             cursor.execute(sql)
             id = self.conn.insert_id()
@@ -81,7 +106,7 @@ class MySQLOption:
             ret = False
         cursor.close()
         if ret :
-            return id;
+            return id
         else:
             return id
 

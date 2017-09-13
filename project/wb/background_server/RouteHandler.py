@@ -55,12 +55,14 @@ def login(data):
 def baseinfo(data):
     db = Options['mysql']
     data = json.loads(data)
+    ret = {}
     sessionData = findSession(data.get("SessionID", ""))
     if sessionData is None:
         print "baseinfo 用户没有登录！"
-        return ""
+        setErrMsg(ret, 1, "baseinfo 用户没有登录！")
+        return json.dumps(ret)
     userName = sessionData.get("UserName", "")
-    ret = {}
+
     sql = "select NOTE from user where UNAME='%s'" % (userName)
     res = db.select(sql)
     ret["UserName"] = res["datas"][0][0]
@@ -68,6 +70,16 @@ def baseinfo(data):
     ret["Date"] = getNowDate1()
     (year, week, day) = getNowYearWeek()
     ret["Week"] = week
+
+    sql = "select UID id, UNAME ename, NOTE cname from user"
+    rs = db.select2(sql)
+    ret["Users"] = rs["data"]
+
+    sql = "SELECT id, name, manager from department"
+    rs = db.select2(sql)
+    ret["Departs"] = rs["data"]
+
+    setErrMsg(ret, 0, "")
     return json.dumps(ret)
 
 @route("/dict")
@@ -314,5 +326,83 @@ def queryData(data):
 
     return json.dumps(res)
 
+@route("/sjwh_xgmm/")
+def modifyUserPwd(data):
+    data = json.loads(data)
+    ret = {}
+    ses = findSession(data.get("SessionID", ""))
+    if ses == None :
+        setErrMsg(ret, 1, u"请确认该用户是否登录！")
+    else:
+        db = Options['mysql']
+        UserName = ses.get("UserName", "")
+        sql = "select UID from user where UNAME = '%s' and UPWD='%s'" % (UserName, data.get("OldPwd", ""))
+        rs = db.select(sql)
+        if rs["total"] > 0 :
+            sql = "update user set UPWD = '%s' Where UID = %s" % (data.get("NewPwd", ""), rs["datas"][0][0])
+            if db.update(sql) < 0:
+                setErrMsg(ret, 3, u"密码修改失败！")
+            else:
+                setErrMsg(ret, 0, u"密码修改成功！")
+        else:
+            setErrMsg(ret, 2, u"原密码不正确！")
+    return json.dumps(ret)
 
+@route("/sjwh_bmgl/")
+def sjwhbmgl(data):
+    data = json.loads(data)
+    print data
+    db = Options['mysql']
+    ret = {}
+    if data.get("method", "") == "GET":
+        sql = "select A.id, A.name , B.NOTE manager from department A LEFT JOIN user B on A.manager = B.UID"
+        rs = db.select2(sql)
+        if rs == None:
+            setErrMsg(ret,2, u"查询数据库失败！")
+        else:
+            ret["data"] = rs["data"]
+            setErrMsg(ret, 0, "")
+    elif data.get("method", "") == "ADD":
+        sql = "insert into department(name, manager) values('%s',%s)" % (data.get("depart", ""), data.get("manager", ""))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库插入数据错误!")
+        else:
+            setErrMsg(ret, 0, "")
+    elif data.get("method", "") == "DELETE":
+        sql = "delete from department where id=%s" % (data.get("id", -1))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库删除失败！")
+        else:
+            setErrMsg(ret, 0, "")
+    else:
+        setErrMsg(ret, 1, u"参数不正确!")
+    return json.dumps(ret)
 
+@route("/sjwh_xzgl/")
+def sjwhxzgl(data):
+    data = json.loads(data)
+    print data
+    db = Options['mysql']
+    ret = {}
+    method = data.get("method", "")
+    if method == "GET":
+        sql = "select A.id, A.name, C.NOTE manager, B.name depart from xgroup A LEFT JOIN department B on A.depart_id = B.id LEFT JOIN user C on A.manager = C.UID"
+        rs = db.select2(sql)
+        if rs == None:
+            setErrMsg(ret, 2, u"数据库查询失败！")
+        else:
+            ret["data"] = rs["data"]
+            setErrMsg(ret, 0, "")
+    if method == "ADD":
+        sql = "INSERT into xgroup(name, manager, depart_id) values('%s', %s, %s)" % (data.get("name", ""), data.get("manager", ""), data.get("depart", ""))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库插入失败！")
+        else:
+            setErrMsg(ret, 0, "")
+    if method == "DELETE":
+        sql = "DELETE from xgroup where id = %s" % (data.get("id", 0))
+        if db.update(sql) <  0:
+            setErrMsg(ret, 2, u"数据库删除失败！")
+        else:
+            setErrMsg(ret, 0, "")
+    return json.dumps(ret)

@@ -1,9 +1,18 @@
 /*------------------------------------------------------------------------*/
 #je-popup-box-wrap{
-	margin: 0 auto;
+	//margin: 0;
 	padding: 0;
 	width: 100%;
 	//height: 100%;
 	//background-color: #70C693;
 	//margin-top: 30px;
+}
+
+#je-popup-box-wrap .submit{
+	margin: 0 auto;
+	width: 120px;
+}
+
+#je-popup-box-wrap .ts{
+	border: 1px solid red;
 }

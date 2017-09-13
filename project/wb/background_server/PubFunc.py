@@ -32,3 +32,7 @@ def sArray2Str(arr):
     if len(ret) < 1:
         return ""
     return ret
+
+def setErrMsg(ret, code, msg):
+    ret["ErrCode"] = code
+    ret["msg"] = msg
