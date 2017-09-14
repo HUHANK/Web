@@ -642,9 +642,13 @@ function data_protect(){
 	});
 
 	$(".sjwh .wrap .zdwh .tool .add").click(function() {
-		console.info("Click");
-		pop_box("字典添加", 400, 200, xzgl_add_html, function(){
-			
+	
+		pop_box("字典添加", 400, 260, zdwh_add_html, function(){
+			jeui.use(["jeSelect"], function(){
+				$("#je-popup-box-wrap select").jeSelect({
+					sosList:true
+				});
+			});
 		});
 
 	});

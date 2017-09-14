@@ -48,7 +48,7 @@ var xzgl_add_html = ' \
 		</div> \
 ';
 
-var zdwh_add_html = ' \ 
+var zdwh_add_html = '\
  <div class="je-form-item"> \
 	<label class="je-label je-f14">父节点</label> \
 	<div class="je-inputbox"> \
@@ -72,7 +72,7 @@ var zdwh_add_html = ' \
 <div class="je-inputbox"> \
 	<button class="je-btn submit">添加</button> \
 </div> \
-'
+';
 
 bmgl_add_html = box_wrap(bmgl_add_html);
 xzgl_add_html = box_wrap(xzgl_add_html);
