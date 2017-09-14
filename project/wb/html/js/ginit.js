@@ -48,8 +48,35 @@ var xzgl_add_html = ' \
 		</div> \
 ';
 
+var zdwh_add_html = ' \ 
+ <div class="je-form-item"> \
+	<label class="je-label je-f14">父节点</label> \
+	<div class="je-inputbox"> \
+		<select class="root"></select>	\
+	</div> \
+</div> \
+<div class="je-form-item"> \
+	<label class="je-label je-f14">字典名称</label> \
+	<div class="je-inputbox je-w50"> \
+		<input type="text" name="" autocomplete="off" placeholder="请输入" class="je-input name"> \
+	</div> \
+</div> \
+<div class="je-form-item"> \
+	<label class="je-label je-f14">根节点</label> \
+	<div class="je-inputbox"> \
+		<select class="isroot">\
+			<option name="1">是</option><option name="0">否</option> \
+		</select>	\
+	</div> \
+</div> \
+<div class="je-inputbox"> \
+	<button class="je-btn submit">添加</button> \
+</div> \
+'
+
 bmgl_add_html = box_wrap(bmgl_add_html);
 xzgl_add_html = box_wrap(xzgl_add_html);
+zdwh_add_html = box_wrap(zdwh_add_html);
 
 var g_ALL_USER = {};
 var g_ALL_DEPART = {};

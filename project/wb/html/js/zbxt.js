@@ -551,7 +551,103 @@ function data_protect(){
 		}
 	});
 
+/*-----------------------字典维护---------------------------*/
+	jeui.use(["jeSelect"], function() {
+		$(".sjwh .wrap .zdwh fieldset select").jeSelect({
+                sosList:true,
+                itemfun:function(elem, index, val){
+                	//console.info(elem, index, val);
+                	
+                	if (elem.attr("class") == "root") {
+                		//console.info(elem.attr("class"));
+                		var id = elem.children('option[selected="selected"]').attr("name");
+                		var param = new Object();
+                		param.SessionID = Options.SessionID;
+						param.method = "GET";
+						param.condi = {};
+						param.condi.parent = id;
+						sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+							console.info("result",d);
+							if (d.ErrCode == 0) {
+								var data = d.data;
+								var shtml = "<option name='-1'></option>";
+								for(var i=0; i<data.length; i++) {
+									shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
+								}
+								console.info(shtml);
+								var yj = $(".sjwh .wrap .zdwh fieldset .first");
+								yj.html("");
+								yj.val("");
+								yj.html(shtml);
+							}
+						});
 
+                	}else if (elem.attr("class") == "first") {
+                		var id = elem.children('option[selected="selected"]').attr("name");
+                		var param = new Object();
+                		param.SessionID = Options.SessionID;
+						param.method = "GET";
+						param.condi = {};
+						param.condi.parent = id;
+						sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+							//console.info("result",d);
+							if (d.ErrCode == 0) {
+								var data = d.data;
+								var shtml = "<option name='-1'> </option>";
+								for(var i=0; i<data.length; i++) {
+									shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
+								}
+								console.info(shtml);
+								var yj = $(".sjwh .wrap .zdwh fieldset .second");
+								yj.html("");
+								yj.val("");
+								yj.html(shtml);
+							}
+						});
+                	}
+
+                }
+        });
+	});
+	$(".sjwh .wrap .zdwh fieldset .submit").click(function(){
+		var rot = $(".sjwh .wrap .zdwh fieldset .root");
+		var first = $(".sjwh .wrap .zdwh fieldset .first");
+		var second = $(".sjwh .wrap .zdwh fieldset .second");
+
+		var param = new Object();
+		param.SessionID = Options.SessionID;
+		param.method = "GET";
+		param.condi = {};
+		if ($.trim(rot.val()).length > 0 ) {
+			if ($.trim(first.val()).length > 0 ) {
+				if ($.trim(second.val()).length > 0 ) {
+					param.condi.parent = second.children('option[selected="selected"]').attr("name");
+					param.condi.id = param.condi.parent;
+				}else{
+					param.condi.parent = first.children('option[selected="selected"]').attr("name");
+					param.condi.id = param.condi.parent;
+				}
+			}else{
+				//console.info(rot.children('option[selected="selected"]').attr("name"));
+				param.condi.parent = rot.children('option[selected="selected"]').attr("name");
+				param.condi.id = param.condi.parent;
+			}
+		} else {}
+		post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+			d = $.parseJSON(d);
+			if (d.ErrCode == 0) {
+				sjwh_zdwh_update_result_table(d.data);
+			}
+		});
+	});
+
+	$(".sjwh .wrap .zdwh .tool .add").click(function() {
+		console.info("Click");
+		pop_box("字典添加", 400, 200, xzgl_add_html, function(){
+			
+		});
+
+	});
 /*-----------------------test---------------------------*/
 	jeui.use(["jeCheck"], function(){
 		$(".sjwh .wrap .bmgl table").jeCheck({
@@ -567,7 +663,7 @@ function data_protect(){
             }
         })
 	});
-
+	sjwh_zdwh_update();
 /*-----------------------test---------------------------*/
 }
 
@@ -717,6 +813,88 @@ function sjwh_xzgl_update() {
 			});
 		}
 	});
+}
+
+function sjwh_zdwh_update_result_table(d) {
+	$(".sjwh .wrap .zdwh .result").html("");
+	je_table($(".sjwh .wrap .zdwh .result"),{
+		height:"500",
+		isPage: false,
+		datas:d,
+		columnSort:[],
+		columns:[
+			{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
+				field:"id", 
+				width: "100", 
+				align: "center",
+				renderer:function(obj, rowidex) {
+					return '<input type="checkbox" name="checkbox" jename="chunk">';
+				}
+			},
+			{name: "ID", field: "id", width: "80", align:"center"},
+			{name: "字典名称", field: "name", width: "200", align:"center"},
+			{name: "父节点名称", field: "parent", width: "200", align: "center"},
+			{name: "是否是根节点", field: "isRoot", width: "120", align: "center",
+				renderer:function(obj, rowidex) {
+					if (obj.isRoot == 0) {
+						return "否";
+					} else {
+						return "是";
+					}
+				}}
+		],
+		itemfun:function(elem,data){
+
+		},
+		success:function(elCell, tbody) {
+			elCell.jeCheck({
+                jename:"chunk",
+                checkCls:"je-check",
+                itemfun: function(elem,bool) {
+                    //alert(elem.attr("jename")
+                },
+                success:function(elem){
+                    jeui.chunkSelect(elem,".sjwh .wrap .zdwh .result .gocheck",'on')
+                }
+            });
+		}	
+	});
+}
+
+function sjwh_zdwh_update() {
+	var param = new Object();
+	param.SessionID = Options.SessionID;
+	param.method = "GET";
+	param.condi = {};
+	param.condi.isRoot = 1;
+
+	post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+		d = $.parseJSON(d);
+		if (d.ErrCode == 0) {
+			var data = d.data;
+			var shtml = "<option name='-1'></option>";
+			for(var i=0; i<data.length; i++) {
+				shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
+			}
+			console.info($(".sjwh .wrap .zdwh fieldset .root"));
+			$(".sjwh .wrap .zdwh fieldset .root").val("");
+			$(".sjwh .wrap .zdwh fieldset .root").html("");
+			$(".sjwh .wrap .zdwh fieldset .root").html(shtml);
+			$(".sjwh .wrap .zdwh fieldset .first").val("");
+			$(".sjwh .wrap .zdwh fieldset .first").html("");
+			$(".sjwh .wrap .zdwh fieldset .second").val("");
+			$(".sjwh .wrap .zdwh fieldset .second").html("");
+		}
+	});
+
+	param.condi = {};
+	post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+		d = $.parseJSON(d);
+		if (d.ErrCode == 0) {
+			sjwh_zdwh_update_result_table(d.data);
+		}
+	});
+
 }
 
 function update_sjwh_dict(){

@@ -406,3 +406,45 @@ def sjwhxzgl(data):
         else:
             setErrMsg(ret, 0, "")
     return json.dumps(ret)
+
+@route("/sjwh_zdwh")
+def sjwhzdwh(data):
+    sdata = json.loads(data)
+    print sdata
+    db = Options['mysql']
+    ret = {}
+    dict = {}
+    method = sdata.get("method", "")
+    if method == "GET":
+        sql = "select * from dict"
+        rs = db.select2(sql)
+        data = rs["data"]
+        for i in range(len(data)):
+            dict[data[i]["id"]] = data[i]
+
+    if method == "GET":
+        condi = sdata.get("condi", "")
+        sql = ""
+        for key in condi:
+            if sql == "":
+                sql += " WHERE "+ key + " = " + str(condi[key]) + " "
+            else:
+                sql += " OR " + key + " = " + str(condi[key]) + " "
+        sql = "select * from dict " + sql
+        rs = db.select2(sql);
+        if rs is None:
+            setErrMsg(ret, 2, "数据库查询出错!")
+            return json.dumps(ret)
+        data = rs["data"]
+        for i in range(len(data)):
+            if data[i]["parent"] > 0:
+                data[i]["parent"] = dict[data[i]["parent"]]["name"]
+            else:
+                data[i]["parent"] = ""
+            if data[i]["title"] > 0:
+                data[i]["title"] = dict[data[i]["title"]]["name"]
+            else:
+                data[i]["title"] = ""
+        ret["data"] = data
+        setErrMsg(ret, 0, "")
+    return json.dumps(ret)

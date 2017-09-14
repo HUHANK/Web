@@ -52,5 +52,5 @@ if __name__ == "__main__":
     initSession()
     print Options
     #initJS()
-
+    #sjwhzdwh("{}");
     start_server(HTTP_SERVER_PORT)
