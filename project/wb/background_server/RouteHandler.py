@@ -79,6 +79,10 @@ def baseinfo(data):
     rs = db.select2(sql)
     ret["Departs"] = rs["data"]
 
+    sql = "select * from xgroup"
+    rs = db.select2(sql)
+    ret["Groups"] = rs["data"]
+
     setErrMsg(ret, 0, "")
     return json.dumps(ret)
 
@@ -403,6 +407,27 @@ def sjwhxzgl(data):
         sql = "DELETE from xgroup where id = %s" % (data.get("id", 0))
         if db.update(sql) <  0:
             setErrMsg(ret, 2, u"数据库删除失败！")
+        else:
+            setErrMsg(ret, 0, "")
+    if method == "GET_GROUP_USER":
+        sql = "select group_id, UID id, A.NOTE user_name from user A  join xgroup B on A.group_id = B.id where A.group_id = %s"%(data.get("id", -1))
+        rs = db.select2(sql)
+        print sql
+        if rs == None:
+            setErrMsg(ret, 2, u"数据库查询失败！")
+        else:
+            ret["data"] = rs["data"]
+            setErrMsg(ret, 0, "")
+    if method == "UPDATE_USER_GROUP":
+        sql = "update user set group_id = %s where UID= %s" % (data.get("gid",-1), data.get("uid", -1))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, "数据库跟新失败！")
+        else:
+            setErrMsg(ret, 0, "")
+    if method == "DELETE_USER_GROUP":
+        sql = "update user set group_id = 0 where UID = %s" %(data.get("id", -1))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, "数据库跟新失败！")
         else:
             setErrMsg(ret, 0, "")
     return json.dumps(ret)

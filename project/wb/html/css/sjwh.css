@@ -46,6 +46,13 @@
 	display: none;
 }
 
-.sjwh .wrap .zdwh fieldset select{
-	margin-left: 100px;
+.sjwh .wrap .xzgl .clicked{
+	background-color: #94DAE9;
+}
+.sjwh .wrap .xzgl .xzcysz{
+	width: 573px;
+}
+
+.sjwh .wrap .zdwh{
+	display: none;
 }

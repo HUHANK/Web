@@ -78,5 +78,6 @@ bmgl_add_html = box_wrap(bmgl_add_html);
 xzgl_add_html = box_wrap(xzgl_add_html);
 zdwh_add_html = box_wrap(zdwh_add_html);
 
-var g_ALL_USER = {};
-var g_ALL_DEPART = {};
+var g_ALL_USER = [];
+var g_ALL_DEPART = [];
+var g_ALL_GROUP = [];
