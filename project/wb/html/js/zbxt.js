@@ -29,16 +29,7 @@ function InitHeader() {
 }
 
 function GInit(){
-	/*初始化日历控件*/
-	jeDate.skin('gray');
-	jeDate({
-		dateCell:"#dateinfo",//isinitVal:true,
-		format:"YYYY-MM-DD",
-		isTime:false, //isClear:false,
-		isinitVal:true,
-		minDate:"2014-10-19 00:00:00",
-		maxDate:"2020-11-8 00:00:00"
-	})
+	
 	/*动态加载CSS文件*/
 	$("<link>").attr({ rel: "stylesheet",type: "text/css",href: "css/zbxt.css"}).appendTo("head");
 
@@ -56,6 +47,7 @@ function GInit(){
 			sosList:true
 		});
 
+		
 		$(".sjwh .wrap .zdwh fieldset select").jeSelect({
             sosList:true,
             itemfun:function(elem, index, val){
@@ -111,7 +103,10 @@ function GInit(){
 
             }
         });
+
 	});
+
+	add_zb_ginit();
 	
 }
 
@@ -123,6 +118,10 @@ function GUpdateBaseinfo(){
 			g_ALL_USER = d.Users;
 			g_ALL_DEPART = d.Departs;
 			g_ALL_GROUP = d.Groups;
+			g_ALL_SYSTEM = d.System;
+			g_ALL_TYPE = d.Type;
+			g_ALL_PROPERTY = d.Property;
+			//console.info("System",g_ALL_SYSTEM);
 		}else{
 			alert("您没有登录！");
 		}
@@ -512,11 +511,11 @@ function data_protect(){
 				}
 				$("#je-popup-box-wrap .manager").html(shtml);
 
-				jeui.use(["jeSelect"], function(){
-					$("#je-popup-box-wrap select").jeSelect({
-						sosList:true
-					});
-				});
+				// jeui.use(["jeSelect"], function(){
+				// 	$("#je-popup-box-wrap .bmgl .manager").jeSelect({
+				// 		sosList:true
+				// 	});
+				// });
 				$("#je-popup-box-wrap .submit").click(function() {
 					var depart = $("#je-popup-box-wrap .depart");
 					var manager = $("#je-popup-box-wrap .manager");
@@ -565,11 +564,11 @@ function data_protect(){
 				}
 				$("#je-popup-box-wrap .depart").html(shtml);
 
-				jeui.use(["jeSelect"], function(){
-					$("#je-popup-box-wrap select").jeSelect({
-						sosList:true
-					});
-				});
+				// jeui.use(["jeSelect"], function(){
+				// 	$("#je-popup-box-wrap .xzgl select").jeSelect({
+				// 		sosList:true
+				// 	});
+				// });
 
 				$("#je-popup-box-wrap .submit").click(function() {
 					var depart = $("#je-popup-box-wrap .depart");
@@ -660,29 +659,91 @@ function data_protect(){
 	$(".sjwh .wrap .zdwh .tool .add").click(function() {
 	
 		pop_box("字典添加", 400, 260, zdwh_add_html, function(){
-			jeui.use(["jeSelect"], function(){
-				$("#je-popup-box-wrap select").jeSelect({
-					sosList:true
+			
+
+			var param = new Object();
+			param.SessionID = Options.SessionID;
+			param.method = "GET";
+			param.condi = {};
+
+			post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+				d = $.parseJSON(d);
+				if (d.ErrCode == 0) {
+					console.info(d.data);
+					// jeui.use(["jeSelect"], function(){
+					// 	$("#je-popup-box-wrap .zdwh select").jeSelect({
+					// 		sosList:true
+					// 	});
+					// });
+					
+					var rot = $("#je-popup-box-wrap .zdwh .root");
+					var shtml = "";
+					rot.html(shtml);
+					for (var i= 0; i<d.data.length; i++) {
+						shtml += "<option name='"+d.data[i].id+"'>"+ d.data[i].name +"</option>";
+					}
+					rot.html(shtml);
+
+				}
+			});
+
+			$("#je-popup-box-wrap .submit").click(function() {
+				var rot = $("#je-popup-box-wrap .root");
+				var name = $("#je-popup-box-wrap .name");
+				var isRoot = $("#je-popup-box-wrap .isroot");
+				if (rot.val().length < 1){
+					rot.addClass('ts');
+					alert("请选择父节点！");
+					return ;
+				}
+				if (name.val().length < 1 ) {
+					name.addClass("ts");
+					alert("请填写节点名称!");
+					return ;
+				}
+				if (isRoot.val().length < 1) {
+					isRoot.addClass("ts");
+					return;
+				}
+
+				var param = new Object();
+				param.SessionID = Options.SessionID;
+				param.method = "ADD";
+				param.parent = rot.find("option[selected='selected']").attr("name");
+				param.name = name.val();
+				if (isRoot.val() == "是")
+					param.isRoot = 1;
+				else
+					param.isRoot = 0;
+
+				post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+					d = $.parseJSON(d);
+					if (d.ErrCode == 0) {
+						rot.val("");
+						name.val("");
+						isRoot.val("");
+					}
 				});
+
 			});
 		});
 
 	});
 /*-----------------------test---------------------------*/
-	jeui.use(["jeCheck"], function(){
-		$(".sjwh .wrap .bmgl table").jeCheck({
-            jename:"chunk",
-            attrName:[false,"勾选"], 
-            itemfun: function(elem,bool) {
-                //console.log(bool)
-                //console.log(elem.prop('checked'))
-            },
-            success:function(elem){
-                jeui.chunkSelect(elem,'.sjwh .wrap .bmgl table thead input','on')
+	// jeui.use(["jeCheck"], function(){
+	// 	$(".sjwh .wrap .bmgl table").jeCheck({
+ //            jename:"chunk",
+ //            attrName:[false,"勾选"], 
+ //            itemfun: function(elem,bool) {
+ //                //console.log(bool)
+ //                //console.log(elem.prop('checked'))
+ //            },
+ //            success:function(elem){
+ //                jeui.chunkSelect(elem,'.sjwh .wrap .bmgl table thead input','on')
                 
-            }
-        })
-	});
+ //            }
+ //        })
+	// });
 	
 /*-----------------------test---------------------------*/
 }
@@ -1009,7 +1070,7 @@ function sjwh_zdwh_update() {
 			for(var i=0; i<data.length; i++) {
 				shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
 			}
-			console.info($(".sjwh .wrap .zdwh fieldset .root"));
+			//console.info($(".sjwh .wrap .zdwh fieldset .root"));
 			$(".sjwh .wrap .zdwh fieldset .root").val("");
 			$(".sjwh .wrap .zdwh fieldset .root").html("");
 			$(".sjwh .wrap .zdwh fieldset .root").html(shtml);
@@ -1073,88 +1134,7 @@ function update_sjwh_dict(){
 }
 
 
-function add_zb() {
-	
-	$(".add-zb .edit .zq button").click(function(){
-		$(this).parent().children().each(function(index, data){
-			$(data).removeClass("btn_clicked")
-		});
-		$(this).addClass('btn_clicked');
-	});
 
-	add_zb_update();
-
-	/*获取字典信息*/
-	var pam = new Object();
-	pam.method = "GET";
-	sync_post_data("/dict/", JSON.stringify(pam), function(d) {
-		Options.Dicts = d;
-	});
-	
-	draw_drop_down_box_select($(".add-zb .edit .sx .xtmk"), Options.Dicts.SysModule.data);
-	draw_drop_down_box_select($(".add-zb .edit .sx .lx"), Options.Dicts.Type.data);
-	draw_drop_down_box_select($(".add-zb .edit .sx .xz"), Options.Dicts.Property.data);
-
-	
-	$(".add-zb .btn-submit").click(add_zb_btn_submit);
-}
-
-function add_zb_update() {
-	var param = new Object();
-	param.SessionID = Options.SessionID;
-	param.method = "GET";
-	param.week = 0;
-	/*添加本周工作*/
-	post_data("/report/", JSON.stringify(param), function(d) {
-		d = $.parseJSON(d);
-		if (d.data.length>0)
-			draw_table($(".add-zb .bzgz"), d.header, d.data);
-		else{
-			$(".add-zb .bzgz").html("<span>暂无记录</span>")
-		}
-	});
-
-	/*添加下周工作*/
-	param.week = 1;
-	post_data("/report/", JSON.stringify(param), function(d) {
-		d = $.parseJSON(d);
-		if (d.data.length > 0)
-			draw_table($(".add-zb .xzgz"), d.header, d.data);
-		else {
-			$(".add-zb .xzgz").html("<span>暂无记录</span>")
-		}
-	});
-}
-
-function add_zb_btn_submit(event) {
-	var param = new Object();
-	$(".add-zb .edit .zq button").each(function(index, data){
-		if ($(data).attr("class") == "btn_clicked") {
-			if ($(data).attr("value") == "now")
-				param.week = 0;
-			else if ($(data).attr("value") == "next")
-				param.week = 1;
-		}
-	})
-
-	param.SysModule = $(".add-zb .edit .sx .xtmk select").val();
-	param.Type = $(".add-zb .edit .sx .lx select").val();
-	param.TraceNo = $(".add-zb .edit .sx .gzh input").val();
-	param.WorkDetail = $(".add-zb .edit .sx .gzln input").val();
-	param.Property = $(".add-zb .edit .sx .xz select").val();
-	param.ProgressRate = $(".add-zb .edit .sx .gzjd select").val();
-	param.StartDate = $(".add-zb .edit .sx .ksrq input").val();
-	param.NeedDays = $(".add-zb .edit .sx .hxrr input").val();
-	param.Notes = $(".add-zb .edit .bz textarea").val();
-	param.SessionID = Options.SessionID;
-
-	if ($(this).attr("class") == "btn-submit") {
-		param.method = "ADD";
-		sync_post_data("/report/", JSON.stringify(param), function(d) {
-		});
-	}
-	add_zb_update();
-}
 
 function home_page() {
 	var param = new Object();

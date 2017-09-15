@@ -216,13 +216,13 @@ table tbody tr:hover{
 }
 
 .add-zb .edit{
-	width: 700px;
-	border: 1px solid #E0E2E3;
+	//width: 700px;
+	//border: 1px solid #E0E2E3;
 	padding: 10px;
 	font-size: 14px;
 	margin-bottom: 10px;
 }
-.add-zb .edit fieldset{
+/* .add-zb .edit fieldset{
 	padding: 5px;
 	border: 1px solid #E0E2E3;
 }
@@ -285,7 +285,7 @@ table tbody tr:hover{
 }
 .add-zb .btn-update:hover{
 	text-decoration: underline;
-}
+} */
 
 /*------------------------------------SJWH-------------------------------------*/
 .sjwh{

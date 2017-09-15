@@ -13,6 +13,7 @@
 
 	<script type="text/javascript" src="js/ginit.js"></script>
 	<script type="text/javascript" src="js/pubfunc.js"></script>
+	<script type="text/javascript" src="js/addwork.js"></script>
 	<script type="text/javascript" src="js/zbxt.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/sjwh.css">
 	<link rel="stylesheet" type="text/css" href="css/popbox.css">
@@ -65,81 +66,105 @@
 		</div>
 
 		<div class="add-zb">
+
 			<h3>本周工作</h3>
-			<div class="bzgz">
-				
-			</div>
+			<div class="bzgz"></div>
+
 			<h3>下周工作</h3>
-			<div class="xzgz">
-				
-			</div>
+			<div class="xzgz"></div>
+			
 			<h3>编辑周报</h3>
 			<div class="edit">
-				<fieldset class="zq"><legend>周期选择</legend>
-					<button value="now" class="btn_clicked">本周</button>
-					<button value="next">下周</button>
-				</fieldset>
-				<fieldset class="sx"><legend>属性编辑</legend>
-					<div>
-						<label class="lab">系统(模块)</label>
-						<label class="xtmk xlk"></label>
-					</div>
+				<fieldset class="je-field je-p10" style="width: 900px;">
+			        <legend class="je-f16">周报编辑</legend>
+			        <div class="form">
+			            <div class="je-form-item">
+			                <div class="je-w33 je-dib">
+			                    <label class="je-label je-f14">系统</label>
+			                    <div class="je-inputbox">
+			                    <select class="fsys">
+			                    </select>
+			                    </div>
+			                </div>
+			                <div class="je-w33 je-dib">
+			                    <label class="je-label je-f14">模块</label>
+			                    <div class="je-inputbox">
+			                    <select class="fmod">
+			                    </select>
+			                    </div>
+			                </div>
+			            </div>
 
-					<div>
-						<label class="lab">类型</label>
-						<label class="lx xlk"></label>
-					</div>
+			            <div class="je-form-item">
+			                <div class="je-w33 je-dib">
+			                    <label class="je-label je-f14">类型</label>
+			                    <div class="je-inputbox">
+			                    <select class="ftype">
+			                    </select>
+			                    </div>
+			                </div>
+			                <div class="je-w33 je-dib">
+			                    <label class="je-label je-f14">性质</label>
+			                    <div class="je-inputbox">
+			                    <select class="fprop">
+			                    </select>
+			                    </div>
+			                </div>
+			                <div class="je-w33 je-dib">
+			                    <label class="je-label je-f14">进度</label>
+			                    <div class="je-inputbox">
+			                    <select class="fjd">
+			                    </select>
+			                    </div>
+			                </div>
+			            </div>
+			            
+			            <div class="je-form-item">
+			                <label class="je-label je-f14">跟踪号</label>
+			                <div class="je-inputbox je-w33">
+			                    <input type="text" name="" autocomplete="off" placeholder="请输入" class="je-input fgzh">
+			                </div>
+			            </div>
 
-					<div>
-						<label class="lab">跟踪号</label>
-						<label class="gzh"><input type="text" name=""></label>
-					</div>
+			            <div class="je-form-item">
+			                <label class="je-label je-f14">工作内容</label>
+			                <div class="je-inputbox">
+			                    <textarea placeholder="请输入内容" class="je-textarea fgznr"></textarea>
+			                </div>
+			            </div>
 
-					<div>
-						<label class="lab">工作内容</label>
-						<label class="gzln"><input type="" name=""></label>
-					</div>
+			            <div class="je-form-item">
+			                <div class="je-w33 je-dib">
+			                    <label class="je-label je-f14">开始日期</label>
+			                    <div class="je-inputbox">
+			                        <input class="je-input ksrq" type="text" placeholder="YYYY年MM月DD日" readonly>
+			                    </div>
+			                </div>
+			                <div class="je-w33 je-dib">
+			                    <label class="je-label je-f14">后续人日</label>
+			                    <div class="je-inputbox">
+			                        <input type="text" name="" autocomplete="off" placeholder="请输入" class="je-input fhxrr">
+			                    </div>
+			                </div>
+			            </div>
 
-					<div>
-						<label class="lab">性质</label>
-						<label class="xz xlk"></label>
-					</div>
+			            <div class="je-form-item">
+			                <label class="je-label je-f14">备注说明</label>
+			                <div class="je-inputbox">
+			                    <textarea placeholder="请输入内容" class="je-textarea fbz"></textarea>
+			                </div>
+			            </div>
 
-					<div>
-						<label class="lab">工作进度</label>
-						<label class="gzjd xlk">
-							<select>
-								<option>0</option>
-								<option>10</option>
-								<option>20</option>
-								<option>30</option>
-								<option>40</option>
-								<option>50</option>
-								<option>60</option>
-								<option>70</option>
-								<option>80</option>
-								<option>90</option>
-								<option>100</option>
-							</select>
-						</label>
-					</div>
-
-					<div>
-						<label class="lab">开始日期</label>
-						<label class="ksrq"><input class="datainp" id="dateinfo" type="text" placeholder="请选择" readonly=""></label>
-					</div>
-
-					<div>
-						<label class="lab">后续人日</label>
-						<label class="hxrr"><input type="text" name=""></label>
-					</div>
-				</fieldset>
-				<fieldset class="bz"><legend>备注(问题或阻碍)</legend>
-					<textarea></textarea>
-				</fieldset>
+			            <div class="je-form-item">
+			                <div class="je-inputbox">
+			                <button class="je-btn add">添加</button>
+			                <button class="je-btn">更新</button>
+			                </div>
+			            </div>
+			        </div>    
+			    </fieldset>
 			</div>
-			<button class="btn-submit">提交</button>
-			<button class="btn-update">跟新</button>
+
 		</div>
 
 		<div class="sjwh">

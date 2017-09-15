@@ -83,6 +83,38 @@ def baseinfo(data):
     rs = db.select2(sql)
     ret["Groups"] = rs["data"]
 
+    #---------------------------SYSTEM----------------------
+    sql = "select id, name from dict where name = '系统'"
+    rs = db.select2(sql)
+    ret["System"] = rs["data"][0]
+
+    sql = "select id, name from dict where parent = %s" % (ret["System"]["id"])
+    rs = db.select2(sql)
+    ret["System"]["data"] = rs["data"]
+    #print ret["System"]
+    for i in range(len(rs["data"])):
+        sql = "select id, name from dict where parent = %s" % (rs["data"][i]["id"])
+        rs = db.select2(sql)
+        ret["System"]["data"][i]["data"] = rs["data"]
+
+    #--------------------------TYPE--------------------------
+    sql = "select id, name from dict where name = '类型'"
+    rs = db.select2(sql)
+    ret["Type"] = rs["data"][0]
+
+    sql = "select id, name from dict where parent = %s" % (ret["Type"]["id"])
+    rs = db.select2(sql)
+    ret["Type"]["data"] = rs["data"]
+
+    #--------------------------PROPERTY--------------------------
+    sql = "select id, name from dict where name = '性质'"
+    rs = db.select2(sql)
+    ret["Property"] = rs["data"][0]
+
+    sql = "select id, name from dict where parent = %s" % (ret["Property"]["id"])
+    rs = db.select2(sql)
+    ret["Property"]["data"] = rs["data"]
+
     setErrMsg(ret, 0, "")
     return json.dumps(ret)
 
@@ -144,32 +176,55 @@ def reportProcess(data):
     userName = sessionData.get("UserName", "")
     db = Options['mysql']
     (Year, Week, Day) = getNowYearWeek()
+    ret = {}
 
     if data["method"] == "ADD":
-        sql = "INSERT INTO work_detail(SysModule,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note) VALUES(" \
-              "'%s', '%s','%s','%s','%s',%s, '%s', %s, '%s')" %(data['SysModule'], data['Type'], data["TraceNo"], data["WorkDetail"], \
-                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Notes"])
+        (Year, Week, Day) = getYearWeek(data["StartDate"])
+        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note) VALUES(" \
+              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s')" %(
+                data['System'], data['Module'], data['Type'], data["TraceNo"], data["Detail"], \
+                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Note"])
         id = db.update(sql)
+        if id < 0:
+            setErrMsg(ret, 2, "数据库插入失败！")
+            return json.dumps(ret)
 
         sql = "SELECT UID FROM user where UNAME = '%s'" %(userName)
         ret = db.select(sql)
         UID = ret["datas"][0][0]
-        Week = Week + data.get("week", 0)
         sql = "INSERT INTO user_work(UID,WID, YEAR, WEEK) VALUES(%s, %s, %s, %s)" % (UID, id, Year, Week)
-        db.update(sql)
-        return ""
+        if db.update(sql) < 0 :
+            setErrMsg(ret, 2, "数据库插入失败！")
+            return json.dumps(ret)
+        setErrMsg(ret, 0, "")
+        return json.dumps(ret)
     elif data["method"] == "GET":
-        Week = Week + data.get("week", 0)
-        headers = ["跟踪号","系统", "类型", "工作内容", "性质", "进度"]
-        sql = "SELECT C.TraceNo, C.SysModule, C.Type, C.Detail, C.Property, C.ProgressRate " \
+        sql = "SELECT C.id, C.TraceNo, C.System, C.Module, C.Type, C.Detail, C.Property, C.ProgressRate, C.Note " \
               "FROM user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C ON A.WID = C.id " \
               "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
-        ret = db.select(sql)
-        result = {}
-        result['header'] = headers
-        result['data'] = ret["datas"]
-        return json.dumps(result)
-    return ""
+        rs = db.select2(sql)
+        ret["current"] = rs["data"]
+        Week = Week + 1
+        sql = "SELECT C.id, C.TraceNo, C.System, C.Module, C.Type, C.Detail, C.Property, C.ProgressRate, C.Note " \
+              "FROM user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C ON A.WID = C.id " \
+              "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
+        rs = db.select2(sql)
+        ret["next"] = rs["data"]
+        setErrMsg(ret, 0, "")
+        return json.dumps(ret)
+    elif data["method"] == "DELETE":
+        sql = "delete from user_work where WID=%s" % (data.get("id", -1))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库删除失败!")
+            return json.dumps(ret)
+        sql = "delete from work_detail where id=%s" % (data.get("id", -1))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库删除失败!")
+            return json.dumps(ret)
+        setErrMsg(ret, 0, "")
+        return json.dumps(ret)
+    setErrMsg(ret, 3, "未知参数！")
+    return json.dumps(ret)
 
 @route("/home")
 def getHomeData(data):
@@ -472,4 +527,12 @@ def sjwhzdwh(data):
                 data[i]["title"] = ""
         ret["data"] = data
         setErrMsg(ret, 0, "")
+
+    if method == "ADD":
+        sql = "INSERT INTO dict(name, parent, isRoot) VALUES('%s', %s, %s)" % \
+              (sdata.get("name", ""), sdata.get("parent", 0), sdata.get("isRoot", 0))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库插入失败!")
+        else:
+            setErrMsg(ret, 0, "")
     return json.dumps(ret)
