@@ -47,6 +47,9 @@ function GInit(){
 			sosList:true
 		});
 
+		$("#hyl-popup-box-wrap select").jeSelect({
+			sosList:true
+		});
 		
 		$(".sjwh .wrap .zdwh fieldset select").jeSelect({
             sosList:true,

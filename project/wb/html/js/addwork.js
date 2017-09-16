@@ -15,8 +15,8 @@ function add_zb_ginit() {
 			sosList:true,
 			itemfun:function(elem,index){
 				if (elem.attr("class") == "fsys") {
-					console.info(elem.val());
-					console.info(g_ALL_SYSTEM);
+					//console.info(elem.val());
+					//console.info(g_ALL_SYSTEM);
 					var data = g_ALL_SYSTEM.data;
 					var dd = [];
 					for( var i=0; i< data.length;  i++) {
