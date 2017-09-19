@@ -1,6 +1,6 @@
 window.onload = main;
 
-Options = new Object();
+// Options = new Object();
 var NavbarIndexCookies = "HTZQ_NavbarIndex";
 
 function main() {
@@ -42,12 +42,30 @@ function GInit(){
 	Options.QueryCondition.PageSize = 25;
 	GUpdateBaseinfo();
 
+	jeDate.skin('gray');
+	jeDate({
+		dateCell:".query .sidebar .yj-content .ksrq",//isinitVal:true,
+		format:"YYYY-MM-DD",
+		isTime:false, //isClear:false,
+		isinitVal:true,
+		minDate:"2014-10-19 00:00:00",
+		maxDate:"2020-11-8 00:00:00"
+	});
+	jeDate({
+		dateCell:".query .sidebar .yj-content .jsrq",//isinitVal:true,
+		format:"YYYY-MM-DD",
+		isTime:false, //isClear:false,
+		isinitVal:true,
+		minDate:"2014-10-19 00:00:00",
+		maxDate:"2020-11-8 00:00:00"
+	});
+
 	jeui.use(["jeSelect"], function(){
 		$(".sjwh .wrap .xzgl .xzcysz .zcy").jeSelect({
 			sosList:true
 		});
 
-		$("#hyl-popup-box-wrap select").jeSelect({
+		$("#je-popup-box-wrap select").jeSelect({
 			sosList:true
 		});
 		
@@ -106,10 +124,10 @@ function GInit(){
 
             }
         });
-
 	});
 
 	add_zb_ginit();
+	query_sidebar_init();
 	
 }
 
@@ -125,8 +143,21 @@ function GUpdateBaseinfo(){
 			g_ALL_TYPE = d.Type;
 			g_ALL_PROPERTY = d.Property;
 			//console.info("System",g_ALL_SYSTEM);
+			console.info(g_ALL_USER);
+			console.info(g_ALL_DEPART);
+			console.info(g_ALL_GROUP);
 		}else{
 			alert("您没有登录！");
+		}
+	});
+	param.method = "GET";
+	sync_post_data("/query_tree/", JSON.stringify(param), function(d){
+		if (d.ErrCode == 0){
+			//console.info(d.data);
+			g_QUERY_TREE = d.data;
+			//console.info(g_QUERY_TREE);
+		}else{
+
 		}
 	});
 }
@@ -205,31 +236,7 @@ function navbar() {
 	});
 }
 
-function query() {
-	$(".query .result .ztl button").click(function(){
-		var pageIndex = parseInt($(".query .result .ztl .pageIndex").text());
-		var totalPage = parseInt($(".query .result .ztl .totalPage").text());
-		if ($(this).attr("value") == "pre") {
 
-			if (pageIndex <= 1) {
-				alert("已经是第一页");
-				return;
-			} else {
-				pageIndex = pageIndex - 1;
-			}
-		}
-		else if ($(this).attr("value") == "next") {
-			if (pageIndex >= totalPage) {
-				alert("已经是最后一页");
-				return ;
-			} else {
-				pageIndex = pageIndex + 1;
-			}
-		}
-		query_update_data(pageIndex - 1);
-	});
-	sidebar();
-}
 
 function sidebar() {
 	var param = new Object();
@@ -494,7 +501,7 @@ function data_protect(){
 		sync_post_data("/sjwh_xgmm/", JSON.stringify(param), function(d){
 			if (d.ErrCode == 0) {
 				d.msg = d.msg + "请重新登录！";
-				pop_box("SUCCESS", 200, 120, d.msg, null, function(){
+				pop_box1("SUCCESS", 200, 120, d.msg, null, function(){
 					window.location.href = "login.html";
 				});
 			}else{
@@ -672,7 +679,7 @@ function data_protect(){
 			post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
 				d = $.parseJSON(d);
 				if (d.ErrCode == 0) {
-					console.info(d.data);
+					
 					// jeui.use(["jeSelect"], function(){
 					// 	$("#je-popup-box-wrap .zdwh select").jeSelect({
 					// 		sosList:true

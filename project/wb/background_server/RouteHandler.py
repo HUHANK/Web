@@ -410,7 +410,7 @@ def modifyUserPwd(data):
 @route("/sjwh_bmgl/")
 def sjwhbmgl(data):
     data = json.loads(data)
-    print data
+    #print data
     db = Options['mysql']
     ret = {}
     if data.get("method", "") == "GET":
@@ -440,7 +440,7 @@ def sjwhbmgl(data):
 @route("/sjwh_xzgl/")
 def sjwhxzgl(data):
     data = json.loads(data)
-    print data
+    #print data
     db = Options['mysql']
     ret = {}
     method = data.get("method", "")
@@ -467,7 +467,7 @@ def sjwhxzgl(data):
     if method == "GET_GROUP_USER":
         sql = "select group_id, UID id, A.NOTE user_name from user A  join xgroup B on A.group_id = B.id where A.group_id = %s"%(data.get("id", -1))
         rs = db.select2(sql)
-        print sql
+        #print sql
         if rs == None:
             setErrMsg(ret, 2, u"数据库查询失败！")
         else:
@@ -490,7 +490,7 @@ def sjwhxzgl(data):
 @route("/sjwh_zdwh")
 def sjwhzdwh(data):
     sdata = json.loads(data)
-    print sdata
+    #print sdata
     db = Options['mysql']
     ret = {}
     dict = {}
@@ -535,4 +535,139 @@ def sjwhzdwh(data):
             setErrMsg(ret, 2, u"数据库插入失败!")
         else:
             setErrMsg(ret, 0, "")
+    return json.dumps(ret)
+
+@route("/query_tree/")
+def queryTree(data):
+    data = json.loads(data)
+    db = Options['mysql']
+    ret = []
+    tmp = {}
+    method = data.get("method", "")
+    if method == "GET":
+        #开发部门
+        tmp = {}
+        tmp["id"] = 0
+        tmp["layer"] = 0
+        tmp["attr"] = ""
+        tmp["name"] = u"开发部门"
+        tmp["data"] = []
+        sql = "select id, name from department"
+        rs = db.select2(sql)
+        if rs != None:
+            rs = rs["data"]
+            for i in range(len(rs)):
+                tt = {}
+                tt["id"] = rs[i]["id"]
+                tt["layer"] = 1
+                tt["attr"] = "department"
+                tt["name"] = rs[i]["name"]
+                tt["data"] = []
+                sql = "select id, name from xgroup where depart_id =%s" % (tt["id"])
+                rs2 = db.select2(sql)
+                if rs2 != None:
+                    rs2 = rs2["data"]
+                    for j in range(len(rs2)):
+                        ttt = {}
+                        ttt["id"] = rs2[j]["id"]
+                        ttt["layer"] = 2
+                        ttt["attr"] = "group"
+                        ttt["name"] = rs2[j]["name"]
+                        ttt["data"] = []
+                        sql = "select UID as id, NOTE as name from user where group_id = %s" % (ttt["id"])
+                        rs3 = db.select2(sql)
+                        if rs3 != None:
+                            rs3 = rs3["data"]
+                            for k in range(len(rs3)):
+                                tx = {}
+                                tx["id"] = rs3[k]["id"]
+                                tx["layer"] = 3
+                                tx["attr"] = "user"
+                                tx["name"] = rs3[k]["name"]
+                                tx["data"] = []
+                                ttt["data"].append(tx)
+                        tt["data"].append(ttt)
+                tmp["data"].append(tt)
+        ret.append(tmp)
+
+        #系统
+        tmp = {}
+        tmp["id"] = 1
+        tmp["layer"] = 0
+        tmp["attr"] = ""
+        tmp["name"] = u"系统"
+        tmp["data"] = []
+        sql = "select id, name from dict where parent in ( select id from dict where isRoot = 1 and name = '系统')"
+        rs = db.select2(sql)
+        if rs != None:
+            rs = rs["data"]
+            for i in range(len(rs)):
+                tt = {}
+                tt["id"] = rs[i]["id"]
+                tt["layer"] = 1
+                tt["attr"] = "system"
+                tt["name"] = rs[i]["name"]
+                tt["data"] = []
+                sql = "select id, name from dict where parent = %s" % (tt["id"])
+                rs2 = db.select2(sql)
+                if rs2 != None:
+                    rs2 = rs2["data"]
+                    for j in range(len(rs2)):
+                        ttt = {}
+                        ttt["id"] = rs2[j]["id"]
+                        ttt["layer"] = 2
+                        ttt["attr"] = "module"
+                        ttt["name"] = rs2[j]["name"]
+                        ttt["data"] = []
+                        tt["data"].append(ttt)
+                tmp["data"].append(tt)
+        ret.append(tmp)
+
+        #类别
+        tmp = {}
+        tmp["id"] = 2
+        tmp["layer"] = 0
+        tmp["attr"] = ""
+        tmp["name"] = u"类型"
+        tmp["data"] = []
+        sql = "select id, name from dict where parent in (select id from dict where name = '类型')"
+        rs = db.select2(sql)
+        if rs != None:
+            rs = rs["data"]
+            for i in range(len(rs)):
+                tt = {}
+                tt["id"] = rs[i]["id"]
+                tt["layer"] = 1
+                tt["attr"] = "type"
+                tt["name"] = rs[i]["name"]
+                tt["data"] = []
+                tmp["data"].append(tt)
+        ret.append(tmp)
+
+        #性质
+        tmp = {}
+        tmp["id"] = 3
+        tmp["layer"] = 0
+        tmp["attr"] = ""
+        tmp["name"] = u"性质"
+        tmp["data"] = []
+        sql = "select id, name from dict where parent in (select id from dict where name = '性质')"
+        rs = db.select2(sql)
+        if rs != None:
+            rs = rs["data"]
+            for i in range(len(rs)):
+                tt = {}
+                tt["id"] = rs[i]["id"]
+                tt["layer"] = 1
+                tt["attr"] = "property"
+                tt["name"] = rs[i]["name"]
+                tt["data"] = []
+                tmp["data"].append(tt)
+        ret.append(tmp)
+        res = {}
+        res["data"] = ret;
+        setErrMsg(res, 0, "")
+        ret = res;
+
+    print ret
     return json.dumps(ret)

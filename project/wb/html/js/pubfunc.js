@@ -75,6 +75,25 @@ function array_1d22d(arr) {
 }
 
 
+function pop_box1(stitle, w, h, html, succfunc, endfunc) {
+	jeui.use(["jquery", "jeBox"], function(){
+		jeBox.open({
+			title: stitle,
+			closeBtn:true,
+			maskClose:true,
+			boxSize:[w+"px", h+"px"],
+			content: html,
+			zIndex: 2,
+			boxStyle:{
+						border:"1px solid #81BA25",
+						"border-radius":"4px"
+					},
+			success:succfunc,
+			endfun: endfunc
+		});
+	});
+}
+
 function pop_box(stitle, w, h, html, succfunc, endfunc) {
 	// jeui.use(["jquery", "jeBox"], function(){
 	// 	jeBox.open({
@@ -105,23 +124,23 @@ function pop_box(stitle, w, h, html, succfunc, endfunc) {
 	tb.find(".hyl-main").html(html);
 
 	//var endfun = endfunc;
-	tb.find(".hyl-head button").onclick = function(endfunc) {
-		var tb = $("body").children(".hyl-bokeh");
-		tb.removeClass("hyl-show");
-		tb = $("#hyl-popup-box-wrap");
-		tb.removeClass("hyl-show");
-		tb.find(".hyl-head .title").text("");
-		tb.find(".hyl-main").html("");
-	}
-	// tb.find(".hyl-head button").click({name: endfunc},function(event){
+	// tb.find(".hyl-head button").onclick = function(endfunc) {
 	// 	var tb = $("body").children(".hyl-bokeh");
 	// 	tb.removeClass("hyl-show");
 	// 	tb = $("#hyl-popup-box-wrap");
 	// 	tb.removeClass("hyl-show");
 	// 	tb.find(".hyl-head .title").text("");
 	// 	tb.find(".hyl-main").html("");
+	// }
+	tb.find(".hyl-head button").click({name: endfunc},function(event){
+		var tb = $("body").children(".hyl-bokeh");
+		tb.removeClass("hyl-show");
+		tb = $("#hyl-popup-box-wrap");
+		tb.removeClass("hyl-show");
+		tb.find(".hyl-head .title").text("");
+		tb.find(".hyl-main").html("");
 		
-	// });
+	});
 	succfunc();
 }
 

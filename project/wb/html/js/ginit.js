@@ -84,3 +84,6 @@ var g_ALL_GROUP = [];
 var g_ALL_SYSTEM = {};
 var g_ALL_TYPE = {};
 var g_ALL_PROPERTY = {};
+var g_QUERY_TREE;
+
+Options = new Object();

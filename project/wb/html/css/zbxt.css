@@ -138,23 +138,27 @@ table tbody tr:hover{
 	height: 800px;
 }
 
+.query .sidebar .yj-content{
+	padding: 3px;
+}
 .query .sidebar .yj{
 	border-bottom: 1px solid #949696;
 	padding: 2px;
 	font-weight: bold;
 	background-color: #C4C4C4;
+	border-radius: 4px;
 }
-.query .sidebar .ej{
+/* .query .sidebar .ej{
 	display: none;
 	padding: 2px;
 	padding-bottom: 8px;
 	padding-top: 8px;
 	border-bottom: 1px solid #949696;
-}
+} */
 .query .sidebar .yj:hover{
 	background-color: #CCFFFF;
 }
-.query .sidebar .ej span{
+/* .query .sidebar .ej span{
 	display: inline-block;
 	cursor: pointer;
 	padding: 1px;
@@ -173,7 +177,7 @@ table tbody tr:hover{
 .query .sidebar .ej span:hover{
 	background-color: #CCFFFF;
 }
-
+ */
 .query .result{
 	
 }
