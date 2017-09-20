@@ -629,11 +629,7 @@ function data_protect(){
 	});
 
 	
-/*-----------------------字典维护---------------------------*/
-	// jeui.use(["jeSelect"], function() {
-		
-	// });
-	
+/*-----------------------字典维护---------------------------*/	
 	$(".sjwh .wrap .zdwh fieldset .submit").click(function(){
 		var rot = $(".sjwh .wrap .zdwh fieldset .root");
 		var first = $(".sjwh .wrap .zdwh fieldset .first");
@@ -666,6 +662,56 @@ function data_protect(){
 		});
 	});
 
+	$(".sjwh .wrap .zdwh .tool .del").click(function() {
+		$(".sjwh .wrap .zdwh .result tbody ins").each(function(index, data){
+			
+			if ($(data).hasClass("on")){
+				var id = $(data).parent().parent().next().children().text();
+
+				var param = new Object();
+				param.SessionID = Options.SessionID;
+				param.method = "DELETE";
+				param.id = id;
+				post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+					d = $.parseJSON(d);
+					if (d.ErrCode == 0) {
+		/*---------------------------------------*/
+						var rot = $(".sjwh .wrap .zdwh fieldset .root");
+						var first = $(".sjwh .wrap .zdwh fieldset .first");
+						var second = $(".sjwh .wrap .zdwh fieldset .second");
+
+						var param = new Object();
+						param.SessionID = Options.SessionID;
+						param.method = "GET";
+						param.condi = {};
+						if ($.trim(rot.val()).length > 0 ) {
+							if ($.trim(first.val()).length > 0 ) {
+								if ($.trim(second.val()).length > 0 ) {
+									param.condi.parent = second.children('option[selected="selected"]').attr("name");
+									param.condi.id = param.condi.parent;
+								}else{
+									param.condi.parent = first.children('option[selected="selected"]').attr("name");
+									param.condi.id = param.condi.parent;
+								}
+							}else{
+								//console.info(rot.children('option[selected="selected"]').attr("name"));
+								param.condi.parent = rot.children('option[selected="selected"]').attr("name");
+								param.condi.id = param.condi.parent;
+							}
+						} else {}
+						post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+							d = $.parseJSON(d);
+							if (d.ErrCode == 0) {
+								sjwh_zdwh_update_result_table(d.data);
+							}
+						});
+		/*---------------------------------------*/
+					}
+				});
+			}
+		});
+	});
+
 	$(".sjwh .wrap .zdwh .tool .add").click(function() {
 	
 		pop_box("字典添加", 400, 260, zdwh_add_html, function(){
@@ -689,14 +735,21 @@ function data_protect(){
 					var rot = $("#je-popup-box-wrap .zdwh .root");
 					var shtml = "";
 					rot.html(shtml);
+					shtml = "<option></optino>"
 					for (var i= 0; i<d.data.length; i++) {
 						shtml += "<option name='"+d.data[i].id+"'>"+ d.data[i].name +"</option>";
 					}
 					rot.html(shtml);
 
+					$("#je-popup-box-wrap .zdwh .root option").click(function(){
+						$(this).parent().children().removeAttr('selected');
+						$(this).attr("selected", "selected");
+					});
+
 				}
 			});
 
+			
 			$("#je-popup-box-wrap .submit").click(function() {
 				var rot = $("#je-popup-box-wrap .root");
 				var name = $("#je-popup-box-wrap .name");

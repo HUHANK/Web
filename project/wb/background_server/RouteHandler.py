@@ -535,6 +535,14 @@ def sjwhzdwh(data):
             setErrMsg(ret, 2, u"数据库插入失败!")
         else:
             setErrMsg(ret, 0, "")
+
+    if method == "DELETE":
+        sql = "delete from dict where id = %s" % (sdata.get("id", -1))
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库删除失败!")
+        else:
+            setErrMsg(ret, 0, "")
+
     return json.dumps(ret)
 
 @route("/query_tree/")
