@@ -15,8 +15,7 @@ function add_zb_ginit() {
 			sosList:true,
 			itemfun:function(elem,index){
 				if (elem.attr("class") == "fsys") {
-					//console.info(elem.val());
-					//console.info(g_ALL_SYSTEM);
+					
 					var data = g_ALL_SYSTEM.data;
 					var dd = [];
 					for( var i=0; i< data.length;  i++) {
@@ -99,10 +98,11 @@ function add_zb() {
 			alert("系统选项不能为空！");
 			return;
 		}
+		/*
 		if (mod.val() == "") {
 			alert("模块选项不能为空！");
 			return;
-		}
+		}*/
 		if (type.val() == "") {
 			alert("类型选项不能为空！");
 			return;
@@ -148,16 +148,19 @@ function add_zb() {
 			if (d.ErrCode == 0) {
 				add_zb_show_work();
 
-				sys.val("");
-				mod.val("");
-				type.val("");
-				property.val("");
-				jd.val("");
-				gzh.val("");
-				gznr.val("");
-				ksrq.val("");
-				hxrr.val("");
-				bz.val("");
+				//sys.val("");
+				//mod.val("");
+				//type.val("");
+				//property.val("");
+				// jd.val("");
+				// gzh.val("");
+				// gznr.val("");
+				// ksrq.val("");
+				// hxrr.val("");
+				// bz.val("");
+				window.location.href = "zbxt.html";
+			}else {
+				alert(d.msg);
 			}
 		});
 	})
@@ -182,7 +185,7 @@ function add_zb_show_work() {
 				bzgz.html("暂无本周工作记录")
 			} else {
 				je_table($(".add-zb .bzgz"),{
-					width:"1193",
+					width:"1093",
 					isPage: false,
 					datas: CurWeekData,
 					columnSort:[],
@@ -197,7 +200,7 @@ function add_zb_show_work() {
 						},
 						{name: "ID", 		field: "id", 		width: "40", align:"center"},
 						{name: "系统", 		field: "System", 	width: "100", align:"center"},
-						{name: "模块", 		field: "Module", 	width: "100", align:"center"},
+						//{name: "模块", 		field: "Module", 	width: "100", align:"center"},
 						{name: "类型", 		field: "Type", 		width: "100", align:"center"},
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 						{name: "工作内容", 	field: "Detail", 	width: "260", align:"left"},
@@ -231,16 +234,15 @@ function add_zb_show_work() {
 							var param = new Object();
 							param.SessionID  = Options.SessionID;
 							if ($(this).attr("type") == "delete") {
-								// param.method = "DELETE";
-								// param.id = $(this).attr("name");
-								// sync_post_data("/sjwh_bmgl/", JSON.stringify(param), function(d){
-								// 	if (d.ErrCode == 0) {
-								// 		sjwh_bmgl_update();
-								// 		GUpdateBaseinfo();
-								// 	} else {
-								// 		pop_box("ERROR", 200, 120, d.msg);
-								// 	}
-								// });
+								param.method = "DELETE";
+								param.id = $(this).attr("name");
+								sync_post_data("/report/", JSON.stringify(param), function(d){
+									if (d.ErrCode == 0) {
+										add_zb_show_work();
+									} else {
+										alert(d.msg);
+									}
+								});
 							}
 							else if ($(this).attr("type") == "edit") {
 
@@ -252,9 +254,8 @@ function add_zb_show_work() {
 			if (NextWeekData.length < 1) {
 				xzgz.html("暂无下周工作记录")
 			} else {
-				console.info(NextWeekData);
 				je_table($(".add-zb .xzgz"),{
-					width:"1193",
+					width:"1093",
 					isPage: false,
 					datas: NextWeekData,
 					columnSort:[],
@@ -269,7 +270,7 @@ function add_zb_show_work() {
 						},
 						{name: "ID", 		field: "id", 		width: "40", align:"center"},
 						{name: "系统", 		field: "System", 	width: "100", align:"center"},
-						{name: "模块", 		field: "Module", 	width: "100", align:"center"},
+						//{name: "模块", 		field: "Module", 	width: "100", align:"center"},
 						{name: "类型", 		field: "Type", 		width: "100", align:"center"},
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 						{name: "工作内容", 	field: "Detail", 	width: "260", align:"left"},

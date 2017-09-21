@@ -741,6 +741,7 @@ function data_protect(){
 					}
 					rot.html(shtml);
 
+					console.info($("#je-popup-box-wrap .zdwh .root option"));
 					$("#je-popup-box-wrap .zdwh .root option").click(function(){
 						$(this).parent().children().removeAttr('selected');
 						$(this).attr("selected", "selected");

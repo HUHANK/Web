@@ -94,8 +94,8 @@ def baseinfo(data):
     #print ret["System"]
     for i in range(len(rs["data"])):
         sql = "select id, name from dict where parent = %s" % (rs["data"][i]["id"])
-        rs = db.select2(sql)
-        ret["System"]["data"][i]["data"] = rs["data"]
+        rss = db.select2(sql)
+        ret["System"]["data"][i]["data"] = rss["data"]
 
     #--------------------------TYPE--------------------------
     sql = "select id, name from dict where name = '类型'"
@@ -677,5 +677,5 @@ def queryTree(data):
         setErrMsg(res, 0, "")
         ret = res;
 
-    print ret
+    #print ret
     return json.dumps(ret)

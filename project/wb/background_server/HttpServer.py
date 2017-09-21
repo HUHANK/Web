@@ -27,10 +27,12 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             data = self.rfile.read(nbytes)
 
             url = str(self.path).replace("/", "")
+            startTime = getNowTimestamp()
             if Options.get('url', None) is not None and Options['url'].get(url, None) is not None:
                 content = Options['url'][url](data)
             else:
                 content = u""
+            print "AllUseTime: %s" % (getNowTimestamp() - startTime)
 
             #content = content.encode("UTF-8")
             #SEND
