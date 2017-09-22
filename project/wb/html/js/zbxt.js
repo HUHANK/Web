@@ -148,6 +148,7 @@ function GUpdateBaseinfo(){
 			console.info(g_ALL_GROUP);
 		}else{
 			alert("您没有登录！");
+			window.location.href = "login.html";
 		}
 	});
 	param.method = "GET";
@@ -793,23 +794,6 @@ function data_protect(){
 		});
 
 	});
-/*-----------------------test---------------------------*/
-	// jeui.use(["jeCheck"], function(){
-	// 	$(".sjwh .wrap .bmgl table").jeCheck({
- //            jename:"chunk",
- //            attrName:[false,"勾选"], 
- //            itemfun: function(elem,bool) {
- //                //console.log(bool)
- //                //console.log(elem.prop('checked'))
- //            },
- //            success:function(elem){
- //                jeui.chunkSelect(elem,'.sjwh .wrap .bmgl table thead input','on')
-                
- //            }
- //        })
-	// });
-	
-/*-----------------------test---------------------------*/
 }
 
 function sjwh_bmgl_update() {
@@ -1205,11 +1189,56 @@ function home_page() {
 	param.SessionID = Options.SessionID;
 	post_data("/home/", JSON.stringify(param), function(d) {
 		d = $.parseJSON(d);
-		d = d.bzgz;
-		if (d.data.length>0)
-			draw_table($(".home-page .wdbzgz"), d.header, d.data);
-		else{
-			$(".home-page .wdbzgz").html("<span>暂无记录</span>")
+		console.info(d);
+		if (d.ErrCode == 0) {
+			console.info(d.data);
+			je_table($(".home-page .wdbzgz"),{
+				width: "1083",
+				isPage: false,
+				datas: d.data,
+				columnSort: [],
+				columns: [
+					{name: "系统", field: "System", width: "80", align:"center"},
+					{name: "模块", field: "Module", width: "80", align:"center"},
+					{name: "类型", field: "Type", width: "80", align:"center"},
+					{name: "跟踪号", field: "TraceNo", width: "60", align:"center"},
+					{name: "工作内容", field: "Detail", width: "260", align:"center"},
+					{name: "性质", field: "Property", width: "100", align:"center"},
+					{name: "进度", field: "ProgressRate", width: "60", align:"center"},
+					{name: "开始日期", field: "StartDate", width: "100", align:"center"},
+					{name: "后续人日", field: "NeedDays", width: "60", align:"center"},
+					{name: "备注", field: "Note", width: "200", align:"center"}
+				],
+				itemfun:function(elem,data){},
+				success:function(elCell, tbody){}
+			});
+
+			if (d.childrens.length > 0) {
+				$(".home-page .child").css("display", "block");
+				je_table($(".home-page .child .zcybzgz"),{
+					width: "1163",
+					isPage: false,
+					datas: d.childrens,
+					columnSort: [],
+					columns: [
+						{name: "成员", field: "User", width: "80", align:"center"},
+						{name: "系统", field: "System", width: "80", align:"center"},
+						{name: "模块", field: "Module", width: "80", align:"center"},
+						{name: "类型", field: "Type", width: "80", align:"center"},
+						{name: "跟踪号", field: "TraceNo", width: "60", align:"center"},
+						{name: "工作内容", field: "Detail", width: "260", align:"center"},
+						{name: "性质", field: "Property", width: "100", align:"center"},
+						{name: "进度", field: "ProgressRate", width: "60", align:"center"},
+						{name: "开始日期", field: "StartDate", width: "100", align:"center"},
+						{name: "后续人日", field: "NeedDays", width: "60", align:"center"},
+						{name: "备注", field: "Note", width: "200", align:"center"}
+					],
+					itemfun:function(elem,data){},
+					success:function(elCell, tbody){}
+				});
+			}
+		} else {
+			alert(d.msg);
 		}
 	});
 }

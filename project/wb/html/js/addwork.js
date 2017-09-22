@@ -10,9 +10,11 @@ function add_zb_ginit() {
 		maxDate:"2020-11-8 00:00:00"
 	});
 
+	$(".add-zb .edit .form .update").attr('disabled', '');
+
 	jeui.use(["jeSelect"], function(){
 		$(".add-zb .edit .form select").jeSelect({
-			sosList:true,
+			sosList:false,
 			itemfun:function(elem,index){
 				if (elem.attr("class") == "fsys") {
 					
@@ -26,14 +28,30 @@ function add_zb_ginit() {
 					var shtml = "";
 					var fmod = $(".add-zb .edit .form .fmod");
 					fmod.html("");
+					fmod.siblings('.je-select').html("");
 					shtml = "<option></option>"
 					for (var i=0; i<dd.length; i++) {
 						shtml += "<option name='"+dd[i].id+"'>"+ dd[i].name +"</option>";
 					}
 					fmod.html(shtml);
 				}
+				else if (elem.attr("class") == "fjd"){
+					//console.info(elem.val());
+					if (elem.val() == "100") {
+						$(".add-zb .edit .form .fhxrr").val("0");
+					}
+				}
 			}
 		});
+	});
+
+	$(".add-zb .edit .form .zq button").click(function(){
+		$(this).addClass('je-bg-native');
+		$(this).removeAttr("selected");
+		$(this).siblings().addClass('je-bg-native');
+		$(this).siblings().removeAttr('selected');
+		$(this).removeClass("je-bg-native");
+		$(this).attr("selected", "selected");
 	});
 
 }
@@ -93,6 +111,12 @@ function add_zb() {
 		var ksrq = fom.find(".ksrq");
 		var hxrr = fom.find(".fhxrr");
 		var bz = fom.find(".fbz");
+		var zq = fom.find(".zq .je-bg-native").siblings();
+		if (zq.hasClass('bz')) {
+			zq = 0;
+		}else{
+			zq = 1;
+		}
 
 		if (sys.val() == "") {
 			alert("系统选项不能为空！");
@@ -132,6 +156,7 @@ function add_zb() {
 		param.SessionID = Options.SessionID;
 		param.method = "ADD";
 
+		param.Week = zq;
 		param.System = sys.val();
 		param.Module = mod.val();
 		param.Type = type.val();
@@ -148,22 +173,98 @@ function add_zb() {
 			if (d.ErrCode == 0) {
 				add_zb_show_work();
 
-				//sys.val("");
-				//mod.val("");
-				//type.val("");
-				//property.val("");
-				// jd.val("");
-				// gzh.val("");
-				// gznr.val("");
-				// ksrq.val("");
-				// hxrr.val("");
-				// bz.val("");
-				window.location.href = "zbxt.html";
+				sys.val("");
+				mod.val("");
+				type.val("");
+				property.val("");
+				sys.siblings(".je-select").html("");
+				mod.siblings(".je-select").html("");
+				type.siblings(".je-select").html("");
+				property.siblings(".je-select").html("");
+
+				jd.val("");
+				gzh.val("");
+				gznr.val("");
+				//ksrq.val("");
+				hxrr.val("");
+				bz.val("");
+				//window.location.href = "zbxt.html";
 			}else {
 				alert(d.msg);
 			}
 		});
 	})
+
+	$(".add-zb .edit .form .update").click(function() {
+		var fom = $(".add-zb .edit .form");
+		var sys = fom.find(".fsys");
+		var mod = fom.find(".fmod");
+		var type = fom.find(".ftype");
+		var property = fom.find(".fprop");
+		var jd = fom.find(".fjd");
+		var gzh = fom.find(".fgzh");
+		var gznr = fom.find(".fgznr");
+		var ksrq = fom.find(".ksrq");
+		var hxrr = fom.find(".fhxrr");
+		var bz = fom.find(".fbz");
+		// var zq = fom.find(".zq .je-bg-native").siblings();
+		// if (zq.hasClass('bz')) {
+		// 	zq = 0;
+		// }else{
+		// 	zq = 1;
+		// }
+
+		var param = new Object();
+		param.SessionID = Options.SessionID;
+		param.method = "UPDATE";
+		if (typeof($(this).attr("name")) == "undefined") {
+			return;
+		}
+		console.info($(this).attr("name"));
+		param.id = $(this).attr("name");
+		$(this).removeAttr("name");
+
+		param.System = sys.siblings().text();
+		param.Module = mod.siblings().text();
+		param.Type = type.siblings().text();
+		param.Property = property.siblings().text();
+		param.ProgressRate = jd.siblings().text();
+		param.TraceNo = gzh.val();
+		param.Detail = gznr.val();
+		param.StartDate = ksrq.val();
+		param.NeedDays = hxrr.val();
+		param.Note = bz.val();
+
+		console.info(param);
+
+		post_data("/report/", JSON.stringify(param), function(d) {
+			d = $.parseJSON(d);
+			if (d.ErrCode == 0) {
+				add_zb_show_work();
+
+				sys.val("");
+				mod.val("");
+				type.val("");
+				property.val("");
+				sys.siblings(".je-select").html("");
+				mod.siblings(".je-select").html("");
+				type.siblings(".je-select").html("");
+				property.siblings(".je-select").html("");
+
+				jd.val("");
+				gzh.val("");
+				gznr.val("");
+				//ksrq.val("");
+				hxrr.val("");
+				bz.val("");
+				//window.location.href = "zbxt.html";
+				fom.find(".add").removeAttr('disabled');
+				fom.find(".update").attr('disabled', '');
+			} else {
+				alert(d.msg);
+			}
+		});
+	});
 
 	add_zb_show_work();
 }
@@ -185,7 +286,7 @@ function add_zb_show_work() {
 				bzgz.html("暂无本周工作记录")
 			} else {
 				je_table($(".add-zb .bzgz"),{
-					width:"1093",
+					width:"1193",
 					isPage: false,
 					datas: CurWeekData,
 					columnSort:[],
@@ -200,7 +301,7 @@ function add_zb_show_work() {
 						},
 						{name: "ID", 		field: "id", 		width: "40", align:"center"},
 						{name: "系统", 		field: "System", 	width: "100", align:"center"},
-						//{name: "模块", 		field: "Module", 	width: "100", align:"center"},
+						{name: "模块", 		field: "Module", 	width: "100", align:"center"},
 						{name: "类型", 		field: "Type", 		width: "100", align:"center"},
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 						{name: "工作内容", 	field: "Detail", 	width: "260", align:"left"},
@@ -245,7 +346,49 @@ function add_zb_show_work() {
 								});
 							}
 							else if ($(this).attr("type") == "edit") {
+								var id = $(this).attr("name");
+								param.method = "GETSIG";
+								param.id = id;
+								sync_post_data("/report/", JSON.stringify(param), function(d){
+									if (d.ErrCode == 0) {
+										if (d.data.length < 1) return;
+										//console.info(d.data[0]);
+										d = d.data[0];
+										var fom = $(".add-zb .edit .form");
+										var sys = fom.find(".fsys");
+										var mod = fom.find(".fmod");
+										var type = fom.find(".ftype");
+										var property = fom.find(".fprop");
+										var jd = fom.find(".fjd");
+										var gzh = fom.find(".fgzh");
+										var gznr = fom.find(".fgznr");
+										var ksrq = fom.find(".ksrq");
+										var hxrr = fom.find(".fhxrr");
+										var bz = fom.find(".fbz");
+										var zq = fom.find(".zq .bz");
+										zq.removeClass('je-bg-native');
+										zq.attr("selected", "selected");
+										zq.siblings().addClass('je-bg-native');
 
+										sys.siblings('.je-select').text(d.System);
+										mod.siblings('.je-select').text(d.Module);
+										type.siblings('.je-select').text(d.Type);
+										property.siblings('.je-select').text(d.Property);
+										jd.siblings('.je-select').text(d.ProgressRate);
+										gzh.val(d.TraceNo);
+										gznr.val(d.Detail);
+										ksrq.val(d.StartDate);
+										bz.val(d.Note);
+										hxrr.val(d.NeedDays);
+
+										fom.find(".update").attr("name", d.id);
+										//console.info(fom.find(".update"));
+										fom.find(".update").removeAttr('disabled');
+										fom.find(".add").attr('disabled','');
+									} else {
+										alert(d.msg);
+									}
+								});
 							}
 						});
 					}	
@@ -255,7 +398,7 @@ function add_zb_show_work() {
 				xzgz.html("暂无下周工作记录")
 			} else {
 				je_table($(".add-zb .xzgz"),{
-					width:"1093",
+					width:"1193",
 					isPage: false,
 					datas: NextWeekData,
 					columnSort:[],
@@ -270,7 +413,7 @@ function add_zb_show_work() {
 						},
 						{name: "ID", 		field: "id", 		width: "40", align:"center"},
 						{name: "系统", 		field: "System", 	width: "100", align:"center"},
-						//{name: "模块", 		field: "Module", 	width: "100", align:"center"},
+						{name: "模块", 		field: "Module", 	width: "100", align:"center"},
 						{name: "类型", 		field: "Type", 		width: "100", align:"center"},
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 						{name: "工作内容", 	field: "Detail", 	width: "260", align:"left"},
@@ -315,7 +458,49 @@ function add_zb_show_work() {
 								});
 							}
 							else if ($(this).attr("type") == "edit") {
+								var id = $(this).attr("name");
+								param.method = "GETSIG";
+								param.id = id;
+								sync_post_data("/report/", JSON.stringify(param), function(d){
+									if (d.ErrCode == 0) {
+										if (d.data.length < 1) return;
+										//console.info(d.data[0]);
+										d = d.data[0];
+										var fom = $(".add-zb .edit .form");
+										var sys = fom.find(".fsys");
+										var mod = fom.find(".fmod");
+										var type = fom.find(".ftype");
+										var property = fom.find(".fprop");
+										var jd = fom.find(".fjd");
+										var gzh = fom.find(".fgzh");
+										var gznr = fom.find(".fgznr");
+										var ksrq = fom.find(".ksrq");
+										var hxrr = fom.find(".fhxrr");
+										var bz = fom.find(".fbz");
+										var zq = fom.find(".zq .xz");
+										zq.removeClass('je-bg-native');
+										zq.attr("selected", "selected");
+										zq.siblings().addClass('je-bg-native');
 
+										sys.siblings('.je-select').text(d.System);
+										mod.siblings('.je-select').text(d.Module);
+										type.siblings('.je-select').text(d.Type);
+										property.siblings('.je-select').text(d.Property);
+										jd.siblings('.je-select').text(d.ProgressRate);
+										gzh.val(d.TraceNo);
+										gznr.val(d.Detail);
+										ksrq.val(d.StartDate);
+										bz.val(d.Note);
+										hxrr.val(d.NeedDays);
+
+										fom.find(".update").attr("name", d.id);
+										fom.find(".update").removeAttr('disabled');
+										fom.find(".add").attr('disabled', '');
+										//console.info(fom.find(".update"));
+									} else {
+										alert(d.msg);
+									}
+								});
 							}
 						});
 					}	

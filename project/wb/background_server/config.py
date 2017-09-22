@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-HTTP_SERVER_PORT = 5001
+HTTP_SERVER_PORT = 5000
 
 
 

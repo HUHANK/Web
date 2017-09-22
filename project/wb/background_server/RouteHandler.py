@@ -179,11 +179,13 @@ def reportProcess(data):
     ret = {}
 
     if data["method"] == "ADD":
-        (Year, Week, Day) = getYearWeek(data["StartDate"])
-        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note) VALUES(" \
-              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s')" %(
+        print data
+        #(Year, Week, Day) = getYearWeek(data["StartDate"])
+        Week = Week + data.get("Week", 0)
+        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate) VALUES(" \
+              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s')" %(
                 data['System'], data['Module'], data['Type'], data["TraceNo"], data["Detail"], \
-                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Note"])
+                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Note"], getNowDate2())
         id = db.update(sql)
         if id < 0:
             setErrMsg(ret, 2, "数据库插入失败！")
@@ -196,6 +198,28 @@ def reportProcess(data):
         if db.update(sql) < 0 :
             setErrMsg(ret, 2, "数据库插入失败！")
             return json.dumps(ret)
+        setErrMsg(ret, 0, "")
+        return json.dumps(ret)
+    elif data["method"] == "UPDATE":
+        print data
+        d = data
+        sql = "update work_detail set System='%s', Module='%s', Type='%s', TraceNo='%s', Detail='%s', Property='%s', ProgressRate=%s, StartDate='%s', NeedDays=%s, Note='%s', EditDate='%s' where id=%s" \
+            % (d["System"], d["Module"], d["Type"],d["TraceNo"],d["Detail"],d["Property"],d["ProgressRate"],d["StartDate"],d["NeedDays"],d["Note"], getNowDate2(), d["id"])
+        print sql
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库跟新失败！")
+            return json.dumps(ret)
+        setErrMsg(ret, 0, "")
+        return json.dumps(ret)
+
+    elif data["method"] == "GETSIG":
+        id = data.get("id", -1)
+        sql = "select * from work_detail where id = %s" % (id)
+        rs = db.select2(sql)
+        if rs == None:
+            setErrMsg(ret, 2, u"数据库查询失败！")
+            return json.dumps(ret)
+        ret["data"] = rs["data"]
         setErrMsg(ret, 0, "")
         return json.dumps(ret)
     elif data["method"] == "GET":
@@ -230,22 +254,34 @@ def reportProcess(data):
 def getHomeData(data):
     data = json.loads(data)
     sessionData = findSession(data.get("SessionID", ""))
-    if sessionData is None:
-        print u"用户没有登录！"
-        return ""
-    userName = sessionData.get("UserName", "")
+    ret = {}
     db = Options['mysql']
+    if sessionData is None:
+        setErrMsg(ret, 0,  u"用户没有登录！")
+        return json.dumps(ret)
+    userName = sessionData.get("UserName", "")
     (Year, Week, Day) = getNowYearWeek()
-    headers = ["跟踪号", "系统", "类型", "工作内容", "性质", "进度"]
-    sql = "SELECT C.TraceNo, C.SysModule, C.Type, C.Detail, C.Property, C.ProgressRate " \
-          "FROM user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C ON A.WID = C.id " \
-          "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
-    ret = db.select(sql)
-    result = {}
-    result["bzgz"] = {}
-    result["bzgz"]['header'] = headers
-    result["bzgz"]['data'] = ret["datas"]
-    return json.dumps(result)
+
+    sql = "select B.NOTE User, C.* from user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C on A.WID = C.id " \
+          "where B.UNAME = '%s' and A.YEAR = %s and A.WEEK = %s" % (userName, Year, Week)
+    rs = db.select2(sql)
+    if rs == None:
+        setErrMsg(ret, 2, "数据库查询失败！")
+        return json.dumps(ret)
+    ret["data"] = rs["data"]
+
+    sql = "select B.NOTE User, C.* from user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C on A.WID = C.id " \
+            " where A.YEAR = %s and A.WEEK = %s " \
+            " AND A.UID in (" \
+            " select UID from user where group_id in (select id from xgroup where manager in (select UID from user where UNAME = '%s')) and UNAME != '%s'" \
+            " ) ORDER BY 1, 3,4,5" % (Year, Week, userName, userName)
+    rs = db.select2(sql)
+    if rs == None:
+        setErrMsg(ret, 2, "数据库查询失败！")
+        return json.dumps(ret)
+    ret["childrens"] = rs["data"]
+    setErrMsg(ret, 0, "")
+    return json.dumps(ret)
 
 @route("/getuserinfo")
 def getUserInfo(data):

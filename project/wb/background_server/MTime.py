@@ -57,10 +57,11 @@ def getNowDate1():
     return datetime.datetime.strftime(datetime.datetime.now(), "%Y年%m月%d日")
 
 
+def getNowDate2():
+    return datetime.datetime.strftime(datetime.datetime.now(), "%Y%m%d")
 
 
-
-print getNowTimestamp()
+#print getNowDate2()
 
 
 
