@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-09-13 18:22:51
+Date: 2017-09-22 17:53:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,6 +25,19 @@ CREATE TABLE `department` (
   `manager` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for dict
+-- ----------------------------
+DROP TABLE IF EXISTS `dict`;
+CREATE TABLE `dict` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `title` int(11) NOT NULL DEFAULT '0',
+  `parent` int(11) NOT NULL DEFAULT '0',
+  `isRoot` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for dictionary
@@ -81,10 +94,11 @@ CREATE TABLE `work_detail` (
   `ProgressRate` int(11) NOT NULL DEFAULT '0',
   `StartDate` varchar(16) NOT NULL DEFAULT '',
   `NeedDays` double NOT NULL DEFAULT '0',
+  `AddDate` varchar(10) DEFAULT NULL,
+  `EditDate` varchar(10) DEFAULT NULL,
   `Note` varchar(512) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `index_1` (`TraceNo`)
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for xgroup
@@ -96,4 +110,4 @@ CREATE TABLE `xgroup` (
   `manager` int(10) unsigned NOT NULL,
   `depart_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
