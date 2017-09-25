@@ -279,7 +279,25 @@ def getHomeData(data):
     if rs == None:
         setErrMsg(ret, 2, "数据库查询失败！")
         return json.dumps(ret)
-    ret["childrens"] = rs["data"]
+    ret["cbzgz"] = rs["data"]
+    if len(rs["data"]) > 0 :
+        ret["isManager"] = 1
+    else:
+        ret["isManager"] = 0
+
+    sql = "select B.NOTE User, C.* from user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C on A.WID = C.id " \
+          " where A.YEAR = %s and A.WEEK = %s " \
+          " AND A.UID in (" \
+          " select UID from user where group_id in (select id from xgroup where manager in (select UID from user where UNAME = '%s')) and UNAME != '%s'" \
+          " ) ORDER BY 1, 3,4,5" % (Year, (Week+1), userName, userName)
+    rs = db.select2(sql)
+    if rs == None:
+        setErrMsg(ret, 2, "数据库查询失败！")
+        return json.dumps(ret)
+    ret["cxzgz"] = rs["data"]
+    if ret["isManager"] == 0 and len(rs["data"]) > 0:
+        ret["isManager"] = 1
+
     setErrMsg(ret, 0, "")
     return json.dumps(ret)
 

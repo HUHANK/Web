@@ -150,8 +150,12 @@ function je_table(obj, opts) {
 	});        		
 }
 
-
-
+/*支持浏览器验证，通过返回true*/
+function Support_for_browser_validation() {
+	var userAgent = navigator.userAgent.toLowerCase();
+	//console.log(userAgent);
+	return true;
+}
 
 
 

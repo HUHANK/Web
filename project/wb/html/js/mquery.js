@@ -24,66 +24,118 @@ function query() {
 	//sidebar();
 }
 
-function query_sidebar_init() {
-	console.info("------", g_QUERY_TREE, g_QUERY_TREE.length);
-	for(var ii=0; ii<g_QUERY_TREE.length; ii++) {
-		//console.info(g_QUERY_TREE[i]);
-		var tmp = g_QUERY_TREE[ii];
-		console.info(tmp);
-		if (tmp.name == "开发部门") {
-			var shtml = "";
-			var data = tmp.data;
-			for (var i=0; i<data.length; i++) {
-				var s = "<div>" + data[i].name + "</div>";
-				s += "<div class='ej'>"
-				for (var j=0; j<data[i].data.length; j++) {
-					var d = data[i].data[j];
-					s += "<div name='" +d.id+ "'>" + d.name + "</div>";
-					s += "<div class='sj'>";
-					for (var k=0; k<d.data.length; k++) {
-						var dd = d.data[k];
-						s += "<button name='" + dd.id + "'>" + dd.name + "</button>";
+function query_sidebar_add_list(obj, data) {
+	var aicon =  "<i class='je-icon'>&#xe66e;</i>";	/*加图标*/
+	var bicon =  "<i class='je-icon'>&#xe712;</i>"; /*减图标*/
+	var cicon =  "<i class='je-icon'>&#xe641;</i>"; /*头像*/ 
+	var dicon =  "<i class='je-icon'>&#xe949;</i>"; /*指向图标*/
+
+	var span = "<span></span>";
+	var li = "<li></li>";
+	var ul = "<ul></ul>";
+	var display_none = {"display": "none"};
+	var display_block = {"display": "block"};
+
+	function add_leaf_node(obj, data) {
+		$(obj).append(
+			$(li).append(
+				$(span).append($(dicon), data.name)
+			).addClass("leaf")
+		);
+	}
+	function add_not_leaf_node(obj, ulobj, data, cla) {
+		$(obj).append(
+			$(li).append(
+				$(span).append($(aicon), data.name), $(ulobj)
+			).addClass(cla)
+		)
+	}
+
+	obj = $(obj);
+	obj.remove("ul");
+	obj.append(ul);
+
+	var yjul = obj.children("ul");
+
+	if (data.data.length < 1) {
+		/*do nothing*/
+	} else {
+		for(var i=0; i<data.data.length; i++) {
+			var d = data.data[i];
+			if (d.data.length > 0) {
+				var ejul = $(ul);
+				for(var j=0; j<d.data.length; j++) {
+					var dd = d.data[j];
+					if (dd.data.length > 0) {
+						var sjul = $(ul);
+						for (var k=0; k<dd.data.length; k++) {
+							var ddd = dd.data[k];
+							if (ddd.data.length > 0) {
+
+							}else {
+								add_leaf_node(sjul, ddd);
+							}
+						}
+						add_not_leaf_node(ejul, sjul, dd, "layer3");
+					} else {
+						add_leaf_node(ejul, dd);
 					}
-					s += "</div>";
 				}
-				s += "</div>";
-				shtml += s;
-				//console.info(data[i]);
+				add_not_leaf_node(yjul, ejul, d, "layer2");
+			} else {
+				add_leaf_node(yjul, d);
 			}
-			//console.info(shtml);
-			$(".query .sidebar .yj-content.depart").html(shtml);
-		}else if (tmp.name == "系统"){
-			// console.info("System", tmp);
-			var d = tmp.data;
-			var s = "";
-			for (var i=0; i<d.length; i++){
-				s += "<div>" + d[i].name + "</div>";
-				s += "<div class='ej'>";
-
-				for(var j=0; j<d[i].data.length; j++){
-					var dd = d[i].data[j];
-					s += "<div>" + dd.name + "</div>";
-					s += "<div class='sj'>";
-
-					for(var k=0; k<dd.data.length; k++){
-						var ddd = dd.data[k];
-						s += "<button>" + dd.name + "</button>"
-					}
-					s += "</div>";
-				}
-				s += "</div>";
-			}
-			// console.info(s);
-			$(".query .sidebar .yj-content.system").html(s);
-		}else if (tmp.name == "类型") {
-			var d = tmp.data;
-			var s = "";
-			for (var i=0; i<d.length; i++) {
-				
-			}
-		}else if (tmp.name == "性质") {
-
 		}
 	}
+	$(obj).find('ul').css(display_none);
 }
 
+function query_sidebar_init() {
+	//console.info("------", g_QUERY_TREE, g_QUERY_TREE.length);
+	for(var ii=0; ii<g_QUERY_TREE.length; ii++) {
+		var tmp = g_QUERY_TREE[ii];
+		
+		if (tmp.name == "开发部门") {
+			query_sidebar_add_list($(".query .sidebar .kfbm"), tmp);
+			
+		}else if (tmp.name == "系统"){
+			query_sidebar_add_list($(".query .sidebar .xt"), tmp);
+			
+		}else if (tmp.name == "类型") {
+			query_sidebar_add_list($(".query .sidebar .lx"), tmp);
+
+		}else if (tmp.name == "性质") {
+			query_sidebar_add_list($(".query .sidebar .xz"), tmp);
+		}
+	}
+
+	$(".body .query .sidebar span").click(function() {
+		var aicon =  "<i class='je-icon'>&#xe66e;</i>";	/*加图标*/
+		var bicon =  "<i class='je-icon'>&#xe712;</i>"; /*减图标*/
+		var display_none = {"display": "none"};
+
+		if ($(this).hasClass("selected")) {
+			$(this).removeClass("selected");
+		} else {
+			$(this).addClass('selected');
+		}
+		if (!$(this).parent().hasClass("leaf")) {
+			var bro = $(this).siblings('ul');
+			var i = $(this).children("i");
+			if (bro.css("display") == "none") {
+				bro.css("display", "block");
+				i.before($(bicon));
+				i.remove();
+			} else {
+				bro.css(display_none);
+				i.before($(aicon));
+				i.remove();
+			}
+		}
+	});
+
+	query_sidebar_css_init();
+}
+
+function query_sidebar_css_init() {
+}

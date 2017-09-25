@@ -129,58 +129,28 @@ table tbody tr:hover{
 }
 .query .sidebar{
 	width: 200px;
-	//background-color: #EDEDED;
-	//border-left: 3px solid #1BD9DA;
-	//border-right: 3px solid #1BD9DA;
-	//border-bottom: 3px solid #1BD9DA;
 	border: 1px solid #949696;
 	cursor: default;
 	float: left;
 	overflow: auto;
-
 	height: 800px;
 }
+.query .sidebar span{
+	display: block;
+	//text-align: center;
+}
+.query .sidebar .selected{
+	font-weight: bold;
+}
+.query .sidebar .layer1 > span{
+ 	border: 1px solid #E8E8E8;
+ 	padding-left: 10px;
+}
 
-.query .sidebar .yj-content{
-	padding: 3px;
+.query .sidebar .layer1 > span:hover{
+	border: 1px solid #9EEFEA;
 }
-.query .sidebar .yj{
-	border-bottom: 1px solid #949696;
-	padding: 2px;
-	font-weight: bold;
-	background-color: #C4C4C4;
-	border-radius: 4px;
-}
-/* .query .sidebar .ej{
-	display: none;
-	padding: 2px;
-	padding-bottom: 8px;
-	padding-top: 8px;
-	border-bottom: 1px solid #949696;
-} */
-.query .sidebar .yj:hover{
-	background-color: #CCFFFF;
-}
-/* .query .sidebar .ej span{
-	display: inline-block;
-	cursor: pointer;
-	padding: 1px;
-	margin: 2px;
-}
-.query .sidebar .ej span[style="all"]{
-	font-weight: bold;
-}
-.query .sidebar .ej span[style="unit"]{
-	color: #6A6D6F;
-}
-.query .sidebar .ej .select{
-	color: white;
-	background-color: #094E4E;
-}
-.query .sidebar .ej span:hover{
-	background-color: #CCFFFF;
-}
- */
+
 .query .result{
 	
 }

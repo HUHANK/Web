@@ -3,6 +3,11 @@ window.onload = main;
 
 function main() {
 
+	if (!Support_for_browser_validation()){
+		alert("本版本不支持该浏览器，请使用谷歌，火狐或者Safari浏览器使用！");
+		return ;
+	}
+
 	$(".log-box-c button").click(function(){
 		var data = new Object();
 		data.UserName = $("#username").val();

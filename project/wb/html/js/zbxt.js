@@ -42,23 +42,23 @@ function GInit(){
 	Options.QueryCondition.PageSize = 25;
 	GUpdateBaseinfo();
 
-	jeDate.skin('gray');
-	jeDate({
-		dateCell:".query .sidebar .yj-content .ksrq",//isinitVal:true,
-		format:"YYYY-MM-DD",
-		isTime:false, //isClear:false,
-		isinitVal:true,
-		minDate:"2014-10-19 00:00:00",
-		maxDate:"2020-11-8 00:00:00"
-	});
-	jeDate({
-		dateCell:".query .sidebar .yj-content .jsrq",//isinitVal:true,
-		format:"YYYY-MM-DD",
-		isTime:false, //isClear:false,
-		isinitVal:true,
-		minDate:"2014-10-19 00:00:00",
-		maxDate:"2020-11-8 00:00:00"
-	});
+	// jeDate.skin('gray');
+	// jeDate({
+	// 	dateCell:".query .sidebar .yj-content .ksrq",//isinitVal:true,
+	// 	format:"YYYY-MM-DD",
+	// 	isTime:false, //isClear:false,
+	// 	isinitVal:true,
+	// 	minDate:"2014-10-19 00:00:00",
+	// 	maxDate:"2020-11-8 00:00:00"
+	// });
+	// jeDate({
+	// 	dateCell:".query .sidebar .yj-content .jsrq",//isinitVal:true,
+	// 	format:"YYYY-MM-DD",
+	// 	isTime:false, //isClear:false,
+	// 	isinitVal:true,
+	// 	minDate:"2014-10-19 00:00:00",
+	// 	maxDate:"2020-11-8 00:00:00"
+	// });
 
 	jeui.use(["jeSelect"], function(){
 		$(".sjwh .wrap .xzgl .xzcysz .zcy").jeSelect({
@@ -128,7 +128,6 @@ function GInit(){
 
 	add_zb_ginit();
 	query_sidebar_init();
-	
 }
 
 function GUpdateBaseinfo(){
@@ -236,8 +235,6 @@ function navbar() {
 
 	});
 }
-
-
 
 function sidebar() {
 	var param = new Object();
@@ -378,8 +375,6 @@ function deal_query_condition(type, key, value) {
 		}
 	}
 
-	
-
 }
 
 function query_update_data(page) {
@@ -424,7 +419,6 @@ function query_update_data(page) {
 		$(".query .result .ztl .pageIndex").text(page+1);
 
 	});
-	
 }
 
 function data_protect(){
@@ -1201,24 +1195,45 @@ function home_page() {
 					{name: "系统", field: "System", width: "80", align:"center"},
 					{name: "模块", field: "Module", width: "80", align:"center"},
 					{name: "类型", field: "Type", width: "80", align:"center"},
-					{name: "跟踪号", field: "TraceNo", width: "60", align:"center"},
-					{name: "工作内容", field: "Detail", width: "260", align:"center"},
+					{name: "跟踪号", 	field: "TraceNo", width: "60", align:"center"},
+					{name: "工作内容", 	field: "Detail", width: "260", align:"center"},
 					{name: "性质", field: "Property", width: "100", align:"center"},
 					{name: "进度", field: "ProgressRate", width: "60", align:"center"},
-					{name: "开始日期", field: "StartDate", width: "100", align:"center"},
-					{name: "后续人日", field: "NeedDays", width: "60", align:"center"},
+					{name: "开始日期", 	field: "StartDate", width: "100", align:"center"},
+					{name: "后续人日", 	field: "NeedDays", width: "60", align:"center"},
 					{name: "备注", field: "Note", width: "200", align:"center"}
 				],
 				itemfun:function(elem,data){},
 				success:function(elCell, tbody){}
 			});
 
-			if (d.childrens.length > 0) {
+			if (d.isManager > 0) {
 				$(".home-page .child").css("display", "block");
 				je_table($(".home-page .child .zcybzgz"),{
 					width: "1163",
 					isPage: false,
-					datas: d.childrens,
+					datas: d.cbzgz,
+					columnSort: [],
+					columns: [
+						{name: "成员", field: "User", width: "80", align:"center"},
+						{name: "系统", field: "System", width: "80", align:"center"},
+						{name: "模块", field: "Module", width: "80", align:"center"},
+						{name: "类型", field: "Type", width: "80", align:"center"},
+						{name: "跟踪号", field: "TraceNo", width: "60", align:"center"},
+						{name: "工作内容", field: "Detail", width: "260", align:"center"},
+						{name: "性质", field: "Property", width: "100", align:"center"},
+						{name: "进度", field: "ProgressRate", width: "60", align:"center"},
+						{name: "开始日期", field: "StartDate", width: "100", align:"center"},
+						{name: "后续人日", field: "NeedDays", width: "60", align:"center"},
+						{name: "备注", field: "Note", width: "200", align:"center"}
+					],
+					itemfun:function(elem,data){},
+					success:function(elCell, tbody){}
+				});
+				je_table($(".home-page .child .zcyxzgz"),{
+					width: "1163",
+					isPage: false,
+					datas: d.cxzgz,
 					columnSort: [],
 					columns: [
 						{name: "成员", field: "User", width: "80", align:"center"},

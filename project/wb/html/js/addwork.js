@@ -188,7 +188,8 @@ function add_zb() {
 				//ksrq.val("");
 				hxrr.val("");
 				bz.val("");
-				//window.location.href = "zbxt.html";
+				window.location.href = "zbxt.html";
+				//add_zb_show_work();
 			}else {
 				alert(d.msg);
 			}
@@ -257,9 +258,11 @@ function add_zb() {
 				//ksrq.val("");
 				hxrr.val("");
 				bz.val("");
-				//window.location.href = "zbxt.html";
+				
 				fom.find(".add").removeAttr('disabled');
 				fom.find(".update").attr('disabled', '');
+				//add_zb_show_work();
+				window.location.href = "zbxt.html";
 			} else {
 				alert(d.msg);
 			}
