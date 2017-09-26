@@ -134,6 +134,7 @@ table tbody tr:hover{
 	float: left;
 	overflow: auto;
 	height: 800px;
+	background-color: #E1E0E0;
 }
 .query .sidebar span{
 	display: block;
@@ -150,6 +151,26 @@ table tbody tr:hover{
 .query .sidebar .layer1 > span:hover{
 	border: 1px solid #9EEFEA;
 }
+
+.query .sidebar .layer2 > span{
+	padding-left: 10px;
+}
+.query .sidebar .layer3 > span{
+	padding-left: 15px;
+}
+
+.query .sidebar .leaf > span{
+	background-color: white;
+}
+.query .sidebar .week .content{
+	background-color: white;
+	text-align: center;
+	display: none;
+}
+.query .sidebar .week .content input{
+	width: 45px;
+}
+
 
 .query .result{
 	

@@ -43,7 +43,7 @@ function draw_drop_down_box_select(obj, datas) {
 }
 
 
-var HostUrl = "http://127.0.0.1:5000";
+var HostUrl = "http://127.0.0.1:5002";
 
 function post_data(path, data, func) {
 	var surl = HostUrl;
@@ -156,6 +156,67 @@ function Support_for_browser_validation() {
 	//console.log(userAgent);
 	return true;
 }
+
+function deal_query_condition_array(arr, obj, type) {
+	if (type == 0) {
+		for(var i =0; i<arr.length; i++) {
+			var tmp = arr[i];
+			if ( (tmp.name == obj.name) && (tmp.id == obj.id) && (tmp.title == obj.title) ) {
+				arr.splice(i, 1);
+				return;
+			}
+		}
+	}
+	if (type == 1) {
+		for(var i=0; i<arr.length; i++) {
+			var tmp = arr[i];
+			if ( (tmp.name == obj.name) && (tmp.id == obj.id) && (tmp.title == obj.title) ) {
+				return;
+			}
+		}
+		arr.push(obj);
+	}
+}
+
+function deal_query_condition(name, attr, isAdd) {
+	var arr = attr.split(",");
+	var title = arr[0];
+	var id = arr[1];
+	//console.info(title, id);
+	var tmp = {};
+	tmp.name = name;
+	tmp.id = id;
+	tmp.title = title;
+
+	if (title == "type") {
+		if (typeof(QueryCondi.type) == "undefined" ) {
+			QueryCondi.type = [];
+		}
+		deal_query_condition_array(QueryCondi.type, tmp, isAdd);
+	}
+	if (title == "system") {
+		if (typeof(QueryCondi.system) == "undefined" ) {
+			QueryCondi.system = [];
+		}
+		deal_query_condition_array(QueryCondi.system, tmp, isAdd);
+	}
+	if (title == "user") {
+		if (typeof(QueryCondi.user) == "undefined" ) {
+			QueryCondi.user = [];
+		}
+		deal_query_condition_array(QueryCondi.user, tmp, isAdd);
+	}
+	if (title == "property") {
+		if (typeof(QueryCondi.property) == "undefined" ) {
+			QueryCondi.property = [];
+		}
+		deal_query_condition_array(QueryCondi.property, tmp, isAdd);
+	}
+	//console.info(QueryCondi);
+	return;
+}
+
+
 
 
 

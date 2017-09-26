@@ -315,49 +315,82 @@ def getUserInfo(data):
 
     return ""
 
-@route("/query")
+@route("/query/")
 def queryData(data):
     data = json.loads(data)
-    #print data
-    headers = ["ID", "用户名", "系统(模块)", "类型", "跟踪号", "工作内容","性质", "进度", "开始日期", "后续人日", "备注"]
-    sql = "select  B.id, C.NOTE, SysModule, Type, TraceNo, Detail, " \
-          "Property, ProgressRate, StartDate, NeedDays, B.Note " \
-          "from user_work A left join work_detail B on A.WID = B.id " \
-          " left join user C on A.UID = C.UID "
-    scond = iArray2Str(data["User"])
-    if len(scond) > 0:
-        scond = " where A.UID in ("+scond+") "
-
-    ret = sArray2Str(data["SysModule"])
-    if len(ret) > 0:
-        if len(scond) > 0:
-            scond += "and SysModule in (" + ret + ") "
-        else:
-            scond += "where SysModule in (" + ret + ") "
-
-    ret = sArray2Str(data["Property"])
-    if len(ret) > 0:
-        if len(scond) > 0:
-            scond += "and Property in (" + ret + ") "
-        else:
-            scond += "where Property in (" + ret + ") "
-
-    ret = sArray2Str(data["Type"])
-    if len(ret) > 0:
-        if len(scond) > 0:
-            scond += "and Type in (" + ret + ") "
-        else:
-            scond += "where Type in (" + ret + ") "
-
-    sql += scond + " limit " + str(data["Page"]*data["PageSize"]) + ", " + str(data["PageSize"])
+    print data
+    ret = {}
     db = Options['mysql']
 
-    ret = db.select(sql)
-    res = {}
-    res["header"] = headers
-    res["data"] = ret["datas"]
+    sql = "select A.UID, concat(A.YEAR,'年第',A.WEEK,'周') WEEK, B.* from user_work A LEFT JOIN work_detail B on A.WID = B.id "
+    sqlc = "select count(*) COUNT from user_work A LEFT JOIN work_detail B on A.WID = B.id "
+    sqllimit = " limit " + str(data.get("page", 0)*data.get("pageSize", 0)) + "," + str(data.get("pageSize", 0))
+    condi = data.get("condition", None)
+    if condi == None:
+        rs = db.select2(sqlc)
+        print rs["data"]
+        ret["total"] = rs["data"][0].get("COUNT", 0)
+        rs = db.select2(sql + sqllimit)
+        ret["data"] = rs["data"]
+        setErrMsg(ret, 0, "")
+        return json.dumps(ret)
 
-    return json.dumps(res)
+    user = condi.get("user", None)
+    type = condi.get("type", None)
+    property = condi.get("property", None)
+    system = condi.get("system", None)
+
+    sqlcondi = ""
+    if user != None:
+        if len(user) > 0:
+            sqlcondi += " A.UID in ("
+            for i in range(len(user)):
+                sqlcondi += str(user[i].get("id", 0)) + ","
+            sqlcondi = sqlcondi.rstrip(",")
+            sqlcondi += ") "
+    if type != None:
+        if len(type) > 0 :
+            if len(sqlcondi) > 0 :
+                sqlcondi += " AND "
+            sqlcondi += " B.Type in ("
+            for i in range(len(type)):
+                sqlcondi += "'" + str(type[i].get("name", "")) + "',"
+            sqlcondi = sqlcondi.rstrip(",")
+            sqlcondi += ") "
+    if property != None:
+        if len(property) > 0:
+            if len(sqlcondi) > 0:
+                sqlcondi += " AND "
+            sqlcondi += " B.Property in ("
+            for i in range(len(property)):
+                sqlcondi += "'" + str(property[i].get("name", "")) + "',"
+            sqlcondi = sqlcondi.rstrip(",")
+            sqlcondi += ") "
+    if system != None:
+        if len(system) > 0:
+            if len(sqlcondi) > 0:
+                sqlcondi += " AND "
+            sqlcondi += " B.System in ("
+            for i in range(len(system)):
+                sqlcondi += "'" + str(system[i].get("name", "")) + "',"
+            sqlcondi = sqlcondi.rstrip(",")
+            sqlcondi += ") "
+
+    if len(sqlcondi) > 0:
+        sql += " where " + sqlcondi + sqllimit
+        sqlc += " where " + sqlcondi
+    else:
+        sql += sqllimit
+
+    print sql
+    print sqlc
+    rs = db.select2(sqlc)
+    ret["total"] = rs["data"][0].get("COUNT", 0)
+    rs = db.select2(sql)
+    ret["data"] = rs["data"]
+
+    setErrMsg(ret, 0, "")
+    return json.dumps(ret)
 
 
 @route("/query1")

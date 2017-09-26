@@ -85,5 +85,9 @@ var g_ALL_SYSTEM = {};
 var g_ALL_TYPE = {};
 var g_ALL_PROPERTY = {};
 var g_QUERY_TREE;
+var g_CURRENT_WEEK = 0;
+var g_CURRENT_USER = "";
 
 Options = new Object();
+Options.QueryCondition = new Object();
+QueryCondi = Options.QueryCondition;

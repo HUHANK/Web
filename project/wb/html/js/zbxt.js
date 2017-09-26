@@ -5,8 +5,8 @@ var NavbarIndexCookies = "HTZQ_NavbarIndex";
 
 function main() {
 	Options.SessionID = $.cookie("htzq_SessionID");
-	GInit();
 	InitHeader();
+	GInit();
 	var index = $.cookie(NavbarIndexCookies);
 	if (typeof index == "undefined") 
 		index = 1;
@@ -24,7 +24,8 @@ function InitHeader() {
 
 		txt = d.Date + "(第" + d.Week + "周)";
 		$(".header .subhead .rqxs").text(txt);
-
+		g_CURRENT_WEEK = d.Week;
+		g_CURRENT_USER = d.UserNmae;
 	});
 }
 
@@ -236,190 +237,190 @@ function navbar() {
 	});
 }
 
-function sidebar() {
-	var param = new Object();
-	param.method = "GET";
-	sync_post_data("/dict/", JSON.stringify(param), function(d) {
-		Options.Dicts = d;
-	});
+// function sidebar() {
+// 	var param = new Object();
+// 	param.method = "GET";
+// 	sync_post_data("/dict/", JSON.stringify(param), function(d) {
+// 		Options.Dicts = d;
+// 	});
 	
-	param.name = "all";
-	sync_post_data("/getuserinfo/", JSON.stringify(param), function(d) {
-		Options.UserInfo = d;
-	});
+// 	param.name = "all";
+// 	sync_post_data("/getuserinfo/", JSON.stringify(param), function(d) {
+// 		Options.UserInfo = d;
+// 	});
 
-	function sidebar_add_unit(obj, header, data, n) {
-		var shtml = '<div class="yj" name="' + n + '">' + header + '</div>';
-		shtml += '<div class="ej" name="' + n + '">';
-		shtml += '<span style="all">全选</span>';
-		for( var i=0; i<data.length; i++ ) {
-			shtml += '<span style="unit">' + data[i] + '</span>';
-		}
-		shtml += '</div>';
-		$(obj).append(shtml);
-	}
-	var data = [];
-	for(var i=0; i<Options.UserInfo.length; i++) {
-		data[i] = Options.UserInfo[i][1];
-	}
-	//$(".query .sidebar").children().remove();
-	$(".query .sidebar").html("");
-	sidebar_add_unit($(".query .sidebar"), "部门人员", data, "User");
+// 	function sidebar_add_unit(obj, header, data, n) {
+// 		var shtml = '<div class="yj" name="' + n + '">' + header + '</div>';
+// 		shtml += '<div class="ej" name="' + n + '">';
+// 		shtml += '<span style="all">全选</span>';
+// 		for( var i=0; i<data.length; i++ ) {
+// 			shtml += '<span style="unit">' + data[i] + '</span>';
+// 		}
+// 		shtml += '</div>';
+// 		$(obj).append(shtml);
+// 	}
+// 	var data = [];
+// 	for(var i=0; i<Options.UserInfo.length; i++) {
+// 		data[i] = Options.UserInfo[i][1];
+// 	}
+// 	//$(".query .sidebar").children().remove();
+// 	$(".query .sidebar").html("");
+// 	sidebar_add_unit($(".query .sidebar"), "部门人员", data, "User");
 
-	sidebar_add_unit($(".query .sidebar"), 
-				Options.Dicts.SysModule.note, 
-				Options.Dicts.SysModule.data,
-				"SysModule");
-	sidebar_add_unit($(".query .sidebar"), 
-				Options.Dicts.Type.note, 
-				Options.Dicts.Type.data,
-				"Type");
-	sidebar_add_unit($(".query .sidebar"), 
-				Options.Dicts.Property.note, 
-				Options.Dicts.Property.data,
-				"Property");
-	/*--------------------------------------------------*/
+// 	sidebar_add_unit($(".query .sidebar"), 
+// 				Options.Dicts.SysModule.note, 
+// 				Options.Dicts.SysModule.data,
+// 				"SysModule");
+// 	sidebar_add_unit($(".query .sidebar"), 
+// 				Options.Dicts.Type.note, 
+// 				Options.Dicts.Type.data,
+// 				"Type");
+// 	sidebar_add_unit($(".query .sidebar"), 
+// 				Options.Dicts.Property.note, 
+// 				Options.Dicts.Property.data,
+// 				"Property");
+// 	/*--------------------------------------------------*/
 
-	$(".query .sidebar .yj").click(function() {
-		var ej = $(this).next();
-		if (ej.css("display") == "block"){
-			ej.css("display", "none");
-		}else {
-			ej.css("display", "block");
-		}
-	});
+// 	$(".query .sidebar .yj").click(function() {
+// 		var ej = $(this).next();
+// 		if (ej.css("display") == "block"){
+// 			ej.css("display", "none");
+// 		}else {
+// 			ej.css("display", "block");
+// 		}
+// 	});
 
-	$('.query .sidebar .ej span[style="all"]').click(function() {
-		var key = $(this).parent().attr("name");
-		if ($(this).attr("class") == "sel") {
-			$(this).removeClass("sel");
-			$(this).siblings().each(function(index, data){
-				$(data).removeClass("select");
-				deal_query_condition(1, key, $(data).text());
-			});
-		} else {
-			$(this).addClass("sel");
-			$(this).siblings().each(function(index, data){
-				$(data).addClass("select");
-				deal_query_condition(0, key, $(data).text());
-			});
-		}
-		query_update_data(0);
-	});
-	$('.query .sidebar .ej span[style="unit"]').click(function() {
-		var key = $(this).parent().attr("name");
-		if ($(this).attr("class") == "select") {
-			$(this).removeClass("select");
-			deal_query_condition(1, key, $(this).text());
-		} else {
-			$(this).addClass("select");
-			deal_query_condition(0, key, $(this).text());
-		}
-		query_update_data(0);
-	});
+// 	$('.query .sidebar .ej span[style="all"]').click(function() {
+// 		var key = $(this).parent().attr("name");
+// 		if ($(this).attr("class") == "sel") {
+// 			$(this).removeClass("sel");
+// 			$(this).siblings().each(function(index, data){
+// 				$(data).removeClass("select");
+// 				deal_query_condition(1, key, $(data).text());
+// 			});
+// 		} else {
+// 			$(this).addClass("sel");
+// 			$(this).siblings().each(function(index, data){
+// 				$(data).addClass("select");
+// 				deal_query_condition(0, key, $(data).text());
+// 			});
+// 		}
+// 		query_update_data(0);
+// 	});
+// 	$('.query .sidebar .ej span[style="unit"]').click(function() {
+// 		var key = $(this).parent().attr("name");
+// 		if ($(this).attr("class") == "select") {
+// 			$(this).removeClass("select");
+// 			deal_query_condition(1, key, $(this).text());
+// 		} else {
+// 			$(this).addClass("select");
+// 			deal_query_condition(0, key, $(this).text());
+// 		}
+// 		query_update_data(0);
+// 	});
 
-	query_update_data(0);
-}
+// 	query_update_data(0);
+// }
 
-/*type:0 add type:1 delete*/
-function deal_query_condition(type, key, value) {
-	var qs;
-	var NeedQueryBackground = 1;
-	if (type == 0) {
-		//add
-		if ("User" == key) {
-			qs = Options.QueryCondition.User;
-			/*把用户的中文名转成对应的用户ID*/
-			for(var i=0; i<Options.UserInfo.length; i++){
-				if(Options.UserInfo[i][1] == value) {
-					value = Options.UserInfo[i][0];
-				}
-			}
-		} else if ("SysModule" == key) {
-			qs = Options.QueryCondition.SysModule;
-		} else if ("Property" == key) {
-			qs = Options.QueryCondition.Property;
-		} else if ("Type" == key) {
-			qs = Options.QueryCondition.Type;
-		}
-		for(var i=0; i<qs.length; i++) {
-			if (qs[i] == value) {
-				NeedQueryBackground = 0;
-			}
-		}
-		if (NeedQueryBackground == 1) {
-			qs.push(value);
-		}
-	} else if (type == 1) {
-		//delete
-		if ("User" == key) {
-			qs = Options.QueryCondition.User;
-			/*把用户的中文名转成对应的用户ID*/
-			for(var i=0; i<Options.UserInfo.length; i++){
-				if(Options.UserInfo[i][1] == value) {
-					value = Options.UserInfo[i][0];
-				}
-			}
-		} else if ("SysModule" == key) {
-			qs = Options.QueryCondition.SysModule;
-		} else if ("Property" == key) {
-			qs = Options.QueryCondition.Property;
-		} else if ("Type" == key) {
-			qs = Options.QueryCondition.Type;
-		}
-		for(var i=0; i<qs.length; i++) {
-			if (qs[i] == value) {
-				//delete qs[i];
-				qs.splice(i, 1);
-			}
-		}
-	}
+// /*type:0 add type:1 delete*/
+// function deal_query_condition(type, key, value) {
+// 	var qs;
+// 	var NeedQueryBackground = 1;
+// 	if (type == 0) {
+// 		//add
+// 		if ("User" == key) {
+// 			qs = Options.QueryCondition.User;
+// 			/*把用户的中文名转成对应的用户ID*/
+// 			for(var i=0; i<Options.UserInfo.length; i++){
+// 				if(Options.UserInfo[i][1] == value) {
+// 					value = Options.UserInfo[i][0];
+// 				}
+// 			}
+// 		} else if ("SysModule" == key) {
+// 			qs = Options.QueryCondition.SysModule;
+// 		} else if ("Property" == key) {
+// 			qs = Options.QueryCondition.Property;
+// 		} else if ("Type" == key) {
+// 			qs = Options.QueryCondition.Type;
+// 		}
+// 		for(var i=0; i<qs.length; i++) {
+// 			if (qs[i] == value) {
+// 				NeedQueryBackground = 0;
+// 			}
+// 		}
+// 		if (NeedQueryBackground == 1) {
+// 			qs.push(value);
+// 		}
+// 	} else if (type == 1) {
+// 		//delete
+// 		if ("User" == key) {
+// 			qs = Options.QueryCondition.User;
+// 			/*把用户的中文名转成对应的用户ID*/
+// 			for(var i=0; i<Options.UserInfo.length; i++){
+// 				if(Options.UserInfo[i][1] == value) {
+// 					value = Options.UserInfo[i][0];
+// 				}
+// 			}
+// 		} else if ("SysModule" == key) {
+// 			qs = Options.QueryCondition.SysModule;
+// 		} else if ("Property" == key) {
+// 			qs = Options.QueryCondition.Property;
+// 		} else if ("Type" == key) {
+// 			qs = Options.QueryCondition.Type;
+// 		}
+// 		for(var i=0; i<qs.length; i++) {
+// 			if (qs[i] == value) {
+// 				//delete qs[i];
+// 				qs.splice(i, 1);
+// 			}
+// 		}
+// 	}
 
-}
+// }
 
-function query_update_data(page) {
-	var param = Options.QueryCondition;
-	param.Page = page;
-	post_data("/query1/", JSON.stringify(param), function(d) {
-		d = $.parseJSON(d);
-		//draw_table($(".query .result .box"), d.header, d.data); 
-		$(".query .result .box").html("");
+// function query_update_data(page) {
+// 	var param = Options.QueryCondition;
+// 	param.Page = page;
+// 	post_data("/query1/", JSON.stringify(param), function(d) {
+// 		d = $.parseJSON(d);
+// 		//draw_table($(".query .result .box"), d.header, d.data); 
+// 		$(".query .result .box").html("");
 
-		jeui.use(["jeTable", "jeCheck"], function() {
-			$(".query .result .box").jeTable({
-				height:"740",
-				isPage: false,
-				datas: d.rows,
-				columnSort:[],
-				columns:[
-					{name:"ID", 		field:"id", 		width:"40", align: "center", isShow:true, renderer:""},
-					{name:"用户名", 		field:"UserName", 	width:"60", align: "center"},
-					{name:"系统(模块)",	field:"SysModule", 	width:"140", align: "center"},
-					{name:"类型", 		field:"Type", 		width:"70", align: "center"},
-					{name:"跟踪号", 		field:"TraceNo", 	width:"60", align: "center"},
-					{name:"工作内容", 	field:"Detail", 	width:"300", align: "center"},
-					{name:"性质", 		field:"Property", 	width:"70", align: "center"},
-					{name:"进度", 		field:"ProgressRate", width:"40", align: "center"},
-					{name:"开始日期", 	field:"StartDate", 	width:"100", align: "center"},
-					{name:"后续人日", 	field:"NeedDays", 	width:"70", align: "center"},
-					{name:"备注", 		field:"Note", 		width:"300", align: "center"}
-				],
-				itemfun:function(elem, data) {
-					elem.on('dblclick', function(event) {
-						event.preventDefault();
-						/* Act on the event */
-					});
-				}
-			});
-		});
+// 		jeui.use(["jeTable", "jeCheck"], function() {
+// 			$(".query .result .box").jeTable({
+// 				height:"740",
+// 				isPage: false,
+// 				datas: d.rows,
+// 				columnSort:[],
+// 				columns:[
+// 					{name:"ID", 		field:"id", 		width:"40", align: "center", isShow:true, renderer:""},
+// 					{name:"用户名", 		field:"UserName", 	width:"60", align: "center"},
+// 					{name:"系统(模块)",	field:"SysModule", 	width:"140", align: "center"},
+// 					{name:"类型", 		field:"Type", 		width:"70", align: "center"},
+// 					{name:"跟踪号", 		field:"TraceNo", 	width:"60", align: "center"},
+// 					{name:"工作内容", 	field:"Detail", 	width:"300", align: "center"},
+// 					{name:"性质", 		field:"Property", 	width:"70", align: "center"},
+// 					{name:"进度", 		field:"ProgressRate", width:"40", align: "center"},
+// 					{name:"开始日期", 	field:"StartDate", 	width:"100", align: "center"},
+// 					{name:"后续人日", 	field:"NeedDays", 	width:"70", align: "center"},
+// 					{name:"备注", 		field:"Note", 		width:"300", align: "center"}
+// 				],
+// 				itemfun:function(elem, data) {
+// 					elem.on('dblclick', function(event) {
+// 						event.preventDefault();
+// 						/* Act on the event */
+// 					});
+// 				}
+// 			});
+// 		});
 
-		//console.info(d);
-		$(".query .result .ztl .totalPage").text(d.totalPage);
-		$(".query .result .ztl .totalCount").text(d.totalCount);
-		$(".query .result .ztl .pageIndex").text(page+1);
+// 		//console.info(d);
+// 		$(".query .result .ztl .totalPage").text(d.totalPage);
+// 		$(".query .result .ztl .totalCount").text(d.totalCount);
+// 		$(".query .result .ztl .pageIndex").text(page+1);
 
-	});
-}
+// 	});
+// }
 
 function data_protect(){
 	//update_sjwh_dict();

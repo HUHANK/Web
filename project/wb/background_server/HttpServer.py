@@ -5,6 +5,7 @@ from config import *
 from RouteHandler import *
 from InitJSDefinition import *
 from Session import  *
+from Crontab import *
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -55,4 +56,5 @@ if __name__ == "__main__":
     print Options
     #initJS()
     #sjwhzdwh("{}");
+    startCrontab();
     start_server(HTTP_SERVER_PORT)
