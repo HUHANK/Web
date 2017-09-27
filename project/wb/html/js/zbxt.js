@@ -17,8 +17,8 @@ function main() {
 function InitHeader() {
 	var param = new Object();
 	param.SessionID = Options.SessionID;
-	post_data("/baseinfo/", JSON.stringify(param), function(d) {
-		d = $.parseJSON(d);
+	sync_post_data("/baseinfo/", JSON.stringify(param), function(d) {
+		//d = $.parseJSON(d);
 		var txt = "你好，" + d.UserName + "！";
 		$(".header .subhead .yhxs").text(txt);
 
@@ -32,7 +32,7 @@ function InitHeader() {
 function GInit(){
 	
 	/*动态加载CSS文件*/
-	$("<link>").attr({ rel: "stylesheet",type: "text/css",href: "css/zbxt.css"}).appendTo("head");
+	//$("<link>").attr({ rel: "stylesheet",type: "text/css",href: "css/zbxt.css"}).appendTo("head");
 
 	Options.QueryCondition = new Object();
 	Options.QueryCondition.User = [];
@@ -84,14 +84,14 @@ function GInit(){
 					param.condi = {};
 					param.condi.parent = id;
 					sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
-						console.info("result",d);
+						//console.info("result",d);
 						if (d.ErrCode == 0) {
 							var data = d.data;
 							var shtml = "<option name='-1'></option>";
 							for(var i=0; i<data.length; i++) {
 								shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
 							}
-							console.info(shtml);
+							//console.info(shtml);
 							var yj = $(".sjwh .wrap .zdwh fieldset .first");
 							yj.html("");
 							yj.val("");
@@ -114,7 +114,7 @@ function GInit(){
 							for(var i=0; i<data.length; i++) {
 								shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
 							}
-							console.info(shtml);
+							//console.info(shtml);
 							var yj = $(".sjwh .wrap .zdwh fieldset .second");
 							yj.html("");
 							yj.val("");
@@ -143,9 +143,9 @@ function GUpdateBaseinfo(){
 			g_ALL_TYPE = d.Type;
 			g_ALL_PROPERTY = d.Property;
 			//console.info("System",g_ALL_SYSTEM);
-			console.info(g_ALL_USER);
-			console.info(g_ALL_DEPART);
-			console.info(g_ALL_GROUP);
+			//console.info(g_ALL_USER);
+			//console.info(g_ALL_DEPART);
+			//console.info(g_ALL_GROUP);
 		}else{
 			alert("您没有登录！");
 			window.location.href = "login.html";
@@ -737,7 +737,7 @@ function data_protect(){
 					}
 					rot.html(shtml);
 
-					console.info($("#je-popup-box-wrap .zdwh .root option"));
+					//console.info($("#je-popup-box-wrap .zdwh .root option"));
 					$("#je-popup-box-wrap .zdwh .root option").click(function(){
 						$(this).parent().children().removeAttr('selected');
 						$(this).attr("selected", "selected");
@@ -925,7 +925,7 @@ function sjwh_xzgl_show() {
 					$(".sjwh .wrap .xzgl .table2 button").click(function(){
 						var param = new Object();
 						param.SessionID  = Options.SessionID;
-						console.info($(this).attr("name"));
+						//console.info($(this).attr("name"));
 						if ($(this).attr("type") == "delete") {
 							param.method = "DELETE_USER_GROUP";
 							param.id = $(this).attr("name");
@@ -1184,9 +1184,9 @@ function home_page() {
 	param.SessionID = Options.SessionID;
 	post_data("/home/", JSON.stringify(param), function(d) {
 		d = $.parseJSON(d);
-		console.info(d);
+		//console.info(d);
 		if (d.ErrCode == 0) {
-			console.info(d.data);
+			//console.info(d.data);
 			je_table($(".home-page .wdbzgz"),{
 				width: "1083",
 				isPage: false,

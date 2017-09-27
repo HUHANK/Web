@@ -17,10 +17,10 @@ function query_sidebar_add_list(obj, data) {
 
 	function add_leaf_node(obj, data) {
 		if (data.id == 0) {
-			var btn = $("<button></button>").text("取消全部").addClass("je-btn je-btn-mini cancle").css("margin-left", "2px");
+			var btn = $("<button></button>").text("取消全部").addClass("je-btn je-btn-mini je-bg-native cancle").css("margin-left", "2px");
 			$(obj).append(
 				$(li).append(
-					$(span).append($("<button></button>").text(data.name).addClass("je-btn je-btn-mini all"), btn)
+					$(span).append($("<button></button>").text(data.name).addClass("je-btn je-btn-mini je-bg-native all"), btn)
 				).addClass("leaf").attr("attr", data.attr + "," + data.id)
 			);
 		} else {
@@ -108,11 +108,11 @@ function query_sidebar_init() {
 		var tmp = g_QUERY_TREE[ii];
 		
 		if (tmp.name == "开发部门") {
-			console.info(tmp);
+			//console.info(tmp);
 			query_sidebar_add_list($(".query .sidebar .kfbm"), tmp);
 			
 		}else if (tmp.name == "系统"){
-			console.info(tmp);
+			//console.info(tmp);
 			query_sidebar_add_list($(".query .sidebar .xt"), tmp);
 			
 		}else if (tmp.name == "类型") {
@@ -139,7 +139,9 @@ function query_sidebar_init() {
 			$(this).addClass('selected');
 		}
 
-		if ($(this).parent().hasClass('week')){
+		if ($(this).parent().hasClass('week') || 
+			$(this).parent().hasClass('schedule') ||
+			$(this).parent().hasClass('delay') ){
 			if ($(this).parent().children(".content").css("display") == "none") {
 				$(this).parent().children(".content").css("display", "block");
 			} else {
@@ -207,8 +209,6 @@ function query_sidebar_init() {
 		query_get_result(0);
 	});
 
-	query_get_result(0);
-
 	$(".query .result .ztl button").click(function(){
 		var pageIndex = parseInt($(".query .result .ztl .pageIndex").text());
 		var totalPage = parseInt($(".query .result .ztl .totalPage").text());
@@ -232,10 +232,16 @@ function query_sidebar_init() {
 		query_get_result(pageIndex - 1);
 	});
 
-	console.info(g_CURRENT_WEEK);
+	//console.info(g_CURRENT_WEEK);
 	$(".query .sidebar .week .content input").val(g_CURRENT_WEEK);
+	/*跟新查询条件*/
+	if (typeof(QueryCondi.week) == "undefined" ) {
+		QueryCondi.week = {};
+	}
+	QueryCondi.week.start = g_CURRENT_WEEK;
+	QueryCondi.week.end = g_CURRENT_WEEK;
 	$(".query .sidebar .week .content input").change(function(e){
-		console.info($(this));
+		//console.info($(this));
 		var start = 0;
 		var end = 0;
 		if ($(this).hasClass("start")) {
@@ -243,6 +249,7 @@ function query_sidebar_init() {
 			end = parseInt($(this).siblings().val());
 			if (start > end ){
 				$(this).siblings().val(start);
+				end = start;
 			}
 		}
 		if ($(this).hasClass("end")) {
@@ -251,10 +258,78 @@ function query_sidebar_init() {
 			if (end < start) {
 				alert("结束周期不能小于开始周期，请检查！");
 				$(this).val(start);
+				end = start;
 			}
 		}
+
+		/*跟新查询条件*/
+		if (typeof(QueryCondi.week) == "undefined" ) {
+			QueryCondi.week = {};
+		}
+		QueryCondi.week.start = start;
+		QueryCondi.week.end = end;
+
+		/*跟新结果*/
+		query_get_result(0);
 	});
 
+	$(".query .sidebar .schedule .content .all").removeClass("je-bg-native");
+	$(".query .sidebar .schedule .content button").click(function(){
+		if (!$(this).hasClass("je-bg-native")) {
+			return;
+		}
+		$(this).parent().children().each(function(index, data){
+			if (!$(data).hasClass("je-bg-native")){
+				$(data).addClass("je-bg-native");
+			}
+		});
+		$(this).removeClass("je-bg-native");
+		/*跟新查询条件*/
+		if (typeof(QueryCondi.schedule) == "undefined" ) {
+			QueryCondi.schedule = -1;
+		}
+		if ($(this).hasClass("all")) {
+			QueryCondi.schedule = -1;
+		}
+		if ($(this).hasClass("wwc")) {
+			QueryCondi.schedule = 0;
+		}
+		if ($(this).hasClass("ywc")) {
+			QueryCondi.schedule = 100;
+		}
+		/*跟新结果*/
+		query_get_result(0);
+	});
+
+	$(".query .sidebar .delay .content .all").removeClass("je-bg-native");
+	$(".query .sidebar .delay .content button").click(function(){
+		if (!$(this).hasClass("je-bg-native")) {
+			return;
+		}
+		$(this).parent().children().each(function(index, data){
+			if (!$(data).hasClass("je-bg-native")){
+				$(data).addClass("je-bg-native");
+			}
+		});
+		$(this).removeClass("je-bg-native");
+		/*跟新查询条件*/
+		if (typeof(QueryCondi.delay) == "undefined" ) {
+			QueryCondi.delay = -1;
+		}
+		if ($(this).hasClass("all")) {
+			QueryCondi.delay = -1;
+		}
+		if ($(this).hasClass("wyw")) {
+			QueryCondi.delay = 0;
+		}
+		if ($(this).hasClass("yyw")) {
+			QueryCondi.delay = 1;
+		}
+		/*跟新结果*/
+		query_get_result(0);
+	});
+
+	query_get_result(0);
 }
 
 function query_get_result(page) {
@@ -263,7 +338,8 @@ function query_get_result(page) {
 	param.condition = QueryCondi;
 	param.page = page;
 	param.pageSize = 15;
-	console.info(g_ALL_USER);
+	//console.info("Condition:",QueryCondi);
+	//console.info(g_ALL_USER);
 	post_data("/query/", JSON.stringify(param), function(d){
 		d = $.parseJSON(d);
 		if (d.ErrCode != 0) {
@@ -280,7 +356,7 @@ function query_get_result(page) {
 				}
 			}
 		}
-		console.info(d.data);
+		//console.info(d.data);
 		$(".query .result .box").html("");
 		je_table($(".query .result .box"), {
 			height: "740",

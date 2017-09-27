@@ -318,7 +318,7 @@ def getUserInfo(data):
 @route("/query/")
 def queryData(data):
     data = json.loads(data)
-    print data
+    #print data
     ret = {}
     db = Options['mysql']
 
@@ -339,6 +339,9 @@ def queryData(data):
     type = condi.get("type", None)
     property = condi.get("property", None)
     system = condi.get("system", None)
+    week = condi.get("week", None)
+    schedule = condi.get("schedule", None)
+    delay = condi.get("delay", None)
 
     sqlcondi = ""
     if user != None:
@@ -375,6 +378,26 @@ def queryData(data):
                 sqlcondi += "'" + str(system[i].get("name", "")) + "',"
             sqlcondi = sqlcondi.rstrip(",")
             sqlcondi += ") "
+    if week != None:
+        if len(week) > 0:
+            if len(sqlcondi) > 0:
+                sqlcondi += " AND "
+            sqlcondi += " A.WEEK BETWEEN %s AND %s " % (week.get("start", 0), week.get("end", 0))
+    if schedule != None:
+        if len(sqlcondi) > 0 and schedule >= 0:
+            sqlcondi += " AND "
+        if schedule == 0:
+            sqlcondi += " B.ProgressRate BETWEEN 0 AND 99 "
+        elif schedule == 100:
+            sqlcondi += " B.ProgressRate = 100 "
+    if delay != None:
+        if len(sqlcondi) > 0 and delay >= 0:
+            sqlcondi += " AND "
+        if delay == 0:
+            sqlcondi += " date_add(B.StartDate, INTERVAL (B.NeedDays+1)*24 hour) >= now() "
+        if delay == 1:
+            sqlcondi += " date_add(B.StartDate, INTERVAL (B.NeedDays+1)*24 hour) < now() "
+
 
     if len(sqlcondi) > 0:
         sql += " where " + sqlcondi + sqllimit
@@ -382,8 +405,6 @@ def queryData(data):
     else:
         sql += sqllimit
 
-    print sql
-    print sqlc
     rs = db.select2(sqlc)
     ret["total"] = rs["data"][0].get("COUNT", 0)
     rs = db.select2(sql)

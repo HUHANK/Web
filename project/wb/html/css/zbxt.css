@@ -162,7 +162,8 @@ table tbody tr:hover{
 .query .sidebar .leaf > span{
 	background-color: white;
 }
-.query .sidebar .week .content{
+.query .sidebar .content{
+	padding: 4px;
 	background-color: white;
 	text-align: center;
 	display: none;
