@@ -59,7 +59,7 @@ function add_zb_ginit() {
 function add_zb_form_clean() {
 	var editForm = $(".add-zb .edit .form");
 	editForm.find("select").html("");
-	editForm.find("input").val("");
+	//editForm.find("input").val("");
 	editForm.find("textarea").val("");
 }
 

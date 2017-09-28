@@ -6,19 +6,20 @@
 	
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/jquery.base64.js"></script>
 	<script type="text/javascript" src="plug-in/jedate/jedate.min.js"></script>
 	<script type="text/javascript" src="plug-in/jeui/js/modules/jeui.js"></script>
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=1.1.2"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=1.1.2"></script>
-	<script type="text/javascript" src="js/addwork.js?version=1.1.2"></script>
-	<script type="text/javascript" src="js/mquery.js?version=1.1.2"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=1.1.2"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.1.2">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.1.2">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.1.2">
+	<script type="text/javascript" src="js/ginit.js?version=1.1.4"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=1.1.4"></script>
+	<script type="text/javascript" src="js/addwork.js?version=1.1.4"></script>
+	<script type="text/javascript" src="js/mquery.js?version=1.1.4"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=1.1.4"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.1.4">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.1.4">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.1.4">
 </head>
 <body>
 	<!--弹出框-->
@@ -103,6 +104,11 @@
 							<button class="je-btn je-btn-mini je-bg-native all">全部</button>
 							<button class="je-btn je-btn-mini je-bg-native wyw">未延误</button>
 							<button class="je-btn je-btn-mini je-bg-native yyw">已延误</button>
+						</div>
+					</li>
+					<li class="export layer1"><span>导出</span>
+						<div class="content">
+							<button class="je-btn je-btn-mini je-bg-native dc">导出</button>
 						</div>
 					</li>
 				</ul>
@@ -209,7 +215,7 @@
 			                <div class="je-w33 je-dib">
 			                    <label class="je-label je-f14">后续人日</label>
 			                    <div class="je-inputbox">
-			                        <input type="text" name="" autocomplete="off" placeholder="请输入" class="je-input fhxrr">
+			                        <input type="number" name="" autocomplete="off" placeholder="请输入" class="je-input fhxrr">
 			                    </div>
 			                </div>
 			            </div>

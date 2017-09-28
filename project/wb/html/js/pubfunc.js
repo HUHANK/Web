@@ -43,7 +43,7 @@ function draw_drop_down_box_select(obj, datas) {
 }
 
 
-var HostUrl = "http://127.0.0.1:5002";
+var HostUrl = "http://127.0.0.1:5005";
 
 function post_data(path, data, func) {
 	var surl = HostUrl;
@@ -152,9 +152,28 @@ function je_table(obj, opts) {
 
 /*支持浏览器验证，通过返回true*/
 function Support_for_browser_validation() {
-	var userAgent = navigator.userAgent.toLowerCase();
-	//console.log(userAgent);
-	return true;
+	
+	var Sys = {};
+	var ua = navigator.userAgent.toLowerCase();
+	var s;
+	(s = ua.match(/msie ([\d.]+)/)) ? Sys.ie = s[1] :
+	(s = ua.match(/firefox\/([\d.]+)/)) ? Sys.firefox = s[1] :
+	(s = ua.match(/chrome\/([\d.]+)/)) ? Sys.chrome = s[1] :
+	(s = ua.match(/opera.([\d.]+)/)) ? Sys.opera = s[1] :
+	(s = ua.match(/version\/([\d.]+).*safari/)) ? Sys.safari = s[1] : 0;
+	 
+	//以下进行测试
+	// if (Sys.ie) console.info('IE: ' + Sys.ie);
+	// if (Sys.firefox) console.info('Firefox: ' + Sys.firefox);
+	// if (Sys.chrome) console.info('Chrome: ' + Sys.chrome);
+	// if (Sys.opera) console.info('Opera: ' + Sys.opera);
+	// if (Sys.safari) console.info('Safari: ' + Sys.safari);
+	/*暂时只支持火狐，谷歌，safari浏览器*/
+	if ( Sys.firefox || Sys.chrome || Sys.safari ) {
+		return true;
+	}
+
+	return false;
 }
 
 function deal_query_condition_array(arr, obj, type) {

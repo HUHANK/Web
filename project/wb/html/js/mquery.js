@@ -141,7 +141,8 @@ function query_sidebar_init() {
 
 		if ($(this).parent().hasClass('week') || 
 			$(this).parent().hasClass('schedule') ||
-			$(this).parent().hasClass('delay') ){
+			$(this).parent().hasClass('delay') ||
+			$(this).parent().hasClass('export') ){
 			if ($(this).parent().children(".content").css("display") == "none") {
 				$(this).parent().children(".content").css("display", "block");
 			} else {
@@ -327,6 +328,16 @@ function query_sidebar_init() {
 		}
 		/*跟新结果*/
 		query_get_result(0);
+	});
+
+	$(".query .sidebar .export .content button").click(function() {
+		var param = new Object();
+		sync_post_data("/export/", JSON.stringify(param), function(d) {
+			console.info(d);
+			console.info(window.btoa, window.atob);
+
+			console.info($.base64.atob(d.data));
+		});
 	});
 
 	query_get_result(0);

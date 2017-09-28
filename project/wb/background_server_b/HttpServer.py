@@ -63,5 +63,5 @@ if __name__ == "__main__":
     print Options
     #initJS()
     #sjwhzdwh("{}");
-    startCrontab();
+    #startCrontab();
     start_server(HTTP_SERVER_PORT)
