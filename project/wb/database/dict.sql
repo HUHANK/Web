@@ -1,7 +1,6 @@
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (1, '系统', 0, 0, 1);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (2, '类型', 0, 0, 1);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (3, '性质', 0, 0, 1);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (32, '集中交易系统', 0, 1, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (34, '监管需求', 0, 2, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (35, '业务需求', 0, 2, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (36, '内部优化', 0, 2, 0);
@@ -17,24 +16,9 @@ INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (48, '设�
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (49, '复读', 0, 3, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (50, '测试沟通', 0, 3, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (51, '问题排查', 0, 3, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (53, '融出资金债权', 0, 1, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (54, '需求确认', 0, 3, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (56, '整理文档', 0, 3, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (58, '进度跟踪', 0, 3, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (59, 'CFMAKE', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (61, '银证前置', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (62, '中登前置', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (64, '市场信息转换', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (65, '行情转换', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (66, '行情服务器', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (67, '清算录入', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (68, 'OFS日终处理平台', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (69, '周边系统-hiswitchbu', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (70, '周边工具', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (76, '融资融券交易', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (77, '股票质押约定购回', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (78, '信用交易系统', 0, 1, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (79, '信用管理系统', 0, 1, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (85, '集中交易', 0, 1, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (86, '信用交易', 0, 1, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (87, '信用管理', 0, 1, 0);
@@ -62,3 +46,4 @@ INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (108, 'KST
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (109, 'UGFIX', 0, 92, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (110, 'TPCTS', 0, 92, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (111, 'EMS', 0, 92, 0);
+INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (114, '通讯互联网关', 0, 90, 0);

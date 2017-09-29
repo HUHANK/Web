@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-09-22 17:53:28
+Date: 2017-09-29 15:51:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,7 +24,7 @@ CREATE TABLE `department` (
   `name` varchar(64) NOT NULL DEFAULT '',
   `manager` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for dict
@@ -37,7 +37,7 @@ CREATE TABLE `dict` (
   `parent` int(11) NOT NULL DEFAULT '0',
   `isRoot` tinyint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for dictionary
@@ -51,6 +51,17 @@ CREATE TABLE `dictionary` (
   `NOTE` varchar(1024) NOT NULL DEFAULT '',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for session
+-- ----------------------------
+DROP TABLE IF EXISTS `session`;
+CREATE TABLE `session` (
+  `id` char(36) NOT NULL,
+  `uname` varchar(16) DEFAULT NULL,
+  `login_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for user
@@ -88,7 +99,7 @@ CREATE TABLE `work_detail` (
   `System` varchar(36) NOT NULL,
   `Module` varchar(36) NOT NULL,
   `Type` varchar(12) NOT NULL DEFAULT '' COMMENT '类型',
-  `TraceNo` varchar(12) NOT NULL DEFAULT '' COMMENT '跟踪号',
+  `TraceNo` varchar(32) NOT NULL DEFAULT '' COMMENT '跟踪号',
   `Detail` varchar(512) NOT NULL DEFAULT '' COMMENT '工作内容',
   `Property` varchar(12) NOT NULL DEFAULT '' COMMENT '性质',
   `ProgressRate` int(11) NOT NULL DEFAULT '0',
@@ -98,7 +109,7 @@ CREATE TABLE `work_detail` (
   `EditDate` varchar(10) DEFAULT NULL,
   `Note` varchar(512) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=267 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=396 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for xgroup
@@ -110,4 +121,4 @@ CREATE TABLE `xgroup` (
   `manager` int(10) unsigned NOT NULL,
   `depart_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
