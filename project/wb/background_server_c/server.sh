@@ -9,5 +9,12 @@ if [ "$1" == "stop" ]; then
 		echo $pid
 		kill -9 $pid
 	done
+fi
 
+if [ "$1" == "check" ]; then
+	echo "-------------------------------------"
+	pstree | grep python
+	echo "#####################################"
+	ps aux | grep python
+	echo "-------------------------------------"
 fi
