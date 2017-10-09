@@ -51,6 +51,13 @@
     <button style="padding: 10px; margin: 100px;margin-left: 600px;">模式1</button>
 
     <script type="text/javascript">
+        re = /^(需求|任务|BUG)#/
+        re2 = /\#/
+        console.info(re);
+        console.log(re.test("BUG#1203"));
+        console.info(re2.test("任务#"));
+        console.info(re2.lastIndex);
+
         $("button").click(function(){
             if ($(".hyl-modal").hasClass("hyl-show")) {
                 $(".hyl-modal").removeClass("hyl-show");

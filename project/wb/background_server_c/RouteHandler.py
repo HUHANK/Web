@@ -167,9 +167,14 @@ def getdict(data):
             pass
     return json.dumps(result)
 
+def updateEditDate(db, id):
+    sql = "update work_detail set EditDate = %s where id = %s" % (getNowDate2(), id)
+    db.update(sql)
+
 @route("/report/")
 def reportProcess(data):
     data = json.loads(data)
+    print data
     sessionData = findSession(data.get("SessionID", ""))
     if sessionData is None:
         print u"用户未登录！"
@@ -183,10 +188,10 @@ def reportProcess(data):
         #print data
         #(Year, Week, Day) = getYearWeek(data["StartDate"])
         Week = Week + data.get("Week", 0)
-        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate) VALUES(" \
-              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s')" %(
+        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate, EditDate) VALUES(" \
+              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s', '%s')" %(
                 data['System'], data['Module'], data['Type'], data["TraceNo"], data["Detail"], \
-                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Note"], getNowDate2())
+                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Note"], getNowDate2(), getNowDate2())
         id = db.update(sql)
         if id < 0:
             setErrMsg(ret, 2, "数据库插入失败！")
@@ -238,16 +243,42 @@ def reportProcess(data):
         setErrMsg(ret, 0, "")
         return json.dumps(ret)
     elif data["method"] == "DELETE":
-        sql = "delete from user_work where WID=%s" % (data.get("id", -1))
+        dweek = data.get("week", None)
+        if dweek is None:
+            setErrMsg(ret, 3, u"您所传的参数中没能找到week，请检查！")
+            return json.dumps(ret)
+        sql = "delete from user_work where WID=%s and WEEK=%s" % (data.get("id", -1), (Week+dweek))
         if db.update(sql) < 0:
             setErrMsg(ret, 2, u"数据库删除失败!")
             return json.dumps(ret)
-        sql = "delete from work_detail where id=%s" % (data.get("id", -1))
-        if db.update(sql) < 0:
-            setErrMsg(ret, 2, u"数据库删除失败!")
-            return json.dumps(ret)
+        sql = "select * from user_work where WID=%s" % (data.get("id", -1))
+        rs = db.select2(sql)
+        if len(rs["data"]) <= 0:
+            sql = "delete from work_detail where id=%s" % (data.get("id", -1))
+            if db.update(sql) < 0:
+                setErrMsg(ret, 2, u"数据库删除失败!")
+                return json.dumps(ret)
         setErrMsg(ret, 0, "")
         return json.dumps(ret)
+    elif data["method"] == "TURN_NEXT":
+        sql = "select * from user_work where WID=%s and WEEK = %s" % (data.get("id", -1), Week+1)
+        rs = db.select2(sql)
+        print rs["data"]
+        if len(rs["data"]) > 0:
+            setErrMsg(ret, 3, u"该任务已经在下周里面，无法重复添加！");
+            return json.dumps(ret)
+
+        sql = "INSERT into user_work(UID, WID, YEAR, WEEK) SELECT UID, WID, YEAR, WEEK+1 from user_work where WID = %s and WEEK = %s" % (data.get("id", -1), Week)
+        if db.update(sql) < 0:
+            setErrMsg(ret, 2, u"数据库跟新失败！")
+            return json.dumps(ret)
+        updateEditDate(db, data.get("id", -1));
+
+        setErrMsg(ret, 0, "")
+        return json.dumps(ret)
+
+
+
     setErrMsg(ret, 3, "未知参数！")
     return json.dumps(ret)
 

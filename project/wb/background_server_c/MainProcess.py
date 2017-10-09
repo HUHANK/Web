@@ -60,8 +60,6 @@ def MainProcess(queue):
 
     while True:
         data = queue.get()
-        # print Options
-        # print data
         startTime = getNowTimestamp()
         method = data.get("method", None)
         if method is None:

@@ -2,7 +2,7 @@
 
 HTTP_SERVER_PORT = 5010
 
-MAIN_PROCESS_NUM = 5
+MAIN_PROCESS_NUM = 1
 
 
 
@@ -13,10 +13,6 @@ MYSQL_USER = 'root'
 MYSQL_PWD  = '123456'
 MYSQL_DB   = 'weekreportsys'
 
-
-
-#
-JS_DIR = 'E:/Git_WorkSpace/GitHub/Web/project/wb/html/js/init.js'
 
 
 

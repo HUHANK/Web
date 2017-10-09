@@ -6,11 +6,12 @@ function add_zb_ginit() {
 		format:"YYYY-MM-DD",
 		isTime:false, //isClear:false,
 		isinitVal:true,
-		minDate:"2014-10-19 00:00:00",
+		minDate:"2017-9-1 00:00:00",
 		maxDate:"2020-11-8 00:00:00"
 	});
 
 	$(".add-zb .edit .form .update").attr('disabled', '');
+	$(".add-zb .edit .form .cancle").attr('disabled', '');
 
 	jeui.use(["jeSelect"], function(){
 		$(".add-zb .edit .form select").jeSelect({
@@ -168,6 +169,18 @@ function add_zb() {
 		param.NeedDays = hxrr.val();
 		param.Note = bz.val();
 
+		/*检查用户输入参数是否有问题*/
+		var re = /^\d+$/
+		if (!re.test(param.NeedDays)) {
+			alert("后续人日不能为非正整数！")
+			return;
+		}
+		re = /^(需求|任务|BUG)#/
+		if (!re.test(param.TraceNo)) {
+			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG]#[XXXX]格式填写！")
+			return;
+		}
+
 		post_data("/report/", JSON.stringify(param), function(d) {
 			d = $.parseJSON(d);
 			if (d.ErrCode == 0) {
@@ -236,7 +249,19 @@ function add_zb() {
 		param.NeedDays = hxrr.val();
 		param.Note = bz.val();
 
-		console.info(param);
+		/*检查用户输入参数是否有问题*/
+		var re = /^\d+$/
+		if (!re.test(param.NeedDays)) {
+			alert("后续人日不能为非正整数！")
+			return;
+		}
+		re = /^(需求|任务|BUG)#/
+		if (!re.test(param.TraceNo)) {
+			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG]#[XXXX]格式填写！")
+			return;
+		}
+
+		//console.info(param);
 
 		post_data("/report/", JSON.stringify(param), function(d) {
 			d = $.parseJSON(d);
@@ -269,6 +294,40 @@ function add_zb() {
 		});
 	});
 
+	$(".add-zb .edit .form .cancle").click(function () {
+		var fom = $(".add-zb .edit .form");
+		var sys = fom.find(".fsys");
+		var mod = fom.find(".fmod");
+		var type = fom.find(".ftype");
+		var property = fom.find(".fprop");
+		var jd = fom.find(".fjd");
+		var gzh = fom.find(".fgzh");
+		var gznr = fom.find(".fgznr");
+		var ksrq = fom.find(".ksrq");
+		var hxrr = fom.find(".fhxrr");
+		var bz = fom.find(".fbz");
+
+		//sys.val('');
+		sys.siblings('.je-select').html("");
+		//mod.val("");
+		mod.siblings('.je-select').html("");
+		//type.val("");
+		type.siblings('.je-select').html("");
+		//property.val("");
+		property.siblings('.je-select').html("");
+		jd.val("");
+
+		gzh.val("");
+		gznr.val("");
+		hxrr.val("");
+		bz.val("");
+
+		$(".add-zb .edit .form .update").attr('disabled', '');
+		$(".add-zb .edit .form .cancle").attr('disabled', '');
+		$(".add-zb .edit .form .add").removeAttr('disabled');
+
+	});
+
 	add_zb_show_work();
 }
 
@@ -289,19 +348,19 @@ function add_zb_show_work() {
 				bzgz.html("暂无本周工作记录")
 			} else {
 				je_table($(".add-zb .bzgz"),{
-					width:"1193",
+					width:"1168",
 					isPage: false,
 					datas: CurWeekData,
 					columnSort:[],
 					columns:[
-						{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
-							field:"id", 
-							width: "50", 
-							align: "center",
-							renderer:function(obj, rowidex) {
-	        					return '<input type="checkbox" name="checkbox" jename="chunk">';
-	        				}
-						},
+						// {	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
+						// 	field:"id", 
+						// 	width: "50", 
+						// 	align: "center",
+						// 	renderer:function(obj, rowidex) {
+	     //    					return '<input type="checkbox" name="checkbox" jename="chunk">';
+	     //    				}
+						// },
 						{name: "ID", 		field: "id", 		width: "40", align:"center"},
 						{name: "系统", 		field: "System", 	width: "100", align:"center"},
 						{name: "模块", 		field: "Module", 	width: "100", align:"center"},
@@ -311,11 +370,12 @@ function add_zb_show_work() {
 						{name: "性质", 		field: "Property", 	width: "100", align:"center"},
 						{name: "进度", 		field: "ProgressRate", width: "60", align:"center"},
 						{name: "备注", 		field: "Note", 		width: "220",  align:"left"},
-						{name: "操作", field:'id', width:"100", align:"center", 
+						{name: "操作", field:'id', width:"125", align:"center", 
 							renderer:function(obj, rowidex) {
 								//console.log(obj);
 	                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
-	    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button>';
+	    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button> \
+	    							<button  name="'+obj.id+'" type="turn" class="je-btn je-bg-green je-btn-small"><i class="je-icon" style="transform: rotate(-180deg);">&#xe627;</i></button>';
 	                    	}
 	                	}
 					],
@@ -323,16 +383,16 @@ function add_zb_show_work() {
 
 					},
 					success:function(elCell, tbody) {
-						elCell.jeCheck({
-			                jename:"chunk",
-			                checkCls:"je-check",
-			                itemfun: function(elem,bool) {
-			                    //alert(elem.attr("jename")
-			                },
-			                success:function(elem){
-			                    jeui.chunkSelect(elem,".add-zb .bzgz .gocheck",'on')
-			                }
-			            });
+						// elCell.jeCheck({
+			   //              jename:"chunk",
+			   //              checkCls:"je-check",
+			   //              itemfun: function(elem,bool) {
+			   //                  //alert(elem.attr("jename")
+			   //              },
+			   //              success:function(elem){
+			   //                  jeui.chunkSelect(elem,".add-zb .bzgz .gocheck",'on')
+			   //              }
+			   //          });
 
 						$(".add-zb .bzgz button").click(function(){
 							var param = new Object();
@@ -340,6 +400,7 @@ function add_zb_show_work() {
 							if ($(this).attr("type") == "delete") {
 								param.method = "DELETE";
 								param.id = $(this).attr("name");
+								param.week = 0;
 								sync_post_data("/report/", JSON.stringify(param), function(d){
 									if (d.ErrCode == 0) {
 										add_zb_show_work();
@@ -385,9 +446,20 @@ function add_zb_show_work() {
 										hxrr.val(d.NeedDays);
 
 										fom.find(".update").attr("name", d.id);
-										//console.info(fom.find(".update"));
 										fom.find(".update").removeAttr('disabled');
 										fom.find(".add").attr('disabled','');
+										fom.find(".cancle").removeAttr('disabled');
+									} else {
+										alert(d.msg);
+									}
+								});
+							}
+							else if ($(this).attr("type") == "turn") {
+								param.method = "TURN_NEXT";
+								param.id = $(this).attr("name");
+								sync_post_data("/report/", JSON.stringify(param), function(d){
+									if (d.ErrCode == 0) {
+										add_zb_show_work();
 									} else {
 										alert(d.msg);
 									}
@@ -401,19 +473,19 @@ function add_zb_show_work() {
 				xzgz.html("暂无下周工作记录")
 			} else {
 				je_table($(".add-zb .xzgz"),{
-					width:"1193",
+					width:"1143",
 					isPage: false,
 					datas: NextWeekData,
 					columnSort:[],
 					columns:[
-						{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
-							field:"id", 
-							width: "50", 
-							align: "center",
-							renderer:function(obj, rowidex) {
-	        					return '<input type="checkbox" name="checkbox" jename="chunk">';
-	        				}
-						},
+						// {	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
+						// 	field:"id", 
+						// 	width: "50", 
+						// 	align: "center",
+						// 	renderer:function(obj, rowidex) {
+	     //    					return '<input type="checkbox" name="checkbox" jename="chunk">';
+	     //    				}
+						// },
 						{name: "ID", 		field: "id", 		width: "40", align:"center"},
 						{name: "系统", 		field: "System", 	width: "100", align:"center"},
 						{name: "模块", 		field: "Module", 	width: "100", align:"center"},
@@ -435,16 +507,16 @@ function add_zb_show_work() {
 
 					},
 					success:function(elCell, tbody) {
-						elCell.jeCheck({
-			                jename:"chunk",
-			                checkCls:"je-check",
-			                itemfun: function(elem,bool) {
-			                    //alert(elem.attr("jename")
-			                },
-			                success:function(elem){
-			                    jeui.chunkSelect(elem,".add-zb .bzgz .gocheck",'on')
-			                }
-			            });
+						// elCell.jeCheck({
+			   //              jename:"chunk",
+			   //              checkCls:"je-check",
+			   //              itemfun: function(elem,bool) {
+			   //                  //alert(elem.attr("jename")
+			   //              },
+			   //              success:function(elem){
+			   //                  jeui.chunkSelect(elem,".add-zb .bzgz .gocheck",'on')
+			   //              }
+			   //          });
 
 						$(".add-zb .xzgz button").click(function(){
 							var param = new Object();
@@ -452,6 +524,7 @@ function add_zb_show_work() {
 							if ($(this).attr("type") == "delete") {
 								param.method = "DELETE";
 								param.id = $(this).attr("name");
+								param.week = 1;
 								sync_post_data("/report/", JSON.stringify(param), function(d){
 									if (d.ErrCode == 0) {
 										add_zb_show_work();
@@ -499,7 +572,7 @@ function add_zb_show_work() {
 										fom.find(".update").attr("name", d.id);
 										fom.find(".update").removeAttr('disabled');
 										fom.find(".add").attr('disabled', '');
-										//console.info(fom.find(".update"));
+										fom.find(".cancle").removeAttr('disabled');
 									} else {
 										alert(d.msg);
 									}

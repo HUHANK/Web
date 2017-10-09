@@ -2,13 +2,7 @@
 from config import *
 from PubFunc import *
 from MySQL_db import *
-import  json
 
-# def initSession():
-#     data = ReadFile(SESSION_DATA_PATH)
-#     if data == "":
-#         return
-#     Options["session"] = json.loads(data)
 
 def addSession(sid, sdata):
     db = Options['mysql']
