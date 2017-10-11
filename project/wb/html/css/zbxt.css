@@ -199,6 +199,14 @@ table tbody tr:hover{
 	color: #BB0000;
 }
 
+.query .result .box .asce{
+	background: linear-gradient(#4C9ED9, #EEEEEE, #EEEEEE);
+}
+
+.query .result .box .desc{
+	background: linear-gradient(#EEEEEE, #EEEEEE, #4C9ED9);
+}
+
 /*------------------------------------ADD_ZB--------------------------------------*/
 .add-zb{
 	display: none;

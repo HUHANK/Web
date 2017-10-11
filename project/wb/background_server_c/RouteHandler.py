@@ -377,9 +377,26 @@ def queryData(data):
     week = condi.get("week", None)
     schedule = condi.get("schedule", None)
     delay = condi.get("delay", None)
+    sortType = condi.get("sortType", None)
+    sortCols = condi.get("sortCols", None)
     bPRate = 0
-
+    sqlsort = ""
     sqlcondi = ""
+
+    if sortType != None and sortCols != None:
+        if len(sortCols) > 0 :
+            sqlsort = " order by "
+            for col in sortCols:
+                if col == "UNAME":
+                    sqlsort += "UID,"
+                else:
+                    sqlsort += col + ","
+            sqlsort = sqlsort.rstrip(",")
+            if sortType == "ASCE":
+                sortType = "ASC"
+            sqlsort += " " + sortType + " "
+            #print sqlsort
+
     if user != None:
         if len(user) > 0:
             sqlcondi += " A.UID in ("
@@ -449,13 +466,15 @@ def queryData(data):
                 sqlcondi += " ExpireDate<EditDate "
 
     if len(sqlcondi) > 0:
-        sql += " where " + sqlcondi + sqllimit
+        sql += " where " + sqlcondi + sqlsort + sqllimit
         sqlc += " where " + sqlcondi
     else:
-        sql += sqllimit
+        sql += sqlsort + sqllimit
 
     rs = db.select2(sqlc)
     ret["total"] = rs["data"][0].get("COUNT", 0)
+    #print sqlsort
+    #print sql
     rs = db.select2(sql)
     ret["data"] = rs["data"]
 

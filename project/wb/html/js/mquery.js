@@ -142,7 +142,9 @@ function query_sidebar_init() {
 		if ($(this).parent().hasClass('week') || 
 			$(this).parent().hasClass('schedule') ||
 			$(this).parent().hasClass('delay') ||
-			$(this).parent().hasClass('export') ){
+			$(this).parent().hasClass('export') ||
+			$(this).parent().hasClass('sort')
+			){
 			if ($(this).parent().children(".content").css("display") == "none") {
 				$(this).parent().children(".content").css("display", "block");
 			} else {
@@ -330,6 +332,43 @@ function query_sidebar_init() {
 		query_get_result(0);
 	});
 
+	$(".query .sidebar .sort .content .asce").removeClass("je-bg-native");
+	$(".query .sidebar .sort .content button").click(function() {
+		if (!$(this).hasClass("je-bg-native")) {
+			return;
+		}
+		$(this).parent().children().each(function(index, data){
+			if (!$(data).hasClass("je-bg-native")){
+				$(data).addClass("je-bg-native");
+			}
+		});
+		$(this).removeClass("je-bg-native");
+
+		/*跟新查询条件*/
+		if (typeof(QueryCondi.sortType) == "undefined") {
+			QueryCondi.sortType = "ASCE"; /*升序*/
+		}
+		if ($(this).hasClass("asce")) {
+			QueryCondi.sortType = "ASCE"; /*升序*/
+			$(".query .result .box thead .selected").removeClass("desc");
+			$(".query .result .box thead .selected").addClass("asce");
+		}
+		if ($(this).hasClass("desc")) {
+			QueryCondi.sortType = "DESC"; /*降序*/
+			$(".query .result .box thead .selected").removeClass("asce");
+			$(".query .result .box thead .selected").addClass("desc");
+		}
+
+		QueryCondi.sortCols = new Array();
+		$(".query .result .box thead .selected").each( function(index, elem) {
+			QueryCondi.sortCols.push($(elem).attr("name"));
+		});
+		
+		/*跟新结果*/
+		if (QueryCondi.sortCols.length > 0)
+			query_get_result(0);
+	});
+
 	$(".query .sidebar .export .content button").click(function() {
 		var param = new Object();
 		sync_post_data("/export/", JSON.stringify(param), function(d) {
@@ -375,22 +414,90 @@ function query_get_result(page) {
 			datas: d.data,
 			columnSort:[],
 			columns:[
-				{name: "系统", field:"System", 	width:"80", align:"center"},
-				{name: "模块", field:"Module", 	width:"80", align:"center"},
-				{name: "类型", field:"Type", 	width:"80", align:"center"},
-				{name: "跟踪号", field:"TraceNo", 	width:"100", align:"center"},
+				{name: "<div class='rhead' name='System'>系统</div>", field:"System", 	width:"80", align:"center"},
+				{name: "<div class='rhead' name='Module'>模块</div>", field:"Module", 	width:"80", align:"center"},
+				{name: "<div class='rhead' name='Type'>类型</div>", field:"Type", 	width:"80", align:"center"},
+				{name: "<div class='rhead' name='TraceNo'>跟踪号</div>", field:"TraceNo", 	width:"100", align:"center"},
 				{name: "工作内容", field:"Detail", 	width:"360", align:"center"},
-				{name: "性质", field:"Property", 	width:"80", align:"center"},
-				{name: "人员", field:"UNAME", 	width:"60", align:"center"},
-				{name: "进度", field:"ProgressRate", 	width:"40", align:"center"},
-				{name: "开始日期", field:"StartDate", 	width:"100", align:"center"},
-				{name: "后续人日", field:"NeedDays", 	width:"60", align:"center"},
-				{name: "创建日期", field:"AddDate", 	width:"80", align:"center"},
-				{name: "跟新日期", field:"EditDate", 	width:"80", align:"center"},
-				{name: "计划完成日期", field:"ExpireDate", 	width:"80", align:"center"},
-				{name: "周期", field:"WEEK", 	width:"100", align:"center"}
+				{name: "<div class='rhead' name='Property'>性质</div>", field:"Property", 	width:"80", align:"center"},
+				{name: "<div class='rhead' name='UNAME'>人员</div>", field:"UNAME", 	width:"60", align:"center"},
+				{name: "<div class='rhead' name='ProgressRate'>进度</div>", field:"ProgressRate", 	width:"40", align:"center"},
+				{name: "<div class='rhead' name='StartDate'>开始日期</div>", field:"StartDate", 	width:"100", align:"center"},
+				{name: "<div class='rhead' name='NeedDays'>后续人日</div>", field:"NeedDays", 	width:"60", align:"center"},
+				{name: "<div class='rhead' name='AddDate'>创建日期</div>", field:"AddDate", 	width:"80", align:"center"},
+				{name: "<div class='rhead' name='EditDate'>跟新日期</div>", field:"EditDate", 	width:"80", align:"center"},
+				{name: "<div class='rhead' name='ExpireDate'>计划完成日期</div>", field:"ExpireDate", 	width:"80", align:"center"},
+				{name: "<div class='rhead' name='WEEK'>周期</div>", field:"WEEK", 	width:"100", align:"center"}
 			],
-			itemfun: function(elem, data){}
+			itemfun: function(elem, data){},
+			success: function(elem){
+				if (typeof(QueryCondi.sortCols) != "undefined") {
+					var sortType = ''
+					$(".query .sidebar .sort .content .je-bg-native").each(function(index, elem){
+						if (!$(elem).hasClass("asce")) {
+							sortType = "ASCE";
+						}else{
+							sortType = "DESC";
+						}
+					});
+
+					for(var i=0; i<QueryCondi.sortCols.length; i++) {
+						var col = QueryCondi.sortCols[i];
+						var el = $(elem).find("thead div[name='"+col+"']");
+
+						el.addClass('selected');
+						if (sortType == "ASCE") {
+							el.addClass("asce");
+						} else {
+							el.addClass("desc");
+						}
+					}
+				}
+				
+				$(elem).find(".rhead").click(function(){
+
+					var sortType = ''
+					$(".query .sidebar .sort .content .je-bg-native").each(function(index, elem){
+						if (!$(elem).hasClass("asce")) {
+							sortType = "ASCE";
+						}else{
+							sortType = "DESC";
+						}
+					});
+					QueryCondi.sortType = sortType;
+
+					if (typeof(QueryCondi.sortCols) == "undefined") {
+						QueryCondi.sortCols = new Array();
+					}
+
+					if (!$(this).hasClass("selected")) {
+						$(this).addClass("selected");
+						QueryCondi.sortCols.push($(this).attr("name"));
+						if (sortType == "ASCE") {
+							$(this).addClass("asce");
+						} else {
+							$(this).addClass("desc");
+						}
+					} else {
+						$(this).removeClass("selected");
+						for(var i=0; i<QueryCondi.sortCols.length; i++){
+							var col = QueryCondi.sortCols[i];
+							if ($(this).attr("name") == col) {
+								QueryCondi.sortCols.splice(i, 1);
+							}
+						}
+
+						if (sortType == "ASCE") {
+							$(this).removeClass("asce");
+						} else {
+							$(this).removeClass("desc");
+						}
+					}
+
+					/*跟新结果*/
+					query_get_result(0);
+				});
+			}
 		});
 
 		var tmp = parseInt(d.total / param.pageSize ) + 1;
