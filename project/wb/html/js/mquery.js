@@ -375,17 +375,20 @@ function query_get_result(page) {
 			datas: d.data,
 			columnSort:[],
 			columns:[
-			{name: "系统", field:"System", 	width:"80", align:"center"},
-			{name: "模块", field:"Module", 	width:"80", align:"center"},
-			{name: "类型", field:"Type", 	width:"80", align:"center"},
-			{name: "跟踪号", field:"TraceNo", 	width:"100", align:"center"},
-			{name: "工作内容", field:"Detail", 	width:"360", align:"center"},
-			{name: "性质", field:"Property", 	width:"80", align:"center"},
-			{name: "人员", field:"UNAME", 	width:"60", align:"center"},
-			{name: "进度", field:"ProgressRate", 	width:"40", align:"center"},
-			{name: "开始日期", field:"StartDate", 	width:"100", align:"center"},
-			{name: "后续人日", field:"NeedDays", 	width:"60", align:"center"},
-			{name: "周期", field:"WEEK", 	width:"100", align:"center"}
+				{name: "系统", field:"System", 	width:"80", align:"center"},
+				{name: "模块", field:"Module", 	width:"80", align:"center"},
+				{name: "类型", field:"Type", 	width:"80", align:"center"},
+				{name: "跟踪号", field:"TraceNo", 	width:"100", align:"center"},
+				{name: "工作内容", field:"Detail", 	width:"360", align:"center"},
+				{name: "性质", field:"Property", 	width:"80", align:"center"},
+				{name: "人员", field:"UNAME", 	width:"60", align:"center"},
+				{name: "进度", field:"ProgressRate", 	width:"40", align:"center"},
+				{name: "开始日期", field:"StartDate", 	width:"100", align:"center"},
+				{name: "后续人日", field:"NeedDays", 	width:"60", align:"center"},
+				{name: "创建日期", field:"AddDate", 	width:"80", align:"center"},
+				{name: "跟新日期", field:"EditDate", 	width:"80", align:"center"},
+				{name: "计划完成日期", field:"ExpireDate", 	width:"80", align:"center"},
+				{name: "周期", field:"WEEK", 	width:"100", align:"center"}
 			],
 			itemfun: function(elem, data){}
 		});

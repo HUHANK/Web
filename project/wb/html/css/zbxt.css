@@ -128,7 +128,7 @@ table tbody tr:hover{
 	overflow: hidden;
 }
 .query .sidebar{
-	width: 200px;
+	width: 160px;
 	border: 1px solid #949696;
 	cursor: default;
 	float: left;

@@ -175,7 +175,7 @@ function add_zb() {
 			alert("后续人日不能为非正整数！")
 			return;
 		}
-		re = /^(需求|任务|BUG)#/
+		re = /^.*(需求|任务|BUG)\s*#/
 		if (!re.test(param.TraceNo)) {
 			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG]#[XXXX]格式填写！")
 			return;
@@ -255,13 +255,12 @@ function add_zb() {
 			alert("后续人日不能为非正整数！")
 			return;
 		}
-		re = /^(需求|任务|BUG)#/
+		re = /^.*(需求|任务|BUG)\s*#/
 		if (!re.test(param.TraceNo)) {
 			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG]#[XXXX]格式填写！")
 			return;
 		}
 
-		//console.info(param);
 
 		post_data("/report/", JSON.stringify(param), function(d) {
 			d = $.parseJSON(d);

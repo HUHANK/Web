@@ -188,10 +188,11 @@ def reportProcess(data):
         #print data
         #(Year, Week, Day) = getYearWeek(data["StartDate"])
         Week = Week + data.get("Week", 0)
-        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate, EditDate) VALUES(" \
-              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s', '%s')" %(
+        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate, EditDate, ExpireDate) VALUES(" \
+              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s', '%s', '%s')" %(
                 data['System'], data['Module'], data['Type'], data["TraceNo"], data["Detail"], \
-                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Note"], getNowDate2(), getNowDate2())
+                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Note"],
+                getNowDate2(), getNowDate2(), CalExpireDate(db, data["StartDate"], data["NeedDays"]))
         id = db.update(sql)
         if id < 0:
             setErrMsg(ret, 2, "数据库插入失败！")
@@ -209,8 +210,10 @@ def reportProcess(data):
     elif data["method"] == "UPDATE":
         #print data
         d = data
-        sql = "update work_detail set System='%s', Module='%s', Type='%s', TraceNo='%s', Detail='%s', Property='%s', ProgressRate=%s, StartDate='%s', NeedDays=%s, Note='%s', EditDate='%s' where id=%s" \
-            % (d["System"], d["Module"], d["Type"],d["TraceNo"],d["Detail"],d["Property"],d["ProgressRate"],d["StartDate"],d["NeedDays"],d["Note"], getNowDate2(), d["id"])
+        sql = "update work_detail set System='%s', Module='%s', Type='%s', TraceNo='%s', Detail='%s', Property='%s', ProgressRate=%s, StartDate='%s', NeedDays=%s, Note='%s', EditDate='%s', ExpireDate='%s' where id=%s" \
+            % (d["System"], d["Module"], d["Type"],d["TraceNo"],d["Detail"],d["Property"],d["ProgressRate"],
+               d["StartDate"],d["NeedDays"],d["Note"], getNowDate2(), CalExpireDate(db, d["StartDate"], d["NeedDays"]),
+               d["id"])
         #print sql
         if db.update(sql) < 0:
             setErrMsg(ret, 2, u"数据库跟新失败！")
@@ -360,7 +363,7 @@ def queryData(data):
     condi = data.get("condition", None)
     if condi == None:
         rs = db.select2(sqlc)
-        print rs["data"]
+        #print rs["data"]
         ret["total"] = rs["data"][0].get("COUNT", 0)
         rs = db.select2(sql + sqllimit)
         ret["data"] = rs["data"]
@@ -374,6 +377,7 @@ def queryData(data):
     week = condi.get("week", None)
     schedule = condi.get("schedule", None)
     delay = condi.get("delay", None)
+    bPRate = 0
 
     sqlcondi = ""
     if user != None:
@@ -420,16 +424,29 @@ def queryData(data):
             sqlcondi += " AND "
         if schedule == 0:
             sqlcondi += " B.ProgressRate BETWEEN 0 AND 99 "
+            bPRate = 1
         elif schedule == 100:
             sqlcondi += " B.ProgressRate = 100 "
+            bPRate = 2
     if delay != None:
         if len(sqlcondi) > 0 and delay >= 0:
             sqlcondi += " AND "
         if delay == 0:
-            sqlcondi += " date_add(B.StartDate, INTERVAL (B.NeedDays+1)*24 hour) >= now() "
+            #sqlcondi += " date_add(B.StartDate, INTERVAL (B.NeedDays+1)*24 hour) >= now() "
+            if bPRate == 0:
+                sqlcondi += " ((ProgressRate=100 and ExpireDate>=EditDate) or (ProgressRate!=100 and ExpireDate>='%s')) " % (getNowDate2())
+            elif bPRate == 1:
+                sqlcondi += " ExpireDate>='%s' " % (getNowDate2())
+            elif bPRate == 2:
+                sqlcondi += " ExpireDate>=EditDate "
         if delay == 1:
-            sqlcondi += " date_add(B.StartDate, INTERVAL (B.NeedDays+1)*24 hour) < now() "
-
+            #sqlcondi += " date_add(B.StartDate, INTERVAL (B.NeedDays+1)*24 hour) < now() "
+            if bPRate == 0:
+                sqlcondi += " ((ProgressRate=100 and ExpireDate<EditDate) or (ProgressRate!=100 and ExpireDate<'%s')) " % (getNowDate2())
+            elif bPRate == 1:
+                sqlcondi += " ExpireDate<'%s' " % (getNowDate2())
+            elif bPRate == 2:
+                sqlcondi += " ExpireDate<EditDate "
 
     if len(sqlcondi) > 0:
         sql += " where " + sqlcondi + sqllimit
