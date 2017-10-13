@@ -1184,25 +1184,49 @@ function home_page() {
 	param.SessionID = Options.SessionID;
 	post_data("/home/", JSON.stringify(param), function(d) {
 		d = $.parseJSON(d);
-		//console.info(d);
+		console.info(d);
 		if (d.ErrCode == 0) {
 			//console.info(d.data);
+
+			for(var i=0; i<d.data.length; i++) {
+				var row = d.data[i];
+				var tmp = row.EditDate;
+				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				tmp = row.ExpireDate;
+				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+			}
+			for(var i=0; i<d.cxzgz.length; i++) {
+				var row = d.cxzgz[i];
+				var tmp = row.EditDate;
+				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				tmp = row.ExpireDate;
+				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+			}
+			for(var i=0; i<d.cbzgz.length; i++) {
+				var row = d.cbzgz[i];
+				var tmp = row.EditDate;
+				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				tmp = row.ExpireDate;
+				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+			}
+
 			je_table($(".home-page .wdbzgz"),{
-				width: "1083",
+				width: "1043",
 				isPage: false,
 				datas: d.data,
 				columnSort: [],
 				columns: [
-					{name: "系统", field: "System", width: "80", align:"center"},
-					{name: "模块", field: "Module", width: "80", align:"center"},
-					{name: "类型", field: "Type", width: "80", align:"center"},
-					{name: "跟踪号", 	field: "TraceNo", width: "60", align:"center"},
-					{name: "工作内容", 	field: "Detail", width: "260", align:"center"},
-					{name: "性质", field: "Property", width: "100", align:"center"},
-					{name: "进度", field: "ProgressRate", width: "60", align:"center"},
-					{name: "开始日期", 	field: "StartDate", width: "100", align:"center"},
-					{name: "后续人日", 	field: "NeedDays", width: "60", align:"center"},
-					{name: "备注", field: "Note", width: "200", align:"center"}
+					{name: "系统", 		field: "System", 	width: "70", align:"center"},
+					{name: "模块", 		field: "Module", 	width: "60", align:"center"},
+					{name: "类型", 		field: "Type", 		width: "70", align:"center"},
+					{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
+					{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+					{name: "性质", 		field: "Property", 	width: "70", align:"center"},
+					{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+					{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
+					{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
+					{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+					{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"}
 				],
 				itemfun:function(elem,data){},
 				success:function(elCell, tbody){}
@@ -1211,43 +1235,45 @@ function home_page() {
 			if (d.isManager > 0) {
 				$(".home-page .child").css("display", "block");
 				je_table($(".home-page .child .zcybzgz"),{
-					width: "1163",
+					width: "1123",
 					isPage: false,
 					datas: d.cbzgz,
 					columnSort: [],
 					columns: [
 						{name: "成员", field: "User", width: "80", align:"center"},
-						{name: "系统", field: "System", width: "80", align:"center"},
-						{name: "模块", field: "Module", width: "80", align:"center"},
-						{name: "类型", field: "Type", width: "80", align:"center"},
-						{name: "跟踪号", field: "TraceNo", width: "60", align:"center"},
-						{name: "工作内容", field: "Detail", width: "260", align:"center"},
-						{name: "性质", field: "Property", width: "100", align:"center"},
-						{name: "进度", field: "ProgressRate", width: "60", align:"center"},
-						{name: "开始日期", field: "StartDate", width: "100", align:"center"},
-						{name: "后续人日", field: "NeedDays", width: "60", align:"center"},
-						{name: "备注", field: "Note", width: "200", align:"center"}
+						{name: "系统", 		field: "System", 	width: "70", align:"center"},
+						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
+						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
+						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
+						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
+						{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
+						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
+						{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"}
 					],
 					itemfun:function(elem,data){},
 					success:function(elCell, tbody){}
 				});
 				je_table($(".home-page .child .zcyxzgz"),{
-					width: "1163",
+					width: "1123",
 					isPage: false,
 					datas: d.cxzgz,
 					columnSort: [],
 					columns: [
 						{name: "成员", field: "User", width: "80", align:"center"},
-						{name: "系统", field: "System", width: "80", align:"center"},
-						{name: "模块", field: "Module", width: "80", align:"center"},
-						{name: "类型", field: "Type", width: "80", align:"center"},
-						{name: "跟踪号", field: "TraceNo", width: "60", align:"center"},
-						{name: "工作内容", field: "Detail", width: "260", align:"center"},
-						{name: "性质", field: "Property", width: "100", align:"center"},
-						{name: "进度", field: "ProgressRate", width: "60", align:"center"},
-						{name: "开始日期", field: "StartDate", width: "100", align:"center"},
-						{name: "后续人日", field: "NeedDays", width: "60", align:"center"},
-						{name: "备注", field: "Note", width: "200", align:"center"}
+						{name: "系统", 		field: "System", 	width: "70", align:"center"},
+						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
+						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
+						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
+						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
+						{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
+						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
+						{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"}
 					],
 					itemfun:function(elem,data){},
 					success:function(elCell, tbody){}

@@ -398,11 +398,15 @@ function query_get_result(page) {
 		}
 
 		for( var i=0; i<d.data.length; i++) {
-
 			for (var j=0; j<g_ALL_USER.length; j++) {
 				if (d.data[i].UID == g_ALL_USER[j].id) {
-					//console.info(g_ALL_USER[j]);
 					d.data[i].UNAME = g_ALL_USER[j].cname;
+					var tmp = d.data[i].AddDate;
+					d.data[i].AddDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+					tmp = d.data[i].EditDate;
+					d.data[i].EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+					tmp = d.data[i].ExpireDate;
+					d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 				}
 			}
 		}
@@ -424,9 +428,9 @@ function query_get_result(page) {
 				{name: "<div class='rhead' name='ProgressRate'>进度</div>", field:"ProgressRate", 	width:"40", align:"center"},
 				{name: "<div class='rhead' name='StartDate'>开始日期</div>", field:"StartDate", 	width:"100", align:"center"},
 				{name: "<div class='rhead' name='NeedDays'>后续人日</div>", field:"NeedDays", 	width:"60", align:"center"},
-				{name: "<div class='rhead' name='AddDate'>创建日期</div>", field:"AddDate", 	width:"80", align:"center"},
-				{name: "<div class='rhead' name='EditDate'>跟新日期</div>", field:"EditDate", 	width:"80", align:"center"},
-				{name: "<div class='rhead' name='ExpireDate'>计划完成日期</div>", field:"ExpireDate", 	width:"80", align:"center"},
+				{name: "<div class='rhead' name='AddDate'>创建日期</div>", field:"AddDate", 	width:"100", align:"center"},
+				{name: "<div class='rhead' name='EditDate'>跟新日期</div>", field:"EditDate", 	width:"100", align:"center"},
+				{name: "<div class='rhead' name='ExpireDate'>计划完成日期</div>", field:"ExpireDate", 	width:"100", align:"center"},
 				{name: "<div class='rhead' name='WEEK'>周期</div>", field:"WEEK", 	width:"100", align:"center"}
 			],
 			itemfun: function(elem, data){},

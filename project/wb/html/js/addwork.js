@@ -175,14 +175,14 @@ function add_zb() {
 			alert("后续人日不能为非正整数！")
 			return;
 		}
-		re = /^.*(需求|任务|BUG)\s*#/
+		re = /^.*(需求|任务|BUG|问题单)\s*#/
 		if (!re.test(param.TraceNo)) {
-			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG]#[XXXX]格式填写！")
+			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG, 问题单]#[XXXX]格式填写！没有跟踪号，请按照 [需求, 任务, BUG, 问题单]#[0000]格式填写！");
 			return;
 		}
 
-		post_data("/report/", JSON.stringify(param), function(d) {
-			d = $.parseJSON(d);
+		sync_post_data("/report/", JSON.stringify(param), function(d) {
+			//d = $.parseJSON(d);
 			if (d.ErrCode == 0) {
 				add_zb_show_work();
 
@@ -210,6 +210,7 @@ function add_zb() {
 	})
 
 	$(".add-zb .edit .form .update").click(function() {
+		console.info("XXXXXXXXXXXXXXXXXX");
 		var fom = $(".add-zb .edit .form");
 		var sys = fom.find(".fsys");
 		var mod = fom.find(".fmod");
@@ -232,11 +233,11 @@ function add_zb() {
 		param.SessionID = Options.SessionID;
 		param.method = "UPDATE";
 		if (typeof($(this).attr("name")) == "undefined") {
+			alert("UPDATE ID信息丢失！");
 			return;
 		}
-		console.info($(this).attr("name"));
 		param.id = $(this).attr("name");
-		$(this).removeAttr("name");
+		//$(this).removeAttr("name");
 
 		param.System = sys.siblings().text();
 		param.Module = mod.siblings().text();
@@ -252,18 +253,18 @@ function add_zb() {
 		/*检查用户输入参数是否有问题*/
 		var re = /^\d+$/
 		if (!re.test(param.NeedDays)) {
-			alert("后续人日不能为非正整数！")
+			alert("后续人日不能为非正整数！");
 			return;
 		}
-		re = /^.*(需求|任务|BUG)\s*#/
+		re = /^.*(需求|任务|BUG|问题单)\s*#/
 		if (!re.test(param.TraceNo)) {
-			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG]#[XXXX]格式填写！")
+			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG, 问题单]#[XXXX]格式填写！没有跟踪号，请按照 [需求, 任务, BUG, 问题单]#[0000]格式填写！");
 			return;
 		}
 
 
-		post_data("/report/", JSON.stringify(param), function(d) {
-			d = $.parseJSON(d);
+		sync_post_data("/report/", JSON.stringify(param), function(d) {
+			//d = $.parseJSON(d);
 			if (d.ErrCode == 0) {
 				add_zb_show_work();
 
@@ -343,6 +344,21 @@ function add_zb_show_work() {
 			var bzgz = $(".add-zb .bzgz");
 			var xzgz = $(".add-zb .xzgz");
 
+			for(var i=0; i<d.current.length; i++) {
+				var row = d.current[i];
+				var tmp = row.EditDate;
+				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				tmp = row.ExpireDate;
+				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+			}
+			for(var i=0; i<d.next.length; i++) {
+				var row = d.next[i];
+				var tmp = row.EditDate;
+				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				tmp = row.ExpireDate;
+				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+			}
+
 			if (CurWeekData.length < 1){
 				bzgz.html("暂无本周工作记录")
 			} else {
@@ -352,23 +368,17 @@ function add_zb_show_work() {
 					datas: CurWeekData,
 					columnSort:[],
 					columns:[
-						// {	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
-						// 	field:"id", 
-						// 	width: "50", 
-						// 	align: "center",
-						// 	renderer:function(obj, rowidex) {
-	     //    					return '<input type="checkbox" name="checkbox" jename="chunk">';
-	     //    				}
-						// },
-						{name: "ID", 		field: "id", 		width: "40", align:"center"},
-						{name: "系统", 		field: "System", 	width: "100", align:"center"},
-						{name: "模块", 		field: "Module", 	width: "100", align:"center"},
-						{name: "类型", 		field: "Type", 		width: "100", align:"center"},
+						{name: "系统", 		field: "System", 	width: "70", align:"center"},
+						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
+						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
-						{name: "工作内容", 	field: "Detail", 	width: "260", align:"left"},
-						{name: "性质", 		field: "Property", 	width: "100", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "60", align:"center"},
-						{name: "备注", 		field: "Note", 		width: "220",  align:"left"},
+						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
+						{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
+						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
+						{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
 						{name: "操作", field:'id', width:"125", align:"center", 
 							renderer:function(obj, rowidex) {
 								//console.log(obj);
@@ -382,17 +392,6 @@ function add_zb_show_work() {
 
 					},
 					success:function(elCell, tbody) {
-						// elCell.jeCheck({
-			   //              jename:"chunk",
-			   //              checkCls:"je-check",
-			   //              itemfun: function(elem,bool) {
-			   //                  //alert(elem.attr("jename")
-			   //              },
-			   //              success:function(elem){
-			   //                  jeui.chunkSelect(elem,".add-zb .bzgz .gocheck",'on')
-			   //              }
-			   //          });
-
 						$(".add-zb .bzgz button").click(function(){
 							var param = new Object();
 							param.SessionID  = Options.SessionID;
@@ -477,23 +476,17 @@ function add_zb_show_work() {
 					datas: NextWeekData,
 					columnSort:[],
 					columns:[
-						// {	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
-						// 	field:"id", 
-						// 	width: "50", 
-						// 	align: "center",
-						// 	renderer:function(obj, rowidex) {
-	     //    					return '<input type="checkbox" name="checkbox" jename="chunk">';
-	     //    				}
-						// },
-						{name: "ID", 		field: "id", 		width: "40", align:"center"},
-						{name: "系统", 		field: "System", 	width: "100", align:"center"},
-						{name: "模块", 		field: "Module", 	width: "100", align:"center"},
-						{name: "类型", 		field: "Type", 		width: "100", align:"center"},
+						{name: "系统", 		field: "System", 	width: "70", align:"center"},
+						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
+						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
-						{name: "工作内容", 	field: "Detail", 	width: "260", align:"left"},
-						{name: "性质", 		field: "Property", 	width: "100", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "60", align:"center"},
-						{name: "备注", 		field: "Note", 		width: "220",  align:"left"},
+						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
+						{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
+						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
+						{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
 						{name: "操作", field:'id', width:"100", align:"center", 
 							renderer:function(obj, rowidex) {
 								//console.log(obj);
@@ -506,16 +499,6 @@ function add_zb_show_work() {
 
 					},
 					success:function(elCell, tbody) {
-						// elCell.jeCheck({
-			   //              jename:"chunk",
-			   //              checkCls:"je-check",
-			   //              itemfun: function(elem,bool) {
-			   //                  //alert(elem.attr("jename")
-			   //              },
-			   //              success:function(elem){
-			   //                  jeui.chunkSelect(elem,".add-zb .bzgz .gocheck",'on')
-			   //              }
-			   //          });
 
 						$(".add-zb .xzgz button").click(function(){
 							var param = new Object();
