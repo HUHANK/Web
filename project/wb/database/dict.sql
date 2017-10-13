@@ -4,7 +4,6 @@ INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (3, '性�
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (34, '监管需求', 0, 2, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (35, '业务需求', 0, 2, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (36, '内部优化', 0, 2, 0);
-INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (37, '问题排查', 0, 2, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (38, '数据维护', 0, 2, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (39, '项目管理', 0, 2, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (40, '培训准备', 0, 2, 0);

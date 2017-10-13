@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-09-29 15:51:28
+Date: 2017-10-13 17:10:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -87,7 +87,7 @@ CREATE TABLE `user_work` (
   `WID` int(11) NOT NULL,
   `YEAR` int(11) NOT NULL,
   `WEEK` int(11) NOT NULL,
-  PRIMARY KEY (`WID`,`UID`)
+  PRIMARY KEY (`WID`,`UID`,`YEAR`,`WEEK`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -103,13 +103,14 @@ CREATE TABLE `work_detail` (
   `Detail` varchar(512) NOT NULL DEFAULT '' COMMENT '工作内容',
   `Property` varchar(12) NOT NULL DEFAULT '' COMMENT '性质',
   `ProgressRate` int(11) NOT NULL DEFAULT '0',
-  `StartDate` varchar(16) NOT NULL DEFAULT '',
+  `StartDate` char(10) NOT NULL DEFAULT '',
   `NeedDays` double NOT NULL DEFAULT '0',
-  `AddDate` varchar(10) DEFAULT NULL,
-  `EditDate` varchar(10) DEFAULT NULL,
+  `AddDate` char(8) NOT NULL,
+  `EditDate` char(8) NOT NULL,
+  `ExpireDate` char(8) NOT NULL DEFAULT '',
   `Note` varchar(512) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=396 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=535 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for xgroup
@@ -122,3 +123,12 @@ CREATE TABLE `xgroup` (
   `depart_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for xholiday
+-- ----------------------------
+DROP TABLE IF EXISTS `xholiday`;
+CREATE TABLE `xholiday` (
+  `date` char(8) NOT NULL,
+  PRIMARY KEY (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
