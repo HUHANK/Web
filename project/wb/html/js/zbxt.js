@@ -5,10 +5,11 @@ var NavbarIndexCookies = "HTZQ_NavbarIndex";
 
 function main() {
 	Options.SessionID = $.cookie("htzq_SessionID");
+	GetSessionID();
 	InitHeader();
 	GInit();
 	var index = $.cookie(NavbarIndexCookies);
-	if (typeof index == "undefined") 
+	if (index == 'null' || typeof(index) == 'undefined') 
 		index = 1;
 	initNavbar(index);
 	navbar();
@@ -16,7 +17,7 @@ function main() {
 
 function InitHeader() {
 	var param = new Object();
-	param.SessionID = Options.SessionID;
+	param.SessionID = GetSessionID();
 	sync_post_data("/baseinfo/", JSON.stringify(param), function(d) {
 		//d = $.parseJSON(d);
 		var txt = "你好，" + d.UserName + "！";
@@ -26,6 +27,19 @@ function InitHeader() {
 		$(".header .subhead .rqxs").text(txt);
 		g_CURRENT_WEEK = d.Week;
 		g_CURRENT_USER = d.UserNmae;
+	});
+
+	$(".header .subhead .logout").click(function(){
+		var param = new Object();
+		param.SessionID = GetSessionID();
+		sync_post_data("/logout/", JSON.stringify(param), function(d) {
+
+		});
+
+		$.cookie(NavbarIndexCookies, null);
+		$.cookie("htzq_SessionID", null);
+		Options.SessionID = null;
+		window.location.href = "login.html";
 	});
 }
 
@@ -1184,7 +1198,7 @@ function home_page() {
 	param.SessionID = Options.SessionID;
 	post_data("/home/", JSON.stringify(param), function(d) {
 		d = $.parseJSON(d);
-		console.info(d);
+		//console.info(d);
 		if (d.ErrCode == 0) {
 			//console.info(d.data);
 
@@ -1211,7 +1225,7 @@ function home_page() {
 			}
 
 			je_table($(".home-page .wdbzgz"),{
-				width: "1043",
+				width: "1073",
 				isPage: false,
 				datas: d.data,
 				columnSort: [],
@@ -1222,10 +1236,13 @@ function home_page() {
 					{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 					{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
 					{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-					{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+					{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
+						renderer:function(obj, rowidex) {
+							return GenProgressBarHtml(70, 14, obj.ProgressRate);
+						}},
 					{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
 					{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-					{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+					{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
 					{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"}
 				],
 				itemfun:function(elem,data){},
@@ -1235,7 +1252,7 @@ function home_page() {
 			if (d.isManager > 0) {
 				$(".home-page .child").css("display", "block");
 				je_table($(".home-page .child .zcybzgz"),{
-					width: "1123",
+					width: "1153",
 					isPage: false,
 					datas: d.cbzgz,
 					columnSort: [],
@@ -1247,17 +1264,20 @@ function home_page() {
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+						{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
+							renderer:function(obj, rowidex) {
+								return GenProgressBarHtml(70, 14, obj.ProgressRate);
+							}},
 						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
 						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-						{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
 						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"}
 					],
 					itemfun:function(elem,data){},
 					success:function(elCell, tbody){}
 				});
 				je_table($(".home-page .child .zcyxzgz"),{
-					width: "1123",
+					width: "1153",
 					isPage: false,
 					datas: d.cxzgz,
 					columnSort: [],
@@ -1269,10 +1289,13 @@ function home_page() {
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+						{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
+							renderer:function(obj, rowidex) {
+								return GenProgressBarHtml(70, 14, obj.ProgressRate);
+							}},
 						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
 						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-						{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
 						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"}
 					],
 					itemfun:function(elem,data){},

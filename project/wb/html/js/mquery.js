@@ -396,7 +396,8 @@ function query_get_result(page) {
 			alert("数据库查询出错！");
 			return;
 		}
-
+		//console.info(GetNowDate());
+		var NowDate = parseInt(GetNowDate());
 		for( var i=0; i<d.data.length; i++) {
 			for (var j=0; j<g_ALL_USER.length; j++) {
 				if (d.data[i].UID == g_ALL_USER[j].id) {
@@ -407,6 +408,14 @@ function query_get_result(page) {
 					d.data[i].EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 					tmp = d.data[i].ExpireDate;
 					d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+					//console.info(tmp);
+					if ( parseInt(tmp) < NowDate ) {
+						//console.info("-----",tmp);
+						//console.info("-----",DateDiffNow('d', tmp));
+						d.data[i].ExpireDays = DateDiffNow('d', tmp);
+					} else {
+						d.data[i].ExpireDays = 0;
+					}
 				}
 			}
 		}
@@ -425,12 +434,17 @@ function query_get_result(page) {
 				{name: "工作内容", field:"Detail", 	width:"360", align:"center"},
 				{name: "<div class='rhead' name='Property'>性质</div>", field:"Property", 	width:"80", align:"center"},
 				{name: "<div class='rhead' name='UNAME'>人员</div>", field:"UNAME", 	width:"60", align:"center"},
-				{name: "<div class='rhead' name='ProgressRate'>进度</div>", field:"ProgressRate", 	width:"40", align:"center"},
+				{name: "<div class='rhead' name='ProgressRate'>进度</div>", field:"ProgressRate", 	width:"70", align:"center",
+					renderer:function(obj, rowidex) {
+						return GenProgressBarHtml(60, 14, obj.ProgressRate);
+					}
+				},
 				{name: "<div class='rhead' name='StartDate'>开始日期</div>", field:"StartDate", 	width:"100", align:"center"},
 				{name: "<div class='rhead' name='NeedDays'>后续人日</div>", field:"NeedDays", 	width:"60", align:"center"},
 				{name: "<div class='rhead' name='AddDate'>创建日期</div>", field:"AddDate", 	width:"100", align:"center"},
-				{name: "<div class='rhead' name='EditDate'>跟新日期</div>", field:"EditDate", 	width:"100", align:"center"},
+				{name: "<div class='rhead' name='EditDate'>更新日期</div>", field:"EditDate", 	width:"100", align:"center"},
 				{name: "<div class='rhead' name='ExpireDate'>计划完成日期</div>", field:"ExpireDate", 	width:"100", align:"center"},
+				{name: "延期天数", 	field:"ExpireDays", 	width:"70", align:"center"},
 				{name: "<div class='rhead' name='WEEK'>周期</div>", field:"WEEK", 	width:"100", align:"center"}
 			],
 			itemfun: function(elem, data){},

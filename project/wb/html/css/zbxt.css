@@ -58,7 +58,11 @@ table tbody tr:hover{
 .header .subhead span{
 	display: inline-block;
 	float: right;
-	margin-left: 20px;
+	margin-right: 10px;
+}
+
+.header .subhead .logout:hover{
+	color: #1BD9DA;
 }
 
 .footer {
@@ -229,70 +233,7 @@ table tbody tr:hover{
 	font-size: 14px;
 	margin-bottom: 10px;
 }
-/* .add-zb .edit fieldset{
-	padding: 5px;
-	border: 1px solid #E0E2E3;
-}
-.add-zb .edit fieldset legend{
-	color: #333333;
-}
-.add-zb .edit .zq{
-	text-align: center;
-}
-.add-zb .edit .zq legend{
-	text-align: left;
-}
-.add-zb .edit .zq button{
-	width: 100px;
-	height: 30px;
-	margin: 0px 20px;
-	border: none;
-}
-.add-zb .edit .zq .btn_clicked{
-	background-color: #1BD9DA;
-}
-.add-zb .edit .sx div{
-	margin: 5px 0px;
-}
-.add-zb .edit .sx label{
-	display: inline-block;
-}
-.add-zb .edit .sx .lab{
-	width: 100px;
-	text-align: right;
-	margin-right: 10px;
-}
-.add-zb .edit .sx .xlk select{
-	width: 200px;
-}
-.add-zb .edit .sx .gzln input{
-	width: 550px;
-}
-.add-zb .edit .bz textarea{
-	width: 100%;
-	height: 50px;
-}
-.add-zb .btn-submit{
-	border: none;
-	background-color: #2996CC;
-	font-size: 12px;
-	width: 56px;
-	height: 30px;
-	border-radius: 4px;
-	color: white;
-}
-.add-zb .btn-update{
-	font-size: 12px;
-	border: none;
-	background-color: white;
-	color: #2996CC;
-}
-.add-zb .btn-submit:hover{
-	background-color: #3DA0D1;
-}
-.add-zb .btn-update:hover{
-	text-decoration: underline;
-} */
+
 
 /*------------------------------------SJWH-------------------------------------*/
 .sjwh{
@@ -316,8 +257,22 @@ table tbody tr:hover{
 	overflow: auto;
 }
 
-
-
+/*-----------------------进度条---------------------------*/
+.hyl-progress-bar{
+	margin: 0;
+	padding: 0;
+    //width: 100px;
+    //height: 10px;
+    border: 1px solid #D7D7D7;
+    //border-radius: 5px;
+    text-align: left;
+} 
+.hyl-progress-bar .progress{
+    background-color: #BAE0BA;
+    //width: 40px;
+    height: 100%;
+    //border-radius: 5px;
+}
 
 
 

@@ -14,6 +14,20 @@ import base64
 def index(data) :
     return data
 
+@route("/logout")
+def logout(data):
+    data = json.loads(data)
+    db = Options['mysql']
+    ret = {}
+
+    sql = "delete from session where id = '%s'" % (data.get("SessionID", ''))
+    if db.update(sql) < 0:
+        setErrMsg(ret, 2, "数据库跟新失败")
+    else:
+        setErrMsg(ret, 0, "")
+
+    return json.dumps(ret)
+
 @route("/login")
 def login(data):
     db =  Options['mysql']
@@ -188,11 +202,18 @@ def reportProcess(data):
         #print data
         #(Year, Week, Day) = getYearWeek(data["StartDate"])
         Week = Week + data.get("Week", 0)
+        #特殊转换区
+        editDate = data["StartDate"];
+        editDate = editDate[0]+editDate[1]+editDate[2]+editDate[3]+editDate[5]+editDate[6]+editDate[8]+editDate[9]
+
+        Detail = data["Detail"].replace("'", "''")
+        Note = data["Note"].replace("'", "''")
+        #---------------------------------------------------------
         sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate, EditDate, ExpireDate) VALUES(" \
               "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s', '%s', '%s')" %(
-                data['System'], data['Module'], data['Type'], data["TraceNo"], data["Detail"], \
-                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], data["Note"],
-                getNowDate2(), getNowDate2(), CalExpireDate(db, data["StartDate"], data["NeedDays"]))
+                data['System'], data['Module'], data['Type'], data["TraceNo"], Detail, \
+                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], Note,
+                getNowDate2(), editDate, CalExpireDate(db, data["StartDate"], data["NeedDays"]))
         id = db.update(sql)
         if id < 0:
             setErrMsg(ret, 2, "数据库插入失败！")
@@ -210,9 +231,13 @@ def reportProcess(data):
     elif data["method"] == "UPDATE":
         #print data
         d = data
+        # 特殊转换区
+        Detail = d["Detail"].replace("'", "''")
+        Note = d["Note"].replace("'", "''")
+        #-----------------------------------------------------
         sql = "update work_detail set System='%s', Module='%s', Type='%s', TraceNo='%s', Detail='%s', Property='%s', ProgressRate=%s, StartDate='%s', NeedDays=%s, Note='%s', EditDate='%s', ExpireDate='%s' where id=%s" \
-            % (d["System"], d["Module"], d["Type"],d["TraceNo"],d["Detail"],d["Property"],d["ProgressRate"],
-               d["StartDate"],d["NeedDays"],d["Note"], getNowDate2(), CalExpireDate(db, d["StartDate"], d["NeedDays"]),
+            % (d["System"], d["Module"], d["Type"],d["TraceNo"],Detail,d["Property"],d["ProgressRate"],
+               d["StartDate"],d["NeedDays"],Note, getNowDate2(), CalExpireDate(db, d["StartDate"], d["NeedDays"]),
                d["id"])
         #print sql
         if db.update(sql) < 0:

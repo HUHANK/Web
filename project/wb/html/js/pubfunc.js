@@ -236,11 +236,53 @@ function deal_query_condition(name, attr, isAdd) {
 }
 
 
+function GetSessionID() {
+	if (Options.SessionID == null || typeof(Options.SessionID) == "undefined") {
+		alert("您还没有登录，请先登录！");
+		window.location.href = "login.html";
+	} else {
+		return Options.SessionID;
+	}
+	return null;
+}
+
+function GenProgressBarHtml(width, height, pro) {
+	pro = parseFloat(pro)/100;
+	var w2 = width * pro;
+	var radius = height/2;
+	var html = '<div class="hyl-progress-bar" style="width: '+width+'px;height: '+height+'px;border-radius: '+radius+'px;"> \
+        			<div class="progress" style="width: '+w2+'px;border-radius: '+radius+'px;"></div> \
+    			</div>';
+    return html;
+}
 
 
+function DateDiffNow (strInterval, dtStart) {
+	var dtEnd = new Date();
+	if (typeof dtStart == 'string' )//如果是字符串转换为日期型
+	{
+		if (dtStart.length == 8){
+			dtStart = dtStart[0]+dtStart[1]+dtStart[2]+dtStart[3]+"/"+dtStart[4]+dtStart[5]+"/"+dtStart[6]+dtStart[7];
+		}
+		dtStart = new Date(dtStart);
+	}
+	switch (strInterval) {
+		case 's' :return parseInt((dtEnd - dtStart) / 1000);
+		case 'n' :return parseInt((dtEnd - dtStart) / 60000);
+		case 'h' :return parseInt((dtEnd - dtStart) / 3600000);
+		case 'd' :return parseInt((dtEnd - dtStart) / 86400000);
+		case 'w' :return parseInt((dtEnd - dtStart) / (86400000 * 7));
+		case 'm' :return (dtEnd.getMonth()+1)+((dtEnd.getFullYear()-dtStart.getFullYear())*12) - (dtStart.getMonth()+1);
+		case 'y' :return dtEnd.getFullYear() - dtStart.getFullYear();
+	}
+}
 
-
-
+function GetNowDate() {
+	var date = new Date();
+	var ret = "";
+	ret += date.getFullYear()+""+ (date.getMonth()+1) + "" + date.getDate();
+	return ret;
+}
 
 
 

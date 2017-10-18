@@ -18,7 +18,7 @@ function main() {
 			ret = $.parseJSON(d);
 			console.info(ret);
 			if (ret.result == "OK") {
-				$.cookie("htzq_SessionID", ret.sessionid);
+				$.cookie("htzq_SessionID", ret.sessionid, { expires: 1 });
 				window.location.href = "zbxt.html";
 			}
 			else

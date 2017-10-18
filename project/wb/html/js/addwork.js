@@ -210,7 +210,6 @@ function add_zb() {
 	})
 
 	$(".add-zb .edit .form .update").click(function() {
-		console.info("XXXXXXXXXXXXXXXXXX");
 		var fom = $(".add-zb .edit .form");
 		var sys = fom.find(".fsys");
 		var mod = fom.find(".fmod");
@@ -222,12 +221,6 @@ function add_zb() {
 		var ksrq = fom.find(".ksrq");
 		var hxrr = fom.find(".fhxrr");
 		var bz = fom.find(".fbz");
-		// var zq = fom.find(".zq .je-bg-native").siblings();
-		// if (zq.hasClass('bz')) {
-		// 	zq = 0;
-		// }else{
-		// 	zq = 1;
-		// }
 
 		var param = new Object();
 		param.SessionID = Options.SessionID;
@@ -307,13 +300,9 @@ function add_zb() {
 		var hxrr = fom.find(".fhxrr");
 		var bz = fom.find(".fbz");
 
-		//sys.val('');
 		sys.siblings('.je-select').html("");
-		//mod.val("");
 		mod.siblings('.je-select').html("");
-		//type.val("");
 		type.siblings('.je-select').html("");
-		//property.val("");
 		property.siblings('.je-select').html("");
 		jd.val("");
 
@@ -363,7 +352,7 @@ function add_zb_show_work() {
 				bzgz.html("暂无本周工作记录")
 			} else {
 				je_table($(".add-zb .bzgz"),{
-					width:"1168",
+					width:"1188",
 					isPage: false,
 					datas: CurWeekData,
 					columnSort:[],
@@ -374,10 +363,14 @@ function add_zb_show_work() {
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+						{name: "进度", 		field: "ProgressRate", width: "70", align:"center",
+							renderer:function(obj, rowidex) {
+								return GenProgressBarHtml(60, 14, obj.ProgressRate);
+							}
+						},
 						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
 						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-						{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
 						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
 						{name: "操作", field:'id', width:"125", align:"center", 
 							renderer:function(obj, rowidex) {
@@ -402,6 +395,33 @@ function add_zb_show_work() {
 								sync_post_data("/report/", JSON.stringify(param), function(d){
 									if (d.ErrCode == 0) {
 										add_zb_show_work();
+										/*初始化界面*/
+										var fom = $(".add-zb .edit .form");
+										var sys = fom.find(".fsys");
+										var mod = fom.find(".fmod");
+										var type = fom.find(".ftype");
+										var property = fom.find(".fprop");
+										var jd = fom.find(".fjd");
+										var gzh = fom.find(".fgzh");
+										var gznr = fom.find(".fgznr");
+										var ksrq = fom.find(".ksrq");
+										var hxrr = fom.find(".fhxrr");
+										var bz = fom.find(".fbz");
+
+										sys.siblings('.je-select').html("");
+										mod.siblings('.je-select').html("");
+										type.siblings('.je-select').html("");
+										property.siblings('.je-select').html("");
+										jd.val("");
+
+										gzh.val("");
+										gznr.val("");
+										hxrr.val("");
+										bz.val("");
+
+										$(".add-zb .edit .form .update").attr('disabled', '');
+										$(".add-zb .edit .form .cancle").attr('disabled', '');
+										$(".add-zb .edit .form .add").removeAttr('disabled');
 									} else {
 										alert(d.msg);
 									}
@@ -471,7 +491,7 @@ function add_zb_show_work() {
 				xzgz.html("暂无下周工作记录")
 			} else {
 				je_table($(".add-zb .xzgz"),{
-					width:"1143",
+					width:"1163",
 					isPage: false,
 					datas: NextWeekData,
 					columnSort:[],
@@ -482,10 +502,14 @@ function add_zb_show_work() {
 						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
 						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "50", align:"center"},
+						{name: "进度", 		field: "ProgressRate", width: "70", align:"center",
+							renderer:function(obj, rowidex) {
+								return GenProgressBarHtml(60, 14, obj.ProgressRate);
+							}
+						},
 						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
 						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-						{name: "跟新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
 						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
 						{name: "操作", field:'id', width:"100", align:"center", 
 							renderer:function(obj, rowidex) {
@@ -510,6 +534,33 @@ function add_zb_show_work() {
 								sync_post_data("/report/", JSON.stringify(param), function(d){
 									if (d.ErrCode == 0) {
 										add_zb_show_work();
+										/*初始化界面*/
+										var fom = $(".add-zb .edit .form");
+										var sys = fom.find(".fsys");
+										var mod = fom.find(".fmod");
+										var type = fom.find(".ftype");
+										var property = fom.find(".fprop");
+										var jd = fom.find(".fjd");
+										var gzh = fom.find(".fgzh");
+										var gznr = fom.find(".fgznr");
+										var ksrq = fom.find(".ksrq");
+										var hxrr = fom.find(".fhxrr");
+										var bz = fom.find(".fbz");
+
+										sys.siblings('.je-select').html("");
+										mod.siblings('.je-select').html("");
+										type.siblings('.je-select').html("");
+										property.siblings('.je-select').html("");
+										jd.val("");
+
+										gzh.val("");
+										gznr.val("");
+										hxrr.val("");
+										bz.val("");
+
+										$(".add-zb .edit .form .update").attr('disabled', '');
+										$(".add-zb .edit .form .cancle").attr('disabled', '');
+										$(".add-zb .edit .form .add").removeAttr('disabled');
 									} else {
 										alert(d.msg);
 									}
