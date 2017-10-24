@@ -12,11 +12,11 @@ def crontabProcess():
     COUNT = 0
     while True:
         #print "Child thread!",COUNT
-        if COUNT % (600) == 0:
+        if COUNT % (15) == 0:
             dbConnectionKeepAlive()
             print "dbConnectionKeepAlive"
 
-        time.sleep(1)
+        time.sleep(60)
         COUNT+=1
         if COUNT > 1000000:
             COUNT = 0

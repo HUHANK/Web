@@ -200,8 +200,8 @@ def reportProcess(data):
 
     if data["method"] == "ADD":
         #print data
-        #(Year, Week, Day) = getYearWeek(data["StartDate"])
-        Week = Week + data.get("Week", 0)
+        (Year, Week, Day) = getYearWeek(data["StartDate"])
+        #Week = Week + data.get("Week", 0)
         #特殊转换区
         editDate = data["StartDate"];
         editDate = editDate[0]+editDate[1]+editDate[2]+editDate[3]+editDate[5]+editDate[6]+editDate[8]+editDate[9]
@@ -461,7 +461,7 @@ def queryData(data):
         if len(week) > 0:
             if len(sqlcondi) > 0:
                 sqlcondi += " AND "
-            sqlcondi += " A.WEEK BETWEEN %s AND %s " % (week.get("start", 0), week.get("end", 0))
+            sqlcondi += " A.WEEK BETWEEN %s AND %s and A.YEAR = %s " % (week.get("start", 0), week.get("end", 0), week.get("year", 0))
     if schedule != None:
         if len(sqlcondi) > 0 and schedule >= 0:
             sqlcondi += " AND "

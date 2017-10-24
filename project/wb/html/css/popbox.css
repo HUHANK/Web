@@ -75,3 +75,20 @@
 	opacity: 0.5;
 	visibility: visible;
 }
+
+/*------------------------------------------------------------------------*/
+.hyl-input{
+	background:none;  
+    outline:none;  
+    border:0px;
+
+    width: 100px;
+    border: 1px solid #D9D9D9;
+    border-radius: 3px;
+    padding: 2px;
+}
+.hyl-input:focus{
+    border: 1px solid #3BB4F2;
+    box-shadow: 0px 0px 3px #3BB4F2;
+    transition: all 0.3s;
+}

@@ -236,28 +236,28 @@ function query_sidebar_init() {
 	});
 
 	//console.info(g_CURRENT_WEEK);
-	$(".query .sidebar .week .content input").val(g_CURRENT_WEEK);
+	$(".query .sidebar .week .content .start").val(g_CURRENT_WEEK);
+	$(".query .sidebar .week .content .end").val(g_CURRENT_WEEK);
+	$(".query .sidebar .week .content .year").val(g_CURRENT_YEAR);
 	/*跟新查询条件*/
 	if (typeof(QueryCondi.week) == "undefined" ) {
 		QueryCondi.week = {};
 	}
 	QueryCondi.week.start = g_CURRENT_WEEK;
 	QueryCondi.week.end = g_CURRENT_WEEK;
+	QueryCondi.week.year = g_CURRENT_YEAR;
 	$(".query .sidebar .week .content input").change(function(e){
 		//console.info($(this));
-		var start = 0;
-		var end = 0;
+		var start = parseInt($(this).parent().find(".start").val());
+		var end   = parseInt($(this).parent().find(".end").val());
+		var year  = parseInt($(this).parent().find(".year").val());
 		if ($(this).hasClass("start")) {
-			start = parseInt($(this).val());
-			end = parseInt($(this).siblings().val());
 			if (start > end ){
-				$(this).siblings().val(start);
+				$(this).siblings(".end").val(start);
 				end = start;
 			}
 		}
 		if ($(this).hasClass("end")) {
-			end = parseInt($(this).val());
-			start = parseInt($(this).siblings().val());
 			if (end < start) {
 				alert("结束周期不能小于开始周期，请检查！");
 				$(this).val(start);
@@ -271,6 +271,7 @@ function query_sidebar_init() {
 		}
 		QueryCondi.week.start = start;
 		QueryCondi.week.end = end;
+		QueryCondi.week.year = year;
 
 		/*跟新结果*/
 		query_get_result(0);
@@ -405,16 +406,19 @@ function query_get_result(page) {
 					var tmp = d.data[i].AddDate;
 					d.data[i].AddDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 					tmp = d.data[i].EditDate;
+					var eDate = tmp;
 					d.data[i].EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 					tmp = d.data[i].ExpireDate;
 					d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 					//console.info(tmp);
-					if ( parseInt(tmp) < NowDate ) {
-						//console.info("-----",tmp);
-						//console.info("-----",DateDiffNow('d', tmp));
-						d.data[i].ExpireDays = DateDiffNow('d', tmp);
+					if (d.data[i].ProgressRate < 100) {
+						if ( parseInt(tmp) < NowDate ) {
+							d.data[i].ExpireDays = DateDiffNow('d', tmp);
+						} else {
+							d.data[i].ExpireDays = 0;
+						}
 					} else {
-						d.data[i].ExpireDays = 0;
+						d.data[i].ExpireDays = DateDiff('d', tmp, eDate);
 					}
 				}
 			}

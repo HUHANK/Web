@@ -112,12 +112,6 @@ function add_zb() {
 		var ksrq = fom.find(".ksrq");
 		var hxrr = fom.find(".fhxrr");
 		var bz = fom.find(".fbz");
-		var zq = fom.find(".zq .je-bg-native").siblings();
-		if (zq.hasClass('bz')) {
-			zq = 0;
-		}else{
-			zq = 1;
-		}
 
 		if (sys.val() == "") {
 			alert("系统选项不能为空！");
@@ -157,7 +151,7 @@ function add_zb() {
 		param.SessionID = Options.SessionID;
 		param.method = "ADD";
 
-		param.Week = zq;
+		param.Week = 0;
 		param.System = sys.val();
 		param.Module = mod.val();
 		param.Type = type.val();
@@ -377,7 +371,7 @@ function add_zb_show_work() {
 								//console.log(obj);
 	                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
 	    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button> \
-	    							<button  name="'+obj.id+'" type="turn" class="je-btn je-bg-green je-btn-small"><i class="je-icon" style="transform: rotate(-180deg);">&#xe627;</i></button>';
+	    							<!--<button  name="'+obj.id+'" type="turn" class="je-btn je-bg-green je-btn-small"><i class="je-icon" style="transform: rotate(-180deg);">&#xe627;</i></button>-->';
 	                    	}
 	                	}
 					],
@@ -472,17 +466,17 @@ function add_zb_show_work() {
 									}
 								});
 							}
-							else if ($(this).attr("type") == "turn") {
-								param.method = "TURN_NEXT";
-								param.id = $(this).attr("name");
-								sync_post_data("/report/", JSON.stringify(param), function(d){
-									if (d.ErrCode == 0) {
-										add_zb_show_work();
-									} else {
-										alert(d.msg);
-									}
-								});
-							}
+							// else if ($(this).attr("type") == "turn") {
+							// 	param.method = "TURN_NEXT";
+							// 	param.id = $(this).attr("name");
+							// 	sync_post_data("/report/", JSON.stringify(param), function(d){
+							// 		if (d.ErrCode == 0) {
+							// 			add_zb_show_work();
+							// 		} else {
+							// 			alert(d.msg);
+							// 		}
+							// 	});
+							// }
 						});
 					}	
 				});

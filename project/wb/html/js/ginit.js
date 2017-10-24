@@ -87,6 +87,7 @@ var g_ALL_PROPERTY = {};
 var g_QUERY_TREE;
 var g_CURRENT_WEEK = 0;
 var g_CURRENT_USER = "";
+var g_CURRENT_YEAR = 0;
 
 Options = new Object();
 Options.QueryCondition = new Object();

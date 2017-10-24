@@ -12,14 +12,14 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=1.2.5"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=1.2.5"></script>
-	<script type="text/javascript" src="js/addwork.js?version=1.2.5"></script>
-	<script type="text/javascript" src="js/mquery.js?version=1.2.5"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=1.2.5"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.2.5">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.2.5">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.2.5">
+	<script type="text/javascript" src="js/ginit.js?version=1.2.6"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=1.2.6"></script>
+	<script type="text/javascript" src="js/addwork.js?version=1.2.6"></script>
+	<script type="text/javascript" src="js/mquery.js?version=1.2.6"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=1.2.6"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.2.6">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.2.6">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.2.6">
 </head>
 <body>
 	<!--弹出框-->
@@ -89,8 +89,10 @@
 
 					<li class="week layer1"><span>周期</span>
 						<div class="content">
-							<input class="start" type="number" name="">至
-							<input class="end" type="number" name="">
+							年份：<input class="year hyl-input" type="number" name="">
+							</br>
+							<input class="start hyl-input" type="number" name="">至
+							<input class="end hyl-input" type="number" name="">
 						</div>
 					</li>
 						
@@ -145,12 +147,14 @@
 			<h3>下周工作</h3>
 			<div class="xzgz"></div>
 			
+
 			<h3>编辑周报</h3>
 			<div class="edit">
 				<fieldset class="je-field je-p10" style="width: 900px;">
 			        <legend class="je-f16">编辑</legend>
 			        <div class="form">
 			        	
+			        	<!--
 			        	<div class="je-form-item zq">
 			        		<label class="je-label je-f14">周期</label>
 			        		<div  class="je-inputbox">
@@ -158,6 +162,7 @@
 			        			<button class="je-btn je-btn-big je-f16 je-bg-native xz">下周</button>
 			        		</div>
 			        	</div>
+			        	-->
 
 			            <div class="je-form-item">
 			                <div class="je-w33 je-dib">
@@ -238,7 +243,7 @@
 
 			            <div class="je-form-item">
 			                <div class="je-inputbox">
-			                <button class="je-btn add">添加</button>
+			                <button class="je-btn add" type="button">添加</button>
 			                <button class="je-btn update" disabled>更新</button>
 			                <button class="je-btn cancle" disabled>取消</button>
 			                </div>

@@ -27,6 +27,10 @@ function InitHeader() {
 		$(".header .subhead .rqxs").text(txt);
 		g_CURRENT_WEEK = d.Week;
 		g_CURRENT_USER = d.UserNmae;
+
+		var tmp = d.Date[0] + d.Date[1] + d.Date[2] + d.Date[3];
+		//console.info(tmp);
+		g_CURRENT_YEAR = parseInt(tmp);
 	});
 
 	$(".header .subhead .logout").click(function(){

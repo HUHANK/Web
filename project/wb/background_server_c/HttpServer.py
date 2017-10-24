@@ -7,6 +7,7 @@ from config import *
 from RouteHandler import *
 from MainProcess import  *
 from Crontab import *
+from SysTimedTaskProcess import startSysTimedTaskProcess
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -32,13 +33,12 @@ class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             sdata = {}
             sdata["method"] = url
             sdata["data"] = data
-            #print sdata
+
             while True:
                 canExit = False
                 for i in range(len(MProcess)):
                     ret = MProcess[i].mprocess(sdata)
                     if ret is not False:
-                        #print ret
                         content = ret
                         canExit = True
                         break
@@ -69,4 +69,7 @@ if __name__ == "__main__":
         MProcess.append(CMainProcess())
     for i in range(len(MProcess)):
         MProcess[i].start()
+
+    startSysTimedTaskProcess();
+
     start_server(HTTP_SERVER_PORT)
