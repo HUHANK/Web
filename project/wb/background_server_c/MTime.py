@@ -15,6 +15,7 @@ def getYearWeek(strdate):
 def getNowYearWeek():
     date = datetime.datetime.now()
     return date.isocalendar()
+
 #根据指定的日期获取年份，第几周，一周的第几天
 def getWeekInfoByDate(str):
     date = datetime.datetime.strptime(str, '%Y%m%d')
@@ -38,6 +39,7 @@ def getWeekFirstday(weekflag):
         else:
             daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 2) * 7
         Monday = (yearstart + datetime.timedelta(days=daydelat)).date()
+        Monday = datetime.datetime.strftime(Monday, "%Y-%m-%d")
     return Monday
 
 #
@@ -72,6 +74,33 @@ def getYearTotalDays(year):
         ydays += mdays
     return ydays
 
+#获取当前时间的小时
+def getNowHours():
+    return datetime.datetime.now().strftime('%H')
+
+#获取一年的最后一个周
+def getYearLastWeek(year):
+    tmp = "%s1231" % (year)
+    return getWeekInfoByDate(tmp)
+
+#获取指定周的下一个周
+def getNextWeek(year, week):
+    year = int(year)
+    week = int(week)
+    (lYear, lWeek, lDay) = getYearLastWeek(year)
+    week = week+1
+    if week > lWeek:
+        week = 1
+        year = year + 1
+        return (year, week)
+    return (year, week)
+
+#print getWeekFirstday("2017#44")
+#print getNextWeek(2017, 52)
+#print getYearLastWeek(2017)
+#print time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
+#print datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+#print getNowHours()
 #print  getYearTotalDays(2014)
 #print getNowDate2()
 #print getNowYearWeek()

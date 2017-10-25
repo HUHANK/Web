@@ -263,10 +263,20 @@ def reportProcess(data):
                 "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
         rs = db.select2(sql)
         ret["current"] = rs["data"]
-        Week = Week + 1
+        (NYear, NWeek) = getNextWeek(Year, Week)
+        tmp = "%s#%s" % (NYear, NWeek)
+        NextWeekFirstDay = getWeekFirstday(tmp)
+        tmp = NextWeekFirstDay
+        NextWeekFirstDay2 = tmp[0] + tmp[1] +tmp[2] +tmp[3] +tmp[5] +tmp[6] +tmp[8] +tmp[9]
         sql = "SELECT C.* " \
               "FROM user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C ON A.WID = C.id " \
-              "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
+              "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s " \
+              "UNION " \
+              "SELECT C.*  " \
+              "FROM user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C ON A.WID = C.id " \
+              "WHERE B.UNAME = '%s' AND  A.YEAR = %s AND A.WEEK = %s " \
+              " AND C.ProgressRate < 100 AND C.StartDate < '%s' AND C.ExpireDate >= '%s'" \
+              % (userName, NYear, NWeek, userName, Year, Week, NextWeekFirstDay, NextWeekFirstDay2)
         rs = db.select2(sql)
         ret["next"] = rs["data"]
         setErrMsg(ret, 0, "")
