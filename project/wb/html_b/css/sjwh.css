@@ -1,0 +1,58 @@
+.sjwh{
+	margin: 0;
+	padding: 0;
+}
+
+.sjwh .sidebar{
+	overflow: hidden;
+	width: 160px;
+	height: 700px;
+	float: left;
+	//background-color: white;
+}
+
+.sjwh .wrap{
+	height: 700px;
+	width: 100%;
+	//background-color: red;
+}
+
+.sjwh .wrap .mmxg{
+	text-align: center;
+	overflow: hidden;
+	display: none;
+}
+
+.sjwh .wrap .mmxg .main{
+	margin: 0 auto;
+	width: 300px;
+	height: 400px;
+	overflow: hidden;
+	margin-top: 200px;
+}
+
+.sjwh .wrap .mmxg .ts{
+	border: 1px solid red;
+}
+
+.sjwh .wrap .bmgl{
+	overflow: hidden;
+	//width: 400px;
+	display: none;
+}
+
+.sjwh .wrap .xzgl{
+	overflow: hidden;
+	display: none;
+}
+
+.sjwh .wrap .xzgl .clicked{
+	background-color: #94DAE9;
+}
+.sjwh .wrap .xzgl .xzcysz{
+	width: 573px;
+}
+
+.sjwh .wrap .zdwh{
+	display: none;
+}
