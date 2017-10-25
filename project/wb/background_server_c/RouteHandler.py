@@ -263,6 +263,7 @@ def reportProcess(data):
                 "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
         rs = db.select2(sql)
         ret["current"] = rs["data"]
+
         (NYear, NWeek) = getNextWeek(Year, Week)
         tmp = "%s#%s" % (NYear, NWeek)
         NextWeekFirstDay = getWeekFirstday(tmp)
@@ -356,11 +357,24 @@ def getHomeData(data):
     else:
         ret["isManager"] = 0
 
+    (NYear, NWeek) = getNextWeek(Year, Week)
+    tmp = "%s#%s" % (NYear, NWeek)
+    NextWeekFirstDay = getWeekFirstday(tmp)
+    tmp = NextWeekFirstDay
+    NextWeekFirstDay2 = tmp[0] + tmp[1] + tmp[2] + tmp[3] + tmp[5] + tmp[6] + tmp[8] + tmp[9]
+
     sql = "select B.NOTE User, C.* from user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C on A.WID = C.id " \
           " where A.YEAR = %s and A.WEEK = %s " \
           " AND A.UID in (" \
           " select UID from user where group_id in (select id from xgroup where manager in (select UID from user where UNAME = '%s')) and UNAME != '%s'" \
-          " ) ORDER BY 1, 3,4,5" % (Year, (Week+1), userName, userName)
+          " ) " % (NYear, NWeek, userName, userName)
+    sql += " UNION "
+    sql += "select B.NOTE User, C.* from user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C on A.WID = C.id " \
+            " where A.YEAR = %s and A.WEEK = %s " \
+            " AND C.ProgressRate < 100 AND C.StartDate < '%s' AND C.ExpireDate >= '%s'" \
+            " AND A.UID in (" \
+            " select UID from user where group_id in (select id from xgroup where manager in (select UID from user where UNAME = '%s')) and UNAME != '%s'" \
+            " ) ORDER BY 1, 3,4,5 " % (Year, Week, NextWeekFirstDay, NextWeekFirstDay2, userName, userName)
     rs = db.select2(sql)
     if rs == None:
         setErrMsg(ret, 2, "数据库查询失败！")

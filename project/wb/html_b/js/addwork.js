@@ -7,7 +7,10 @@ function add_zb_ginit() {
 		isTime:false, //isClear:false,
 		isinitVal:true,
 		minDate:"2017-9-1 00:00:00",
-		maxDate:"2020-11-8 00:00:00"
+		maxDate:"2020-11-8 00:00:00",
+		okfun:function(obj) {
+			//console.info( $(obj) );
+		}
 	});
 
 	$(".add-zb .edit .form .update").attr('disabled', '');
@@ -53,6 +56,19 @@ function add_zb_ginit() {
 		$(this).siblings().removeAttr('selected');
 		$(this).removeClass("je-bg-native");
 		$(this).attr("selected", "selected");
+	});
+
+	$(".add-zb .edit .form .ksrq").blur(function(){
+		hxrr = $(".add-zb .edit .form .fhxrr").val();
+		if (hxrr.length < 1) return;
+		console.info(typeof $(".add-zb .edit .form .fhxrr").val());
+		hxrr = parseInt( hxrr );
+		if (hxrr < 0) return;
+		console.info($(this));
+	});
+
+	$(".add-zb .edit .form .fhxrr").change(function(){
+		console.info($(this));
 	});
 
 }

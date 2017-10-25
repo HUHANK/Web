@@ -1198,6 +1198,7 @@ function update_sjwh_dict(){
 
 
 function home_page() {
+
 	var param = new Object();
 	param.SessionID = Options.SessionID;
 	post_data("/home/", JSON.stringify(param), function(d) {
