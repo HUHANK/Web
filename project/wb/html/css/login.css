@@ -36,12 +36,17 @@ body{
 }
 
 .body {
+	overflow: hidden;
 }
 
 .log-box{
-	margin-top: 200px;
+	/* margin-top: 200px;
 	margin-bottom: 240px;
-	margin-left: 400px;
+	margin-left: 400px; */
+	//float: left;
+	position: relative;
+	//top: 200px;
+	//left: 200px;
 	width: 300px;
 	//height: 250px;
 	border: 1px solid black;
@@ -81,11 +86,23 @@ body{
 }
 
 .log-box-c input{
+	background:none;  
+    outline:none;  
+    border:0px;
+
 	margin-top: 20px;
 	width: 200px;
-	height: 20px;
-	border-radius: 10px;
-	padding: 5px;
+	//height: 20px;
+	border: 1px solid #D9D9D9;
+	border-radius: 6px;
+	padding: 8px;
+	font-size: 14px;
+}
+
+.log-box-c input:focus{
+	border: 1px solid #3BB4F2;
+    box-shadow: 0px 0px 3px #3BB4F2;
+    transition: all 0.3s;
 }
 
 .log-box-c div{
@@ -93,7 +110,7 @@ body{
 }
 
 .log-box-c button{
-	width: 205px;
+	width: 216px;
 	height: 40px;
 	font-size: 1.2em;
 	background-color: #63E0E4;

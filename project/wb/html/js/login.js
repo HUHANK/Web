@@ -28,4 +28,35 @@ function main() {
 			}
 		});
 	});
+
+	initLoginBox();
+
+	$(window).resize(function(event) {
+		initLoginBox();
+	});
+
+}
+
+function initLoginBox() {
+
+	wheight = $(window).height();
+	wwidth = $(window).width();
+
+	hheight = $(".wrap .header").height();
+	$(".wrap .body").width(wwidth);
+	$(".wrap .body").height(wheight-hheight - 60);
+
+	bheight = $(".wrap .body").height();
+	bwidth = $(".wrap .body").width();
+
+	lwidth = $(".wrap .body .log-box").width();
+	lheight = $(".wrap .body .log-box").height();
+
+	left = (bwidth - lwidth)/2;
+	stop = (bheight - lheight)/2;
+
+	$(".wrap .body .log-box").css({
+		"top": stop,
+		"left": left
+	});
 }
