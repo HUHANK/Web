@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2017-10-13 17:10:56
+Date: 2017-10-26 17:28:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -40,19 +40,6 @@ CREATE TABLE `dict` (
 ) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Table structure for dictionary
--- ----------------------------
-DROP TABLE IF EXISTS `dictionary`;
-CREATE TABLE `dictionary` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DIC_TYPE` int(11) NOT NULL COMMENT '0:表字段说明；1:表字段包含的值',
-  `TABLE_NAME` varchar(64) NOT NULL DEFAULT '',
-  `COL_NAME` varchar(64) NOT NULL DEFAULT '',
-  `NOTE` varchar(1024) NOT NULL DEFAULT '',
-  PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
-
--- ----------------------------
 -- Table structure for session
 -- ----------------------------
 DROP TABLE IF EXISTS `session`;
@@ -62,6 +49,19 @@ CREATE TABLE `session` (
   `login_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for sys_param
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_param`;
+CREATE TABLE `sys_param` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `ParamCode` char(4) NOT NULL,
+  `ParamName` varchar(256) DEFAULT NULL,
+  `ParamValue` varchar(128) NOT NULL,
+  `Note` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for user
@@ -76,7 +76,7 @@ CREATE TABLE `user` (
   `NOTE` varchar(128) NOT NULL,
   PRIMARY KEY (`UID`),
   UNIQUE KEY `index` (`UNAME`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for user_work
@@ -110,7 +110,7 @@ CREATE TABLE `work_detail` (
   `ExpireDate` char(8) NOT NULL DEFAULT '',
   `Note` varchar(512) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=535 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=675 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for xgroup
@@ -122,7 +122,7 @@ CREATE TABLE `xgroup` (
   `manager` int(10) unsigned NOT NULL,
   `depart_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for xholiday
