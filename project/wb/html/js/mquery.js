@@ -418,7 +418,8 @@ function query_get_result(page) {
 							d.data[i].ExpireDays = 0;
 						}
 					} else {
-						d.data[i].ExpireDays = DateDiff('d', tmp, eDate);
+						//d.data[i].ExpireDays = DateDiff('d', eDate, tmp);
+						d.data[i].ExpireDays = 0;
 					}
 				}
 			}
@@ -434,7 +435,11 @@ function query_get_result(page) {
 				{name: "<div class='rhead' name='System'>系统</div>", field:"System", 	width:"80", align:"center"},
 				{name: "<div class='rhead' name='Module'>模块</div>", field:"Module", 	width:"80", align:"center"},
 				{name: "<div class='rhead' name='Type'>类型</div>", field:"Type", 	width:"80", align:"center"},
-				{name: "<div class='rhead' name='TraceNo'>跟踪号</div>", field:"TraceNo", 	width:"100", align:"center"},
+				{name: "<div class='rhead' name='TraceNo'>跟踪号</div>", field:"TraceNo", 	width:"100", align:"center",
+					renderer:function(obj, rowidex) {
+						return GenTraceNoAhref(obj.TraceNo);
+					}
+				},
 				{name: "工作内容", field:"Detail", 	width:"360", align:"center"},
 				{name: "<div class='rhead' name='Property'>性质</div>", field:"Property", 	width:"80", align:"center"},
 				{name: "<div class='rhead' name='UNAME'>人员</div>", field:"UNAME", 	width:"60", align:"center"},

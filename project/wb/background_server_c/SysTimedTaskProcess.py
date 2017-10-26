@@ -16,6 +16,8 @@ def SysTimedTaskProcess():
 
         if N % (15) == 0:
             TurnNextWeek()
+        if N % (5) == 0:
+            TurnNextWeek2()
 
         N += 1
         time.sleep(60)

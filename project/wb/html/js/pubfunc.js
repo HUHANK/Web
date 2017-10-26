@@ -256,6 +256,20 @@ function GenProgressBarHtml(width, height, pro) {
     return html;
 }
 
+function GenTraceNoAhref( traceNo ) {
+	var arr = traceNo.split("#");
+	var sNo = $.trim( arr[1] ); 
+	if (sNo == "0000") return traceNo;
+
+	var re = /^[0-9]{4,}$/
+	if ( !re.test(sNo) ) {
+		return traceNo;
+	}
+	var url = "http://10.10.14.56/redmine/issues/" + sNo;
+	var html = arr[0] + ' <a href="'+url+'">#'+sNo+'</a>'
+	return html;
+}
+
 
 function DateDiffNow (strInterval, dtStart) {
 	var dtEnd = new Date();

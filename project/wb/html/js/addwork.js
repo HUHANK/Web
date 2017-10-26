@@ -55,6 +55,58 @@ function add_zb_ginit() {
 		$(this).attr("selected", "selected");
 	});
 
+	$(".add-zb .edit .form .ksrq").blur(function(){
+		var hxrr = $(".add-zb .edit .form .fhxrr").val();
+		if (hxrr.length < 1) return;
+		hxrr = parseInt( hxrr );
+		if (hxrr < 0) return;
+
+		var param = new Object();
+		param.method = "GET_EXPIRE_DATE";
+		param.StartDate = $(this).val();
+		param.NeedDays = hxrr;
+
+		console.info($(this).val());
+		sync_post_data("/pubinterface/", JSON.stringify(param), function(d) {
+			if (d.ErrCode == 0) {
+				var tmp = d.ExpireDate;
+				tmp = tmp[0]+tmp[1]+tmp[2]+tmp[3]+"-"+tmp[4]+tmp[5]+"-"+tmp[6]+tmp[7];
+				$(".add-zb .edit .form .fwcrq").val(tmp);
+			}else{
+				alert(d.msg);
+			}
+		});
+
+	});
+
+
+
+	$(".add-zb .edit .form .fhxrr").change(function(){
+		var ksrq = $(".add-zb .edit .form .ksrq").val();
+		if (ksrq.length < 1) return;
+
+		var hxrr = $(this).val();
+		if (hxrr.length < 1) return;
+		hxrr = parseInt(hxrr);
+		if (hxrr < 0) return;
+
+		var param = new Object();
+		param.method = "GET_EXPIRE_DATE";
+		param.StartDate = ksrq;
+		param.NeedDays = hxrr;
+
+		sync_post_data("/pubinterface/", JSON.stringify(param), function(d) {
+			if (d.ErrCode == 0) {
+				var tmp = d.ExpireDate;
+				tmp = tmp[0]+tmp[1]+tmp[2]+tmp[3]+"-"+tmp[4]+tmp[5]+"-"+tmp[6]+tmp[7];
+				$(".add-zb .edit .form .fwcrq").val(tmp);
+			}else{
+				alert(d.msg);
+			}
+		});
+
+	});
+
 }
 
 function add_zb_form_clean() {
@@ -233,7 +285,7 @@ function add_zb() {
 		param.ProgressRate = jd.siblings().text();
 		param.TraceNo = gzh.val();
 		param.Detail = gznr.val();
-		param.StartDate = ksrq.val();
+		param.EditDate = ksrq.val();
 		param.NeedDays = hxrr.val();
 		param.Note = bz.val();
 
@@ -274,6 +326,10 @@ function add_zb() {
 				fom.find(".add").removeAttr('disabled');
 				fom.find(".update").attr('disabled', '');
 				//add_zb_show_work();
+				/**----------------------解禁开始日期------------------------**/
+				$(".add-zb .edit .form .ksrq").removeAttr('disabled');
+				$(".add-zb .edit .form .ksrq-lab").text("开始日期");
+				/**----------------------------------------------------------**/
 				window.location.href = "zbxt.html";
 			} else {
 				alert(d.msg);
@@ -293,6 +349,7 @@ function add_zb() {
 		var ksrq = fom.find(".ksrq");
 		var hxrr = fom.find(".fhxrr");
 		var bz = fom.find(".fbz");
+		var wcrq = fom.find(".fwcrq");
 
 		sys.siblings('.je-select').html("");
 		mod.siblings('.je-select').html("");
@@ -304,10 +361,15 @@ function add_zb() {
 		gznr.val("");
 		hxrr.val("");
 		bz.val("");
+		wcrq.val("");
 
 		$(".add-zb .edit .form .update").attr('disabled', '');
 		$(".add-zb .edit .form .cancle").attr('disabled', '');
 		$(".add-zb .edit .form .add").removeAttr('disabled');
+		/**----------------------解禁开始日期------------------------**/
+		$(".add-zb .edit .form .ksrq").removeAttr('disabled');
+		$(".add-zb .edit .form .ksrq-lab").text("开始日期");
+		/**----------------------------------------------------------**/
 
 	});
 
@@ -318,8 +380,8 @@ function add_zb_show_work() {
 	var param = new Object()
 	param.SessionID = Options.SessionID;
 	param.method = "GET";
-	post_data("/report/", JSON.stringify(param), function(d) {
-		d = $.parseJSON(d);
+	sync_post_data("/report/", JSON.stringify(param), function(d) {
+		//d = $.parseJSON(d);
 		//console.info(d);
 		if (d.ErrCode == 0) {
 			var CurWeekData = d.current;
@@ -327,26 +389,53 @@ function add_zb_show_work() {
 			var bzgz = $(".add-zb .bzgz");
 			var xzgz = $(".add-zb .xzgz");
 
+			var NowDate = parseInt(GetNowDate());
 			for(var i=0; i<d.current.length; i++) {
 				var row = d.current[i];
 				var tmp = row.EditDate;
+				var eDate = row.EditDate;
 				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 				tmp = row.ExpireDate;
 				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				/**==================================================*/
+				if (row.ProgressRate < 100) {
+					if (parseInt(tmp) < NowDate) {
+						row.ExpireDays = DateDiffNow('d', tmp);
+					} else {
+						row.ExpireDays = 0;
+					}
+				} else {
+					//row.ExpireDays = DateDiff('d', eDate, tmp );
+					row.ExpireDays = 0;
+				}
+				/**==================================================*/
 			}
 			for(var i=0; i<d.next.length; i++) {
 				var row = d.next[i];
 				var tmp = row.EditDate;
+				var eDate = row.EditDate;
 				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 				tmp = row.ExpireDate;
 				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				/**==================================================*/
+				if (row.ProgressRate < 100) {
+					if (parseInt(tmp) < NowDate) {
+						row.ExpireDays = DateDiffNow('d', tmp);
+					} else {
+						row.ExpireDays = 0;
+					}
+				} else {
+					//row.ExpireDays = DateDiff('d', eDate, tmp );
+					row.ExpireDays = 0;
+				}
+				/**==================================================*/
 			}
 
 			if (CurWeekData.length < 1){
 				bzgz.html("暂无本周工作记录")
 			} else {
 				je_table($(".add-zb .bzgz"),{
-					width:"1188",
+					width:"1233",
 					isPage: false,
 					datas: CurWeekData,
 					columnSort:[],
@@ -354,7 +443,11 @@ function add_zb_show_work() {
 						{name: "系统", 		field: "System", 	width: "70", align:"center"},
 						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
 						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
-						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
+						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center",
+							renderer:function(obj, rowidex) {
+								return GenTraceNoAhref(obj.TraceNo);
+							}
+						},
 						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
 						{name: "进度", 		field: "ProgressRate", width: "70", align:"center",
@@ -363,10 +456,11 @@ function add_zb_show_work() {
 							}
 						},
 						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
 						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
-						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
-						{name: "操作", field:'id', width:"125", align:"center", 
+						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
+						{name: "计划完成日期", 	field: "ExpireDate", width: "100", align:"center"},
+						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"},
+						{name: "操作", field:'id', width:"100", align:"center", 
 							renderer:function(obj, rowidex) {
 								//console.log(obj);
 	                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
@@ -422,6 +516,13 @@ function add_zb_show_work() {
 								});
 							}
 							else if ($(this).attr("type") == "edit") {
+								/**----------------------禁用开始日期------------------------**/
+								$(".add-zb .edit .form .ksrq").attr("disabled", "");
+								$(".add-zb .edit .form .ksrq-lab").text("跟新日期");
+								var nDate = GetNowDate();
+								nDate = nDate[0]+nDate[1]+nDate[2]+nDate[3]+"-"+nDate[4]+nDate[5]+"-"+nDate[6]+nDate[7];
+								$(".add-zb .edit .form .ksrq").val(nDate);
+								/**----------------------------------------------------------**/
 								var id = $(this).attr("name");
 								param.method = "GETSIG";
 								param.id = id;
@@ -453,9 +554,25 @@ function add_zb_show_work() {
 										jd.siblings('.je-select').text(d.ProgressRate);
 										gzh.val(d.TraceNo);
 										gznr.val(d.Detail);
-										ksrq.val(d.StartDate);
+										//ksrq.val(d.StartDate);
 										bz.val(d.Note);
 										hxrr.val(d.NeedDays);
+
+										var param = new Object();
+										param.method = "GET_EXPIRE_DATE";
+										param.StartDate = ksrq.val();
+										param.NeedDays = d.NeedDays;
+
+										sync_post_data("/pubinterface/", JSON.stringify(param), function(d) {
+											if (d.ErrCode == 0) {
+												var tmp = d.ExpireDate;
+												tmp = tmp[0]+tmp[1]+tmp[2]+tmp[3]+"-"+tmp[4]+tmp[5]+"-"+tmp[6]+tmp[7];
+												$(".add-zb .edit .form .fwcrq").val(tmp);
+											}else{
+												alert(d.msg);
+											}
+										});
+
 
 										fom.find(".update").attr("name", d.id);
 										fom.find(".update").removeAttr('disabled');
@@ -485,7 +602,7 @@ function add_zb_show_work() {
 				xzgz.html("暂无下周工作记录")
 			} else {
 				je_table($(".add-zb .xzgz"),{
-					width:"1163",
+					width:"1233",
 					isPage: false,
 					datas: NextWeekData,
 					columnSort:[],
@@ -493,7 +610,11 @@ function add_zb_show_work() {
 						{name: "系统", 		field: "System", 	width: "70", align:"center"},
 						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
 						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
-						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center"},
+						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center",
+							renderer:function(obj, rowidex) {
+								return GenTraceNoAhref(obj.TraceNo);
+							}
+						},
 						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
 						{name: "进度", 		field: "ProgressRate", width: "70", align:"center",
@@ -502,9 +623,10 @@ function add_zb_show_work() {
 							}
 						},
 						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
 						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
 						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
+						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"},
 						{name: "操作", field:'id', width:"100", align:"center", 
 							renderer:function(obj, rowidex) {
 								//console.log(obj);
@@ -561,6 +683,13 @@ function add_zb_show_work() {
 								});
 							}
 							else if ($(this).attr("type") == "edit") {
+								/**----------------------禁用开始日期------------------------**/
+								$(".add-zb .edit .form .ksrq").attr("disabled", "");
+								$(".add-zb .edit .form .ksrq-lab").text("跟新日期");
+								var nDate = GetNowDate();
+								nDate = nDate[0]+nDate[1]+nDate[2]+nDate[3]+"-"+nDate[4]+nDate[5]+"-"+nDate[6]+nDate[7];
+								$(".add-zb .edit .form .ksrq").val(nDate);
+								/**----------------------------------------------------------**/
 								var id = $(this).attr("name");
 								param.method = "GETSIG";
 								param.id = id;
@@ -592,9 +721,24 @@ function add_zb_show_work() {
 										jd.siblings('.je-select').text(d.ProgressRate);
 										gzh.val(d.TraceNo);
 										gznr.val(d.Detail);
-										ksrq.val(d.StartDate);
+										//ksrq.val(d.StartDate);
 										bz.val(d.Note);
 										hxrr.val(d.NeedDays);
+
+										var param = new Object();
+										param.method = "GET_EXPIRE_DATE";
+										param.StartDate = ksrq.val();
+										param.NeedDays = d.NeedDays;
+
+										sync_post_data("/pubinterface/", JSON.stringify(param), function(d) {
+											if (d.ErrCode == 0) {
+												var tmp = d.ExpireDate;
+												tmp = tmp[0]+tmp[1]+tmp[2]+tmp[3]+"-"+tmp[4]+tmp[5]+"-"+tmp[6]+tmp[7];
+												$(".add-zb .edit .form .fwcrq").val(tmp);
+											}else{
+												alert(d.msg);
+											}
+										});
 
 										fom.find(".update").attr("name", d.id);
 										fom.find(".update").removeAttr('disabled');

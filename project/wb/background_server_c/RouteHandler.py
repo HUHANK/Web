@@ -234,10 +234,12 @@ def reportProcess(data):
         # 特殊转换区
         Detail = d["Detail"].replace("'", "''")
         Note = d["Note"].replace("'", "''")
+        EditDate = d["EditDate"]
+        EditDate = EditDate[0]+EditDate[1]+EditDate[2]+EditDate[3]+ EditDate[5]+EditDate[6]+ EditDate[8]+EditDate[9];
         #-----------------------------------------------------
-        sql = "update work_detail set System='%s', Module='%s', Type='%s', TraceNo='%s', Detail='%s', Property='%s', ProgressRate=%s, StartDate='%s', NeedDays=%s, Note='%s', EditDate='%s', ExpireDate='%s' where id=%s" \
+        sql = "update work_detail set System='%s', Module='%s', Type='%s', TraceNo='%s', Detail='%s', Property='%s', ProgressRate=%s, EditDate='%s', NeedDays=%s, Note='%s', ExpireDate='%s' where id=%s" \
             % (d["System"], d["Module"], d["Type"],d["TraceNo"],Detail,d["Property"],d["ProgressRate"],
-               d["StartDate"],d["NeedDays"],Note, getNowDate2(), CalExpireDate(db, d["StartDate"], d["NeedDays"]),
+               EditDate,d["NeedDays"],Note, CalExpireDate(db, d["EditDate"], d["NeedDays"]),
                d["id"])
         #print sql
         if db.update(sql) < 0:
@@ -322,6 +324,21 @@ def reportProcess(data):
     setErrMsg(ret, 3, "未知参数！")
     return json.dumps(ret)
 
+@route("/pubinterface/")
+def pubInterface(data):
+    data = json.loads(data)
+    db = Options['mysql']
+    ret = {}
+    method = data.get("method",None)
+
+    if method is None:
+        setErrMsg(ret, 2, "未知的方法！")
+    elif method == "GET_EXPIRE_DATE":
+        ret["ExpireDate"] = CalExpireDate(db, data["StartDate"], data["NeedDays"])
+        setErrMsg(ret, 0, "")
+
+    return json.dumps(ret)
+
 @route("/home")
 def getHomeData(data):
     data = json.loads(data)
@@ -371,7 +388,7 @@ def getHomeData(data):
     sql += " UNION "
     sql += "select B.NOTE User, C.* from user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C on A.WID = C.id " \
             " where A.YEAR = %s and A.WEEK = %s " \
-            " AND C.ProgressRate < 100 AND C.StartDate < '%s' AND C.ExpireDate >= '%s'" \
+            " AND C.ProgressRate < 100 AND C.StartDate <= '%s' AND C.ExpireDate >= '%s'" \
             " AND A.UID in (" \
             " select UID from user where group_id in (select id from xgroup where manager in (select UID from user where UNAME = '%s')) and UNAME != '%s'" \
             " ) ORDER BY 1, 3,4,5 " % (Year, Week, NextWeekFirstDay, NextWeekFirstDay2, userName, userName)
