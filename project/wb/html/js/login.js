@@ -8,15 +8,23 @@ function main() {
 		return ;
 	}
 
-	$(".log-box-c button").click(function(){
+	$(".logbtn").click(function(){
 		var data = new Object();
 		data.UserName = $("#username").val();
 		data.PassWord = $("input[type=password]").val();
-		data = JSON.stringify(data);
 
-		post_data("/login/", data, function(d){
+		if (data.UserName.length < 1) {
+			alert("用户名为空！")
+			return;
+		}
+
+		if (data.PassWord.length < 1) {
+			alert("用户密码为空！")
+			return;
+		}
+
+		post_data("/login/", JSON.stringify(data), function(d){
 			ret = $.parseJSON(d);
-			console.info(ret);
 			if (ret.result == "OK") {
 				$.cookie("htzq_SessionID", ret.sessionid, { expires: 1 });
 				window.location.href = "zbxt.html";
@@ -42,21 +50,6 @@ function initLoginBox() {
 	wheight = $(window).height();
 	wwidth = $(window).width();
 
-	hheight = $(".wrap .header").height();
-	$(".wrap .body").width(wwidth);
-	$(".wrap .body").height(wheight-hheight - 60);
+	$("body").height(wheight);
 
-	bheight = $(".wrap .body").height();
-	bwidth = $(".wrap .body").width();
-
-	lwidth = $(".wrap .body .log-box").width();
-	lheight = $(".wrap .body .log-box").height();
-
-	left = (bwidth - lwidth)/2;
-	stop = (bheight - lheight)/2;
-
-	$(".wrap .body .log-box").css({
-		"top": stop,
-		"left": left
-	});
 }

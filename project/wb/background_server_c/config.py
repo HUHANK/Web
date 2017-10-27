@@ -13,9 +13,6 @@ MYSQL_USER = 'root'
 MYSQL_PWD  = '123456'
 MYSQL_DB   = 'weekreportsys'
 
-
-
-
 # Global Value Defined
 Options = {}
 

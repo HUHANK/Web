@@ -153,6 +153,7 @@ function add_zb() {
 	add_zb_form_select_init();
 
 	$(".add-zb .edit .form .add").click(function(){
+		$(this).attr("disabled", "");
 		var fom = $(".add-zb .edit .form");
 		var sys = fom.find(".fsys");
 		var mod = fom.find(".fmod");
@@ -167,6 +168,7 @@ function add_zb() {
 
 		if (sys.val() == "") {
 			alert("系统选项不能为空！");
+			$(this).removeAttr("disabled");
 			return;
 		}
 		/*
@@ -176,26 +178,32 @@ function add_zb() {
 		}*/
 		if (type.val() == "") {
 			alert("类型选项不能为空！");
+			$(this).removeAttr("disabled");
 			return;
 		}
 		if (property.val() == "") {
 			alert("性质选项不能为空！");
+			$(this).removeAttr("disabled");
 			return ;
 		}
 		if (gzh.val() == "") {
 			alert("跟踪号不能为空！");
+			$(this).removeAttr("disabled");
 			return;
 		}
 		if (gznr.val() == "") {
 			alert("工作内容不能填空！");
+			$(this).removeAttr("disabled");
 			return;
 		}
 		if (ksrq.val() == "") {
 			alert("开始日期不能是空！");
+			$(this).removeAttr("disabled");
 			return;
 		}
 		if (hxrr.val() == "") {
 			alert("后续人日不能填空！");
+			$(this).removeAttr("disabled");
 			return;
 		}
 
@@ -219,11 +227,13 @@ function add_zb() {
 		var re = /^\d+$/
 		if (!re.test(param.NeedDays)) {
 			alert("后续人日不能为非正整数！")
+			$(this).removeAttr("disabled");
 			return;
 		}
 		re = /^.*(需求|任务|BUG|问题单)\s*#/
 		if (!re.test(param.TraceNo)) {
 			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG, 问题单]#[XXXX]格式填写！没有跟踪号，请按照 [需求, 任务, BUG, 问题单]#[0000]格式填写！");
+			$(this).removeAttr("disabled");
 			return;
 		}
 
@@ -247,11 +257,13 @@ function add_zb() {
 				//ksrq.val("");
 				hxrr.val("");
 				bz.val("");
-				window.location.href = "zbxt.html";
+				//window.location.href = "zbxt.html";
+				window.location.reload();
 				//add_zb_show_work();
 			}else {
 				alert(d.msg);
 			}
+			$(".add-zb .edit .form .add").removeAttr("disabled");
 		});
 	})
 
@@ -330,7 +342,8 @@ function add_zb() {
 				$(".add-zb .edit .form .ksrq").removeAttr('disabled');
 				$(".add-zb .edit .form .ksrq-lab").text("开始日期");
 				/**----------------------------------------------------------**/
-				window.location.href = "zbxt.html";
+				//window.location.href = "zbxt.html";
+				window.location.reload();
 			} else {
 				alert(d.msg);
 			}
@@ -518,7 +531,7 @@ function add_zb_show_work() {
 							else if ($(this).attr("type") == "edit") {
 								/**----------------------禁用开始日期------------------------**/
 								$(".add-zb .edit .form .ksrq").attr("disabled", "");
-								$(".add-zb .edit .form .ksrq-lab").text("跟新日期");
+								$(".add-zb .edit .form .ksrq-lab").text("更新日期");
 								var nDate = GetNowDate();
 								nDate = nDate[0]+nDate[1]+nDate[2]+nDate[3]+"-"+nDate[4]+nDate[5]+"-"+nDate[6]+nDate[7];
 								$(".add-zb .edit .form .ksrq").val(nDate);
@@ -685,7 +698,7 @@ function add_zb_show_work() {
 							else if ($(this).attr("type") == "edit") {
 								/**----------------------禁用开始日期------------------------**/
 								$(".add-zb .edit .form .ksrq").attr("disabled", "");
-								$(".add-zb .edit .form .ksrq-lab").text("跟新日期");
+								$(".add-zb .edit .form .ksrq-lab").text("更新日期");
 								var nDate = GetNowDate();
 								nDate = nDate[0]+nDate[1]+nDate[2]+nDate[3]+"-"+nDate[4]+nDate[5]+"-"+nDate[6]+nDate[7];
 								$(".add-zb .edit .form .ksrq").val(nDate);

@@ -5,6 +5,7 @@ from multiprocessing import Process, Queue
 from MySQL_db import *
 from MTime import *
 
+HAS_TURN_NEXT_BY_DATETIME = False
 
 def startSysTimedTaskProcess():
     process = Process(target=SysTimedTaskProcess, args=())
@@ -67,6 +68,7 @@ def TurnNextWeek():
 
 
 def TurnNextWeek2():
+    global HAS_TURN_NEXT_BY_DATETIME
     db = MySQLOption()
     db.connect()
 
@@ -88,16 +90,21 @@ def TurnNextWeek2():
     if NowDay != weekDay :
         return True
     if time != int(getNowHours()):
+        HAS_TURN_NEXT_BY_DATETIME = False
+        return True
+    if HAS_TURN_NEXT_BY_DATETIME == True:
         return True
 
     print "开始把本周工作转下周！..."
-    LastWeek = NowWeek - 1
+    LastWeek = NowWeek + 1
     LastYear = NowYear
-    if LastWeek < 1:
-        (LastYear,LastWeek,tmp) = getYearLastWeek(NowYear-1)
+    (tmp,MaxWeek,tmp) = getYearLastWeek(NowYear)
+    if LastWeek > MaxWeek:
+        LastWeek = 1
+        LastYear = NowYear + 1
 
     sql = "SELECT UID, WID FROM user_work A LEFT JOIN work_detail B on A.WID = B.id where A.YEAR = %s and A.WEEK = %s AND ProgressRate < 100" % (
-        LastYear, LastWeek)
+        NowYear, NowWeek)
     rs = db.select2(sql)
     if rs is None:
         print "数据库查询失败！"
@@ -107,5 +114,7 @@ def TurnNextWeek2():
     for row in rs["data"]:
         WID = row["WID"]
         UID = row["UID"]
-        sql1 = "INSERT into user_work(UID, WID, YEAR, WEEK) VALUES(%s, %s, %s, %s)" % (UID, WID, NowYear, NowWeek)
+        sql1 = "INSERT into user_work(UID, WID, YEAR, WEEK) VALUES(%s, %s, %s, %s)" % (UID, WID, LastYear, LastWeek)
         db.update(sql1)
+
+    HAS_TURN_NEXT_BY_DATETIME = True
