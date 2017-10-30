@@ -370,13 +370,105 @@ function query_sidebar_init() {
 			query_get_result(0);
 	});
 
+	function Cleanup() {
+        window.clearInterval(idTmr);
+        CollectGarbage();
+    }
+    var tableToExcel = (function() {
+          var uri = 'data:application/vnd.ms-excel;base64,',
+          template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+            base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
+            format = function(s, c) {
+                return s.replace(/{(\w+)}/g,
+                function(m, p) { return c[p]; }) }
+            return function(table, name) {
+            //if (!table.nodeType) table = document.getElementById(table)
+            var ctx = {worksheet: name || 'Worksheet', table: table}
+            window.location.href = uri + base64(format(template, ctx))
+          }
+        })()
 	$(".query .sidebar .export .content button").click(function() {
 		var param = new Object();
+		param.method = "EXPORT";
+		param.condition = QueryCondi;
+
 		sync_post_data("/export/", JSON.stringify(param), function(d) {
 			console.info(d);
-			console.info(window.btoa, window.atob);
+			var html = "";
+			var shead = "";
+			var sbody = "";
 
-			console.info($.base64.atob(d.data));
+			var NowDate = parseInt(GetNowDate());
+			for( var i=0; i<d.data.length; i++) {
+				for (var j=0; j<g_ALL_USER.length; j++) {
+					if (d.data[i].UID == g_ALL_USER[j].id) {
+						d.data[i].UNAME = g_ALL_USER[j].cname;
+						// var tmp = d.data[i].AddDate;
+						// d.data[i].AddDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+						// tmp = d.data[i].EditDate;
+						// var eDate = tmp;
+						// d.data[i].EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+						// tmp = d.data[i].ExpireDate;
+						// d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+						// //console.info(tmp);
+						// if (d.data[i].ProgressRate < 100) {
+						// 	if ( parseInt(tmp) < NowDate ) {
+						// 		d.data[i].ExpireDays = DateDiffNow('d', tmp);
+						// 	} else {
+						// 		d.data[i].ExpireDays = 0;
+						// 	}
+						// } else {
+						// 	//d.data[i].ExpireDays = DateDiff('d', eDate, tmp);
+						// 	d.data[i].ExpireDays = 0;
+						// }
+					}
+				}
+			}
+
+			shead += "<th>"+"系统"+"</th>";
+			shead += "<th>"+"模块"+"</th>";
+			shead += "<th>"+"类型"+"</th>";
+			shead += "<th>"+"跟踪号"+"</th>";
+			shead += "<th>"+"工作内容"+"</th>";
+			shead += "<th>"+"性质"+"</th>";
+			shead += "<th>"+"人员"+"</th>";
+			shead += "<th>"+"进度"+"</th>";
+			shead += "<th>"+"开始日期"+"</th>";
+			shead += "<th>"+"创建日期"+"</th>";
+			shead += "<th>"+"更新日期"+"</th>";
+			shead += "<th>"+"后续人日"+"</th>";
+			shead += "<th>"+"计划完成日期"+"</th>";
+			shead += "<th>"+"工作周期"+"</th>";
+			shead = "<tr>" + shead + "</tr>";
+
+			for(var i =0; i<d.data.length; i++) {
+				var row = d.data[i];
+				var trow = "";
+				trow += "<td>" + row.System + "</td>";
+				trow += "<td>" + row.Module + "</td>";
+				trow += "<td>" + row.Type + "</td>";
+				trow += "<td>" + row.TraceNo + "</td>";
+				trow += "<td>" + row.Detail + "</td>";
+				trow += "<td>" + row.Property + "</td>";
+				trow += "<td>" + row.UNAME + "</td>";
+				trow += "<td>" + row.ProgressRate + "</td>";
+				trow += "<td>" + row.StartDate + "</td>";
+				trow += "<td>" + row.AddDate + "</td>";
+				trow += "<td>" + row.EditDate + "</td>";
+				trow += "<td>" + row.NeedDays + "</td>";
+				trow += "<td>" + row.ExpireDate + "</td>";
+				trow += "<td>" + row.WEEK + "</td>";
+				trow = "<tr>" + trow + "</tr>";
+				sbody += trow;
+			}
+			html = "<table>" + shead + sbody + "</table>";
+
+			if(getExplorer()=='ie') {
+				alert("不支持IE导出！");
+			} else {
+				tableToExcel(html);
+			}
+
 		});
 	});
 

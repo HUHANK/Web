@@ -70,6 +70,6 @@ if __name__ == "__main__":
     for i in range(len(MProcess)):
         MProcess[i].start()
 
-    startSysTimedTaskProcess();
+    startSysTimedTaskProcess()
 
     start_server(HTTP_SERVER_PORT)

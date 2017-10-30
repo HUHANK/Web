@@ -417,6 +417,120 @@ def getUserInfo(data):
 
     return ""
 
+def genQuerySQL(data):
+    #data = json.loads(data)
+    #print data
+
+    sql = "select A.UID, concat(A.YEAR,'年第',A.WEEK,'周') WEEK, B.* from user_work A LEFT JOIN work_detail B on A.WID = B.id "
+    condi = data.get("condition", None)
+
+    if condi == None:
+        return sql
+
+    user = condi.get("user", None)
+    type = condi.get("type", None)
+    property = condi.get("property", None)
+    system = condi.get("system", None)
+    week = condi.get("week", None)
+    schedule = condi.get("schedule", None)
+    delay = condi.get("delay", None)
+    sortType = condi.get("sortType", None)
+    sortCols = condi.get("sortCols", None)
+    bPRate = 0
+    sqlsort = ""
+    sqlcondi = ""
+
+    if sortType != None and sortCols != None:
+        if len(sortCols) > 0:
+            sqlsort = " order by "
+            for col in sortCols:
+                if col == "UNAME":
+                    sqlsort += "UID,"
+                else:
+                    sqlsort += col + ","
+            sqlsort = sqlsort.rstrip(",")
+            if sortType == "ASCE":
+                sortType = "ASC"
+            sqlsort += " " + sortType + " "
+            # print sqlsort
+
+    if user != None:
+        if len(user) > 0:
+            sqlcondi += " A.UID in ("
+            for i in range(len(user)):
+                sqlcondi += str(user[i].get("id", 0)) + ","
+            sqlcondi = sqlcondi.rstrip(",")
+            sqlcondi += ") "
+    if type != None:
+        if len(type) > 0:
+            if len(sqlcondi) > 0:
+                sqlcondi += " AND "
+            sqlcondi += " B.Type in ("
+            for i in range(len(type)):
+                sqlcondi += "'" + str(type[i].get("name", "")) + "',"
+            sqlcondi = sqlcondi.rstrip(",")
+            sqlcondi += ") "
+    if property != None:
+        if len(property) > 0:
+            if len(sqlcondi) > 0:
+                sqlcondi += " AND "
+            sqlcondi += " B.Property in ("
+            for i in range(len(property)):
+                sqlcondi += "'" + str(property[i].get("name", "")) + "',"
+            sqlcondi = sqlcondi.rstrip(",")
+            sqlcondi += ") "
+    if system != None:
+        if len(system) > 0:
+            if len(sqlcondi) > 0:
+                sqlcondi += " AND "
+            sqlcondi += " B.System in ("
+            for i in range(len(system)):
+                sqlcondi += "'" + str(system[i].get("name", "")) + "',"
+            sqlcondi = sqlcondi.rstrip(",")
+            sqlcondi += ") "
+    if week != None:
+        if len(week) > 0:
+            if len(sqlcondi) > 0:
+                sqlcondi += " AND "
+            sqlcondi += " A.WEEK BETWEEN %s AND %s and A.YEAR = %s " % (
+            week.get("start", 0), week.get("end", 0), week.get("year", 0))
+    if schedule != None:
+        if len(sqlcondi) > 0 and schedule >= 0:
+            sqlcondi += " AND "
+        if schedule == 0:
+            sqlcondi += " B.ProgressRate BETWEEN 0 AND 99 "
+            bPRate = 1
+        elif schedule == 100:
+            sqlcondi += " B.ProgressRate = 100 "
+            bPRate = 2
+    if delay != None:
+        if len(sqlcondi) > 0 and delay >= 0:
+            sqlcondi += " AND "
+        if delay == 0:
+            # sqlcondi += " date_add(B.StartDate, INTERVAL (B.NeedDays+1)*24 hour) >= now() "
+            if bPRate == 0:
+                sqlcondi += " ((ProgressRate=100 and ExpireDate>=EditDate) or (ProgressRate!=100 and ExpireDate>='%s')) " % (
+                getNowDate2())
+            elif bPRate == 1:
+                sqlcondi += " ExpireDate>='%s' " % (getNowDate2())
+            elif bPRate == 2:
+                sqlcondi += " ExpireDate>=EditDate "
+        if delay == 1:
+            # sqlcondi += " date_add(B.StartDate, INTERVAL (B.NeedDays+1)*24 hour) < now() "
+            if bPRate == 0:
+                sqlcondi += " ((ProgressRate=100 and ExpireDate<EditDate) or (ProgressRate!=100 and ExpireDate<'%s')) " % (
+                getNowDate2())
+            elif bPRate == 1:
+                sqlcondi += " ExpireDate<'%s' " % (getNowDate2())
+            elif bPRate == 2:
+                sqlcondi += " ExpireDate<EditDate "
+
+    if len(sqlcondi) > 0:
+        sql += " where " + sqlcondi + sqlsort
+    else:
+        sql += sqlsort
+    return  sql
+
 @route("/query/")
 def queryData(data):
     data = json.loads(data)
@@ -923,13 +1037,20 @@ def queryTree(data):
     #print ret
     return json.dumps(ret)
 
+
 @route("/export/")
 def exportFile(data):
     ret = {}
-    s = "ABCDEFG"
-    ss = base64.b64encode(s)
-    print ss
-    ret["data"] = ss
+    data = json.loads(data)
+    db = Options['mysql']
 
+    sql = genQuerySQL(data)
+    rs = db.select2(sql)
+
+    # for row in rs["data"]:
+    #     tmp = row["WEEK"]
+    #     print type(tmp)
+
+    ret["data"] = rs["data"]
     setErrMsg(ret, 0, "")
     return json.dumps(ret)

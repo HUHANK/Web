@@ -150,6 +150,31 @@ function je_table(obj, opts) {
 	});        		
 }
 
+/*获取浏览器的类型*/
+ function  getExplorer() {
+var explorer = window.navigator.userAgent ;
+	//ie 
+	if (explorer.indexOf("MSIE") >= 0) {
+    	return 'ie';
+	}
+	//firefox 
+	else if (explorer.indexOf("Firefox") >= 0) {
+	    return 'Firefox';
+	}
+	//Chrome
+	else if(explorer.indexOf("Chrome") >= 0){
+	    return 'Chrome';
+	}
+	//Opera
+	else if(explorer.indexOf("Opera") >= 0){
+	    return 'Opera';
+	}
+	//Safari
+	else if(explorer.indexOf("Safari") >= 0){
+	    return 'Safari';
+	}
+}
+
 /*支持浏览器验证，通过返回true*/
 function Support_for_browser_validation() {
 	
