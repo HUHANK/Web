@@ -42,6 +42,7 @@ def CalExpireDate(db, start_date, days):
     year = start_date[0] + start_date[1] + start_date[2] + start_date[3]
     #ydays = getYearTotalDays(int(year))
 
+    print start_date
     day = getYearDay(start_date)
     (a,b) = math.modf(float(days))
     if a != 0.0 :

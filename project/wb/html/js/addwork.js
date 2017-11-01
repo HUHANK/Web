@@ -5,7 +5,7 @@ function add_zb_ginit() {
 		dateCell:".add-zb .edit .form .ksrq",//isinitVal:true,
 		format:"YYYY-MM-DD",
 		isTime:false, //isClear:false,
-		isinitVal:true,
+		isinitVal:false,
 		minDate:"2017-9-1 00:00:00",
 		maxDate:"2020-11-8 00:00:00"
 	});
@@ -575,7 +575,7 @@ function add_zb_show_work() {
 										param.method = "GET_EXPIRE_DATE";
 										param.StartDate = ksrq.val();
 										param.NeedDays = d.NeedDays;
-
+										
 										sync_post_data("/pubinterface/", JSON.stringify(param), function(d) {
 											if (d.ErrCode == 0) {
 												var tmp = d.ExpireDate;

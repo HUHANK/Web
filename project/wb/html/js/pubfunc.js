@@ -319,7 +319,19 @@ function DateDiffNow (strInterval, dtStart) {
 function GetNowDate() {
 	var date = new Date();
 	var ret = "";
-	ret += date.getFullYear()+""+ (date.getMonth()+1) + "" + date.getDate();
+	var mon = date.getMonth()+1;
+	if (mon < 10) {
+		mon = "0"+mon;
+	}else {
+		mon = mon + "";
+	}
+	var day = date.getDate();
+	if (day < 10) {
+		day = "0" + day;
+	} else {
+		day = day + "";
+	}
+	ret = date.getFullYear()+"" + mon + day;
 	return ret;
 }
 
