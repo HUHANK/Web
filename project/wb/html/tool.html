@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>工具</title>
+	<link rel="stylesheet" type="text/css" href="css/tool.css">
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/tool.js"></script>
+</head>
+<body>
+	<div class="wrap">
+		<div class="title-bar">
+			<button id="add-field">添加栏位</button>
+			<button id="insert-field">插入栏位</button>
+			<button id="del-field">删除栏位</button>
+			<button id="up-field">上移</button>
+			<button id="down-field">下移</button>
+		</div>
+		<div class="main-area">
+			<div class="table-name">
+				<label>表名</label>
+				<input type="text" name="" value="TEMP">
+			</div>
+
+			<div class="tab-bar">
+				<button name=".field">栏位</button>
+				<button name=".index">索引</button>
+				<button name=".presql">SQL 预览</button>
+			</div>
+
+			<div class="show-area">
+				<div class="field">
+					<table>
+						<thead>
+						<tr>
+							<th style="width: 40px;">ID</th>
+							<th style="width: 150px;">名称</th>
+							<th style="width: 120px;">类型</th>
+							<th style="width: 120px;">长度</th>
+							<th style="width: 80px;">不是null</th>
+							<th style="width: 50px;">主键</th>
+						</tr>
+						</thead>
+						<tbody>						
+						</tbody>
+					</table>
+				</div>
+				<div class="index">
+
+				</div>
+				<div class="presql">
+					<textarea style="width: 400px; height: 600px;" readonly></textarea>
+				</div>	
+			</div>
+		</div>
+	</div>
+</body>
+</html>
