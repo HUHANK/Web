@@ -4,7 +4,7 @@
 	font-family: sans-serif;
 	font-size: 14px;
 	font-weight: lighter;
-	letter-spacing: 1px;
+	//letter-spacing: 1px;
 }
 
 table{
@@ -19,6 +19,9 @@ table th{
 	background-color: #D4D0C8;
 }
 
+body .wrap{
+	letter-spacing: 1px;
+}
 table td{
 	letter-spacing: 0;
 }
@@ -105,4 +108,12 @@ td .radio.selected{
 
 .hyl-global-unit:hover{
 	background-color: #1A82DD;
+}
+
+.main-area .table-name,.data-space,.index-space{
+	display: inline;
+}
+
+.show-area > div{
+	display: none;
 }

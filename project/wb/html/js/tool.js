@@ -50,8 +50,11 @@ function InitTitleBar() {
 						<td class="field-name"></td> \
 						<td class="field-type"></td> \
 						<td class="field-length"></td> \
-						<td class="is-null" align="center"><button class="radio"></button></td> \
-						<td class="primary-key" align="center"><button class="radio"></button></td></tr>';
+						<td class="is-null" align="center"><button class="radio selected"></button></td> \
+						<td class="primary-key" align="center"><button class="radio"></button></td>\
+						<td class="field-default">\'\'</td>	\
+						<td class="field-note"></td>	\
+						</tr>';
 			tbody.append(html);
 			
 			tbody.find('tr').unbind("click");
@@ -68,13 +71,19 @@ function InitTitleBar() {
 					$(this).removeClass(sel);
 				}else{
 					$(this).addClass(sel);
+					if ($(this).parent().hasClass("primary-key")) {
+						$(this).parent().parent().find(".is-null button").addClass('selected');
+					}
 				}
 			});
 
 			tbody.find("td").unbind("click");
 			tbody.find("td").click(function(event) {
 				if ($(this).hasClass("field-name") || 
-					$(this).hasClass("field-length")) {
+					$(this).hasClass("field-length")||
+					$(this).hasClass("field-default")||
+					$(this).hasClass("field-note")
+					) {
 					var twidth = $(this).width();
 					var theight = $(this).height();
 					var txt = $(this).text();
@@ -111,6 +120,7 @@ function InitTitleBar() {
 					html = '<div class="hyl-global-box-1"> \
 								<div class="hyl-global-unit">CHAR</div>\
 								<div class="hyl-global-unit">DECIMAL</div> \
+								<div class="hyl-global-unit">INTEGER</div> \
 								<div class="hyl-global-unit">VARCHAR</div> \
 							</div>';
 					$("body").append(html);
@@ -129,12 +139,12 @@ function InitTitleBar() {
 						$("."+gCLASSID1).html($(this).text());
 						$("."+gCLASSID1).removeClass(gCLASSID1);
 						$(this).parent().remove();
-
 					});
 
 					$(this).find("input").focus();
 				}
 			});
+
 		}
 	});
 }
@@ -143,7 +153,7 @@ function genPreSQL() {
 
 	$(".tab-bar button").click(function() {
 
-		if ($(this).attr("name") != ".presql")
+		if ($(this).attr("name") != ".presql" && $(this).attr("name") != ".cstruct")
 			return;
 		var Table = new Object();
 		Table.TableName = $(".table-name input").val();
@@ -165,20 +175,63 @@ function genPreSQL() {
 			}else{
 				obj.isPrimary = false;
 			}
+			obj.default = $(element).find(".field-default").text();
+			obj.note = $(element).find(".field-note").text();
 			Table.Cols.push(obj);
 		}
 
 		var sql = "";
+		var primaryKey = "";
+		var comments = "";
+		var sStruct = "struct st_" + Table.TableName.toLowerCase() + "\n{\n";
 		sql = "CREATE TABLE " + Table.TableName + "(\n";
 		for (var i=0; i<Table.Cols.length; i++) {
 			var row = Table.Cols[i];
-			sql += row.name + "  " + row.type + "(" + row.len + ")";
-
+			if (row.len.length>0){
+				sql += "\t"+row.name + "  " + row.type + "(" + row.len + ")";
+			}else{
+				sql += "\t"+row.name + "  " + row.type;
+			}
+			if (row.isNull) {
+				sql += " NOT NULL"; 
+			}
+			if (row.default.length != 0){
+				sql += " WITH DEFAULT " + row.default;
+			}
+			
 			sql += ",\n";
+			if (row.isPrimary) {
+				primaryKey += row.name + ",";
+			}
+			/*--------------注释------------------*/
+			comments += " comment on column "+Table.TableName+ "." + row.name + " is '"+row.note +"';\n";
+			/*--------------C结构体------------------*/
+			sStruct += "\t";
+			var ty = row.type.toLowerCase();
+			if ( ty == "char" || ty == "varchar" ){
+				sStruct += "char\ts"+row.name.toLowerCase()+"["+row.len+"];";
+			}
+			else if ( ty == "int" || ty == "integer" ){
+				sStruct += "int\ti"+row.name.toLowerCase()+";";
+			}
+			else if ( ty == "decimal" || ty == "float" || ty == "double"){
+				sStruct += "double\td"+ row.name.toLowerCase()+";";
+			}
+			sStruct += "\n";
+		}
+		if (primaryKey.length == 0) {
+			sql = sql.substring(0, sql.length-2) + "\n";
+		}else{
+			primaryKey = primaryKey.substring(0, primaryKey.length-1);
+			primaryKey = '\tCONSTRAINT "P_Key_1" PRIMARY KEY ('+primaryKey+')\n';
+			sql = sql + primaryKey;
 		}
 		sql += ");";
+		sql += "\n\n" + comments;
 
+		sStruct += "};\n";
 		$(".show-area .presql textarea").val(sql);
+		$(".show-area .cstruct textarea").val(sStruct);
 	});
 }
 

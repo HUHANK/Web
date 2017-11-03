@@ -17,15 +17,26 @@
 			<button id="down-field">下移</button>
 		</div>
 		<div class="main-area">
-			<div class="table-name">
-				<label>表名</label>
-				<input type="text" name="" value="TEMP">
+			<div>
+				<div class="table-name">
+					<label>表名</label>
+					<input type="text" name="" value="TEMP">
+				</div>
+				<div class="data-space">
+					<label>表数据空间</label>
+					<input type="text" name="">
+				</div>
+				<div class="index-space">
+					<label>索引数据空间</label>
+					<input type="text" name="">
+				</div>
 			</div>
 
 			<div class="tab-bar">
 				<button name=".field">栏位</button>
 				<button name=".index">索引</button>
 				<button name=".presql">SQL 预览</button>
+				<button name=".cstruct">C/C++结构体</button>
 			</div>
 
 			<div class="show-area">
@@ -39,17 +50,20 @@
 							<th style="width: 120px;">长度</th>
 							<th style="width: 80px;">不是null</th>
 							<th style="width: 50px;">主键</th>
+							<th style="width: 120px;">默认</th>
+							<th style="width: 350px;">注释</th>
 						</tr>
 						</thead>
 						<tbody>						
 						</tbody>
 					</table>
 				</div>
-				<div class="index">
-
-				</div>
+				<div class="index"></div>
 				<div class="presql">
-					<textarea style="width: 400px; height: 600px;" readonly></textarea>
+					<textarea style="width: 700px; height: 600px;" readonly></textarea>
+				</div>
+				<div class="cstruct">
+					<textarea style="width: 700px; height: 600px;" readonly></textarea>
 				</div>	
 			</div>
 		</div>
