@@ -402,29 +402,33 @@ function query_sidebar_init() {
 			for( var i=0; i<d.data.length; i++) {
 				for (var j=0; j<g_ALL_USER.length; j++) {
 					if (d.data[i].UID == g_ALL_USER[j].id) {
-						d.data[i].UNAME = g_ALL_USER[j].cname;
-						// var tmp = d.data[i].AddDate;
-						// d.data[i].AddDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-						// tmp = d.data[i].EditDate;
-						// var eDate = tmp;
-						// d.data[i].EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-						// tmp = d.data[i].ExpireDate;
-						// d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-						// //console.info(tmp);
-						// if (d.data[i].ProgressRate < 100) {
-						// 	if ( parseInt(tmp) < NowDate ) {
-						// 		d.data[i].ExpireDays = DateDiffNow('d', tmp);
-						// 	} else {
-						// 		d.data[i].ExpireDays = 0;
-						// 	}
-						// } else {
-						// 	//d.data[i].ExpireDays = DateDiff('d', eDate, tmp);
-						// 	d.data[i].ExpireDays = 0;
-						// }
+						//d.data[i].UNAME = g_ALL_USER[j].cname;
+						d.data[i].GNAME = g_ALL_USER[j].group_name;
 					}
+					
+				}
+
+				var tmp = d.data[i].AddDate;
+				d.data[i].AddDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				tmp = d.data[i].EditDate;
+				var eDate = tmp;
+				d.data[i].EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				tmp = d.data[i].ExpireDate;
+				d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				//console.info(tmp);
+				if (d.data[i].ProgressRate < 100) {
+					if ( parseInt(tmp) < NowDate ) {
+						d.data[i].ExpireDays = DateDiffNow('d', tmp);
+					} else {
+						d.data[i].ExpireDays = 0;
+					}
+				} else {
+					//d.data[i].ExpireDays = DateDiff('d', eDate, tmp);
+					d.data[i].ExpireDays = 0;
 				}
 			}
 
+			shead += "<th>"+"组"+"</th>";
 			shead += "<th>"+"系统"+"</th>";
 			shead += "<th>"+"模块"+"</th>";
 			shead += "<th>"+"类型"+"</th>";
@@ -444,6 +448,7 @@ function query_sidebar_init() {
 			for(var i =0; i<d.data.length; i++) {
 				var row = d.data[i];
 				var trow = "";
+				trow += "<td>" + row.GNAME + "</td>";
 				trow += "<td>" + row.System + "</td>";
 				trow += "<td>" + row.Module + "</td>";
 				trow += "<td>" + row.Type + "</td>";
@@ -480,7 +485,7 @@ function query_get_result(page) {
 	param.method = "QUERY";
 	param.condition = QueryCondi;
 	param.page = page;
-	param.pageSize = 15;
+	param.pageSize = 25;
 	//console.info("Condition:",QueryCondi);
 	//console.info(g_ALL_USER);
 	post_data("/query/", JSON.stringify(param), function(d){
@@ -494,26 +499,29 @@ function query_get_result(page) {
 		for( var i=0; i<d.data.length; i++) {
 			for (var j=0; j<g_ALL_USER.length; j++) {
 				if (d.data[i].UID == g_ALL_USER[j].id) {
-					d.data[i].UNAME = g_ALL_USER[j].cname;
-					var tmp = d.data[i].AddDate;
-					d.data[i].AddDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-					tmp = d.data[i].EditDate;
-					var eDate = tmp;
-					d.data[i].EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-					tmp = d.data[i].ExpireDate;
-					d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-					//console.info(tmp);
-					if (d.data[i].ProgressRate < 100) {
-						if ( parseInt(tmp) < NowDate ) {
-							d.data[i].ExpireDays = DateDiffNow('d', tmp);
-						} else {
-							d.data[i].ExpireDays = 0;
-						}
-					} else {
-						//d.data[i].ExpireDays = DateDiff('d', eDate, tmp);
-						d.data[i].ExpireDays = 0;
-					}
+					//d.data[i].UNAME = g_ALL_USER[j].cname;
+					d.data[i].GNAME = g_ALL_USER[j].group_name;
 				}
+				
+			}
+
+			var tmp = d.data[i].AddDate;
+			d.data[i].AddDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+			tmp = d.data[i].EditDate;
+			var eDate = tmp;
+			d.data[i].EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+			tmp = d.data[i].ExpireDate;
+			d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+			//console.info(tmp);
+			if (d.data[i].ProgressRate < 100) {
+				if ( parseInt(tmp) < NowDate ) {
+					d.data[i].ExpireDays = DateDiffNow('d', tmp);
+				} else {
+					d.data[i].ExpireDays = 0;
+				}
+			} else {
+				//d.data[i].ExpireDays = DateDiff('d', eDate, tmp);
+				d.data[i].ExpireDays = 0;
 			}
 		}
 		//console.info(d.data);
@@ -524,6 +532,7 @@ function query_get_result(page) {
 			datas: d.data,
 			columnSort:[],
 			columns:[
+				{name: "<div class='rhead' name='Group'>组</div>", field:"GNAME", 	width:"60", align:"center"},
 				{name: "<div class='rhead' name='System'>系统</div>", field:"System", 	width:"80", align:"center"},
 				{name: "<div class='rhead' name='Module'>模块</div>", field:"Module", 	width:"80", align:"center"},
 				{name: "<div class='rhead' name='Type'>类型</div>", field:"Type", 	width:"80", align:"center"},
@@ -532,7 +541,11 @@ function query_get_result(page) {
 						return GenTraceNoAhref(obj.TraceNo);
 					}
 				},
-				{name: "工作内容", field:"Detail", 	width:"360", align:"center"},
+				{name: "工作内容", field:"Detail", 	width:"360", align:"left",
+					renderer:function(obj, rowidex) {
+						return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
+					}
+				},
 				{name: "<div class='rhead' name='Property'>性质</div>", field:"Property", 	width:"80", align:"center"},
 				{name: "<div class='rhead' name='UNAME'>人员</div>", field:"UNAME", 	width:"60", align:"center"},
 				{name: "<div class='rhead' name='ProgressRate'>进度</div>", field:"ProgressRate", 	width:"70", align:"center",
@@ -541,9 +554,9 @@ function query_get_result(page) {
 					}
 				},
 				{name: "<div class='rhead' name='StartDate'>开始日期</div>", field:"StartDate", 	width:"100", align:"center"},
-				{name: "<div class='rhead' name='NeedDays'>后续人日</div>", field:"NeedDays", 	width:"60", align:"center"},
 				{name: "<div class='rhead' name='AddDate'>创建日期</div>", field:"AddDate", 	width:"100", align:"center"},
 				{name: "<div class='rhead' name='EditDate'>更新日期</div>", field:"EditDate", 	width:"100", align:"center"},
+				{name: "<div class='rhead' name='NeedDays'>后续人日</div>", field:"NeedDays", 	width:"60", align:"center"},
 				{name: "<div class='rhead' name='ExpireDate'>计划完成日期</div>", field:"ExpireDate", 	width:"100", align:"center"},
 				{name: "延期天数", 	field:"ExpireDays", 	width:"70", align:"center"},
 				{name: "<div class='rhead' name='WEEK'>周期</div>", field:"WEEK", 	width:"100", align:"center"}

@@ -26,7 +26,7 @@ function InitHeader() {
 		txt = d.Date + "(第" + d.Week + "周)";
 		$(".header .subhead .rqxs").text(txt);
 		g_CURRENT_WEEK = d.Week;
-		g_CURRENT_USER = d.UserNmae;
+		g_CURRENT_USER = d.UserName;
 
 		var tmp = d.Date[0] + d.Date[1] + d.Date[2] + d.Date[3];
 		//console.info(tmp);
@@ -1281,7 +1281,11 @@ function home_page() {
 							return GenTraceNoAhref(obj.TraceNo);
 						}
 					},
-					{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+					{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
+						renderer:function(obj, rowidex) {
+							return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
+						}
+					},
 					{name: "性质", 		field: "Property", 	width: "70", align:"center"},
 					{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
 						renderer:function(obj, rowidex) {
@@ -1314,7 +1318,11 @@ function home_page() {
 								return GenTraceNoAhref(obj.TraceNo);
 							}
 						},
-						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
+							renderer:function(obj, rowidex) {
+								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
+							}
+						},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
 						{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
 							renderer:function(obj, rowidex) {
@@ -1344,7 +1352,11 @@ function home_page() {
 								return GenTraceNoAhref(obj.TraceNo);
 							}
 						},
-						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
+							renderer:function(obj, rowidex) {
+								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
+							}
+						},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
 						{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
 							renderer:function(obj, rowidex) {

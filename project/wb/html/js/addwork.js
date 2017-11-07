@@ -461,7 +461,11 @@ function add_zb_show_work() {
 								return GenTraceNoAhref(obj.TraceNo);
 							}
 						},
-						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
+							renderer:function(obj, rowidex) {
+								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
+							}
+						},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
 						{name: "进度", 		field: "ProgressRate", width: "70", align:"center",
 							renderer:function(obj, rowidex) {
@@ -628,7 +632,11 @@ function add_zb_show_work() {
 								return GenTraceNoAhref(obj.TraceNo);
 							}
 						},
-						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left"},
+						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
+							renderer:function(obj, rowidex) {
+								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
+							}
+						},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
 						{name: "进度", 		field: "ProgressRate", width: "70", align:"center",
 							renderer:function(obj, rowidex) {

@@ -86,7 +86,7 @@ def baseinfo(data):
     (year, week, day) = getNowYearWeek()
     ret["Week"] = week
 
-    sql = "select UID id, UNAME ename, NOTE cname from user"
+    sql = "select UID id, UNAME ename, NOTE cname, group_id, B.name group_name from user A LEFT JOIN xgroup B ON A.group_id = B.id"
     rs = db.select2(sql)
     ret["Users"] = rs["data"]
 
@@ -421,7 +421,8 @@ def genQuerySQL(data):
     #data = json.loads(data)
     #print data
 
-    sql = "select A.UID, concat(A.YEAR,'年第',A.WEEK,'周') WEEK, B.* from user_work A LEFT JOIN work_detail B on A.WID = B.id "
+    sql = "select A.UID, C.NOTE UNAME, C.group_id, concat(A.YEAR,'年第',A.WEEK,'周') WEEK, B.* " \
+          "from user_work A LEFT JOIN work_detail B on A.WID = B.id LEFT JOIN user C ON A.UID=C.UID "
     condi = data.get("condition", None)
 
     if condi == None:
@@ -444,8 +445,8 @@ def genQuerySQL(data):
         if len(sortCols) > 0:
             sqlsort = " order by "
             for col in sortCols:
-                if col == "UNAME":
-                    sqlsort += "UID,"
+                if col == "Group":
+                    sqlsort += "C.group_id,"
                 else:
                     sqlsort += col + ","
             sqlsort = sqlsort.rstrip(",")
@@ -538,7 +539,8 @@ def queryData(data):
     ret = {}
     db =  Options['mysql']
 
-    sql = "select A.UID, concat(A.YEAR,'年第',A.WEEK,'周') WEEK, B.* from user_work A LEFT JOIN work_detail B on A.WID = B.id "
+    sql = "select A.UID, C.NOTE UNAME, C.group_id, concat(A.YEAR,'年第',A.WEEK,'周') WEEK, B.* " \
+          "from user_work A LEFT JOIN work_detail B on A.WID = B.id LEFT JOIN user C ON A.UID=C.UID "
     sqlc = "select count(*) COUNT from user_work A LEFT JOIN work_detail B on A.WID = B.id "
     sqllimit = " limit " + str(data.get("page", 0)*data.get("pageSize", 0)) + "," + str(data.get("pageSize", 0))
     condi = data.get("condition", None)
@@ -568,8 +570,8 @@ def queryData(data):
         if len(sortCols) > 0 :
             sqlsort = " order by "
             for col in sortCols:
-                if col == "UNAME":
-                    sqlsort += "UID,"
+                if col == "Group":
+                    sqlsort += "C.group_id,"
                 else:
                     sqlsort += col + ","
             sqlsort = sqlsort.rstrip(",")
