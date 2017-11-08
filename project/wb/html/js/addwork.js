@@ -5,8 +5,8 @@ function add_zb_ginit() {
 		dateCell:".add-zb .edit .form .ksrq",//isinitVal:true,
 		format:"YYYY-MM-DD",
 		isTime:false, //isClear:false,
-		isinitVal:false,
-		minDate:"2017-9-1 00:00:00",
+		isinitVal:true,
+		minDate:"2017-11-1 00:00:00",
 		maxDate:"2020-11-8 00:00:00"
 	});
 
