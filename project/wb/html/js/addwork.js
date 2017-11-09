@@ -447,8 +447,9 @@ function add_zb_show_work() {
 			if (CurWeekData.length < 1){
 				bzgz.html("暂无本周工作记录")
 			} else {
+				console.info(CurWeekData);
 				je_table($(".add-zb .bzgz"),{
-					width:"1233",
+					width:"1433",
 					isPage: false,
 					datas: CurWeekData,
 					columnSort:[],
@@ -477,6 +478,11 @@ function add_zb_show_work() {
 						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
 						{name: "计划完成日期", 	field: "ExpireDate", width: "100", align:"center"},
 						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"},
+						{name: "备注", 	field:"Note", 	width:"200", 	align:"left",
+	                		renderer:function(obj, rowidex) {
+								return '<pre style="font-size:12px;">' + obj.Note + "</pre>";
+							}
+	                	},
 						{name: "操作", field:'id', width:"100", align:"center", 
 							renderer:function(obj, rowidex) {
 								//console.log(obj);
@@ -619,7 +625,7 @@ function add_zb_show_work() {
 				xzgz.html("暂无下周工作记录")
 			} else {
 				je_table($(".add-zb .xzgz"),{
-					width:"1233",
+					width:"1433",
 					isPage: false,
 					datas: NextWeekData,
 					columnSort:[],
@@ -648,6 +654,11 @@ function add_zb_show_work() {
 						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
 						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
 						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"},
+						{name: "备注", 	field:"Note", 	width:"200", 	align:"left",
+	                		renderer:function(obj, rowidex) {
+								return '<pre style="font-size:12px;">' + obj.Note + "</pre>";
+							}
+	                	},
 						{name: "操作", field:'id', width:"100", align:"center", 
 							renderer:function(obj, rowidex) {
 								//console.log(obj);

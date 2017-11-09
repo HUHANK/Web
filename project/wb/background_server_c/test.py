@@ -1,15 +1,10 @@
 #_*_encoding:utf-8 _*_
 
-s = u"我是中国人"
-t = "我是中国人"
 
-print s
-print type(s)
+f = open(u"D:/TEST/中登数据文件/20170509/SJSJG0509.DBF", "rb")
+filedata = f.read()
+filesize = f.tell()
+f.close()
 
-print t
-print type(t)
+print filesize
 
-ss = s.encode("utf-8")
-
-print ss
-print type(ss)

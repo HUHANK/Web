@@ -185,19 +185,19 @@ function initNavbar(index){
 	index = parseInt(index)
 	switch(index)
 	{
-		case 1:
-			$(".body .home-page").css("display", "block");
-			home_page();
-			break;
+		// case 1:
+		// 	$(".body .home-page").css("display", "block");
+		// 	home_page();
+		// 	break;
 		case 2:
 			$(".body .query").css("display", "block");
 			query();
 			break;
-		case 3:
+		case 1:
 			$(".body .add-zb").css("display", "block");
 			add_zb();
 			break;
-		case 4:
+		case 3:
 			$(".body .sjwh").css("display", "block");
 			data_protect();
 			break;
@@ -219,13 +219,13 @@ function navbar() {
 		$(this).addClass("clicked");
 		var value = $(this).attr("value");
 		if (value == "HomePage") {
-			$(".body .home-page").css("display", "block");
+			// $(".body .home-page").css("display", "block");
 			
-			$(".body .add-zb").css("display", "none");
-			$(".body .query").css("display", "none");
-			$(".body .sjwh").css("display", "none");
-			$.cookie(NavbarIndexCookies, 1);
-			home_page();
+			// $(".body .add-zb").css("display", "none");
+			// $(".body .query").css("display", "none");
+			// $(".body .sjwh").css("display", "none");
+			// $.cookie(NavbarIndexCookies, 1);
+			// home_page();
 		} else if (value == "Query"){
 			$(".body .query").css("display", "block");
 
@@ -240,7 +240,7 @@ function navbar() {
 			$(".body .home-page").css("display", "none");
 			$(".body .query").css("display", "none");
 			$(".body .sjwh").css("display", "none");
-			$.cookie(NavbarIndexCookies, 3);
+			$.cookie(NavbarIndexCookies, 1);
 			add_zb();
 		} else if (value == "SZWH") {
 			$(".body .sjwh").css("display", "block");
@@ -248,7 +248,7 @@ function navbar() {
 			$(".body .home-page").css("display", "none");
 			$(".body .query").css("display", "none");
 			$(".body .add-zb").css("display", "none");
-			$.cookie(NavbarIndexCookies, 4);
+			$.cookie(NavbarIndexCookies, 3);
 			data_protect();
 		}
 

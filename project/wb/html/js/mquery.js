@@ -442,6 +442,7 @@ function query_sidebar_init() {
 			shead += "<th>"+"更新日期"+"</th>";
 			shead += "<th>"+"后续人日"+"</th>";
 			shead += "<th>"+"计划完成日期"+"</th>";
+			shead += "<th>"+"备注"+"</th>";
 			shead += "<th>"+"工作周期"+"</th>";
 			shead = "<tr>" + shead + "</tr>";
 
@@ -462,6 +463,7 @@ function query_sidebar_init() {
 				trow += "<td>" + row.EditDate + "</td>";
 				trow += "<td>" + row.NeedDays + "</td>";
 				trow += "<td>" + row.ExpireDate + "</td>";
+				trow += "<td>" + row.Note + "</td>";
 				trow += "<td>" + row.WEEK + "</td>";
 				trow = "<tr>" + trow + "</tr>";
 				sbody += trow;
@@ -559,6 +561,11 @@ function query_get_result(page) {
 				{name: "<div class='rhead' name='NeedDays'>后续人日</div>", field:"NeedDays", 	width:"60", align:"center"},
 				{name: "<div class='rhead' name='ExpireDate'>计划完成日期</div>", field:"ExpireDate", 	width:"100", align:"center"},
 				{name: "延期天数", 	field:"ExpireDays", 	width:"70", align:"center"},
+				{name: "备注", 	field:"Note", 	width:"300", 	align:"left",
+	                renderer:function(obj, rowidex) {
+						return '<pre style="font-size:12px;">' + obj.Note + "</pre>";
+					}
+	            },
 				{name: "<div class='rhead' name='WEEK'>周期</div>", field:"WEEK", 	width:"100", align:"center"}
 			],
 			itemfun: function(elem, data){},
