@@ -1,6 +1,8 @@
 function query() {
 	
 	//sidebar();
+	init_window();
+	query_get_result(g_CURRENT_QPAGE);
 }
 
 function query_sidebar_add_list(obj, data) {
@@ -102,7 +104,22 @@ function query_sidebar_add_list(obj, data) {
 	$(obj).find('ul').css(display_none);
 }
 
+
+
+function get_query_window_heigth() {
+	wheight = $(window).height();
+	wwidth = $(window).width();
+
+	// console.info(wheight);
+	// console.info($("body .wrapper-top").height());
+	// console.info($(".result .ztl").height());
+	// console.info($(".result .box .je-grid-thead").height());
+	return  (wheight - $("body .wrapper-top").height() - $(".result .ztl").height() - 36);
+	//return  ($(".query .sidebar").height() - $(".result .ztl").height());
+}
+
 function query_sidebar_init() {
+
 	//console.info("------", g_QUERY_TREE, g_QUERY_TREE.length);
 	for(var ii=0; ii<g_QUERY_TREE.length; ii++) {
 		var tmp = g_QUERY_TREE[ii];
@@ -488,6 +505,7 @@ function query_get_result(page) {
 	param.condition = QueryCondi;
 	param.page = page;
 	param.pageSize = 25;
+	g_CURRENT_QPAGE = page;
 	//console.info("Condition:",QueryCondi);
 	//console.info(g_ALL_USER);
 	post_data("/query/", JSON.stringify(param), function(d){
@@ -528,8 +546,11 @@ function query_get_result(page) {
 		}
 		//console.info(d.data);
 		$(".query .result .box").html("");
+		
+		var hxx = (get_query_window_heigth()) + "";
+		//console.info(hxx);
 		je_table($(".query .result .box"), {
-			height: "740",
+			height: hxx,
 			isPage: false,
 			datas: d.data,
 			columnSort:[],

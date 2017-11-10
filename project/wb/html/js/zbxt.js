@@ -13,6 +13,24 @@ function main() {
 		index = 1;
 	initNavbar(index);
 	navbar();
+
+	window.onresize = function() {
+		init_window();
+		query_get_result(g_CURRENT_QPAGE);
+	}
+	init_window();
+}
+
+function init_window() {
+	wheight = $(window).height();
+	wwidth = $(window).width();
+	//console.info(wheight);
+	//console.info($("body .wrapper-top").height());
+
+	qheight = wheight - $("body .wrapper-top").height();
+	//console.info(qheight);
+	$(".body .query").height(qheight);
+	//$(".body .query").width(wwidth);
 }
 
 function InitHeader() {

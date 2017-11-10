@@ -77,6 +77,10 @@ table tbody tr:hover{
 	margin-top: 10px;
 }
 
+.wrapper-top{
+	height: 102px;
+}
+
 /*-------------------------------NAVBAR-------------------------------------*/
 .navbar{
 	overflow: hidden;
@@ -137,7 +141,7 @@ table tbody tr:hover{
 	cursor: default;
 	float: left;
 	overflow: auto;
-	height: 800px;
+	height: 100%;
 	background-color: #E1E0E0;
 }
 .query .sidebar span{
@@ -186,6 +190,7 @@ table tbody tr:hover{
 .query .result .ztl{
 	text-align: right;
 	background-color: #F2F2F2;
+	overflow: hidden;
 }
 .query .result .ztl .ssp{
 	margin-right: 10px;
