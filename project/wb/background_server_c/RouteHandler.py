@@ -569,16 +569,22 @@ def queryData(data):
     if sortType != None and sortCols != None:
         if len(sortCols) > 0 :
             sqlsort = " order by "
-            for col in sortCols:
-                if col == "Group":
-                    sqlsort += "C.group_id,"
-                else:
-                    sqlsort += col + ","
-            sqlsort = sqlsort.rstrip(",")
+
             if sortType == "ASCE":
                 sortType = "ASC"
-            sqlsort += " " + sortType + " "
+            for col in sortCols:
+                if col == "Group":
+                    sqlsort += "C.group_id %s," % (sortType)
+                else:
+                    sqlsort += col + " " + sortType + ","
+            sqlsort = sqlsort.rstrip(",")
+
+            sqlsort += " "
             #print sqlsort
+        else:
+            sqlsort = " order by EditDate desc, A.UID desc"
+    else:
+        sqlsort = " order by EditDate desc, A.UID desc "
 
     if user != None:
         if len(user) > 0:
