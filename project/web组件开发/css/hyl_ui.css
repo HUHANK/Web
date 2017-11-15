@@ -1,0 +1,56 @@
+*{
+    margin: 0;
+    padding: 0;
+    cursor: default;
+}
+
+input{
+	outline: none;
+	border: none;
+	border: 1px solid #D9D9D9;
+}
+
+/* 字体大小 */
+.hyl-f0{font-size:0}          .hyl-f12{font-size:12px}           .hyl-f14{font-size:14px}           .hyl-f16{font-size:16px}
+.hyl-f18{font-size:18px}      .hyl-f20{font-size:20px}           .hyl-f22{font-size:22px}           .hyl-f24{font-size:24px}
+.hyl-f26{font-size:26px}      .hyl-f28{font-size:28px}           .hyl-f30{font-size:30px}
+/* 苹果字体与微软雅黑 */
+.hyl-fmy{font-family:'PingFangSC-Light','PingFang SC','Segoe UI','Lucida Grande','NotoSansHans-Light','Microsoft YaHei', '\5FAE\8F6F\96C5\9ED1', STHeiti, 'WenQuanYi Micro Hei', SimSun, sans-serif;text-rendering:geometricPrecision;}
+/* 宋体 */
+.hyl-far{font-family:Arial,"\5b8b\4f53", sans-serif;}
+/* 块状元素水平居中 */
+.hyl-auto{margin-left:auto; margin-right:auto;}
+/* 单行文字溢出虚点显示 */
+.hyl-cell{text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+
+.hyl-select{
+	font-size: 14px;
+	height: 28px;
+	width: 150px;
+	padding: 0 8px;
+}
+
+.hyl-select:focus{
+	border: 1px solid #3BB4F2;
+    box-shadow: 0px 0px 3px #3BB4F2;
+    transition: all 0.3s;
+}
+
+.hyl-select-box{
+	border: 1px solid #3BB4F2;
+    box-shadow: 0px 0px 3px #3BB4F2;
+    position: absolute;
+    z-index: 999;
+}
+
+.hyl-select-unit{
+	padding: 4px 0 4px 4px;
+}
+.hyl-select-unit:hover{
+	background-color: #D9D9D9;
+}
+
+.hyl-select-box .selected{
+	background-color: #429742;
+	color: white;
+}
