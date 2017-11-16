@@ -260,6 +260,10 @@ def reportProcess(data):
         return json.dumps(ret)
     elif data["method"] == "GET":
         #sql = "SELECT C.id, C.TraceNo, C.System, C.Module, C.Type, C.Detail, C.Property, C.ProgressRate, C.Note " \
+        (wFirstDay, wLastDay) = getWeekFirstLastday("%s#%s" % (Year,Week))
+        ret["WeekFirstDay"] = wFirstDay;
+        ret["WeekLastDay"] = wLastDay;
+
         sql = "SELECT C.* " \
                 "FROM user_work A LEFT JOIN user B on A.UID = B.UID LEFT JOIN work_detail C ON A.WID = C.id " \
                 "WHERE B.UNAME = '%s' AND A.YEAR = %s AND A.WEEK = %s" % (userName, Year, Week)
@@ -318,8 +322,6 @@ def reportProcess(data):
 
         setErrMsg(ret, 0, "")
         return json.dumps(ret)
-
-
 
     setErrMsg(ret, 3, "未知参数！")
     return json.dumps(ret)

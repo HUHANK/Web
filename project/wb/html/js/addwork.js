@@ -401,6 +401,14 @@ function add_zb_show_work() {
 			var NextWeekData = d.next;
 			var bzgz = $(".add-zb .bzgz");
 			var xzgz = $(".add-zb .xzgz");
+			var finishedRows = new Array();
+			var needHint = new Array();
+			var totalRows = new Array();
+			var unfinishedRows = new Array();
+			var delayRows = new Array();
+
+			var WeekFirstDay = d.WeekFirstDay;
+			var WeekLastDay = d.WeekLastDay;
 
 			var NowDate = parseInt(GetNowDate());
 			for(var i=0; i<d.current.length; i++) {
@@ -470,14 +478,34 @@ function add_zb_show_work() {
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
 						{name: "进度", 		field: "ProgressRate", width: "70", align:"center",
 							renderer:function(obj, rowidex) {
+								if (obj.ProgressRate == 100) {
+									finishedRows.push(rowidex);
+								}else{
+									unfinishedRows.push(rowidex);
+								}
 								return GenProgressBarHtml(60, 14, obj.ProgressRate);
 							}
 						},
 						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
+						{name: "更新日期", 		field: "EditDate", width: "100", align:"center",
+							renderer:function(obj, rowidex) {
+								var tmp = obj.EditDate;
+								if (!(tmp >= WeekFirstDay && tmp <= WeekLastDay)) {
+									needHint.push(rowidex);
+								}
+								return obj.EditDate;
+							}
+						},
 						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
 						{name: "计划完成日期", 	field: "ExpireDate", width: "100", align:"center"},
-						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"},
+						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center",
+							renderer:function(obj, rowidex) {
+								if (obj.ExpireDays != 0) {
+									delayRows.push(rowidex);
+								}
+								return obj.ExpireDays;
+							}
+						},
 						{name: "备注", 	field:"Note", 	width:"200", 	align:"left",
 	                		renderer:function(obj, rowidex) {
 								return '<pre style="font-size:12px;">' + obj.Note + "</pre>";
@@ -485,6 +513,7 @@ function add_zb_show_work() {
 	                	},
 						{name: "操作", field:'id', width:"100", align:"center", 
 							renderer:function(obj, rowidex) {
+								totalRows.push(rowidex);
 								//console.log(obj);
 	                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
 	    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button> \
@@ -496,6 +525,80 @@ function add_zb_show_work() {
 
 					},
 					success:function(elCell, tbody) {
+						/*+++++++++++*/
+						//console.info($(".add-zb .reminder .total-wn"));
+						$(".add-zb .reminder .total-wn").text(totalRows.length);
+						$(".add-zb .reminder .finish-wn").text(finishedRows.length);
+						$(".add-zb .reminder .unfinish-wn").text(unfinishedRows.length);
+						$(".add-zb .reminder .delay-wn").text(delayRows.length);
+						$(".add-zb .reminder .unupdate-wn").text(needHint.length);
+						/*设置已完成任务的颜色*/
+						for(var i=0; i<finishedRows.length; i++) {
+							var sel = $(tbody).find('tr[row="' + finishedRows[i] + '"]');
+							sel.addClass("bkg-green");
+						}
+						/*设置需要提示任务的颜色*/
+						for (var i=0; i<needHint.length; i++) {
+							var sel = $(tbody).find('tr[row="' + needHint[i] + '"]');
+							sel.addClass("bkg-red");
+						}
+
+						$(".add-zb .reminder .ts-unit").hover(function() {
+							/* Stuff to do when the mouse enters the element */
+							var cla = $(this).children().attr("class");
+							if ("finish-wn" == cla) {
+								for (var i = 0; i<finishedRows.length; i++) {
+									var sel = $(tbody).find('tr[row="' + finishedRows[i] + '"]');
+									sel.addClass('sel');
+								}
+							}
+							else if ("unfinish-wn" == cla) {
+								for (var i=0; i<unfinishedRows.length; i++) {
+									var sel = $(tbody).find('tr[row="' + unfinishedRows[i] + '"]');
+									sel.addClass('sel');
+								}
+							}
+							else if ("delay-wn" == cla) {
+								for (var i=0; i<delayRows.length; i++) {
+									var sel = $(tbody).find('tr[row="' + delayRows[i] + '"]');
+									sel.addClass('sel');
+								}
+							}
+							else if ("unupdate-wn" == cla) {
+								for (var i=0; i<needHint.length; i++) {
+									var sel = $(tbody).find('tr[row="' + needHint[i] + '"]');
+									sel.addClass('sel');
+								}
+							}
+						}, function() {
+							/* Stuff to do when the mouse leaves the element */
+							var cla = $(this).children().attr("class");
+							if ("finish-wn" == cla) {
+								for (var i = 0; i<finishedRows.length; i++) {
+									var sel = $(tbody).find('tr[row="' + finishedRows[i] + '"]');
+									sel.removeClass('sel');
+								}
+							}
+							else if ("unfinish-wn" == cla) {
+								for (var i=0; i<unfinishedRows.length; i++) {
+									var sel = $(tbody).find('tr[row="' + unfinishedRows[i] + '"]');
+									sel.removeClass('sel');
+								}
+							}
+							else if ("delay-wn" == cla) {
+								for (var i=0; i<delayRows.length; i++) {
+									var sel = $(tbody).find('tr[row="' + delayRows[i] + '"]');
+									sel.removeClass('sel');
+								}
+							}
+							else if ("unupdate-wn" == cla) {
+								for (var i=0; i<needHint.length; i++) {
+									var sel = $(tbody).find('tr[row="' + needHint[i] + '"]');
+									sel.removeClass('sel');
+								}
+							}
+						});
+
 						$(".add-zb .bzgz button").click(function(){
 							var param = new Object();
 							param.SessionID  = Options.SessionID;

@@ -41,6 +41,27 @@ def getWeekFirstday(weekflag):
         Monday = (yearstart + datetime.timedelta(days=daydelat)).date()
         Monday = datetime.datetime.strftime(Monday, "%Y-%m-%d")
     return Monday
+#获取一周的第一天和最后一天
+def getWeekFirstLastday(weekflag):
+    year_str = weekflag[0:4]
+    week_str = weekflag[5:]
+    if int(week_str)>=53:
+        Monday = "Error,Week Num greater than 53!"
+    else:
+        yearstart_str = year_str + '0101'
+        yearstart = datetime.datetime.strptime(yearstart_str, '%Y%m%d')
+        yearstartcalendarmsg = yearstart.isocalendar()
+        yearstartweekday = yearstartcalendarmsg[2]
+        yearstartyear = yearstartcalendarmsg[0]
+        if yearstartyear < int(year_str):
+            daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 1) * 7
+        else:
+            daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 2) * 7
+        Monday = (yearstart + datetime.timedelta(days=daydelat)).date()
+        Sunday = Monday + datetime.timedelta(days=6)
+        Monday = datetime.datetime.strftime(Monday, "%Y-%m-%d")
+        Sunday = datetime.datetime.strftime(Sunday, "%Y-%m-%d")
+    return (Monday, Sunday)
 
 #
 # 获取该日期是这一年的第几天
@@ -106,8 +127,6 @@ def getNextWeek(year, week):
 #print getNowYearWeek()
 
 #print getWeekInfoByDate("20171008")
-
-
 
 
 

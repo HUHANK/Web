@@ -283,12 +283,21 @@ table tbody tr:hover{
 }
 
 
+.bkg-green{
+	background-color: #E0F5E0;
+}
 
+.bkg-red{
+	background-color: #FBDEDE;
+}
 
+.add-zb .reminder .ts-unit:hover{
+	color: #2761FD;
+}
 
-
-
-
+.bzgz .sel{
+	background-color: #FFFE99;
+}
 
 
 

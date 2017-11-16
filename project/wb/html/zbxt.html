@@ -12,14 +12,14 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=1.4.2"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=1.4.2"></script>
-	<script type="text/javascript" src="js/addwork.js?version=1.4.2"></script>
-	<script type="text/javascript" src="js/mquery.js?version=1.4.2"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=1.4.2"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.4.2">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.4.2">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.4.2">
+	<script type="text/javascript" src="js/ginit.js?version=1.4.3"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=1.4.3"></script>
+	<script type="text/javascript" src="js/addwork.js?version=1.4.3"></script>
+	<script type="text/javascript" src="js/mquery.js?version=1.4.3"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=1.4.3"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.4.3">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.4.3">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.4.3">
 </head>
 <body>
 	<!--弹出框-->
@@ -143,8 +143,29 @@
 		</div>
 
 		<div class="add-zb">
-
-			<h3>本周工作</h3>
+			<div style="overflow: hidden;width: 100%;">
+				<h3 style="float: left;width: 350px;">本周工作</h3>
+				<div class="reminder" style="float: left;font-size: 13px;color: #6E6E6E;">
+					<div style="padding-top: 5px;">
+						<div class="bkg-green" style="width:12px; height:12px;display: inline-block;
+						border: 1px solid #4C4C4C; border-radius: 6px;"></div> 
+						:已完成&nbsp;&nbsp;&nbsp;&nbsp;
+						<div class="bkg-red" style="width:12px; height:12px;display: inline-block;
+						border: 1px solid #4C4C4C; border-radius: 6px;"></div>  
+						:上周未完成任务，本周未做任何进度跟新，需及时跟新任务进度！
+					</div>
+					<div>
+						(&nbsp;
+						<span class="ts-unit">本周任务总共数量:&nbsp;<span class="total-wn">0</span>,&nbsp;&nbsp;</span> 
+						<span class="ts-unit">完成数量:&nbsp;<span class="finish-wn">0</span>,&nbsp;&nbsp;</span> 
+						<span class="ts-unit">未完成数量:&nbsp;<span class="unfinish-wn">0</span>,&nbsp;&nbsp;</span> 
+						<span class="ts-unit">已延迟数量:&nbsp;<span class="delay-wn">0</span>,&nbsp;&nbsp;</span> 
+						<span class="ts-unit">未及时跟新数量:&nbsp;<span class="unupdate-wn">0</span>&nbsp;&nbsp;</span> 
+						&nbsp;)
+					</div>
+				</div>
+			</div>
+			
 			<div class="bzgz"></div>
 
 			<h3>下周工作</h3>
