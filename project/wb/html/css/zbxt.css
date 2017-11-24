@@ -297,7 +297,9 @@ table tbody tr:hover{
 
 .bzgz .sel{
 	background-color: #FFFE99;
+	transition: all 0.5s;
 }
+
 
 
 
