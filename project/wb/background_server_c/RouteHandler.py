@@ -200,7 +200,9 @@ def reportProcess(data):
 
     if data["method"] == "ADD":
         #print data
-        (Year, Week, Day) = getYearWeek(data["StartDate"])
+        (Year, SWeek, Day) = getYearWeek(data["StartDate"])
+        if SWeek > Week:
+            Week = SWeek
         #Week = Week + data.get("Week", 0)
         #特殊转换区
         editDate = data["StartDate"];
