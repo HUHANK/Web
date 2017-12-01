@@ -411,6 +411,11 @@ def getHomeData(data):
 def getUserInfo(data):
     data = json.loads(data)
     db =  Options['mysql']
+    ret = {}
+    method = data.get("method", "")
+    if method == "" :
+        setErrMsg(ret, 1, u"参数不对！")
+
 
     if data.get("method", "") == "GET" :
         if data["name"].lower() == "all":
@@ -418,8 +423,13 @@ def getUserInfo(data):
             ret = db.select(sql)
             ret = json.dumps(ret["datas"])
             return ret
+    elif method == "GET_USERS":
+        sql = "SELECT A.UID, A.group_id, A.UNAME, A.NOTE, DATE_FORMAT(A.LAST_LOGIN_TIME, '%Y-%m-%d %H:%i:%s') LAST_LOGIN_TIME, B.name FROM user A LEFT JOIN xgroup B on A.group_id = B.id"
+        res = db.select2(sql)
+        ret["data"] = res["data"]
+        setErrMsg(ret, 0, "")
 
-    return ""
+    return json.dumps(ret)
 
 def genQuerySQL(data):
     #data = json.loads(data)

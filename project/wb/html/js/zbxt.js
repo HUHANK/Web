@@ -30,6 +30,7 @@ function init_window() {
 	qheight = wheight - $("body .wrapper-top").height();
 	//console.info(qheight);
 	$(".body .query").height(qheight);
+	$(".body .sjwh .sidebar").height(qheight);
 	//$(".body .query").width(wwidth);
 }
 
@@ -273,191 +274,6 @@ function navbar() {
 	});
 }
 
-// function sidebar() {
-// 	var param = new Object();
-// 	param.method = "GET";
-// 	sync_post_data("/dict/", JSON.stringify(param), function(d) {
-// 		Options.Dicts = d;
-// 	});
-	
-// 	param.name = "all";
-// 	sync_post_data("/getuserinfo/", JSON.stringify(param), function(d) {
-// 		Options.UserInfo = d;
-// 	});
-
-// 	function sidebar_add_unit(obj, header, data, n) {
-// 		var shtml = '<div class="yj" name="' + n + '">' + header + '</div>';
-// 		shtml += '<div class="ej" name="' + n + '">';
-// 		shtml += '<span style="all">全选</span>';
-// 		for( var i=0; i<data.length; i++ ) {
-// 			shtml += '<span style="unit">' + data[i] + '</span>';
-// 		}
-// 		shtml += '</div>';
-// 		$(obj).append(shtml);
-// 	}
-// 	var data = [];
-// 	for(var i=0; i<Options.UserInfo.length; i++) {
-// 		data[i] = Options.UserInfo[i][1];
-// 	}
-// 	//$(".query .sidebar").children().remove();
-// 	$(".query .sidebar").html("");
-// 	sidebar_add_unit($(".query .sidebar"), "部门人员", data, "User");
-
-// 	sidebar_add_unit($(".query .sidebar"), 
-// 				Options.Dicts.SysModule.note, 
-// 				Options.Dicts.SysModule.data,
-// 				"SysModule");
-// 	sidebar_add_unit($(".query .sidebar"), 
-// 				Options.Dicts.Type.note, 
-// 				Options.Dicts.Type.data,
-// 				"Type");
-// 	sidebar_add_unit($(".query .sidebar"), 
-// 				Options.Dicts.Property.note, 
-// 				Options.Dicts.Property.data,
-// 				"Property");
-// 	/*--------------------------------------------------*/
-
-// 	$(".query .sidebar .yj").click(function() {
-// 		var ej = $(this).next();
-// 		if (ej.css("display") == "block"){
-// 			ej.css("display", "none");
-// 		}else {
-// 			ej.css("display", "block");
-// 		}
-// 	});
-
-// 	$('.query .sidebar .ej span[style="all"]').click(function() {
-// 		var key = $(this).parent().attr("name");
-// 		if ($(this).attr("class") == "sel") {
-// 			$(this).removeClass("sel");
-// 			$(this).siblings().each(function(index, data){
-// 				$(data).removeClass("select");
-// 				deal_query_condition(1, key, $(data).text());
-// 			});
-// 		} else {
-// 			$(this).addClass("sel");
-// 			$(this).siblings().each(function(index, data){
-// 				$(data).addClass("select");
-// 				deal_query_condition(0, key, $(data).text());
-// 			});
-// 		}
-// 		query_update_data(0);
-// 	});
-// 	$('.query .sidebar .ej span[style="unit"]').click(function() {
-// 		var key = $(this).parent().attr("name");
-// 		if ($(this).attr("class") == "select") {
-// 			$(this).removeClass("select");
-// 			deal_query_condition(1, key, $(this).text());
-// 		} else {
-// 			$(this).addClass("select");
-// 			deal_query_condition(0, key, $(this).text());
-// 		}
-// 		query_update_data(0);
-// 	});
-
-// 	query_update_data(0);
-// }
-
-// /*type:0 add type:1 delete*/
-// function deal_query_condition(type, key, value) {
-// 	var qs;
-// 	var NeedQueryBackground = 1;
-// 	if (type == 0) {
-// 		//add
-// 		if ("User" == key) {
-// 			qs = Options.QueryCondition.User;
-// 			/*把用户的中文名转成对应的用户ID*/
-// 			for(var i=0; i<Options.UserInfo.length; i++){
-// 				if(Options.UserInfo[i][1] == value) {
-// 					value = Options.UserInfo[i][0];
-// 				}
-// 			}
-// 		} else if ("SysModule" == key) {
-// 			qs = Options.QueryCondition.SysModule;
-// 		} else if ("Property" == key) {
-// 			qs = Options.QueryCondition.Property;
-// 		} else if ("Type" == key) {
-// 			qs = Options.QueryCondition.Type;
-// 		}
-// 		for(var i=0; i<qs.length; i++) {
-// 			if (qs[i] == value) {
-// 				NeedQueryBackground = 0;
-// 			}
-// 		}
-// 		if (NeedQueryBackground == 1) {
-// 			qs.push(value);
-// 		}
-// 	} else if (type == 1) {
-// 		//delete
-// 		if ("User" == key) {
-// 			qs = Options.QueryCondition.User;
-// 			/*把用户的中文名转成对应的用户ID*/
-// 			for(var i=0; i<Options.UserInfo.length; i++){
-// 				if(Options.UserInfo[i][1] == value) {
-// 					value = Options.UserInfo[i][0];
-// 				}
-// 			}
-// 		} else if ("SysModule" == key) {
-// 			qs = Options.QueryCondition.SysModule;
-// 		} else if ("Property" == key) {
-// 			qs = Options.QueryCondition.Property;
-// 		} else if ("Type" == key) {
-// 			qs = Options.QueryCondition.Type;
-// 		}
-// 		for(var i=0; i<qs.length; i++) {
-// 			if (qs[i] == value) {
-// 				//delete qs[i];
-// 				qs.splice(i, 1);
-// 			}
-// 		}
-// 	}
-
-// }
-
-// function query_update_data(page) {
-// 	var param = Options.QueryCondition;
-// 	param.Page = page;
-// 	post_data("/query1/", JSON.stringify(param), function(d) {
-// 		d = $.parseJSON(d);
-// 		//draw_table($(".query .result .box"), d.header, d.data); 
-// 		$(".query .result .box").html("");
-
-// 		jeui.use(["jeTable", "jeCheck"], function() {
-// 			$(".query .result .box").jeTable({
-// 				height:"740",
-// 				isPage: false,
-// 				datas: d.rows,
-// 				columnSort:[],
-// 				columns:[
-// 					{name:"ID", 		field:"id", 		width:"40", align: "center", isShow:true, renderer:""},
-// 					{name:"用户名", 		field:"UserName", 	width:"60", align: "center"},
-// 					{name:"系统(模块)",	field:"SysModule", 	width:"140", align: "center"},
-// 					{name:"类型", 		field:"Type", 		width:"70", align: "center"},
-// 					{name:"跟踪号", 		field:"TraceNo", 	width:"60", align: "center"},
-// 					{name:"工作内容", 	field:"Detail", 	width:"300", align: "center"},
-// 					{name:"性质", 		field:"Property", 	width:"70", align: "center"},
-// 					{name:"进度", 		field:"ProgressRate", width:"40", align: "center"},
-// 					{name:"开始日期", 	field:"StartDate", 	width:"100", align: "center"},
-// 					{name:"后续人日", 	field:"NeedDays", 	width:"70", align: "center"},
-// 					{name:"备注", 		field:"Note", 		width:"300", align: "center"}
-// 				],
-// 				itemfun:function(elem, data) {
-// 					elem.on('dblclick', function(event) {
-// 						event.preventDefault();
-// 						/* Act on the event */
-// 					});
-// 				}
-// 			});
-// 		});
-
-// 		//console.info(d);
-// 		$(".query .result .ztl .totalPage").text(d.totalPage);
-// 		$(".query .result .ztl .totalCount").text(d.totalCount);
-// 		$(".query .result .ztl .pageIndex").text(page+1);
-
-// 	});
-// }
-
 function data_protect(){
 	//update_sjwh_dict();
 	$(".sjwh .sidebar li").click(function(){
@@ -472,12 +288,14 @@ function data_protect(){
 			$(".sjwh .wrap .xzgl").css("display", "none");
 			$(".sjwh .wrap .qxgl").css("display", "none");
 			$(".sjwh .wrap .zdwh").css("display", "none");
+			$(".sjwh .wrap .cygl").css("display", "none");
 		} else if ($(this).attr("name") == "bmgl") {
 			$(".sjwh .wrap .mmxg").css("display", "none");
 			$(".sjwh .wrap .bmgl").css("display", "block");
 			$(".sjwh .wrap .xzgl").css("display", "none");
 			$(".sjwh .wrap .qxgl").css("display", "none");
 			$(".sjwh .wrap .zdwh").css("display", "none");
+			$(".sjwh .wrap .cygl").css("display", "none");
 			sjwh_bmgl_update();
 		} else if ($(this).attr("name") == "xzgl") {
 			$(".sjwh .wrap .mmxg").css("display", "none");
@@ -485,6 +303,7 @@ function data_protect(){
 			$(".sjwh .wrap .xzgl").css("display", "block");
 			$(".sjwh .wrap .qxgl").css("display", "none");
 			$(".sjwh .wrap .zdwh").css("display", "none");
+			$(".sjwh .wrap .cygl").css("display", "none");
 			sjwh_xzgl_update();
 		} else if ($(this).attr("name") == "qxgl") {
 			$(".sjwh .wrap .mmxg").css("display", "none");
@@ -492,13 +311,23 @@ function data_protect(){
 			$(".sjwh .wrap .xzgl").css("display", "none");
 			$(".sjwh .wrap .qxgl").css("display", "block");
 			$(".sjwh .wrap .zdwh").css("display", "none");
+			$(".sjwh .wrap .cygl").css("display", "none");
 		} else if ($(this).attr("name") == "zdwh") {
 			$(".sjwh .wrap .mmxg").css("display", "none");
 			$(".sjwh .wrap .bmgl").css("display", "none");
 			$(".sjwh .wrap .xzgl").css("display", "none");
 			$(".sjwh .wrap .qxgl").css("display", "none");
+			$(".sjwh .wrap .cygl").css("display", "none");
 			$(".sjwh .wrap .zdwh").css("display", "block");
 			sjwh_zdwh_update();
+		} else if ($(this).attr("name") == "cygl") {
+			$(".sjwh .wrap .mmxg").css("display", "none");
+			$(".sjwh .wrap .bmgl").css("display", "none");
+			$(".sjwh .wrap .xzgl").css("display", "none");
+			$(".sjwh .wrap .qxgl").css("display", "none");
+			$(".sjwh .wrap .zdwh").css("display", "none");
+			$(".sjwh .wrap .cygl").css("display", "block");
+			sjwh_cygl_update();
 		}
 	});
 /*-----------------------密码修改---------------------------*/
@@ -691,6 +520,20 @@ function data_protect(){
 			if (d.ErrCode == 0) {
 				sjwh_zdwh_update_result_table(d.data);
 			}
+		});
+	});
+
+	$(".sjwh .wrap .cygl .del").click(function() {
+		$(".sjwh .wrap .cygl .table tbody ins").each( function(index, data) {
+			if ($(data).hasClass("on")) {
+				console.info( $(data).children("input").attr("uid") );
+			}
+		});
+	});
+
+	$(".sjwh .wrap .cygl .add").click(function() {
+		pop_box("添加成员", 400, 260, zdwh_add_html, function(){
+
 		});
 	});
 
@@ -1213,6 +1056,56 @@ function update_sjwh_dict(){
 }
 
 
+function sjwh_cygl_update() {
+	var pam = new Object();
+	pam.method = "GET_USERS";
+	sync_post_data("/getuserinfo", JSON.stringify(pam), function(d) {
+		console.info(d);
+		if (d.ErrCode != 0) {
+			alert("无法获取用户信息！");
+			return;
+		}
+
+		var data = d.data;
+
+		je_table($(".sjwh .wrap .cygl .table"), {
+			height: 700,
+			isPage: false,
+			datas: d.data,
+			columnSort:[],
+			columns:[
+				{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck1" jename="chunk">';}], 
+					field:"id", 
+					width: "100", 
+					align: "center",
+					renderer:function(obj, rowidex) {
+						return '<input type="checkbox" name="checkbox" jename="chunk" uid="' + obj.UID + '">';
+					}
+				},
+				{name: "ID", 		field: "UID", width:"60", align:"center"},
+				{name: "用户名", 	field: "NOTE", width:"100", align: "center"},
+				{name: "登录名", 	field: "UNAME", width: "100", align: "center"},
+				{name: "所属组", 	field: "name", width: "100", align: "center"},
+				{name: "最近登录时间", 	field: "LAST_LOGIN_TIME", width: "240", align: "center"}
+			],
+			itemfun:function(elem,data){
+
+			},
+			success:function(elCell, tbody) {
+				elCell.jeCheck({
+	                jename:"chunk",
+	                checkCls:"je-check",
+	                itemfun: function(elem,bool) {
+	                    //alert(elem.attr("jename")
+	                },
+	                success:function(elem){
+	                    jeui.chunkSelect(elem,".sjwh .wrap .cygl .table .gocheck1",'on')
+	                }
+	            });
+			}	
+		});
+	});
+}
 
 
 function home_page() {
