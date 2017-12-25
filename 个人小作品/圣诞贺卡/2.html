@@ -1,0 +1,118 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>占慧茹-圣诞节快乐！</title>
+    
+    <link rel="stylesheet" type="text/css" href="css/style1.css">
+    <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/anim.js"></script>
+    <script type="text/javascript" src="js/christmassnow.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('body').christmassnow({
+                snowflaketype: 23, // 1 to 25 types of flakes are available change the number from 1 to 25. each one contain different images.
+                snowflakesize: 2, //snowflakesize is 1 then it get the size of the image as random , if the snowflakesize is 2 means size of the image as custom
+                snowflakedirection: 1, // 1 means default no wind (top to bottom), 2 means random, 3 means left to right and 4 means  right to left
+                snownumberofflakes: 4, // number of flakes is user option
+                snowflakespeed: 10, // falling speed of flake 10 sec is default
+                flakeheightandwidth: 15 // if you are mention that option flakesize is 2 then this flakeheightandwidth should work values are in pixels 16*16.
+            });
+
+            var h = window.screen.height;
+            var w = window.screen.width;
+            $("#wrapper").css("margin", h-$("#wrapper").height + "px auto 0");
+            $("#bkg").css("height", "700px");
+            $("#bkg").css("width", w + "px");
+        });
+    </script>
+    <style type="text/css">
+        canvas {
+            border: 1px solid gray;
+            box-shadow: 3px 3px 7px #777;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        a, img {
+            border: 0;
+        }
+
+        body {
+            font: 12px/180% Arial, Helvetica, sans-serif, "新宋体";
+            background-color: #072442;
+        }
+
+        #bkg {
+            position: fixed;
+            bottom: 0px;
+            background: url('img/background.jpg') no-repeat top center;
+            background-size: cover;
+            z-index: -999;
+        }
+
+        #main-title {
+            position: fixed;
+            top: 100px;
+            right: 250px;
+            z-index: 100;
+            color: #FFFFFF;
+        }
+        #main-title h1{
+            font-family: 'Microsoft YaHei', serif; 
+            font-size: 5em;
+            font-weight: 300;
+            letter-spacing: -1px;
+            color: #B6FF00;
+            margin-bottom: 150px;
+        }
+
+        #main-title p .to{
+            margin-left: 200px;
+            font-family: 'Microsoft YaHei', serif; 
+            font-size: 4em;
+            color: #CED6B9;
+        }
+
+        #main-title p .to2{
+            font-family: 'KaiTi';
+            font-size: 3em;
+            color: #FF9900;
+        }
+        #main-title .yzx{
+            margin-left: 350px;
+            margin-top: 30px;
+            font-family: 'KaiTi';
+            color: #74766E;
+        } 
+    </style>
+
+</head>
+
+<body>
+    
+    <div id="bkg"></div>
+
+    <div class="drop"></div>
+
+    <div id="main-title">
+        <h1>Merry Christmas</h1>
+        <p><span class="to">To : </span> <span class="to2"> 占慧茹</span></p>
+        <p class="yzx">真心去呵护你！</p>
+    </div>
+	
+    <div id="wrapper" style="width: 640px;">
+
+        <!--<canvas id="born_canvas" width="640" height="480">Missing the canvas </canvas>-->
+
+        <div id="hidden_canvas">
+            <canvas id="born_canvas_hidden" width="200" height="200" style="display:none"></canvas>
+        </div>
+    </div>
+    <audio src="1.mp3" autoplay="autoplay"></audio>
+</body>
+</html>
