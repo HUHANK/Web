@@ -200,8 +200,12 @@ def reportProcess(data):
 
     if data["method"] == "ADD":
         #print data
-        (Year, SWeek, Day) = getYearWeek(data["StartDate"])
-        if SWeek > Week:
+        (SYear, SWeek, Day) = getYearWeek(data["StartDate"])
+
+        if SYear > Year :
+            Year = SYear
+            Week = SWeek
+        elif SYear == Year and SWeek > Week:
             Week = SWeek
         #Week = Week + data.get("Week", 0)
         #特殊转换区
@@ -295,7 +299,12 @@ def reportProcess(data):
         if dweek is None:
             setErrMsg(ret, 3, u"您所传的参数中没能找到week，请检查！")
             return json.dumps(ret)
-        sql = "delete from user_work where WID=%s and WEEK=%s" % (data.get("id", -1), (Week+dweek))
+        (dYaer, dWeek, dDay) = getYearLastWeek(Year)
+        sql = ""
+        if dWeek == Week:
+            sql = "delete from user_work where WID=%s and WEEK=%s and YEAR=%s" % (data.get("id", -1), 1, (Year+1))
+        elif dWeek > Week:
+            sql = "delete from user_work where WID=%s and WEEK=%s and YEAR=%s" % (data.get("id", -1), (Week+dweek), Year)
         if db.update(sql) < 0:
             setErrMsg(ret, 2, u"数据库删除失败!")
             return json.dumps(ret)
