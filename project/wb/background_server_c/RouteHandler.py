@@ -300,11 +300,13 @@ def reportProcess(data):
             setErrMsg(ret, 3, u"您所传的参数中没能找到week，请检查！")
             return json.dumps(ret)
         (dYaer, dWeek, dDay) = getYearLastWeek(Year)
+        #print "################### ",dYaer, dWeek
         sql = ""
         if dWeek == Week:
             sql = "delete from user_work where WID=%s and WEEK=%s and YEAR=%s" % (data.get("id", -1), 1, (Year+1))
         elif dWeek > Week:
             sql = "delete from user_work where WID=%s and WEEK=%s and YEAR=%s" % (data.get("id", -1), (Week+dweek), Year)
+        #print sql
         if db.update(sql) < 0:
             setErrMsg(ret, 2, u"数据库删除失败!")
             return json.dumps(ret)

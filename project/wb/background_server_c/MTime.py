@@ -101,7 +101,14 @@ def getNowHours():
 
 #获取一年的最后一个周
 def getYearLastWeek(year):
-    tmp = "%s1231" % (year)
+    md = 1231
+    tmp = "%s%s" % (year, md)
+    (y,w,d) = getWeekInfoByDate(tmp)
+    while y != year:
+        md = md -1
+        tmp = "%s%s" % (year, md)
+        (y, w, d) = getWeekInfoByDate(tmp)
+        print tmp
     return getWeekInfoByDate(tmp)
 
 #获取指定周的下一个周
