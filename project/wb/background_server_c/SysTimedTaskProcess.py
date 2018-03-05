@@ -53,6 +53,16 @@ def TurnNextWeek():
         print "数据库跟新失败！"
         return False
 
+    '''删掉之前转过来的已经完成的任务'''
+    sql = "SELECT A.UID, A.WID, A.YEAR, A.WEEK FROM user_work A LEFT JOIN work_detail B on A.WID = B.id WHERE A.YEAR = %s AND A.WEEK = %s AND B.ProgressRate = 100" % (NowYear, NowWeek)
+    rs = db.select2(sql)
+    if rs is None:
+    	print "数据库查询失败![%s]" % sql
+    	return False
+    for row in rs["data"]:
+    	sql1 = "DELETE FROM user_work WHERE UID = %s AND WID = %s AND YEAR = %s AND WEEK = %s"%(row['UID'], row['WID'], row['YEAR'], row['WEEK'])
+    	db.update(sql1)
+
     sql = "SELECT UID, WID FROM user_work A LEFT JOIN work_detail B on A.WID = B.id where A.YEAR = %s and A.WEEK = %s AND ProgressRate < 100" % (Year, Week)
     rs = db.select2(sql)
     if rs is None:
