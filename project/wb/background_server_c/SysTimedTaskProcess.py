@@ -20,6 +20,9 @@ def SysTimedTaskProcess():
         if N % (5) == 0:
             TurnNextWeek2()
 
+        if N % (60*12) == 0:
+            DelExpireSession()
+
         N += 1
         time.sleep(60)
         if N >= 10000000:
@@ -57,11 +60,20 @@ def TurnNextWeek():
     sql = "SELECT A.UID, A.WID, A.YEAR, A.WEEK FROM user_work A LEFT JOIN work_detail B on A.WID = B.id WHERE A.YEAR = %s AND A.WEEK = %s AND B.ProgressRate = 100" % (NowYear, NowWeek)
     rs = db.select2(sql)
     if rs is None:
-    	print "数据库查询失败![%s]" % sql
-    	return False
+        print "数据库查询失败![%s]" % sql
+        return False
     for row in rs["data"]:
-    	sql1 = "DELETE FROM user_work WHERE UID = %s AND WID = %s AND YEAR = %s AND WEEK = %s"%(row['UID'], row['WID'], row['YEAR'], row['WEEK'])
-    	db.update(sql1)
+        '''检查上周是否有此任务'''
+        sql1 = "SELECT * FROM user_work WHERE UID = %s AND WID = %s AND YEAR = %s AND WEEK = %s"%(row['UID'], row['WID'], Year, Week)
+        result = db.select2(sql1)
+        if result is None:
+            print "数据库查询失败![%s]" % sql1
+            continue
+        if len(result['data']) < 1 :
+            continue
+        '''如果这个任务是上周有的，证明是延续下来的，就删掉此任务'''
+        sql1 = "DELETE FROM user_work WHERE UID = %s AND WID = %s AND YEAR = %s AND WEEK = %s"%(row['UID'], row['WID'], row['YEAR'], row['WEEK'])
+        db.update(sql1)
 
     sql = "SELECT UID, WID FROM user_work A LEFT JOIN work_detail B on A.WID = B.id where A.YEAR = %s and A.WEEK = %s AND ProgressRate < 100" % (Year, Week)
     rs = db.select2(sql)
@@ -128,3 +140,13 @@ def TurnNextWeek2():
         db.update(sql1)
 
     HAS_TURN_NEXT_BY_DATETIME = True
+
+
+'''删除过期session'''
+def DelExpireSession():
+    db = MySQLOption()
+    db.connect()
+
+    sql = "DELETE FROM session WHERE DATE(login_timestamp) < CURDATE()"
+    db.update(sql)
+    #db.close()
