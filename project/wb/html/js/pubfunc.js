@@ -281,6 +281,10 @@ function GenProgressBarHtml(width, height, pro) {
     return html;
 }
 
+function OpenRedmineWindow(url) {
+	window.open(url, "newwindow", "height=800, width=700, toolbar=no, menubar=no, scrollbars=yes, location=no, status=no");
+}
+
 function GenTraceNoAhref( traceNo ) {
 	var arr = traceNo.split("#");
 	var sNo = $.trim( arr[1] ); 
@@ -291,7 +295,8 @@ function GenTraceNoAhref( traceNo ) {
 		return traceNo;
 	}
 	var url = "http://10.10.14.56/redmine/issues/" + sNo;
-	var html = arr[0] + ' <a href="'+url+'">#'+sNo+'</a>'
+	//var html = arr[0] + ' <a href="'+url+'" url="'+url+'">#'+sNo+'</a>'
+	var html = arr[0] + ' <a href="#" onClick="OpenRedmineWindow(\''+url+'\')">#'+sNo+'</a>'
 	return html;
 }
 
