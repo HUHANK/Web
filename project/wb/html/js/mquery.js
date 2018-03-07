@@ -404,8 +404,6 @@ function query_sidebar_init() {
             window.location.href = uri + base64(format(template, ctx))
           }
         })()
-
-    //console.info(String.fromCharCode(10));
 	$(".query .sidebar .export .content button").click(function() {
 		var param = new Object();
 		param.method = "EXPORT";
@@ -435,10 +433,6 @@ function query_sidebar_init() {
 				tmp = d.data[i].ExpireDate;
 				d.data[i].ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 				//console.info(tmp);
-				
-				//d.data[i].Detail = d.data[i].Detail.replace("\n", String.fromCharCode(10));
-				
-				/*
 				if (d.data[i].ProgressRate < 100) {
 					if ( parseInt(tmp) < NowDate ) {
 						d.data[i].ExpireDays = DateDiffNow('d', tmp);
@@ -448,7 +442,7 @@ function query_sidebar_init() {
 				} else {
 					//d.data[i].ExpireDays = DateDiff('d', eDate, tmp);
 					d.data[i].ExpireDays = 0;
-				}*/
+				}
 			}
 
 			shead += "<th>"+"组"+"</th>";

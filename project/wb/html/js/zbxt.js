@@ -30,7 +30,6 @@ function init_window() {
 	qheight = wheight - $("body .wrapper-top").height();
 	//console.info(qheight);
 	$(".body .query").height(qheight);
-	$(".body .sjwh .sidebar").height(qheight);
 	//$(".body .query").width(wwidth);
 }
 
@@ -288,14 +287,12 @@ function data_protect(){
 			$(".sjwh .wrap .xzgl").css("display", "none");
 			$(".sjwh .wrap .qxgl").css("display", "none");
 			$(".sjwh .wrap .zdwh").css("display", "none");
-			$(".sjwh .wrap .cygl").css("display", "none");
 		} else if ($(this).attr("name") == "bmgl") {
 			$(".sjwh .wrap .mmxg").css("display", "none");
 			$(".sjwh .wrap .bmgl").css("display", "block");
 			$(".sjwh .wrap .xzgl").css("display", "none");
 			$(".sjwh .wrap .qxgl").css("display", "none");
 			$(".sjwh .wrap .zdwh").css("display", "none");
-			$(".sjwh .wrap .cygl").css("display", "none");
 			sjwh_bmgl_update();
 		} else if ($(this).attr("name") == "xzgl") {
 			$(".sjwh .wrap .mmxg").css("display", "none");
@@ -303,7 +300,6 @@ function data_protect(){
 			$(".sjwh .wrap .xzgl").css("display", "block");
 			$(".sjwh .wrap .qxgl").css("display", "none");
 			$(".sjwh .wrap .zdwh").css("display", "none");
-			$(".sjwh .wrap .cygl").css("display", "none");
 			sjwh_xzgl_update();
 		} else if ($(this).attr("name") == "qxgl") {
 			$(".sjwh .wrap .mmxg").css("display", "none");
@@ -311,23 +307,13 @@ function data_protect(){
 			$(".sjwh .wrap .xzgl").css("display", "none");
 			$(".sjwh .wrap .qxgl").css("display", "block");
 			$(".sjwh .wrap .zdwh").css("display", "none");
-			$(".sjwh .wrap .cygl").css("display", "none");
 		} else if ($(this).attr("name") == "zdwh") {
 			$(".sjwh .wrap .mmxg").css("display", "none");
 			$(".sjwh .wrap .bmgl").css("display", "none");
 			$(".sjwh .wrap .xzgl").css("display", "none");
 			$(".sjwh .wrap .qxgl").css("display", "none");
-			$(".sjwh .wrap .cygl").css("display", "none");
 			$(".sjwh .wrap .zdwh").css("display", "block");
 			sjwh_zdwh_update();
-		} else if ($(this).attr("name") == "cygl") {
-			$(".sjwh .wrap .mmxg").css("display", "none");
-			$(".sjwh .wrap .bmgl").css("display", "none");
-			$(".sjwh .wrap .xzgl").css("display", "none");
-			$(".sjwh .wrap .qxgl").css("display", "none");
-			$(".sjwh .wrap .zdwh").css("display", "none");
-			$(".sjwh .wrap .cygl").css("display", "block");
-			sjwh_cygl_update();
 		}
 	});
 /*-----------------------密码修改---------------------------*/
@@ -520,20 +506,6 @@ function data_protect(){
 			if (d.ErrCode == 0) {
 				sjwh_zdwh_update_result_table(d.data);
 			}
-		});
-	});
-
-	$(".sjwh .wrap .cygl .del").click(function() {
-		$(".sjwh .wrap .cygl .table tbody ins").each( function(index, data) {
-			if ($(data).hasClass("on")) {
-				console.info( $(data).children("input").attr("uid") );
-			}
-		});
-	});
-
-	$(".sjwh .wrap .cygl .add").click(function() {
-		pop_box("添加成员", 400, 260, zdwh_add_html, function(){
-
 		});
 	});
 
@@ -1056,56 +1028,6 @@ function update_sjwh_dict(){
 }
 
 
-function sjwh_cygl_update() {
-	var pam = new Object();
-	pam.method = "GET_USERS";
-	sync_post_data("/getuserinfo", JSON.stringify(pam), function(d) {
-		console.info(d);
-		if (d.ErrCode != 0) {
-			alert("无法获取用户信息！");
-			return;
-		}
-
-		var data = d.data;
-
-		je_table($(".sjwh .wrap .cygl .table"), {
-			height: 700,
-			isPage: false,
-			datas: d.data,
-			columnSort:[],
-			columns:[
-				{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck1" jename="chunk">';}], 
-					field:"id", 
-					width: "100", 
-					align: "center",
-					renderer:function(obj, rowidex) {
-						return '<input type="checkbox" name="checkbox" jename="chunk" uid="' + obj.UID + '">';
-					}
-				},
-				{name: "ID", 		field: "UID", width:"60", align:"center"},
-				{name: "用户名", 	field: "NOTE", width:"100", align: "center"},
-				{name: "登录名", 	field: "UNAME", width: "100", align: "center"},
-				{name: "所属组", 	field: "name", width: "100", align: "center"},
-				{name: "最近登录时间", 	field: "LAST_LOGIN_TIME", width: "240", align: "center"}
-			],
-			itemfun:function(elem,data){
-
-			},
-			success:function(elCell, tbody) {
-				elCell.jeCheck({
-	                jename:"chunk",
-	                checkCls:"je-check",
-	                itemfun: function(elem,bool) {
-	                    //alert(elem.attr("jename")
-	                },
-	                success:function(elem){
-	                    jeui.chunkSelect(elem,".sjwh .wrap .cygl .table .gocheck1",'on')
-	                }
-	            });
-			}	
-		});
-	});
-}
 
 
 function home_page() {
