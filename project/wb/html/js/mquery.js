@@ -9,7 +9,8 @@ function query_sidebar_add_list(obj, data) {
 	var aicon =  "<i class='je-icon'>&#xe61a;</i>";	/*加图标*/
 	var bicon =  "<i class='je-icon'>&#xe62a;</i>"; /*减图标*/
 	var cicon =  "<i class='je-icon'>&#xe641;</i>"; /*头像*/ 
-	var dicon =  "<i class='je-icon'>&#xe949;</i>"; /*指向图标*/
+	var dicon =  ""; 
+	//var dicon =  "<i class='je-icon'>&#xe949;</i>"; /*指向图标*/
 
 	var span = "<span></span>";
 	var li = "<li></li>";
@@ -163,9 +164,11 @@ function query_sidebar_init() {
 			$(this).parent().hasClass('sort')
 			){
 			if ($(this).parent().children(".content").css("display") == "none") {
-				$(this).parent().children(".content").css("display", "block");
+				//$(this).parent().children(".content").css("display", "block");
+				$(this).parent().children(".content").slideToggle("fast");
 			} else {
-				$(this).parent().children(".content").css("display", "none");
+				//$(this).parent().children(".content").css("display", "none");
+				$(this).parent().children(".content").slideToggle("fast");
 			}
 			return;
 		}
@@ -174,11 +177,13 @@ function query_sidebar_init() {
 			var bro = $(this).siblings('ul');
 			var i = $(this).children("i");
 			if (bro.css("display") == "none") {
-				bro.css("display", "block");
+				//bro.css("display", "block");
+				bro.slideToggle("fast");
 				i.before($(bicon));
 				i.remove();
 			} else {
-				bro.css(display_none);
+				//bro.css(display_none);
+				bro.slideToggle("fast");
 				i.before($(aicon));
 				i.remove();
 			}

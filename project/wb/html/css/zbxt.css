@@ -148,8 +148,16 @@ table tbody tr:hover{
 	display: block;
 	//text-align: center;
 }
+
+.query .sidebar .layer1 > span{
+	color: white;
+	//background: linear-gradient(to bottom, #737373, #404040, #737373);
+	background: #323232;
+	padding: 5px 0px;
+}
+
 .query .sidebar .selected{
-	font-weight: bold;
+	//font-weight: bold;
 }
 .query .sidebar .layer1 > span{
  	border: 1px solid #E8E8E8;
@@ -158,18 +166,34 @@ table tbody tr:hover{
 
 .query .sidebar .layer1 > span:hover{
 	border: 1px solid #9EEFEA;
+	background: #66D9EF;
 }
 
 .query .sidebar .layer2 > span{
+	color: white;
 	padding-left: 10px;
+	background-color: #636363;
+	margin: 1px;
 }
 .query .sidebar .layer3 > span{
+	color: white;
 	padding-left: 15px;
+	background-color: #959595;
+	margin: 1px;
 }
 
 .query .sidebar .leaf > span{
 	background-color: white;
+	margin: 1px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
 }
+
+.query .sidebar .leaf span.selected{
+	background-color: #F89734;
+}
+
 .query .sidebar .content{
 	padding: 4px;
 	background-color: white;

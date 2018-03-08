@@ -190,6 +190,23 @@ function GUpdateBaseinfo(){
 	param.method = "GET";
 	sync_post_data("/query_tree/", JSON.stringify(param), function(d){
 		if (d.ErrCode == 0){
+			/*数据处理*/
+			for (i=0; i<d.data.length; i++) {
+				var data = d.data[i];
+				if (data.name == "系统") {
+					//console.info(data);
+					for (j=0; j<data.data.length; j++) {
+						for (k=1; k<data.data.length; k++) {
+							if (data.data[k].data.length < data.data[k-1].data.length) {
+								var tmp = data.data[k-1];
+								data.data[k-1] = data.data[k];
+								data.data[k] = tmp;
+							}
+						
+						}
+					}
+				}
+			}
 			//console.info(d.data);
 			g_QUERY_TREE = d.data;
 			//console.info(g_QUERY_TREE);
