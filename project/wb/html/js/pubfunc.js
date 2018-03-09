@@ -256,6 +256,12 @@ function deal_query_condition(name, attr, isAdd) {
 		}
 		deal_query_condition_array(QueryCondi.property, tmp, isAdd);
 	}
+	if (title == "module") {
+		if (typeof(QueryCondi.module) == "undefined") {
+			QueryCondi.module = [];
+		}
+		deal_query_condition_array(QueryCondi.module, tmp, isAdd);
+	}
 	//console.info(QueryCondi);
 	return;
 }

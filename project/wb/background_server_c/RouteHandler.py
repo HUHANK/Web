@@ -457,6 +457,7 @@ def genQuerySQL(data):
     type = condi.get("type", None)
     property = condi.get("property", None)
     system = condi.get("system", None)
+    module = condi.get("module", None)
     week = condi.get("week", None)
     schedule = condi.get("schedule", None)
     delay = condi.get("delay", None)
@@ -505,15 +506,40 @@ def genQuerySQL(data):
                 sqlcondi += "'" + str(property[i].get("name", "")) + "',"
             sqlcondi = sqlcondi.rstrip(",")
             sqlcondi += ") "
+
     if system != None:
         if len(system) > 0:
             if len(sqlcondi) > 0:
-                sqlcondi += " AND "
-            sqlcondi += " B.System in ("
+                if module != None and len(module) > 0:
+                    sqlcondi += " AND (B.System in ( "
+                else:
+                    sqlcondi += " AND B.System in ("
+            else:
+                if module != None and len(module) > 0:
+                    sqlcondi += " (B.System in ("
+                else:
+                    sqlcondi += " B.System in ("
             for i in range(len(system)):
                 sqlcondi += "'" + str(system[i].get("name", "")) + "',"
             sqlcondi = sqlcondi.rstrip(",")
             sqlcondi += ") "
+
+    if module != None:
+        if len(module) > 0:
+            if len(sqlcondi) > 0:
+                if system != None and len(system) > 0:
+                    sqlcondi += " OR "
+                else:
+                    sqlcondi += " AND "
+            sqlcondi += " B.Module IN ("
+            for i in range(len(module)):
+                sqlcondi += "'" + str(module[i].get("name", "")) + "',"
+            sqlcondi = sqlcondi.rstrip(",")
+            if system != None and len(system) > 0:
+                sqlcondi += ")) "
+            else:
+                sqlcondi += ") "
+
     if week != None:
         if len(week) > 0:
             if len(sqlcondi) > 0:
@@ -582,6 +608,7 @@ def queryData(data):
     type = condi.get("type", None)
     property = condi.get("property", None)
     system = condi.get("system", None)
+    module = condi.get("module", None)
     week = condi.get("week", None)
     schedule = condi.get("schedule", None)
     delay = condi.get("delay", None)
@@ -639,12 +666,36 @@ def queryData(data):
     if system != None:
         if len(system) > 0:
             if len(sqlcondi) > 0:
-                sqlcondi += " AND "
-            sqlcondi += " B.System in ("
+                if module != None and len(module) > 0:
+                    sqlcondi += " AND (B.System in ( "
+                else:
+                    sqlcondi += " AND B.System in ("
+            else:
+                if module != None and len(module) > 0:
+                    sqlcondi += " (B.System in ("
+                else:
+                    sqlcondi += " B.System in ("
             for i in range(len(system)):
                 sqlcondi += "'" + str(system[i].get("name", "")) + "',"
             sqlcondi = sqlcondi.rstrip(",")
             sqlcondi += ") "
+
+    if module != None:
+        if len(module) > 0:
+            if len(sqlcondi) > 0:
+                if system != None and len(system) > 0:
+                    sqlcondi += " OR "
+                else:
+                    sqlcondi += " AND "
+            sqlcondi += " B.Module IN ("
+            for i in range(len(module)):
+                sqlcondi += "'" + str(module[i].get("name", "")) + "',"
+            sqlcondi = sqlcondi.rstrip(",")
+            if system != None and len(system) > 0:
+                sqlcondi += ")) "
+            else:
+                sqlcondi += ") "
+
     if week != None:
         if len(week) > 0:
             if len(sqlcondi) > 0:

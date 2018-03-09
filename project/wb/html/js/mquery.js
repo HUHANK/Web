@@ -175,6 +175,7 @@ function query_sidebar_init() {
 		}
 
 		if (!$(this).parent().hasClass("leaf")) {
+			//console.info("XX11111111111111111XX");
 			var bro = $(this).siblings('ul');
 			var i = $(this).children("i");
 			if (bro.css("display") == "none") {
@@ -189,6 +190,7 @@ function query_sidebar_init() {
 				i.remove();
 			}
 		} else {
+			//console.info("XX2222222222222222XX");
 			var name = $(this).parent().find("em").text();
 			var attr = $(this).parent().attr("attr");
 			var isAdd = 0;
@@ -198,6 +200,7 @@ function query_sidebar_init() {
 				isAdd = 0;
 			}
 			//console.info(name, attr, isAdd);
+			//console.info("#-----"+name+"----"+attr);
 			deal_query_condition(name, attr, isAdd);
 			query_get_result(0);
 		}
