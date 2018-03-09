@@ -130,7 +130,7 @@ table tbody tr:hover{
 }
 
 
-/*---------------------------------------------------------------------*/
+/*-------------------------------------QUERY--------------------------------*/
 .query{
 	display: none;
 	overflow: hidden;
@@ -167,6 +167,7 @@ table tbody tr:hover{
 .query .sidebar .layer1 > span:hover{
 	border: 1px solid #9EEFEA;
 	background: #66D9EF;
+	transition: all 0.1s;
 }
 
 .query .sidebar .layer2 > span{
@@ -188,6 +189,14 @@ table tbody tr:hover{
 	text-align: center;
 	margin-left: auto;
 	margin-right: auto;
+	font-size: 14px;
+	font-family: Cursive;
+	//font-weight: 550;
+}
+
+.query .sidebar .leaf > span:hover{
+	background-color:#EAF578;
+	transition: all 0.1s;
 }
 
 .query .sidebar .leaf span.selected{

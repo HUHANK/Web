@@ -145,6 +145,7 @@ function query_sidebar_init() {
 		var aicon =  "<i class='je-icon'>&#xe61a;</i>";	/*加图标*/
 		var bicon =  "<i class='je-icon'>&#xe62a;</i>"; /*减图标*/
 		var display_none = {"display": "none"};
+		var DownUpSpeed = 400;
 
 		if ($(this).parent().attr("attr") == ",0"){
 			return;
@@ -165,10 +166,10 @@ function query_sidebar_init() {
 			){
 			if ($(this).parent().children(".content").css("display") == "none") {
 				//$(this).parent().children(".content").css("display", "block");
-				$(this).parent().children(".content").slideToggle("fast");
+				$(this).parent().children(".content").slideToggle(DownUpSpeed);
 			} else {
 				//$(this).parent().children(".content").css("display", "none");
-				$(this).parent().children(".content").slideToggle("fast");
+				$(this).parent().children(".content").slideToggle(DownUpSpeed);
 			}
 			return;
 		}
@@ -178,12 +179,12 @@ function query_sidebar_init() {
 			var i = $(this).children("i");
 			if (bro.css("display") == "none") {
 				//bro.css("display", "block");
-				bro.slideToggle("fast");
+				bro.slideToggle(DownUpSpeed);
 				i.before($(bicon));
 				i.remove();
 			} else {
 				//bro.css(display_none);
-				bro.slideToggle("fast");
+				bro.slideToggle(DownUpSpeed);
 				i.before($(aicon));
 				i.remove();
 			}
