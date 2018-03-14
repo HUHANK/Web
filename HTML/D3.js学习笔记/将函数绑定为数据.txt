@@ -1,0 +1,33 @@
+	var data = [];
+	var next = function(x) {
+		return 15 + x * x;
+	};
+
+	var newData = function() {
+		data.push(next);
+		return data;
+	};
+
+	function render() {
+		var selection = d3.select("#container")
+		.selectAll("div").data(newData);
+
+		selection.enter().append("div").append("span");
+
+		selection.exit().remove();
+
+		selection.attr("class", "h-bar")
+		.style("width", function(d, i) {
+			return d(i) + "px";
+		})
+		.select("span").text(function(d, i){
+			return d(i);
+		})
+
+		console.info( data );
+	}
+
+	render();
+	setInterval(function() {
+		render();
+	}, 1000);
