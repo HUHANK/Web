@@ -46,3 +46,7 @@ INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (109, 'UGF
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (110, 'TPCTS', 0, 92, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (111, 'EMS', 0, 92, 0);
 INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (114, '通讯互联网关', 0, 90, 0);
+INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (116, 'CACHE', 0, 90, 0);
+INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (117, 'WebService', 0, 90, 0);
+INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (120, '深市登记结算前置', 0, 90, 0);
+INSERT INTO `dict` (`id`, `name`, `title`, `parent`, `isRoot`) VALUES (121, 'CMDS', 0, 90, 0);
