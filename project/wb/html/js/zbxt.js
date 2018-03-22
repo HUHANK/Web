@@ -225,16 +225,20 @@ function initNavbar(index){
 		// 	home_page();
 		// 	break;
 		case 2:
-			$(".body .query").css("display", "block");
+			$(".body .query"	).css("display", "block");
 			query();
 			break;
 		case 1:
-			$(".body .add-zb").css("display", "block");
+			$(".body .add-zb"	).css("display", "block");
 			add_zb();
 			break;
-		case 3:
-			$(".body .sjwh").css("display", "block");
+		case 4:
+			$(".body .sjwh"		).css("display", "block");
 			data_protect();
+			break;
+		case 3:
+			$(".body .support"	).css("display", "block");
+			Support();
 			break;
 	}
 	$(".title .navbar ul li").each(function(i, data){
@@ -262,29 +266,41 @@ function navbar() {
 			// $.cookie(NavbarIndexCookies, 1);
 			// home_page();
 		} else if (value == "Query"){
-			$(".body .query").css("display", "block");
+			$(".body .query"	).css("display", "block");
 
 			$(".body .home-page").css("display", "none");
-			$(".body .sjwh").css("display", "none");
-			$(".body .add-zb").css("display", "none");
+			$(".body .sjwh"		).css("display", "none");
+			$(".body .add-zb"	).css("display", "none");
+			$(".body .support"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 2);
 			query();
 		} else if (value == "WZB") {
-			$(".body .add-zb").css("display", "block");
+			$(".body .add-zb"	).css("display", "block");
 
 			$(".body .home-page").css("display", "none");
-			$(".body .query").css("display", "none");
-			$(".body .sjwh").css("display", "none");
+			$(".body .query"	).css("display", "none");
+			$(".body .sjwh"		).css("display", "none");
+			$(".body .support"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 1);
 			add_zb();
 		} else if (value == "SZWH") {
-			$(".body .sjwh").css("display", "block");
+			$(".body .sjwh"		).css("display", "block");
 
 			$(".body .home-page").css("display", "none");
-			$(".body .query").css("display", "none");
-			$(".body .add-zb").css("display", "none");
-			$.cookie(NavbarIndexCookies, 3);
+			$(".body .query"	).css("display", "none");
+			$(".body .add-zb"	).css("display", "none");
+			$(".body .support"	).css("display", "none");
+			$.cookie(NavbarIndexCookies, 4);
 			data_protect();
+		} else if (value == "Support") {
+			$(".body .support"	).css("display", "block");
+
+			$(".body .sjwh"		).css("display", "none");
+			$(".body .home-page").css("display", "none");
+			$(".body .query"	).css("display", "none");
+			$(".body .add-zb"	).css("display", "none");
+			$.cookie(NavbarIndexCookies, 3);
+			Support();
 		}
 
 	});
