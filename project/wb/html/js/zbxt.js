@@ -165,6 +165,7 @@ function GInit(){
 
 	add_zb_ginit();
 	query_sidebar_init();
+	InitSupport();
 }
 
 function GUpdateBaseinfo(){

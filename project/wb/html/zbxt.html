@@ -14,6 +14,7 @@
 
 	<script type="text/javascript" src="js/ginit.js?version=1.4.7"></script>
 	<script type="text/javascript" src="js/pubfunc.js?version=1.4.7"></script>
+	<script type="text/javascript" src="js/hyl.js?version=1.4.7"></script>
 	<script type="text/javascript" src="js/addwork.js?version=1.4.7"></script>
 	<script type="text/javascript" src="js/mquery.js?version=1.4.7"></script>
 	<script type="text/javascript" src="js/support.js?version=1.4.7"></script>
@@ -407,11 +408,78 @@
 
 		<div class="support" style="display: none">
 			<div class="add-record">
-				<fieldset>
+				<fieldset class="je-field">
 					<legend>添加Support包记录</legend>
-					<div class="form">
-						
-					</div>
+					<table>
+						<tr class='row'>
+							<td class='lab'>系统</td>			<td class='content system'></td>
+							<td class='lab'>模块</td>			<td class='content module'></td>
+							<td class='lab'>包类型</td>			<td class='content type'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>Support包名称</td>	<td class='content sname' colspan='5'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>FTP地址</td>		<td class='content ftp' colspan='5'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>发布内容</td>		<td class='content detail' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>基础版本</td>		<td class='content bversion' colspan='2'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>发布流程号</td>		<td class='content pulno' colspan='2'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>发布日期</td>		<td class='content pdate'>
+								<input type="date" name="">
+							</td>
+							<td class='lab'>跟新次数</td>		<td class='content uptno'>
+								<input type="number" name="">
+							</td>
+							<td class='lab'>状态</td>			<td class='content status'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>备注</td>			<td class='content remark' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>开发人员</td>		<td class='content developer'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>负责人员</td>		<td class='content charger'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>协作号</td>			<td class='content collaboration'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>计划版本</td>		<td class='content pversion'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>Git分支</td>		<td class='content gitb'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>升级版本</td>		<td class='content uversion'>
+								<input type="text" name="">
+							</td>
+						</tr>
+					</table>
 				</fieldset>
 			</div>
 		</div>
