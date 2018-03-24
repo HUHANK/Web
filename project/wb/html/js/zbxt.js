@@ -31,6 +31,7 @@ function init_window() {
 	//console.info(qheight);
 	$(".body .query").height(qheight);
 	//$(".body .query").width(wwidth);
+	SuportRepaint();
 }
 
 function InitHeader() {
