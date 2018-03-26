@@ -356,8 +356,17 @@ table tbody tr:hover{
 	z-index: 2010;
 }
 
-.support .add-record legend{
-	font-size: 12px;
+.support .add-record .head{
+	font-size: 14px;
+	background-color: #C3C5C5;
+	padding: 5px;
+}
+
+.support .add-record .head .title{
+
+}
+.support .add-record .head .exit{
+	float: right;
 }
 
 .support .add-record table{
@@ -418,7 +427,7 @@ table tbody tr:hover{
 
 
 .support .wrap{
-	border: 4px solid red;
+	//border: 4px solid red;
 }
 
 .support .wrap .option{
@@ -426,9 +435,50 @@ table tbody tr:hover{
 	border: 1px solid black;
 }
 
+.support .wrap .option button{
+	background:none;  
+    outline:none;  
+    border:0px;
+
+    font-size: 15px;
+    border: 1px solid black;
+    background-color: #DCE0E0;
+    margin-left: 10px;
+    width: 60px;
+    border-radius: 3px;
+}
+
 .support .wrap .show{
 	height: 100%;
 	border: 1px solid blue;
+	width: auto;
+	overflow: auto;
+
+}
+
+.support .wrap .show table *{
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+.support .wrap .show .hyl-grid-tbody{
+	overflow: auto;
+}
+
+.support .wrap .show table{
+	border-collapse: collapse;
+}
+.support .wrap .show table thead th{
+	border: 1px solid black;
+}
+.support .wrap .show table td{
+	border: 1px solid black;
+}
+
+.support .wrap .show table td div{
+	word-wrap: break-all;
+	word-break: break-all;
 }
 
 /*-------------------------------------鼠标右键弹出框----------------------------------------*/

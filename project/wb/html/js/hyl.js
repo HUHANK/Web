@@ -70,3 +70,64 @@ function hyl_select( obj, data, selFunc ) {
 
 	
 }
+
+
+function hyl_table(obj, conf) {
+	var _obj = $(obj);
+
+	//init
+	_obj.html("");
+
+	_obj.append($("<div></div>")
+		.addClass('hyl-grid-thead')
+	);
+	_obj.append($("<div></div>")
+		.addClass('hyl-grid-tbody')
+	);
+
+	_obj.find(".hyl-grid-thead").append($("<table></table>").append($("<thead></thead>")));
+	_obj.find(".hyl-grid-tbody").append($("<table></table>").append($("<tbody></tbody>")));
+
+	//_obj.find(".hyl-grid-thead table").append(_colg);
+	//_obj.find(".hyl-grid-tbody table").append(_colg);
+	var _thead = _obj.find(".hyl-grid-thead thead");
+	var _tbody = _obj.find(".hyl-grid-tbody tbody");
+
+	/*add Head*/
+	var _fields = [];
+	var _widths = [];
+	var _aligns = [];
+	var _tr = $("<tr></tr>");
+	var _colg = $("<colgroup></colgroup>");
+	var _colg1 = $("<colgroup></colgroup>");
+	$(conf.columns).each(function(index, el) {
+		_fields.push(el.field);
+		_widths.push(el.width);
+		_aligns.push(el.align);
+		_tr.append($("<th></th>").append(
+			$("<div></div>").text(el.name).css("width", (el.width-1) + "px"))
+			.attr("align", "center").attr("width", el.width));
+		_colg.append( $("<col></col>").css("width", el.width) );
+		_colg1.append( $("<col></col>").css("width", el.width) );	
+	});
+	_thead.append(_tr);
+	_thead.before(_colg);
+	_tbody.before(_colg1);
+
+	/*add body*/
+	$(conf.datas).each(function(index, el) {
+		_tr = $("<tr></tr>");
+		$(_fields).each(function(index, ell) {
+			var _td = $("<td></td>").append($("<div></div>").css("width", (_widths[index]-1)+"px").text(el[ell]))
+					.attr("align", _aligns[index])
+					.attr("width", _widths[index]);
+			_tr.append(_td);
+		});		
+		_tbody.append(_tr);
+	});
+
+	 console.info(_obj.height());
+	 console.info( _obj.find(".hyl-grid-thead").outerHeight())
+	_obj.find(".hyl-grid-tbody").css("height", (_obj.height()-_obj.find(".hyl-grid-thead").outerHeight())+"px");
+
+}

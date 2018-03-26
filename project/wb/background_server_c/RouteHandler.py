@@ -1138,3 +1138,85 @@ def exportFile(data):
     ret["data"] = rs["data"]
     setErrMsg(ret, 0, "")
     return json.dumps(ret)
+
+
+
+
+def supportADD( d ):
+    db =  Options['mysql']
+
+    sql = "INSERT INTO support(\
+            TYPE,           SYSTEM,             MODULE,         PACKAGE_NAME,   FTP_ADDR,\
+            CONTENT,        BASE_VERSION,       PUBLISH_SERIAL, REMARK,         UPT_NUM,\
+            PUBLISH_DATE,   STATUS,             DEVELOPER,      CHARGER,        PLAN_VERSION,\
+            GIT_BRANCH,     UPGRADE_VERSION,    COLLABORATION,  NOTE,\
+            CRT_USER\
+        ) VALUES (\
+            '%s','%s','%s','%s','%s', \
+            '%s','%s','%s','%s', %s , \
+            '%s','%s','%s','%s','%s',\
+            '%s','%s','%s','%s',\
+            '%s'\
+        )" % (\
+            d.get('type',''), d.get('system',''), d.get('module',''), d.get('name',''), d.get('ftp',''),\
+            d.get('detail',''), d.get('bversion',''), d.get('pulno',''), d.get('remark',''), d.get('uptno',0),\
+            d.get('pdate',''), d.get('status',''), d.get('developer',''), d.get('charger',''), d.get('pversion',''),\
+            d.get('gitb',''), d.get('uversion',''), d.get('collaboration',''), '',\
+            d.get('adduser','')\
+    )
+
+    return db.update(sql)
+
+def supportQUERY(d):
+    db =  Options['mysql']
+
+    sql = "SELECT\
+        ID,    TYPE,    SYSTEM,    MODULE,    PACKAGE_NAME,    FTP_ADDR,\
+        CONTENT,    BASE_VERSION,    PUBLISH_SERIAL,    REMARK,    UPT_NUM,\
+        DATE_FORMAT(PUBLISH_DATE,'%Y-%m-%d') AS PUBLISH_DATE,    \
+        STATUS,    DEVELOPER,    CHARGER,    PLAN_VERSION,\
+        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE,\
+        CRT_USER,    \
+        DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
+        UPT_USER,    \
+        DATE_FORMAT(UPT_TIME,'%Y-%m-%d %H:%I:%S') AS UPT_TIME\
+        FROM support ORDER BY ID DESC"
+
+    #sql = "SELECT * FROM support ORDER BY ID DESC"
+    return db.select2(sql)
+
+@route("/support/")
+def Support(data):
+    data = json.loads(data)
+    method = data.get("method", None)
+    ret = {}
+    print data
+    
+    if method is None:
+        setErrMsg(ret, 2, "未知的方法！")
+    
+    if method == "ADD":
+        res = supportADD(data)
+        if res < 0:
+            setErrMsg(ret, 2, "添加数据失败！")
+        else:
+            setErrMsg(ret, 0, "")
+
+    if method == "QUERY":
+        res = supportQUERY(data)
+
+        if res is None:
+            setErrMsg(ret, 2, "数据库查询失败！")
+        else:
+            ret["data"] = res["data"]
+
+            setErrMsg(ret, 0, "")
+    return json.dumps(ret)
+
+
+
+
+
+
+
+
