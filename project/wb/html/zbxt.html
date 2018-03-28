@@ -12,16 +12,16 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=1.4.7"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=1.4.7"></script>
-	<script type="text/javascript" src="js/hyl.js?version=1.4.7"></script>
-	<script type="text/javascript" src="js/addwork.js?version=1.4.7"></script>
-	<script type="text/javascript" src="js/mquery.js?version=1.4.7"></script>
-	<script type="text/javascript" src="js/support.js?version=1.4.7"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=1.4.7"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.4.7">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.4.7">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.4.7">
+	<script type="text/javascript" src="js/ginit.js?version=1.5.0"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=1.5.0"></script>
+	<script type="text/javascript" src="js/hyl.js?version=1.5.0"></script>
+	<script type="text/javascript" src="js/addwork.js?version=1.5.0"></script>
+	<script type="text/javascript" src="js/mquery.js?version=1.5.0"></script>
+	<script type="text/javascript" src="js/support.js?version=1.5.0"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=1.5.0"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.5.0">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.5.0">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.5.0">
 </head>
 <body>
 	<!--弹出框-->
@@ -412,96 +412,158 @@
 
 		<div class="support" style="display: none">
 			<div class="add-record">
-					<div class="head">
-						<span class="title">添加Support包记录</span>
-						<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
-					</div>
-					<table>
-						<tr class='row'>
-							<td class='lab'>系统</td>			<td class='content system'></td>
-							<td class='lab'>模块</td>			<td class='content module'></td>
-							<td class='lab'>包类型</td>			<td class='content type'>
-								<input type="text" name="">
-							</td>
-						</tr>
-						<tr class='row'>
-							<td class='lab'>Support包名称</td>	<td class='content sname' colspan='5'>
-								<input type="text" name="">
-							</td>
-						</tr>
-						<tr class='row'>
-							<td class='lab'>FTP地址</td>		<td class='content ftp' colspan='5'>
-								<input type="text" name="">
-							</td>
-						</tr>
-						<tr class='row'>
-							<td class='lab'>发布内容</td>		<td class='content detail' colspan='5'>
-								<textarea></textarea>
-							</td>
-						</tr>
-						<tr class='row'>
-							<td class='lab'>基础版本</td>		<td class='content bversion' colspan='2'>
-								<input type="text" name="">
-							</td>
-							<td class='lab'>发布流程号</td>		<td class='content pulno' colspan='2'>
-								<input type="text" name="">
-							</td>
-						</tr>
-						<tr class='row'>
-							<td class='lab'>发布日期</td>		<td class='content pdate'>
-								<input type="date" name="">
-							</td>
-							<td class='lab'>跟新次数</td>		<td class='content uptno'>
-								<input type="number" name="">
-							</td>
-							<td class='lab'>状态</td>			<td class='content status'>
-								<input type="text" name="">
-							</td>
-						</tr>
-						<tr class='row'>
-							<td class='lab'>备注</td>			<td class='content remark' colspan='5'>
-								<textarea></textarea>
-							</td>
-						</tr>
-						<tr class='row'>
-							<td class='lab'>开发人员</td>		<td class='content developer'>
-								<input type="text" name="">
-							</td>
-							<td class='lab'>负责人员</td>		<td class='content charger'>
-								<input type="text" name="">
-							</td>
-							<td class='lab'>协作号</td>			<td class='content collaboration'>
-								<input type="text" name="">
-							</td>
-						</tr>
-						<tr class='row'>
-							<td class='lab'>计划版本</td>		<td class='content pversion'>
-								<input type="text" name="">
-							</td>
-							<td class='lab'>Git分支</td>		<td class='content gitb'>
-								<input type="text" name="">
-							</td>
-							<td class='lab'>升级版本</td>		<td class='content uversion'>
-								<input type="text" name="">
-							</td>
-						</tr>
-						<tr class="row">
-							<td style="text-align: center" colspan="6">
-								<button class="confirm">确定</button>
-								<button class="cancle">取消</button>
-							</td>
-						</tr>
-					</table>
+				<div class="head">
+					<span class="title">添加Support包记录</span>
+					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
+				</div>
+				<table>
+					<tr class='row'>
+						<td class='lab'>系统</td>			<td class='content system'></td>
+						<td class='lab'>模块</td>			<td class='content module'></td>
+						<td class='lab'>包类型</td>			<td class='content type'>
+							<input type="text" name="">
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>Support包名称</td>	<td class='content sname' colspan='5'>
+							<input type="text" name="">
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>FTP地址</td>		<td class='content ftp' colspan='5'>
+							<input type="text" name="">
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>发布内容</td>		<td class='content detail' colspan='5'>
+							<textarea></textarea>
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>基础版本</td>		<td class='content bversion' colspan='2'>
+							<input type="text" name="">
+						</td>
+						<td class='lab'>发布流程号</td>		<td class='content pulno' colspan='2'>
+							<input type="text" name="">
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>发布日期</td>		<td class='content pdate'>
+							<input type="date" name="">
+						</td>
+						<td class='lab'>跟新次数</td>		<td class='content uptno'>
+							<input type="number" name="">
+						</td>
+						<td class='lab'>状态</td>			<td class='content status'>
+							<input type="text" name="">
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>备注</td>			<td class='content remark' colspan='5'>
+							<textarea></textarea>
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>开发人员</td>		<td class='content developer'>
+							<input type="text" name="">
+						</td>
+						<td class='lab'>负责人员</td>		<td class='content charger'>
+							<input type="text" name="">
+						</td>
+						<td class='lab'>协作号</td>			<td class='content collaboration'>
+							<input type="text" name="">
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>计划版本</td>		<td class='content pversion'>
+							<input type="text" name="">
+						</td>
+						<td class='lab'>Git分支</td>		<td class='content gitb'>
+							<input type="text" name="">
+						</td>
+						<td class='lab'>升级版本</td>		<td class='content uversion'>
+							<input type="text" name="">
+						</td>
+					</tr>
+					<tr class="row">
+						<td style="text-align: center" colspan="6">
+							<button class="confirm">确定</button>
+							<button class="cancle">取消</button>
+						</td>
+					</tr>
+				</table>
 			</div>
 
+			<div class="exp-sel">
+				<div class="head">
+					<span class="title">导出配置</span>
+					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
+				</div>
+				<div class="body">
+					<div class="table-head">
+						<table>
+							<colgroup>
+								<col style="width: 100px;" />
+								<col style="width: 100px;" />
+								<col style="width: 100px;"/>
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="col1">字段名</th>
+									<th class="col2">导出</th>
+									<th class="col3">排序</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div class="table-body">
+						<table>
+							<colgroup>
+								<col style="width: 100px;" />
+								<col style="width: 100px;" />
+								<col style="width: 83px;" />
+							</colgroup>
+							<tbody>
+								<tr><td class="ID 				col1"><div>ID 		    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="TYPE				col1"><div>包类型 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="SYSTEM			col1"><div>系统 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="MODULE 			col1"><div>模块 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="PACKAGE_NAME		col1"><div>包名称       </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="FTP_ADDR			col1"><div>FTP地址      </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="CONTENT			col1"><div>发布内容     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="BASE_VERSION		col1"><div>基础版本     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="PUBLISH_SERIAL	col1"><div>发布流程号   </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="REMARK			col1"><div>备注 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPT_NUM			col1"><div>更新次数     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="PUBLISH_DATE		col1"><div>发布日期     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="STATUS			col1"><div>状态 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="DEVELOPER		col1"><div>开发员 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="CHARGER			col1"><div>负责人 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="PLAN_VERSION		col1"><div>计划版本     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="GIT_BRANCH		col1"><div>Git分支      </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPGRADE_VERSION	col1"><div>升级版本     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="COLLABORATION	col1"><div>协作号 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="CRT_USER			col1"><div>创建者 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="CRT_TIME			col1"><div>创建时间     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPT_USER			col1"><div>更新者 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPT_TIME			col1"><div>跟新时间     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div style="width: 100%;text-align: center;padding: 8px;">
+					<button class="exp">导出</button>
+				</div>
+			</div>
 			<div class="wrap">
 				<div class="show">
 					
 				</div>
 				<div class="option">
 					<button class="add">添加</button>
-					<button class="upt">更新</button>
-					<button class="del">删除</button>
+					<button class="upt" style="display: none">更新</button>
+					<button class="del" style="display: none">删除</button>
+					<button class="exp">导出</button>
 				</div>
 			</div>
 		</div>

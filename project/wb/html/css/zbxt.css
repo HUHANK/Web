@@ -422,6 +422,19 @@ table tbody tr:hover{
 }
 .support .add-record .hyl-drop-down{
 	width: 150px;
+	height: 200px;
+	overflow: auto;
+	border-radius: 5px;
+	border: 1px solid #3BB4F2;
+	box-shadow: 0px 0px 3px #3BB4F2;
+}
+
+.support .add-record .hyl-drop-down div{
+	padding: 4px;
+}
+.support .add-record .hyl-drop-down div.selected{
+	background-color: #429742;
+	color: white;
 }
 
 
@@ -432,7 +445,7 @@ table tbody tr:hover{
 
 .support .wrap .option{
 	height: 25px;
-	border: 1px solid black;
+	//border: 1px solid black;
 }
 
 .support .wrap .option button{
@@ -441,19 +454,24 @@ table tbody tr:hover{
     border:0px;
 
     font-size: 15px;
-    border: 1px solid black;
-    background-color: #DCE0E0;
+    //border: 1px solid black;
+    background-color: #1A82DD;
+    color: white;
     margin-left: 10px;
     width: 60px;
     border-radius: 3px;
 }
 
+.support .wrap .option button:hover{
+	background-color: #6BB9FE;
+}
+
 .support .wrap .show{
 	height: 100%;
-	border: 1px solid blue;
+	//border: 1px solid blue;
 	width: auto;
-	overflow: auto;
-
+	//overflow: auto;
+	overflow-x: auto;
 }
 
 .support .wrap .show table *{
@@ -463,17 +481,18 @@ table tbody tr:hover{
 }
 
 .support .wrap .show .hyl-grid-tbody{
-	overflow: auto;
+	//overflow: auto;
+	//overflow-y: scroll;
 }
 
 .support .wrap .show table{
 	border-collapse: collapse;
 }
 .support .wrap .show table thead th{
-	border: 1px solid black;
+	border: 1px solid #E0E0E0;
 }
 .support .wrap .show table td{
-	border: 1px solid black;
+	border: 1px solid #E0E0E0;
 }
 
 .support .wrap .show table td div{
@@ -481,11 +500,131 @@ table tbody tr:hover{
 	word-break: break-all;
 }
 
+.support .wrap .show table tbody tr:nth-child(2n+1){
+	//background-color: white;
+}
+.support .wrap .show table tbody tr.selected{
+	background-color: #FDFD6D;
+}
+
+.support .exp-sel{
+	display: none;
+	position: fixed;
+	width: 316px;
+	height: 410px;
+	
+	top: 50%;
+	left: 50%;
+	margin: -205px 0 0 -158px;
+	background-color: #F0F0F0;
+	border: 1px solid #A3A3A3;
+	border-radius: 5px;
+	z-index: 3000;
+}
+
+.support .exp-sel .head{
+	font-size: 15px;
+	font-weight: bold;
+	background-color: #C3C5C5;
+	padding: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.support .exp-sel .head .exit{
+	float: right;
+}
+
+.support .exp-sel .body *{
+	margin: 0 auto;
+	padding: 0px;
+	border: none;
+}
+
+.support .exp-sel .body{
+
+	margin: 5px;
+}
+.support .exp-sel .body .table-body{
+	//margin-left: 17px;
+	background-color: white;
+}
+
+.support .exp-sel .body table th{
+	border: 1px solid #E0E0E0;
+}
+
+.support .exp-sel .body table td{
+	border: 1px solid #E0E0E0;
+}
+
+.support .exp-sel .body table .col1{
+	//width: 100px;
+	height: 24px;
+}
+.support .exp-sel .body table .col2{
+	//width: 100px;
+	height: 24px;
+	text-align: center;
+}
+.support .exp-sel .body table .col3{
+	//width: 100px;
+	height: 24px;
+	text-align: center;
+}
+
+.support .exp-sel .body table .col2 i{
+	font-size: 22px;
+}
+.support .exp-sel .body table .col2 i:hover{
+	//font-size: 22px;
+	//transition: all 1s;
+}
+
+.support .exp-sel .body table .col2 i.selected{
+	color: #32F332;
+}
+
+.support .exp-sel .body .table-body{
+	height: 300px;
+	overflow: auto;
+}
+
+.support .exp-sel button.exp{
+	margin: 0;
+	padding: 0;
+	border: none;
+
+	border: 1px solid #1A82DD;
+	background-color: #1A82DD;
+	color: white;
+	border-radius: 3px;
+	width: 50px;
+	height: 30px;
+}
+
+.support .exp-sel button.exp:hover{
+	background-color: #4EA9F8;
+}
 /*-------------------------------------鼠标右键弹出框----------------------------------------*/
 .mouse-right-down{
 	display: none;
 	position: fixed;
-	width: 170px;
-	height: 200px;
-	background-color: gray;
+	width: 60px;
+	//height: 40px;
+	background-color: #F3F3F2;
+	padding: 4px;
+	border: 1px solid #C6C6C6;
+	border-radius: 4px;
+}
+
+.mouse-right-down div{
+	text-align: center;
+	border: 1px solid  #F3F3F2;
+	border-radius: 3px;
+}
+
+.mouse-right-down div:hover{
+	border: 1px solid  #66F2F9;
+	background-color: #C2FCFF;
+	opacity: 0.8;
 }

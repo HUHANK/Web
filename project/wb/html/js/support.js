@@ -28,30 +28,90 @@ function SuportRepaint () {
 function SupportMouseRightDown(e) {
 	var dropbox = $("body .mouse-right-down");
 
-	// console.info(e);
-	// console.info(e.clientX, e.clientY);
 	dropbox.css("top", e.clientY+"px")
 			.css("left", e.clientX+"px");
-	dropbox.slideDown(200, function() {
-		
-	});
-
+	dropbox.slideDown(200, function() {});
 	dropbox.focus();
+	dropbox.html('<div class="upt">更改</div><div class="del">删除</div>');
 
 	$("body").click(function(event) {
-		/* Act on the event */
 		setTimeout(function(){
 			$("body .mouse-right-down").slideUp(100);
 			$("body").unbind('click');
 		}, 100);
 	});
 
-	$(document).on("scroll", function(ev) {
-		//console.info(ev);
+	$(".support .wrap .show").on("scroll", function(ev) {
 		setTimeout(function(){
 			$("body .mouse-right-down").slideUp(100);
-			$(document).unbind('scroll');
+			$(".support .wrap .show").unbind('scroll');
 		}, 1);
+	});
+
+	dropbox.find(".upt").click(function(event) {
+		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
+			alert("请选取需要更新的行！");
+			return true;
+		}
+
+		var param = {};
+		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.SessionID = Options.SessionID;
+		param.method = "QUERY_ONE";
+		sync_post_data("/support/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0) {
+				alert("数据库查询失败！");
+				return ;
+			}
+			console.info(d);
+			var data = d.data[0];
+
+			$(".support .add-record table .system 	input").val(data.SYSTEM);
+			$(".support .add-record table .module 	input").val(data.MODULE);
+			$(".support .add-record table .type 	input").val(data.TYPE);
+			$(".support .add-record table .sname 	input").val(data.PACKAGE_NAME);
+			$(".support .add-record table .ftp 		input").val(data.FTP_ADDR);
+			$(".support .add-record table .detail 	textarea").val(data.CONTENT);
+			$(".support .add-record table .bversion input").val(data.BASE_VERSION);
+			$(".support .add-record table .pulno 	input").val(data.PUBLISH_SERIAL);
+			$(".support .add-record table .pdate 	input").val(data.PUBLISH_DATE);
+			$(".support .add-record table .uptno 	input").val(data.UPT_NUM);
+			$(".support .add-record table .status 	input").val(data.STATUS);
+			$(".support .add-record table .remark 	textarea").val(data.REMARK);
+			$(".support .add-record table .developer input").val(data.DEVELOPER);
+			$(".support .add-record table .charger 	input").val(data.CHARGER);
+			$(".support .add-record table .collaboration input").val(data.COLLABORATION);
+			$(".support .add-record table .pversion input").val(data.PLAN_VERSION);
+			$(".support .add-record table .gitb 	input").val(data.GIT_BRANCH);
+			$(".support .add-record table .uversion input").val(data.UPGRADE_VERSION);
+		});
+
+		var tb = $("body").children(".hyl-bokeh");
+		tb.addClass("hyl-show");
+
+		$(".support .add-record .head .title").text('更新Support包记录');
+		$(".support .add-record").addClass('show');
+		$(".support .add-record table .confirm").addClass('upt');
+	});
+
+	dropbox.find('.del').click(function(event) {
+		/* Act on the event */
+		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
+			alert("请选取需要删除的行！");
+			return true;
+		}
+
+		var param = {};
+		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.SessionID = Options.SessionID;
+		param.method = "DELETE";
+		sync_post_data("/support/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0) {
+				alert("数据库删除失败！");
+				return ;
+			}
+			querySupport();
+		});
 	});
 
 	return false;
@@ -100,8 +160,50 @@ function init_add_record ( ) {
 		$(".support .add-record").removeClass('show');
 	});
 
+	$(".support .add-record table .confirm").click(function(event) {
+		/* Act on the event */
+		var ret = false;
+		if ($(this).hasClass('add')) {
+			ret = addSupport("ADD");
+			$(this).removeClass('add');
+		} else if ($(this).hasClass('upt')) {
+			ret = addSupport("UPT");
+			$(this).removeClass('upt');
+		}
+		if (ret == true) {
+			$("body").children(".hyl-bokeh").removeClass('hyl-show');
+			$(".support .add-record").removeClass('show');
+			querySupport();
+		}
+	});
+
+	$(".support .add-record table .cancle").click(function(event) {
+		/* Act on the event */
+		$("body").children(".hyl-bokeh").removeClass('hyl-show');
+		$(".support .add-record").removeClass('show');
+	});
+
 	$('.support .wrap .option button.add').click(function(event) {
 		/* Act on the event */
+		$(".support .add-record table .system 	input").val('');
+		$(".support .add-record table .module 	input").val('');
+		$(".support .add-record table .type 	input").val('');
+		$(".support .add-record table .sname 	input").val('');
+		$(".support .add-record table .ftp 		input").val('');
+		$(".support .add-record table .detail 	textarea").val('');
+		$(".support .add-record table .bversion input").val('');
+		$(".support .add-record table .pulno 	input").val('');
+		//$(".support .add-record table .pdate 	input").val('');
+		$(".support .add-record table .uptno 	input").val(0);
+		$(".support .add-record table .status 	input").val('');
+		$(".support .add-record table .remark 	textarea").val('');
+		$(".support .add-record table .developer input").val('');
+		$(".support .add-record table .charger 	input").val('');
+		$(".support .add-record table .collaboration input").val('');
+		$(".support .add-record table .pversion input").val('');
+		$(".support .add-record table .gitb 	input").val('');
+		$(".support .add-record table .uversion input").val('');
+
 		var tb = $("body").children(".hyl-bokeh");
 		tb.addClass("hyl-show");
 
@@ -112,6 +214,43 @@ function init_add_record ( ) {
 
 	$('.support .wrap .option button.upt').click(function(event) {
 		/* Act on the event */
+		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
+			alert("请选取需要更新的行！");
+			return true;
+		}
+
+		var param = {};
+		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.SessionID = Options.SessionID;
+		param.method = "QUERY_ONE";
+		sync_post_data("/support/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0) {
+				alert("数据库查询失败！");
+				return ;
+			}
+			console.info(d);
+			var data = d.data[0];
+
+			$(".support .add-record table .system 	input").val(data.SYSTEM);
+			$(".support .add-record table .module 	input").val(data.MODULE);
+			$(".support .add-record table .type 	input").val(data.TYPE);
+			$(".support .add-record table .sname 	input").val(data.PACKAGE_NAME);
+			$(".support .add-record table .ftp 		input").val(data.FTP_ADDR);
+			$(".support .add-record table .detail 	textarea").val(data.CONTENT);
+			$(".support .add-record table .bversion input").val(data.BASE_VERSION);
+			$(".support .add-record table .pulno 	input").val(data.PUBLISH_SERIAL);
+			$(".support .add-record table .pdate 	input").val(data.PUBLISH_DATE);
+			$(".support .add-record table .uptno 	input").val(data.UPT_NUM);
+			$(".support .add-record table .status 	input").val(data.STATUS);
+			$(".support .add-record table .remark 	textarea").val(data.REMARK);
+			$(".support .add-record table .developer input").val(data.DEVELOPER);
+			$(".support .add-record table .charger 	input").val(data.CHARGER);
+			$(".support .add-record table .collaboration input").val(data.COLLABORATION);
+			$(".support .add-record table .pversion input").val(data.PLAN_VERSION);
+			$(".support .add-record table .gitb 	input").val(data.GIT_BRANCH);
+			$(".support .add-record table .uversion input").val(data.UPGRADE_VERSION);
+		});
+
 		var tb = $("body").children(".hyl-bokeh");
 		tb.addClass("hyl-show");
 
@@ -120,20 +259,106 @@ function init_add_record ( ) {
 		$(".support .add-record table .confirm").addClass('upt');
 	});
 
-	$(".support .add-record table .confirm").click(function(event) {
+	$('.support .wrap .option button.del').click(function(event) {
 		/* Act on the event */
-		var ret = false;
-		if ($(this).hasClass('add')) {
-			ret = addSupport("ADD");
-		} else if ($(this).hasClass('upt')) {
-			ret = addSupport("UPT");
+		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
+			alert("请选取需要删除的行！");
+			return true;
 		}
 
+		var param = {};
+		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.SessionID = Options.SessionID;
+		param.method = "DELETE";
+		sync_post_data("/support/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0) {
+				alert("数据库删除失败！");
+				return ;
+			}
+			querySupport();
+		});
+	});
+
+	$('.support .wrap .option button.exp').click(function(event) {
+		$(".support .exp-sel .body table .col2 i").each(function(index, el) {
+			$(el).addClass('selected');	
+		});
+
+		var tb = $("body").children(".hyl-bokeh");
+		tb.addClass("hyl-show");
+		$(".support .exp-sel").show(200, function() {});
+	});
+
+	$('.support .exp-sel button.exp').click(function(event) {
+		var param = {};
+		param.SessionID = Options.SessionID;
+		param.method = "EXPORT";
+
+		sync_post_data("/support/", JSON.stringify(param), function(d) {
+			console.info(d);
+			if (d.ErrCode != 0) {
+				alert(d.msg);
+				return;
+			}
+
+			var data  = d.data;
+			var html  = "";
+			var shead = '';
+			var sbody = '';
+
+			var _names = [];
+			var _fields = [];
+			//console.info($(".support .exp-sel .body tbody col2 i"));
+			$(".support .exp-sel .body tbody .col2 i.selected").each(function(index, el) {
+				var col1 = $(el).parent().parent().parent().find('.col1');
+				//console.info(col1);
+				_names.push($.trim(col1.find("div").text()));
+				_fields.push($.trim(col1.attr("class").split("\t")[0]));
+			});
+			
+			shead = "<tr>";
+			$(_names).each(function(index, el) {
+				shead = shead + "<th>" + el + "</th>";
+			});
+			shead = shead + "</tr>";
+			shead = '<thead>'+shead+"</thead>";
+
+			$(data).each(function(index, el) {
+				sbody = sbody + "<tr>";
+				$(_fields).each(function(index, ell) {
+					sbody = sbody + "<td>" + eval("el."+ell) + "</td>";
+				});				
+				sbody = sbody + "</tr>";
+			});
+			sbody = "<tbody>" + sbody + "<tbody>";
+
+			html = "<table>" + shead + sbody + "</table>";
+
+			if(getExplorer()=='ie') {
+				alert("不支持IE导出！");
+			} else {
+				tableToExcel(html);
+			}
+
+		});
+	});
+
+	$(".support .exp-sel .head .exit").click(function(event) {
+		var tb = $("body").children(".hyl-bokeh");
+		tb.removeClass("hyl-show");
+		$(".support .exp-sel").hide(300, function() {});
+	});
+
+	$(".support .exp-sel .body .table-body .col2 i").click(function(event) {
+		if ($(this).hasClass('selected')) {
+			$(this).removeClass('selected');
+		}else{
+			$(this).addClass('selected');
+		}
 	});
 
 	var users = [];
 	$(g_ALL_USER).each(function(index, el) {
-		//console.info(el.cname);
 		users.push(el.cname);
 	});
 	users.sort();
@@ -145,6 +370,7 @@ function init_add_record ( ) {
 
 function addSupport(opt) {
 	var param = {};
+	var ret = true;
 
 	function sGetInputVal(name) {
 		return $(".support .add-record table ."+name+" input").val();
@@ -178,12 +404,20 @@ function addSupport(opt) {
 		param.adduser = g_CURRENT_USER;
 	} else if (opt == "UPT") {
 		param.method = "UPDATE";
+		param.uptuser = g_CURRENT_USER;
+		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
 	}
-	console.info(param);
 
 	sync_post_data("/support/", JSON.stringify(param), function(d) {
-		console.info(d);
+		//console.info(d);
+		if (d.ErrCode != 0) {
+			alert("数据库更新失败!");
+			ret = false;
+			return ;
+		}
 	});
+
+	return ret;
 }
 
 function querySupport() {
@@ -191,8 +425,8 @@ function querySupport() {
 	param.method    = "QUERY";
 	param.SessionID = Options.SessionID;
 
+	console.info("XXXXXX");
 	sync_post_data("/support/", JSON.stringify(param), function(d) {
-		console.info(d);
 		if (d.ErrCode != 0) {
 			alter(d.msg);
 		}
@@ -201,33 +435,47 @@ function querySupport() {
 		conf.width = 2600;
 		conf.height = 400;
 		conf.columns = [
-			{name: 'ID', 		field:'ID', 			width:'40', align:'center'},
-			{name: '包类型', 	field:'TYPE', 			width:'100', align:'center'},
-			{name: '系统', 		field:'SYSTEM', 		width:'100', align:'center'},
-			{name: '模块', 		field:'MODULE', 		width:'100', align:'center'},
-			{name: '包名称', 	field:'PACKAGE_NAME', 	width:'100', align:'center'},
-			{name: 'FTP地址', 	field:'FTP_ADDR', 		width:'100', align:'center'},
-			{name: '发布内容', 	field:'CONTENT', 		width:'100', align:'center'},
+			{name: 'ID', 		field:'ID', 			width:'20', align:'center'},
+			{name: '包类型', 	field:'TYPE', 			width:'40', align:'center'},
+			{name: '系统', 		field:'SYSTEM', 		width:'40', align:'center'},
+			{name: '模块', 		field:'MODULE', 		width:'40', align:'center'},
+			{name: '包名称', 	field:'PACKAGE_NAME', 	width:'150', align:'center'},
+			{name: 'FTP地址', 	field:'FTP_ADDR', 		width:'150', align:'center'},
+			{name: '发布内容', 	field:'CONTENT', 		width:'300', align:'center'},
 			{name: '基础版本', 	field:'BASE_VERSION', 	width:'100', align:'center'},
-			{name: '发布流程号',field:'PUBLISH_SERIAL', width:'120', align:'center'},
+			{name: '发布流程号',field:'PUBLISH_SERIAL', width:'110', align:'center'},
 			{name: '备注', 		field:'REMARK', 		width:'100', align:'center'},
-			{name: '更新次数', 	field:'UPT_NUM', 		width:'100', align:'center'},
-			{name: '发布日期', 	field:'PUBLISH_DATE', 	width:'100', align:'center'},
-			{name: '状态', 		field:'STATUS', 		width:'100', align:'center'},
-			{name: '开发员', 	field:'DEVELOPER', 		width:'100', align:'center'},
-			{name: '负责人', 	field:'CHARGER', 		width:'100', align:'center'},
-			{name: '计划版本', 	field:'PLAN_VERSION', 	width:'100', align:'center'},
-			{name: 'Git分支', 	field:'GIT_BRANCH', 	width:'100', align:'center'},
-			{name: '升级版本', 	field:'UPGRADE_VERSION',width:'100', align:'center'},
+			{name: '更新次数', 	field:'UPT_NUM', 		width:'40', align:'center'},
+			{name: '发布日期', 	field:'PUBLISH_DATE', 	width:'70', align:'center'},
+			{name: '状态', 		field:'STATUS', 		width:'40', align:'center'},
+			{name: '开发员', 	field:'DEVELOPER', 		width:'50', align:'center'},
+			{name: '负责人', 	field:'CHARGER', 		width:'50', align:'center'},
+			{name: '计划版本', 	field:'PLAN_VERSION', 	width:'90', align:'center'},
+			{name: 'Git分支', 	field:'GIT_BRANCH', 	width:'90', align:'center'},
+			{name: '升级版本', 	field:'UPGRADE_VERSION',width:'90', align:'center'},
 			{name: '协作号', 	field:'COLLABORATION', 	width:'100', align:'center'},
-			{name: '创建者', 	field:'CRT_USER', 		width:'100', align:'center'},
-			{name: '创建时间', 	field:'CRT_TIME', 		width:'100', align:'center'},
-			{name: '更新者', 	field:'UPT_USER', 		width:'100', align:'center'},
-			{name: '跟新时间', 	field:'UPT_TIME', 		width:'100', align:'center'}
+			{name: '创建者', 	field:'CRT_USER', 		width:'50', align:'center'},
+			{name: '创建时间', 	field:'CRT_TIME', 		width:'80', align:'center'},
+			{name: '更新者', 	field:'UPT_USER', 		width:'50', align:'center'},
+			{name: '跟新时间', 	field:'UPT_TIME', 		width:'80', align:'center'}
 		];
 		conf.datas = d.data;
 
 		hyl_table($(".support .show"), conf);
+
+		// $(".support .show .hyl-grid-tbody tbody tr").click(function(event) {
+		// 	/* Act on the event */
+		// 	var sel = "selected"
+		// 	$(this).parent().find(("."+sel)).removeClass(sel);
+		// 	$(this).addClass(sel);
+		// });
+
+		$(".support .show .hyl-grid-tbody tbody tr").mousedown(function(event) {
+			/* Act on the event */
+			var sel = "selected"
+			$(this).parent().find(("."+sel)).removeClass(sel);
+			$(this).addClass(sel);
+		});
 
 	});
 

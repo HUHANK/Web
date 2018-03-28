@@ -37,6 +37,18 @@ function hyl_select( obj, data, selFunc ) {
 			top: $(this).outerHeight()+($(this).offset().top-$(document).scrollTop())+"px",
 			left: $(this).offset().left+"px"
 		});
+
+		if ($(this).val().length < 1) {
+			$(this).parent().find("div.selected").removeClass('selected');
+		} else {
+			var val1 = $(this).val();
+			$(this).parent().find(".hyl-drop-down").children().each(function(index, el) {
+				el = $(el);
+				if ( el.text() == val1 ){
+					el.addClass('selected');
+				}
+			});
+		}
 		$(this).next(".hyl-drop-down").slideDown(100, function() {
 		});
 	});
@@ -116,7 +128,7 @@ function hyl_table(obj, conf) {
 
 	/*add body*/
 	$(conf.datas).each(function(index, el) {
-		_tr = $("<tr></tr>");
+		_tr = $("<tr></tr>").attr("row", el["ID"]);
 		$(_fields).each(function(index, ell) {
 			var _td = $("<td></td>").append($("<div></div>").css("width", (_widths[index]-1)+"px").text(el[ell]))
 					.attr("align", _aligns[index])
@@ -128,6 +140,7 @@ function hyl_table(obj, conf) {
 
 	 console.info(_obj.height());
 	 console.info( _obj.find(".hyl-grid-thead").outerHeight())
+
 	_obj.find(".hyl-grid-tbody").css("height", (_obj.height()-_obj.find(".hyl-grid-thead").outerHeight())+"px");
 
 }

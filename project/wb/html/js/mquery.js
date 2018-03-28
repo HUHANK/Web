@@ -395,7 +395,7 @@ function query_sidebar_init() {
 		if (QueryCondi.sortCols.length > 0)
 			query_get_result(0);
 	});
-
+/*
 	function Cleanup() {
         window.clearInterval(idTmr);
         CollectGarbage();
@@ -412,7 +412,7 @@ function query_sidebar_init() {
             var ctx = {worksheet: name || 'Worksheet', table: table}
             window.location.href = uri + base64(format(template, ctx))
           }
-        })()
+        })()*/
 	$(".query .sidebar .export .content button").click(function() {
 		var param = new Object();
 		param.method = "EXPORT";

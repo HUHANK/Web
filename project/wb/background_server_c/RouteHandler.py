@@ -1167,6 +1167,55 @@ def supportADD( d ):
 
     return db.update(sql)
 
+def supportUPDATE(d):
+    db =  Options['mysql']
+
+    sql = "UPDATE support SET\
+                TYPE            = '%s',\
+                SYSTEM          = '%s',\
+                MODULE          = '%s',\
+                PACKAGE_NAME    = '%s',\
+                FTP_ADDR        = '%s',\
+                CONTENT         = '%s',\
+                BASE_VERSION    = '%s',\
+                PUBLISH_SERIAL  = '%s',\
+                REMARK          = '%s',\
+                UPT_NUM         =  %s ,\
+                PUBLISH_DATE    = '%s',\
+                STATUS          = '%s',\
+                DEVELOPER       = '%s',\
+                CHARGER         = '%s',\
+                PLAN_VERSION    = '%s',\
+                GIT_BRANCH      = '%s',\
+                UPGRADE_VERSION = '%s',\
+                COLLABORATION   = '%s',\
+                UPT_USER        = '%s',\
+                UPT_TIME  = CURRENT_TIMESTAMP() \
+            WHERE ID = %s" %(       \
+                d.get('type',''),       \
+                d.get('system',''),         \
+                d.get('module',''),         \
+                d.get('name',''),       \
+                d.get('ftp',''),        \
+                d.get('detail',''),         \
+                d.get('bversion',''),       \
+                d.get('pulno',''),      \
+                d.get('remark',''),         \
+                d.get('uptno',0),       \
+                d.get('pdate',''),      \
+                d.get('status',''),         \
+                d.get('developer',''),      \
+                d.get('charger',''),        \
+                d.get('pversion',''),       \
+                d.get('gitb',''),       \
+                d.get('uversion',''),       \
+                d.get('collaboration',''),      \
+                d.get('uptuser',''),     \
+                d.get("ID", 0) \
+            )
+    print sql
+    return db.update(sql)
+
 def supportQUERY(d):
     db =  Options['mysql']
 
@@ -1184,6 +1233,29 @@ def supportQUERY(d):
 
     #sql = "SELECT * FROM support ORDER BY ID DESC"
     return db.select2(sql)
+
+def supportQUERY_ONE(d):
+    db =  Options['mysql']
+
+    sql = "SELECT\
+        ID,    TYPE,    SYSTEM,    MODULE,    PACKAGE_NAME,    FTP_ADDR,\
+        CONTENT,    BASE_VERSION,    PUBLISH_SERIAL,    REMARK,    UPT_NUM,\
+        DATE_FORMAT(PUBLISH_DATE,'%Y-%m-%d') AS PUBLISH_DATE,    \
+        STATUS,    DEVELOPER,    CHARGER,    PLAN_VERSION,\
+        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE,\
+        CRT_USER,    \
+        DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
+        UPT_USER,    \
+        DATE_FORMAT(UPT_TIME,'%Y-%m-%d %H:%I:%S') AS UPT_TIME\
+        FROM support WHERE ID = " + str(d.get('ID', 0))
+
+    return db.select2(sql) 
+
+def supportDELETE(d):
+    db =  Options['mysql']
+
+    sql = "DELETE FROM support WHERE ID = " + str(d.get('ID', 0))
+    return db.update(sql)
 
 @route("/support/")
 def Support(data):
@@ -1211,6 +1283,37 @@ def Support(data):
             ret["data"] = res["data"]
 
             setErrMsg(ret, 0, "")
+
+    if method == "QUERY_ONE":
+        res = supportQUERY_ONE(data)
+        if res is None:
+            setErrMsg(ret, 2, "数据库查询失败！")
+        else:
+            ret["data"] = res["data"]
+            setErrMsg(ret, 0, "")
+
+    if method == "UPDATE":
+        res = supportUPDATE(data)
+        if res < 0:
+            setErrMsg(ret, 2, "数据库更新失败！")
+        else:
+            setErrMsg(ret, 0, "")
+
+    if method == "DELETE":
+        res = supportDELETE(data)
+        if res < 0:
+            setErrMsg(ret, 2, "数据库删除失败！")
+        else:
+            setErrMsg(ret, 0, "")
+
+    if method == "EXPORT":
+        res = supportQUERY(data)
+        if res is None:
+            setErrMsg(ret, 2, "数据库查询失败！")
+        else:
+            ret["data"] = res["data"]
+            setErrMsg(ret, 0, "")    
+
     return json.dumps(ret)
 
 
