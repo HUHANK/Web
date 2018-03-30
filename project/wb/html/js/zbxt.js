@@ -39,6 +39,7 @@ function InitHeader() {
 	param.SessionID = GetSessionID();
 	sync_post_data("/baseinfo/", JSON.stringify(param), function(d) {
 		//d = $.parseJSON(d);
+		console.info(d);
 		var txt = "你好，" + d.UserName + "！";
 		$(".header .subhead .yhxs").text(txt);
 

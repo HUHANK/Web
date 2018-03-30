@@ -275,6 +275,56 @@ table tbody tr:hover{
 	margin-bottom: 10px;
 }
 
+.add-zb .head-wrap .options{
+	background-color: #CFCFCF;
+	font-size: 12px;
+	padding: 5px;
+	margin-bottom: 1px;
+}
+.add-zb .head-wrap .options button{
+	background:none;  
+    outline:none;  
+    border:0px;
+
+    border: 1px solid #888888;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background-color: #F9F9F9;
+}
+
+.add-zb .reminder .ts-unit:hover{
+	color: #2761FD;
+}
+
+.add-zb .bzgz{
+	//display: none;
+}
+.add-zb .xzgz{
+	//display: none;
+}
+
+.add-zb .edit-wrap{
+	display: none;
+	position: fixed;
+	background-color: white;
+	border-radius: 5px;
+	top: 50%;
+	left: 50%;
+	margin: -288px 0px 0px -460px;
+	z-index: 10;
+}
+
+.add-zb .edit-wrap .head {
+	font-size: 15px;
+	font-weight: bold;
+	background-color: #C3C5C5;
+	padding: 5px;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+.add-zb .edit-wrap .head .exit{
+	float: right;
+}
 
 /*------------------------------------SJWH-------------------------------------*/
 .sjwh{
@@ -324,9 +374,7 @@ table tbody tr:hover{
 	background-color: #FBDEDE;
 }
 
-.add-zb .reminder .ts-unit:hover{
-	color: #2761FD;
-}
+
 
 .bzgz .sel{
 	background-color: #FFFE99;

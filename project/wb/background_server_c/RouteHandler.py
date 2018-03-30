@@ -130,6 +130,13 @@ def baseinfo(data):
     rs = db.select2(sql)
     ret["Property"]["data"] = rs["data"]
 
+    #--------------------------Support--------------------------
+    sql = "SELECT ID, PACKAGE_NAME FROM support"
+    rs = db.select2(sql)
+    if rs != None:
+        ret["Support"] = {}
+        ret["Support"]["PACKAGE_NAME"] = rs['data']    
+
     setErrMsg(ret, 0, "")
     return json.dumps(ret)
 
@@ -1141,7 +1148,7 @@ def exportFile(data):
 
 
 
-
+#----------------------------------------SUPPORT-----------------------------------------------
 def supportADD( d ):
     db =  Options['mysql']
 

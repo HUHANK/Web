@@ -80,7 +80,6 @@ function add_zb_ginit() {
 	});
 
 
-
 	$(".add-zb .edit .form .fhxrr").change(function(){
 		var ksrq = $(".add-zb .edit .form .ksrq").val();
 		if (ksrq.length < 1) return;
@@ -107,6 +106,27 @@ function add_zb_ginit() {
 
 	});
 
+	$(".add-zb .head-wrap .options .add").click(function(event) {
+		show_edit_wrap_pop_box();
+	});
+
+	$(".add-zb .edit-wrap .head .exit").click(function(event) {
+		hide_edit_wrap_pop_box();
+	});
+
+}
+
+function show_edit_wrap_pop_box(){
+	$("body").children(".hyl-bokeh").addClass('hyl-show');
+	//$(".add-zb .edit-wrap").show(100, function() {});
+	$(".add-zb .edit-wrap").slideDown(200, function() {
+		
+	});
+}
+function hide_edit_wrap_pop_box(){
+	$("body").children(".hyl-bokeh").removeClass('hyl-show');
+	//$(".add-zb .edit-wrap").hide(100, function() {});
+	$(".add-zb .edit-wrap").slideUp(100);
 }
 
 function add_zb_form_clean() {
@@ -383,6 +403,7 @@ function add_zb() {
 		$(".add-zb .edit .form .ksrq").removeAttr('disabled');
 		$(".add-zb .edit .form .ksrq-lab").text("开始日期");
 		/**----------------------------------------------------------**/
+		hide_edit_wrap_pop_box();
 
 	});
 
@@ -704,6 +725,7 @@ function add_zb_show_work() {
 										fom.find(".update").removeAttr('disabled');
 										fom.find(".add").attr('disabled','');
 										fom.find(".cancle").removeAttr('disabled');
+										show_edit_wrap_pop_box();
 									} else {
 										alert(d.msg);
 									}
@@ -879,6 +901,7 @@ function add_zb_show_work() {
 										fom.find(".update").removeAttr('disabled');
 										fom.find(".add").attr('disabled', '');
 										fom.find(".cancle").removeAttr('disabled');
+										show_edit_wrap_pop_box();
 									} else {
 										alert(d.msg);
 									}
