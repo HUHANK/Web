@@ -32,25 +32,28 @@ function hyl_select( obj, data, selFunc ) {
 	/*显示下拉框事件*/
 	_input.focus(function(event) {
 		/* Act on the event */
-		$(this).next(".hyl-drop-down").css({
-			width: $(this).outerWidth()+"px",
-			top: $(this).outerHeight()+($(this).offset().top-$(document).scrollTop())+"px",
-			left: $(this).offset().left+"px"
-		});
-
-		if ($(this).val().length < 1) {
-			$(this).parent().find("div.selected").removeClass('selected');
-		} else {
-			var val1 = $(this).val();
-			$(this).parent().find(".hyl-drop-down").children().each(function(index, el) {
-				el = $(el);
-				if ( el.text() == val1 ){
-					el.addClass('selected');
-				}
+		setTimeout(function(){
+			$(_input).next(".hyl-drop-down").css({
+				width: $(_input).outerWidth()+"px",
+				top: $(_input).outerHeight()+($(_input).offset().top-$(document).scrollTop())+"px",
+				left: $(_input).offset().left+"px"
 			});
-		}
-		$(this).next(".hyl-drop-down").slideDown(100, function() {
-		});
+
+			if ($(_input).val().length < 1) {
+				$(_input).parent().find("div.selected").removeClass('selected');
+			} else {
+				var val1 = $(_input).val();
+				$(_input).parent().find(".hyl-drop-down").children().each(function(index, el) {
+					el = $(el);
+					if ( el.text() == val1 ){
+						el.addClass('selected');
+					}
+				});
+			}
+			$(_input).next(".hyl-drop-down").slideDown(200, function() {
+			});
+
+		}, 100);
 	});
 
 
@@ -60,7 +63,7 @@ function hyl_select( obj, data, selFunc ) {
 		//console.info(event);
 		$(this).parent().find('.selected').removeClass('selected');
         $(this).addClass('selected');
-        $(this).parent().slideUp(100);
+        $(this).parent().slideUp(10);
         $(this).parent().prev('input').val($(this).text());
         if (typeof event.data.func !== "undefined")
         	event.data.func($(this));
@@ -69,15 +72,15 @@ function hyl_select( obj, data, selFunc ) {
 	$(document).on("scroll", function(ev) {
 		//console.info(ev);
 		setTimeout(function(){
-			$(".hyl-drop-down").slideUp(100);
+			$(".hyl-drop-down").slideUp(10);
 		}, 1);
 	});
 
 	_input.blur(function(event) {
 		/* Act on the event */
 		setTimeout(function(){
-			$(".hyl-drop-down").slideUp(100);
-		}, 100);
+			$(".hyl-drop-down").slideUp(10);
+		}, 80);
 	});
 
 	

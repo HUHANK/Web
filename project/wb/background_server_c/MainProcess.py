@@ -8,6 +8,7 @@ import threading, json
 from PubFunc import *
 from config import *
 import sys
+import traceback
 
 
 class CMainProcess:
@@ -59,30 +60,34 @@ def MainProcess(queue):
     startCrontab()
 
     while True:
-        data = queue.get()
-        startTime = getNowTimestamp()
-        method = data.get("method", None)
-        if method is None:
-            print u"请求无法处理，未指定处理方法！"
-            ret = {}
-            setErrMsg(ret, 2, u"请求无法处理，未指定处理方法！")
-            queue.put(json.dumps(ret))
-            continue
-        d = data.get("data", None)
-        if d is None:
-            print "请求数据为空，无法处理!"
-            ret = {}
-            setErrMsg(ret, 2, u"请求数据为空，无法处理!")
-            queue.put(json.dumps(ret))
-            continue
-        ret = ""
-        if Options.get('url', None) is not None and Options['url'].get(method, None) is not None:
-            ret = Options['url'][method](d)
-        else:
-            ret = {}
-            setErrMsg(ret, 2, "请求无效！")
-            print ret
-            ret = json.dumps(ret)
-        queue.put(ret)
-        endTime = getNowTimestamp()
-        print "METHOD: ",method, " USETIME: ", str(endTime - startTime)
+        try:
+            data = queue.get()
+            startTime = getNowTimestamp()
+            method = data.get("method", None)
+            if method is None:
+                #print u"请求无法处理，未指定处理方法！"
+                ret = {}
+                setErrMsg(ret, 2, u"请求无法处理，未指定处理方法！")
+                queue.put(json.dumps(ret))
+                continue
+            d = data.get("data", None)
+            if d is None:
+                #print u"请求数据为空，无法处理!"
+                ret = {}
+                setErrMsg(ret, 2, u"请求数据为空，无法处理!")
+                queue.put(json.dumps(ret))
+                continue
+            ret = ""
+            if Options.get('url', None) is not None and Options['url'].get(method, None) is not None:
+                ret = Options['url'][method](d)
+            else:
+                ret = {}
+                setErrMsg(ret, 2, "请求无效！")
+                print ret
+                ret = json.dumps(ret)
+            queue.put(ret)
+            endTime = getNowTimestamp()
+            print "METHOD: ",method, " USETIME: ", str(endTime - startTime)
+        except Exception, e:
+            print traceback.format_exc()
+

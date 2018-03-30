@@ -43,7 +43,7 @@ def login(data):
         if ret['datas'][0][0] > 0 :
             sql = "UPDATE user set LAST_LOGIN_TIME = CURRENT_TIMESTAMP() WHERE UNAME='%s' and UPWD='%s'" % (param['UserName'], param['PassWord'])
             if db.update(sql) < 0 :
-                print u"跟新user表时间出错！"
+                print u"update user time Error!"
             rs['result'] = "OK"
             rs["note"] = ""
             rs["sessionid"] = str(uuid.uuid4())
@@ -73,7 +73,7 @@ def baseinfo(data):
     ret = {}
     sessionData = findSession(data.get("SessionID", ""))
     if sessionData is None:
-        print "baseinfo 用户没有登录！"
+        #print "baseinfo 用户没有登录！"
         setErrMsg(ret, 1, "baseinfo 用户没有登录！")
         return json.dumps(ret)
     userName = sessionData.get("UserName", "")
@@ -188,10 +188,10 @@ def updateEditDate(db, id):
 @route("/report/")
 def reportProcess(data):
     data = json.loads(data)
-    print data
+    #print data
     sessionData = findSession(data.get("SessionID", ""))
     if sessionData is None:
-        print u"用户未登录！"
+        #print u"用户未登录！"
         return ""
     userName = sessionData.get("UserName", "")
     db =  Options['mysql']
@@ -322,7 +322,7 @@ def reportProcess(data):
     elif data["method"] == "TURN_NEXT":
         sql = "select * from user_work where WID=%s and WEEK = %s" % (data.get("id", -1), Week+1)
         rs = db.select2(sql)
-        print rs["data"]
+        #print rs["data"]
         if len(rs["data"]) > 0:
             setErrMsg(ret, 3, u"该任务已经在下周里面，无法重复添加！");
             return json.dumps(ret)
@@ -1213,7 +1213,7 @@ def supportUPDATE(d):
                 d.get('uptuser',''),     \
                 d.get("ID", 0) \
             )
-    print sql
+    #print sql
     return db.update(sql)
 
 def supportQUERY(d):
@@ -1262,7 +1262,7 @@ def Support(data):
     data = json.loads(data)
     method = data.get("method", None)
     ret = {}
-    print data
+    #print data
     
     if method is None:
         setErrMsg(ret, 2, "未知的方法！")
