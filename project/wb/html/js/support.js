@@ -22,7 +22,7 @@ function SuportRepaint () {
 
 	$(".support .wrap").css("height", qheight+"px");
 	$(".support .wrap .show").css("height", ($(".support .wrap").height() 
-		- $(".support .wrap .option").outerHeight()) + "px");
+		- $(".support .wrap .option").outerHeight(true)) + "px");
 }
 
 function SupportMouseRightDown(e) {
@@ -32,7 +32,10 @@ function SupportMouseRightDown(e) {
 			.css("left", e.clientX+"px");
 	dropbox.slideDown(200, function() {});
 	dropbox.focus();
-	dropbox.html('<div class="upt">更改</div><div class="del">删除</div>');
+	dropbox.html(' 	<div class="upt">更改</div>\
+					<div class="del">删除</div>\
+					<div class="refresh">刷新</div>\
+					<div class="examine">查看任务</div>');
 
 	$("body").click(function(event) {
 		setTimeout(function(){
@@ -63,9 +66,8 @@ function SupportMouseRightDown(e) {
 				alert("数据库查询失败！");
 				return ;
 			}
-			console.info(d);
-			var data = d.data[0];
 
+			var data = d.data[0];
 			$(".support .add-record table .system 	input").val(data.SYSTEM);
 			$(".support .add-record table .module 	input").val(data.MODULE);
 			$(".support .add-record table .type 	input").val(data.TYPE);
@@ -111,6 +113,59 @@ function SupportMouseRightDown(e) {
 				return ;
 			}
 			querySupport();
+		});
+	});
+
+	dropbox.find('.refresh').click(function(event) {
+		/* Act on the event */
+		querySupport();
+	});
+
+	dropbox.find('.examine').click(function(event) {
+		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
+			alert("请选中一行数据！");
+			return true;
+		}
+		var param = {};
+		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.SessionID = Options.SessionID;
+		param.method = "GETTASKINFO";
+		sync_post_data("/support/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0) {
+				alert("获取任务信息失败！");
+				return ;
+			}
+			console.info(d);
+
+			var conf = {};
+			conf.columns = [
+				{name: '人员', 		field:'User', 			width:'60', align:'center'},
+				{name: '系统', 		field:'System', 		width:'80', align:'center'},
+				{name: '模块', 		field:'Module', 		width:'80', align:'center'},
+				{name: '类型', 		field:'Type', 			width:'80', align:'center'},
+				{name: '性质', 		field:'Property', 		width:'70', align:'center'},
+				{name: '跟踪号', 	field:'TraceNo', 		width:'70', align:'center',
+					renderer: function(data){
+						return GenTraceNoAhref(data);
+					}
+				},
+				{name: '工作内容', 	field:'Detail', 		width:'300', align:'left',
+					renderer: function(data){
+						return '<pre style="font-size:12px;">' + data + "</pre>";
+					}
+				},
+				{name: '进度', 		field:'ProgressRate', 	width:'60', align:'center',
+					renderer: function(data){
+						return GenProgressBarHtml(60, 14, data);
+					}
+				}
+			];
+			conf.datas = d.data;
+
+			hyl_table($(".support .task-show .result"), conf);
+
+			$("body").children(".hyl-bokeh").addClass("hyl-show");
+			$(".support .task-show").show(200, function() {});
 		});
 	});
 
@@ -184,7 +239,7 @@ function init_add_record ( ) {
 	});
 
 	$('.support .wrap .option button.add').click(function(event) {
-		/* Act on the event */
+
 		$(".support .add-record table .system 	input").val('');
 		$(".support .add-record table .module 	input").val('');
 		$(".support .add-record table .type 	input").val('');
@@ -203,6 +258,8 @@ function init_add_record ( ) {
 		$(".support .add-record table .pversion input").val('');
 		$(".support .add-record table .gitb 	input").val('');
 		$(".support .add-record table .uversion input").val('');
+		$(".support .add-record table .pronum 	input").val('');
+		$(".support .add-record table .note 	textarea").val('');
 
 		var tb = $("body").children(".hyl-bokeh");
 		tb.addClass("hyl-show");
@@ -357,6 +414,11 @@ function init_add_record ( ) {
 		}
 	});
 
+	$(".support .task-show .head .exit").click(function(event) {
+		$("body").children(".hyl-bokeh").removeClass('hyl-show');
+		$(".support .task-show").hide(200, function() {});
+	});
+
 	var users = [];
 	$(g_ALL_USER).each(function(index, el) {
 		users.push(el.cname);
@@ -365,7 +427,10 @@ function init_add_record ( ) {
 	hyl_select($(".support .add-record table .developer"), users);
 	hyl_select($(".support .add-record table .charger"), users);
 
-
+	if (!g_CURRENT_USER_IS_ADMIN){
+		$(".support .wrap .option button.add").css("display", "none");
+		$('.support .wrap .option button.exp').css("display", "none");
+	}
 }
 
 function addSupport(opt) {
@@ -397,8 +462,11 @@ function addSupport(opt) {
 	param.pversion 		= sGetInputVal("pversion");
 	param.gitb 			= sGetInputVal("gitb");
 	param.uversion 		= sGetInputVal("uversion");
+	param.pronum 		= sGetInputVal("pronum");
+	param.note			= sGetTextareaVal("note");
 
 	param.SessionID = Options.SessionID;
+
 	if (opt == "ADD") {
 		param.method = "ADD";
 		param.adduser = g_CURRENT_USER;
@@ -424,8 +492,8 @@ function querySupport() {
 	var param = {};
 	param.method    = "QUERY";
 	param.SessionID = Options.SessionID;
+	param.User = g_CURRENT_USER;
 
-	console.info("XXXXXX");
 	sync_post_data("/support/", JSON.stringify(param), function(d) {
 		if (d.ErrCode != 0) {
 			alter(d.msg);
@@ -457,7 +525,7 @@ function querySupport() {
 			{name: '创建者', 	field:'CRT_USER', 		width:'50', align:'center'},
 			{name: '创建时间', 	field:'CRT_TIME', 		width:'80', align:'center'},
 			{name: '更新者', 	field:'UPT_USER', 		width:'50', align:'center'},
-			{name: '跟新时间', 	field:'UPT_TIME', 		width:'80', align:'center'}
+			{name: '更新时间', 	field:'UPT_TIME', 		width:'80', align:'center'}
 		];
 		conf.datas = d.data;
 

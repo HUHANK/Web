@@ -92,3 +92,17 @@
     box-shadow: 0px 0px 3px #3BB4F2;
     transition: all 0.3s;
 }
+
+/*--------------------------------------------------------------------*/
+.hyl-grid-thead *{
+	margin: 0;
+	padding: 0;
+}
+.hyl-grid-tbody *{
+	margin: 0;
+	padding: 0;
+}
+
+.hyl-grid-tbody td{
+	border: 1px solid #D7D7D7;
+}

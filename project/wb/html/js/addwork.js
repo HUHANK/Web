@@ -166,6 +166,12 @@ function add_zb_form_select_init() {
 		shtml += "<option>"+(i*10)+"</option>";
 	}
 	editForm.find(".fjd").html(shtml);
+
+	shtml = "";
+	$(g_SUPPORT_PACKAGE_NAMES).each(function(index, el) {
+		shtml += "<option name='"+el.ID+"'>"+el.PACKAGE_NAME+"</option>";
+	});
+	editForm.find('.support-packn').html(shtml);
 }
 
 function add_zb() {
@@ -184,18 +190,14 @@ function add_zb() {
 		var gznr = fom.find(".fgznr");
 		var ksrq = fom.find(".ksrq");
 		var hxrr = fom.find(".fhxrr");
-		var bz = fom.find(".fbz");
+		var bz =   fom.find(".fbz");
+		var sup_name = fom.find(".support-packn");
 
 		if (sys.val() == "") {
 			alert("系统选项不能为空！");
 			$(this).removeAttr("disabled");
 			return;
 		}
-		/*
-		if (mod.val() == "") {
-			alert("模块选项不能为空！");
-			return;
-		}*/
 		if (type.val() == "") {
 			alert("类型选项不能为空！");
 			$(this).removeAttr("disabled");
@@ -243,6 +245,12 @@ function add_zb() {
 		param.NeedDays = hxrr.val();
 		param.Note = bz.val();
 
+		if ( sup_name.find("[selected=selected]").length < 1 ){
+			param.SID = '0';
+		} else {
+			param.SID = sup_name.find("[selected=selected]").attr("name");
+		}
+		
 		/*检查用户输入参数是否有问题*/
 		var re = /^\d+$/
 		if (!re.test(param.NeedDays)) {

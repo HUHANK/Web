@@ -395,7 +395,7 @@ table tbody tr:hover{
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	margin: -337px 0 0 -410px;
+	margin: -442px 0 0 -410px;
 	background-color: white;
 }
 
@@ -492,22 +492,22 @@ table tbody tr:hover{
 }
 
 .support .wrap .option{
-	height: 25px;
-	//border: 1px solid black;
+	//height: 25px;
+	background-color: #CFCFCF;
+	font-size: 12px;
+	padding: 5px;
+	margin-bottom: 1px;
 }
 
 .support .wrap .option button{
 	background:none;  
-    outline:none;  
+    outline:none; 
     border:0px;
 
-    font-size: 15px;
-    //border: 1px solid black;
-    background-color: #1A82DD;
-    color: white;
-    margin-left: 10px;
-    width: 60px;
-    border-radius: 3px;
+   	border: 1px solid #888888;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background-color: #F9F9F9;
 }
 
 .support .wrap .option button:hover{
@@ -636,7 +636,6 @@ table tbody tr:hover{
 	height: 300px;
 	overflow: auto;
 }
-
 .support .exp-sel button.exp{
 	margin: 0;
 	padding: 0;
@@ -649,20 +648,52 @@ table tbody tr:hover{
 	width: 50px;
 	height: 30px;
 }
-
 .support .exp-sel button.exp:hover{
 	background-color: #4EA9F8;
 }
+
+.support .task-show{
+	display: none;
+	position: fixed;
+	background-color: white;
+
+	//width: 820px;
+	//height: 400px;
+	top: 50%;
+	left: 50%;
+	margin: -200px 0 0 -410px;
+	z-index: 10;
+
+	border-radius: 3px;
+}
+.support .task-show .head{
+	font-size: 15px;
+	font-weight: bold;
+	background-color: #C3C5C5;
+	padding: 5px;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+.support .task-show .head .exit{
+	float: right;
+}
+.support .task-show .result{
+	overflow: auto;
+	width: 820px;
+	height: 400px;
+}
+
 /*-------------------------------------鼠标右键弹出框----------------------------------------*/
 .mouse-right-down{
 	display: none;
 	position: fixed;
-	width: 60px;
+	width: 80px;
 	//height: 40px;
 	background-color: #F3F3F2;
 	padding: 4px;
 	border: 1px solid #C6C6C6;
-	border-radius: 4px;
+	border-radius: 2px;
+	font-size: 14px;
 }
 
 .mouse-right-down div{

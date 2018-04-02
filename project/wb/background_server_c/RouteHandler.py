@@ -78,9 +78,10 @@ def baseinfo(data):
         return json.dumps(ret)
     userName = sessionData.get("UserName", "")
 
-    sql = "select NOTE from user where UNAME='%s'" % (userName)
-    res = db.select(sql)
-    ret["UserName"] = res["datas"][0][0]
+    sql = "select NOTE, ADMIN from user where UNAME='%s'" % (userName)
+    res = db.select2(sql)
+    ret["UserName"] = res["data"][0]["NOTE"]
+    ret["IsAdmin"]  = res["data"][0]["ADMIN"]
 
     ret["Date"] = getNowDate1()
     (year, week, day) = getNowYearWeek()
@@ -222,11 +223,12 @@ def reportProcess(data):
         Detail = data["Detail"].replace("'", "''")
         Note = data["Note"].replace("'", "''")
         #---------------------------------------------------------
-        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate, EditDate, ExpireDate) VALUES(" \
-              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s', '%s', '%s')" %(
+        sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate, EditDate, ExpireDate, SID) VALUES(" \
+              "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s', '%s', '%s', %s)" %(
                 data['System'], data['Module'], data['Type'], data["TraceNo"], Detail, \
                 data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], Note,
-                getNowDate2(), editDate, CalExpireDate(db, data["StartDate"], data["NeedDays"]))
+                getNowDate2(), editDate, CalExpireDate(db, data["StartDate"], data["NeedDays"]),\
+                data.get('SID', '0'))
         id = db.update(sql)
         if id < 0:
             setErrMsg(ret, 2, "数据库插入失败！")
@@ -1149,6 +1151,16 @@ def exportFile(data):
 
 
 #----------------------------------------SUPPORT-----------------------------------------------
+def isAdmin(name):
+    db =  Options['mysql']
+
+    sql = "SELECT ADMIN FROM user WHERE NOTE = '%s'" % (name)
+
+    rs = db.select2(sql)
+    if rs is None:
+        return 0
+    return rs["data"][0]["ADMIN"];
+
 def supportADD( d ):
     db =  Options['mysql']
 
@@ -1156,19 +1168,19 @@ def supportADD( d ):
             TYPE,           SYSTEM,             MODULE,         PACKAGE_NAME,   FTP_ADDR,\
             CONTENT,        BASE_VERSION,       PUBLISH_SERIAL, REMARK,         UPT_NUM,\
             PUBLISH_DATE,   STATUS,             DEVELOPER,      CHARGER,        PLAN_VERSION,\
-            GIT_BRANCH,     UPGRADE_VERSION,    COLLABORATION,  NOTE,\
+            GIT_BRANCH,     UPGRADE_VERSION,    COLLABORATION,  NOTE,           PROBLEM_NUM,\
             CRT_USER\
         ) VALUES (\
             '%s','%s','%s','%s','%s', \
             '%s','%s','%s','%s', %s , \
             '%s','%s','%s','%s','%s',\
-            '%s','%s','%s','%s',\
+            '%s','%s','%s','%s', %s ,\
             '%s'\
         )" % (\
             d.get('type',''), d.get('system',''), d.get('module',''), d.get('name',''), d.get('ftp',''),\
             d.get('detail',''), d.get('bversion',''), d.get('pulno',''), d.get('remark',''), d.get('uptno',0),\
             d.get('pdate',''), d.get('status',''), d.get('developer',''), d.get('charger',''), d.get('pversion',''),\
-            d.get('gitb',''), d.get('uversion',''), d.get('collaboration',''), '',\
+            d.get('gitb',''), d.get('uversion',''), d.get('collaboration',''), d.get('note', ''), d.get('pronum', '0'),\
             d.get('adduser','')\
     )
 
@@ -1197,7 +1209,9 @@ def supportUPDATE(d):
                 UPGRADE_VERSION = '%s',\
                 COLLABORATION   = '%s',\
                 UPT_USER        = '%s',\
-                UPT_TIME  = CURRENT_TIMESTAMP() \
+                UPT_TIME  = CURRENT_TIMESTAMP() ,\
+                NOTE            = '%s',\
+                PROBLEM_NUM     =  %s ,\
             WHERE ID = %s" %(       \
                 d.get('type',''),       \
                 d.get('system',''),         \
@@ -1218,6 +1232,8 @@ def supportUPDATE(d):
                 d.get('uversion',''),       \
                 d.get('collaboration',''),      \
                 d.get('uptuser',''),     \
+                d.get('note', ''), \
+                d.get('pronum', '0'),\
                 d.get("ID", 0) \
             )
     #print sql
@@ -1225,20 +1241,25 @@ def supportUPDATE(d):
 
 def supportQUERY(d):
     db =  Options['mysql']
+    user = d.get("User",'')
 
     sql = "SELECT\
         ID,    TYPE,    SYSTEM,    MODULE,    PACKAGE_NAME,    FTP_ADDR,\
         CONTENT,    BASE_VERSION,    PUBLISH_SERIAL,    REMARK,    UPT_NUM,\
         DATE_FORMAT(PUBLISH_DATE,'%Y-%m-%d') AS PUBLISH_DATE,    \
         STATUS,    DEVELOPER,    CHARGER,    PLAN_VERSION,\
-        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE,\
+        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE, PROBLEM_NUM,\
         CRT_USER,    \
         DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
         UPT_USER,    \
         DATE_FORMAT(UPT_TIME,'%Y-%m-%d %H:%I:%S') AS UPT_TIME\
-        FROM support ORDER BY ID DESC"
-
-    #sql = "SELECT * FROM support ORDER BY ID DESC"
+        FROM support "
+    if isAdmin(user):
+        sql = sql + ""
+    else:
+        sql = sql + " WHERE CHARGER='%s' OR DEVELOPER='%s' " % (user, user)
+    
+    sql = sql + " ORDER BY ID DESC";
     return db.select2(sql)
 
 def supportQUERY_ONE(d):
@@ -1249,7 +1270,7 @@ def supportQUERY_ONE(d):
         CONTENT,    BASE_VERSION,    PUBLISH_SERIAL,    REMARK,    UPT_NUM,\
         DATE_FORMAT(PUBLISH_DATE,'%Y-%m-%d') AS PUBLISH_DATE,    \
         STATUS,    DEVELOPER,    CHARGER,    PLAN_VERSION,\
-        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE,\
+        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE, PROBLEM_NUM,\
         CRT_USER,    \
         DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
         UPT_USER,    \
@@ -1263,6 +1284,32 @@ def supportDELETE(d):
 
     sql = "DELETE FROM support WHERE ID = " + str(d.get('ID', 0))
     return db.update(sql)
+
+def supportGETTASKINFO(d):
+    db =  Options['mysql']
+
+    sql = "SELECT id, System, Module, Type, TraceNo, Detail, Property, ProgressRate, Note FROM work_detail WHERE SID = %s" % (d.get("ID", "-1"))
+    res = db.select2(sql)
+    if res is None:
+        return []
+    data = res["data"]
+
+    if len(data) < 1:
+        return []
+
+    tmp = ''
+    for i in range(len(data)):
+        tmp = tmp + "%s,"%(data[i]["id"])
+
+    sql = "SELECT DISTINCT A.WID, B.NOTE from user_work A LEFT JOIN user B on A.UID = B.UID WHERE A.WID IN (%s)" % (tmp[:-1])
+    res = db.select2(sql)
+    if res is None:
+        return []
+    for i in range(len(data)):
+        for k in range(len(res["data"])):
+            if data[i]["id"] == res["data"][k]["WID"]:
+                data[i]["User"] = res["data"][k]["NOTE"]
+    return data
 
 @route("/support/")
 def Support(data):
@@ -1320,6 +1367,11 @@ def Support(data):
         else:
             ret["data"] = res["data"]
             setErrMsg(ret, 0, "")    
+
+    if method == "GETTASKINFO":
+        res = supportGETTASKINFO(data)
+        ret['data'] = res
+        setErrMsg(ret, 0, "")
 
     return json.dumps(ret)
 

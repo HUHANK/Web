@@ -12,16 +12,16 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=1.5.0"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=1.5.0"></script>
-	<script type="text/javascript" src="js/hyl.js?version=1.5.0"></script>
-	<script type="text/javascript" src="js/addwork.js?version=1.5.0"></script>
-	<script type="text/javascript" src="js/mquery.js?version=1.5.0"></script>
-	<script type="text/javascript" src="js/support.js?version=1.5.0"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=1.5.0"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.5.0">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.5.0">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.5.0">
+	<script type="text/javascript" src="js/ginit.js?version=1.5.2"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=1.5.2"></script>
+	<script type="text/javascript" src="js/hyl.js?version=1.5.2"></script>
+	<script type="text/javascript" src="js/addwork.js?version=1.5.2"></script>
+	<script type="text/javascript" src="js/mquery.js?version=1.5.2"></script>
+	<script type="text/javascript" src="js/support.js?version=1.5.2"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=1.5.2"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.5.2">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.5.2">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.5.2">
 </head>
 <body>
 	<!--弹出框-->
@@ -281,8 +281,8 @@
 
 				            <div class="je-form-item">
 				            	<label class="je-label je-f14">Support包</label>
-				            	<div class="je-inputbox">
-				            		<input type="text" name="" class="je-input">
+				            	<div class="je-inputbox je-w100">
+				            		<select class="support-packn je-w100"></select>
 				            	</div>
 				            </div>
 
@@ -471,23 +471,28 @@
 						<td class='lab'>跟新次数</td>		<td class='content uptno'>
 							<input type="number" name="">
 						</td>
-						<td class='lab'>状态</td>			<td class='content status'>
-							<input type="text" name="">
-						</td>
 					</tr>
 					<tr class='row'>
-						<td class='lab'>备注</td>			<td class='content remark' colspan='5'>
+						<td class='lab'>补充说明</td>		<td class='content remark' colspan='5'>
 							<textarea></textarea>
+						</td>
+					</tr>
+					<tr class="row">
+						<td class='lab'>负责人员</td>		<td class='content charger'>
+							<input type="text" name="">
+						</td>
+						<td class="lab">问题个数</td>		<td class="content pronum">
+							<input type="number" name="">
 						</td>
 					</tr>
 					<tr class='row'>
 						<td class='lab'>开发人员</td>		<td class='content developer'>
 							<input type="text" name="">
 						</td>
-						<td class='lab'>负责人员</td>		<td class='content charger'>
+						<td class='lab'>协作号</td>			<td class='content collaboration'>
 							<input type="text" name="">
 						</td>
-						<td class='lab'>协作号</td>			<td class='content collaboration'>
+						<td class='lab'>状态</td>			<td class='content status'>
 							<input type="text" name="">
 						</td>
 					</tr>
@@ -500,6 +505,11 @@
 						</td>
 						<td class='lab'>升级版本</td>		<td class='content uversion'>
 							<input type="text" name="">
+						</td>
+					</tr>
+					<tr class='row'>
+						<td class='lab'>备注</td>			<td class='content note' colspan='5'>
+							<textarea></textarea>
 						</td>
 					</tr>
 					<tr class="row">
@@ -572,16 +582,27 @@
 					<button class="exp">导出</button>
 				</div>
 			</div>
-			<div class="wrap">
-				<div class="show">
-					
+
+			<div class="task-show">
+				<div class="head">
+					<span class="title">此Support包包含的任务信息</span>
+					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
 				</div>
+				<div class="result"></div>
+			</div>
+
+			<div class="wrap">
+
 				<div class="option">
 					<button class="add">添加</button>
 					<button class="upt" style="display: none">更新</button>
 					<button class="del" style="display: none">删除</button>
 					<button class="exp">导出</button>
+					<button class="filter">筛选</button>
 				</div>
+
+				<div class="show"></div>
+				
 			</div>
 		</div>
 	</div>

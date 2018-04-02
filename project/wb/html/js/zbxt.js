@@ -14,45 +14,6 @@ function main() {
 	initNavbar(index);
 	navbar();
 
-	window.onresize = function() {
-		init_window();
-		query_get_result(g_CURRENT_QPAGE);
-	}
-	init_window();
-}
-
-function init_window() {
-	wheight = $(window).height();
-	wwidth = $(window).width();
-	//console.info(wheight);
-	//console.info($("body .wrapper-top").height());
-
-	qheight = wheight - $("body .wrapper-top").height();
-	//console.info(qheight);
-	$(".body .query").height(qheight);
-	//$(".body .query").width(wwidth);
-	SuportRepaint();
-}
-
-function InitHeader() {
-	var param = new Object();
-	param.SessionID = GetSessionID();
-	sync_post_data("/baseinfo/", JSON.stringify(param), function(d) {
-		//d = $.parseJSON(d);
-		console.info(d);
-		var txt = "你好，" + d.UserName + "！";
-		$(".header .subhead .yhxs").text(txt);
-
-		txt = d.Date + "(第" + d.Week + "周)";
-		$(".header .subhead .rqxs").text(txt);
-		g_CURRENT_WEEK = d.Week;
-		g_CURRENT_USER = d.UserName;
-
-		var tmp = d.Date[0] + d.Date[1] + d.Date[2] + d.Date[3];
-		//console.info(tmp);
-		g_CURRENT_YEAR = parseInt(tmp);
-	});
-
 	$(".header .subhead .logout").click(function(){
 		var param = new Object();
 		param.SessionID = GetSessionID();
@@ -64,6 +25,44 @@ function InitHeader() {
 		$.cookie("htzq_SessionID", null);
 		Options.SessionID = null;
 		window.location.href = "login.html";
+	});
+
+	window.onresize = function() {
+		init_window();
+		query_get_result(g_CURRENT_QPAGE);
+	}
+	init_window();
+}
+
+function init_window() {
+	wheight = $(window).height();
+	wwidth = $(window).width();
+
+	qheight = wheight - $("body .wrapper-top").height();
+	$(".body .query").height(qheight);
+	SuportRepaint();
+}
+
+function InitHeader() {
+	var param = new Object();
+	param.SessionID = GetSessionID();
+	sync_post_data("/baseinfo/", JSON.stringify(param), function(d) {
+		//console.info(d);
+		var txt = "你好，" + d.UserName + "！";
+		$(".header .subhead .yhxs").text(txt);
+
+		txt = d.Date + "(第" + d.Week + "周)";
+		$(".header .subhead .rqxs").text(txt);
+		g_CURRENT_WEEK = d.Week;
+		g_CURRENT_USER = d.UserName;
+		g_CURRENT_USER_IS_ADMIN = d.IsAdmin;
+
+		var tmp = d.Date[0] + d.Date[1] + d.Date[2] + d.Date[3];
+		g_CURRENT_YEAR = parseInt(tmp);
+
+		g_SUPPORT_PACKAGE_NAMES.push({ID:0, PACKAGE_NAME: "非Support包"});
+		g_SUPPORT_PACKAGE_NAMES = g_SUPPORT_PACKAGE_NAMES.concat( d.Support.PACKAGE_NAME );
+
 	});
 }
 

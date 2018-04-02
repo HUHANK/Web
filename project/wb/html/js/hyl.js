@@ -53,7 +53,7 @@ function hyl_select( obj, data, selFunc ) {
 			$(_input).next(".hyl-drop-down").slideDown(200, function() {
 			});
 
-		}, 100);
+		}, 150);
 	});
 
 
@@ -80,7 +80,7 @@ function hyl_select( obj, data, selFunc ) {
 		/* Act on the event */
 		setTimeout(function(){
 			$(".hyl-drop-down").slideUp(10);
-		}, 80);
+		}, 100);
 	});
 
 	
@@ -112,6 +112,7 @@ function hyl_table(obj, conf) {
 	var _fields = [];
 	var _widths = [];
 	var _aligns = [];
+	var _renderer = [];
 	var _tr = $("<tr></tr>");
 	var _colg = $("<colgroup></colgroup>");
 	var _colg1 = $("<colgroup></colgroup>");
@@ -119,6 +120,7 @@ function hyl_table(obj, conf) {
 		_fields.push(el.field);
 		_widths.push(el.width);
 		_aligns.push(el.align);
+		_renderer.push(el.renderer);
 		_tr.append($("<th></th>").append(
 			$("<div></div>").text(el.name).css("width", (el.width-1) + "px"))
 			.attr("align", "center").attr("width", el.width));
@@ -133,7 +135,11 @@ function hyl_table(obj, conf) {
 	$(conf.datas).each(function(index, el) {
 		_tr = $("<tr></tr>").attr("row", el["ID"]);
 		$(_fields).each(function(index, ell) {
-			var _td = $("<td></td>").append($("<div></div>").css("width", (_widths[index]-1)+"px").text(el[ell]))
+			var element = el[ell];
+			if (typeof _renderer[index] !== "undefined") {
+				element = _renderer[index](element);
+			}
+			var _td = $("<td></td>").append($("<div></div>").css("width", (_widths[index]-1)+"px").html(element))
 					.attr("align", _aligns[index])
 					.attr("width", _widths[index]);
 			_tr.append(_td);
