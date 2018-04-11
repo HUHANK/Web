@@ -60,8 +60,13 @@ function InitHeader() {
 		var tmp = d.Date[0] + d.Date[1] + d.Date[2] + d.Date[3];
 		g_CURRENT_YEAR = parseInt(tmp);
 
-		g_SUPPORT_PACKAGE_NAMES.push({ID:0, PACKAGE_NAME: "非Support包"});
-		g_SUPPORT_PACKAGE_NAMES = g_SUPPORT_PACKAGE_NAMES.concat( d.Support.PACKAGE_NAME );
+		g_ALL_DICT = d.Dict;
+
+		$(g_ALL_DICT).each(function(index, el) {
+			if (el.name == "Support"){
+				g_SUPPORT = el.data;
+			}			
+		});
 
 	});
 }

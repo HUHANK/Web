@@ -107,6 +107,7 @@ function add_zb_ginit() {
 	});
 
 	$(".add-zb .head-wrap .options .add").click(function(event) {
+		$(".add-zb .edit-wrap .head .title").text("添加周报");
 		show_edit_wrap_pop_box();
 	});
 
@@ -167,11 +168,11 @@ function add_zb_form_select_init() {
 	}
 	editForm.find(".fjd").html(shtml);
 
-	shtml = "";
-	$(g_SUPPORT_PACKAGE_NAMES).each(function(index, el) {
-		shtml += "<option name='"+el.ID+"'>"+el.PACKAGE_NAME+"</option>";
-	});
-	editForm.find('.support-packn').html(shtml);
+	// shtml = "";
+	// $(g_SUPPORT_PACKAGE_NAMES).each(function(index, el) {
+	// 	shtml += "<option name='"+el.ID+"'>"+el.PACKAGE_NAME+"</option>";
+	// });
+	// editForm.find('.support-packn').html(shtml);
 }
 
 function add_zb() {
@@ -191,7 +192,7 @@ function add_zb() {
 		var ksrq = fom.find(".ksrq");
 		var hxrr = fom.find(".fhxrr");
 		var bz =   fom.find(".fbz");
-		var sup_name = fom.find(".support-packn");
+		//var sup_name = fom.find(".support-packn");
 
 		if (sys.val() == "") {
 			alert("系统选项不能为空！");
@@ -245,11 +246,11 @@ function add_zb() {
 		param.NeedDays = hxrr.val();
 		param.Note = bz.val();
 
-		if ( sup_name.find("[selected=selected]").length < 1 ){
-			param.SID = '0';
-		} else {
-			param.SID = sup_name.find("[selected=selected]").attr("name");
-		}
+		// if ( sup_name.find("[selected=selected]").length < 1 ){
+		// 	param.SID = '0';
+		// } else {
+		// 	param.SID = sup_name.find("[selected=selected]").attr("name");
+		// }
 		
 		/*检查用户输入参数是否有问题*/
 		var re = /^\d+$/
@@ -671,6 +672,7 @@ function add_zb_show_work() {
 								});
 							}
 							else if ($(this).attr("type") == "edit") {
+								$(".add-zb .edit-wrap .head .title").text("更新周报");
 								/**----------------------禁用开始日期------------------------**/
 								$(".add-zb .edit .form .ksrq").attr("disabled", "");
 								$(".add-zb .edit .form .ksrq-lab").text("更新日期");
@@ -848,6 +850,7 @@ function add_zb_show_work() {
 								});
 							}
 							else if ($(this).attr("type") == "edit") {
+								$(".add-zb .edit-wrap .head .title").text("更新周报");
 								/**----------------------禁用开始日期------------------------**/
 								$(".add-zb .edit .form .ksrq").attr("disabled", "");
 								$(".add-zb .edit .form .ksrq-lab").text("更新日期");

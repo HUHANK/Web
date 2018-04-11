@@ -9,6 +9,10 @@ from MTime import *
 from PubFunc import *
 import base64
 
+import sys
+reload(sys)
+sys.setdefaultencoding("utf-8")
+
 
 @route("/")
 def index(data) :
@@ -136,7 +140,32 @@ def baseinfo(data):
     rs = db.select2(sql)
     if rs != None:
         ret["Support"] = {}
-        ret["Support"]["PACKAGE_NAME"] = rs['data']    
+        ret["Support"]["PACKAGE_NAME"] = rs['data']
+
+    #--------------------------Support--------------------------
+    sql = "SELECT id, name FROM dict WHERE isRoot = 1"
+    rs = db.select2(sql)
+    if rs is None:
+        setErrMsg(ret, 2, "数据库查询失败！")
+        return json.dumps(ret)
+    ret["Dict"] = rs["data"]
+    for i in range(len(ret["Dict"])):
+        row = ret["Dict"][i]
+        sql = "SELECT id, name FROM dict WHERE parent = %s"%(row["id"])
+        rs = db.select2(sql)
+        if rs is None:
+            setErrMsg(ret, 2, "数据库查询失败！")
+            return json.dumps(ret)
+        ret["Dict"][i]["data"] = rs["data"]
+
+        for j in range(len(ret["Dict"][i]["data"])):
+            row = ret["Dict"][i]["data"][j]
+            sql = "SELECT id, name FROM dict WHERE parent = %s"%(row["id"])
+            rs = db.select2(sql)
+            if rs is None:
+                setErrMsg(ret, 2, "数据库查询失败！")
+                return json.dumps(ret)
+            ret["Dict"][i]["data"][j]["data"] = rs["data"]
 
     setErrMsg(ret, 0, "")
     return json.dumps(ret)
@@ -1169,18 +1198,21 @@ def supportADD( d ):
             CONTENT,        BASE_VERSION,       PUBLISH_SERIAL, REMARK,         UPT_NUM,\
             PUBLISH_DATE,   STATUS,             DEVELOPER,      CHARGER,        PLAN_VERSION,\
             GIT_BRANCH,     UPGRADE_VERSION,    COLLABORATION,  NOTE,           PROBLEM_NUM,\
+            REDMINES,\
             CRT_USER\
         ) VALUES (\
             '%s','%s','%s','%s','%s', \
             '%s','%s','%s','%s', %s , \
             '%s','%s','%s','%s','%s',\
             '%s','%s','%s','%s', %s ,\
+            '%s',\
             '%s'\
         )" % (\
             d.get('type',''), d.get('system',''), d.get('module',''), d.get('name',''), d.get('ftp',''),\
             d.get('detail',''), d.get('bversion',''), d.get('pulno',''), d.get('remark',''), d.get('uptno',0),\
             d.get('pdate',''), d.get('status',''), d.get('developer',''), d.get('charger',''), d.get('pversion',''),\
-            d.get('gitb',''), d.get('uversion',''), d.get('collaboration',''), d.get('note', ''), d.get('pronum', '0'),\
+            d.get('gitb',''), d.get('uversion',''), d.get('collaboration',''), d.get('note', ''), d.get('pronum', 0),\
+            d.get('redmine', ''), \
             d.get('adduser','')\
     )
 
@@ -1212,6 +1244,7 @@ def supportUPDATE(d):
                 UPT_TIME  = CURRENT_TIMESTAMP() ,\
                 NOTE            = '%s',\
                 PROBLEM_NUM     =  %s ,\
+                REDMINES        = '%s' \
             WHERE ID = %s" %(       \
                 d.get('type',''),       \
                 d.get('system',''),         \
@@ -1234,6 +1267,7 @@ def supportUPDATE(d):
                 d.get('uptuser',''),     \
                 d.get('note', ''), \
                 d.get('pronum', '0'),\
+                d.get('redmine',''), \
                 d.get("ID", 0) \
             )
     #print sql
@@ -1248,7 +1282,7 @@ def supportQUERY(d):
         CONTENT,    BASE_VERSION,    PUBLISH_SERIAL,    REMARK,    UPT_NUM,\
         DATE_FORMAT(PUBLISH_DATE,'%Y-%m-%d') AS PUBLISH_DATE,    \
         STATUS,    DEVELOPER,    CHARGER,    PLAN_VERSION,\
-        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE, PROBLEM_NUM,\
+        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE, PROBLEM_NUM, REDMINES,\
         CRT_USER,    \
         DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
         UPT_USER,    \
@@ -1270,7 +1304,7 @@ def supportQUERY_ONE(d):
         CONTENT,    BASE_VERSION,    PUBLISH_SERIAL,    REMARK,    UPT_NUM,\
         DATE_FORMAT(PUBLISH_DATE,'%Y-%m-%d') AS PUBLISH_DATE,    \
         STATUS,    DEVELOPER,    CHARGER,    PLAN_VERSION,\
-        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE, PROBLEM_NUM,\
+        GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE, PROBLEM_NUM, REDMINES,\
         CRT_USER,    \
         DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
         UPT_USER,    \

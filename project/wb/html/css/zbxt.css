@@ -391,12 +391,20 @@ table tbody tr:hover{
 
 .support .add-record{
 	//width: 850px;
+	//height: 900px;
 	display: none;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	margin: -442px 0 0 -410px;
+	margin: -415px 0 0 -410px;
 	background-color: white;
+	font-size: 12px;
+	//overflow: hidden;
+}
+.support .add-record .body{
+	width: 830px;
+	height: 820px;
+	overflow: auto;
 }
 
 .support .add-record.show{
@@ -411,7 +419,7 @@ table tbody tr:hover{
 }
 
 .support .add-record .head .title{
-
+	font-weight: bold;
 }
 .support .add-record .head .exit{
 	float: right;
@@ -470,7 +478,7 @@ table tbody tr:hover{
 }
 .support .add-record .hyl-drop-down{
 	width: 150px;
-	height: 200px;
+	max-height: 200px;
 	overflow: auto;
 	border-radius: 5px;
 	border: 1px solid #3BB4F2;
@@ -479,6 +487,9 @@ table tbody tr:hover{
 
 .support .add-record .hyl-drop-down div{
 	padding: 4px;
+}
+.support .add-record .hyl-drop-down div:hover{
+	background-color: #BAFB86;
 }
 .support .add-record .hyl-drop-down div.selected{
 	background-color: #429742;

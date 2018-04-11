@@ -86,6 +86,9 @@ function SupportMouseRightDown(e) {
 			$(".support .add-record table .pversion input").val(data.PLAN_VERSION);
 			$(".support .add-record table .gitb 	input").val(data.GIT_BRANCH);
 			$(".support .add-record table .uversion input").val(data.UPGRADE_VERSION);
+			$(".support .add-record table .pronum   input").val(data.PROBLEM_NUM);
+			$(".support .add-record table .note     textarea").val(data.NOTE);
+			$(".support .add-record table .redmine  textarea").val(data.REDMINES);
 		});
 
 		var tb = $("body").children(".hyl-bokeh");
@@ -183,7 +186,6 @@ function init_add_record ( ) {
 	hyl_select($(".support .add-record .system"), data, system_selected);
 
 	$(".support .add-record .module").append($("<input type='text' name='' readonly='readonly'>"));
-
 	function system_selected( ele ){
 		$(system).each(function(index, el) {
 			if (el.name === $(ele).text()) {
@@ -200,6 +202,34 @@ function init_add_record ( ) {
 			}
 		});
 	}
+
+	var users = [];
+	$(g_ALL_USER).each(function(index, el) {
+		users.push(el.cname);
+	});
+	users.sort();
+	hyl_select($(".support .add-record table .developer"), users);
+	hyl_select($(".support .add-record table .charger"), users);
+
+
+	console.info(g_SUPPORT);
+	$(g_SUPPORT).each(function(index, el) {
+		if (el.name == "包类型"){
+			data = []
+			$(el.data).each(function(index, el) {
+				data.push(el.name);
+			});
+			hyl_select($(".support .add-record table .type"), data);
+		}else if(el.name == "状态"){
+			data = []
+			$(el.data).each(function(index, el) {
+				data.push(el.name);
+			});
+			hyl_select($(".support .add-record table .status"), data);
+		}
+	});
+	
+
 
 	$('.support .wrap .show').mousedown(function(e){
 		//console.info(e.which); // 1 = 鼠标左键 left; 2 = 鼠标中键; 3 = 鼠标右键
@@ -260,6 +290,7 @@ function init_add_record ( ) {
 		$(".support .add-record table .uversion input").val('');
 		$(".support .add-record table .pronum 	input").val('');
 		$(".support .add-record table .note 	textarea").val('');
+		$(".support .add-record table .redmine 	textarea").val('');
 
 		var tb = $("body").children(".hyl-bokeh");
 		tb.addClass("hyl-show");
@@ -419,14 +450,7 @@ function init_add_record ( ) {
 		$(".support .task-show").hide(200, function() {});
 	});
 
-	var users = [];
-	$(g_ALL_USER).each(function(index, el) {
-		users.push(el.cname);
-	});
-	users.sort();
-	hyl_select($(".support .add-record table .developer"), users);
-	hyl_select($(".support .add-record table .charger"), users);
-
+	
 	if (!g_CURRENT_USER_IS_ADMIN){
 		$(".support .wrap .option button.add").css("display", "none");
 		$('.support .wrap .option button.exp').css("display", "none");
@@ -464,6 +488,7 @@ function addSupport(opt) {
 	param.uversion 		= sGetInputVal("uversion");
 	param.pronum 		= sGetInputVal("pronum");
 	param.note			= sGetTextareaVal("note");
+	param.redmine		= sGetTextareaVal("redmine");
 
 	param.SessionID = Options.SessionID;
 
@@ -512,7 +537,7 @@ function querySupport() {
 			{name: '发布内容', 	field:'CONTENT', 		width:'300', align:'center'},
 			{name: '基础版本', 	field:'BASE_VERSION', 	width:'100', align:'center'},
 			{name: '发布流程号',field:'PUBLISH_SERIAL', width:'110', align:'center'},
-			{name: '备注', 		field:'REMARK', 		width:'100', align:'center'},
+			{name: '补充说明', 	field:'REMARK', 		width:'100', align:'center'},
 			{name: '更新次数', 	field:'UPT_NUM', 		width:'40', align:'center'},
 			{name: '发布日期', 	field:'PUBLISH_DATE', 	width:'70', align:'center'},
 			{name: '状态', 		field:'STATUS', 		width:'40', align:'center'},

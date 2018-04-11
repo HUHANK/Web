@@ -12,16 +12,16 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=1.5.2"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=1.5.2"></script>
-	<script type="text/javascript" src="js/hyl.js?version=1.5.2"></script>
-	<script type="text/javascript" src="js/addwork.js?version=1.5.2"></script>
-	<script type="text/javascript" src="js/mquery.js?version=1.5.2"></script>
-	<script type="text/javascript" src="js/support.js?version=1.5.2"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=1.5.2"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.5.2">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.5.2">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.5.2">
+	<script type="text/javascript" src="js/ginit.js?version=1.5.4"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=1.5.4"></script>
+	<script type="text/javascript" src="js/hyl.js?version=1.5.4"></script>
+	<script type="text/javascript" src="js/addwork.js?version=1.5.4"></script>
+	<script type="text/javascript" src="js/mquery.js?version=1.5.4"></script>
+	<script type="text/javascript" src="js/support.js?version=1.5.4"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=1.5.4"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=1.5.4">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=1.5.4">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=1.5.4">
 </head>
 <body>
 	<!--弹出框-->
@@ -151,14 +151,6 @@
 				<div>
 					<div class="" style="display: inline-block;font-weight: bold; font-size: 14px;">本周工作</div>
 					<div class="reminder" style="display: inline-block; font-size: 13px;color: #6E6E6E;">
-						<!--<div style="padding-top: 5px;">
-							<div class="bkg-green" style="width:12px; height:12px;display: inline-block;
-							border: 1px solid #4C4C4C; border-radius: 6px;"></div> 
-							:已完成&nbsp;&nbsp;&nbsp;&nbsp;
-							<div class="bkg-red" style="width:12px; height:12px;display: inline-block;
-							border: 1px solid #4C4C4C; border-radius: 6px;"></div>  
-							:上周未完成任务，本周未做任何进度更新，需及时跟新任务进度！
-						</div>-->
 						<div>
 							&nbsp;(
 							<span class="ts-unit">本周任务总共数量:&nbsp;<span class="total-wn">0</span>,&nbsp;&nbsp;</span> 
@@ -193,16 +185,6 @@
 				        <legend class="je-f16">编辑</legend>
 				        <div class="form">
 				        	
-				        	<!--
-				        	<div class="je-form-item zq">
-				        		<label class="je-label je-f14">周期</label>
-				        		<div  class="je-inputbox">
-				        			<button class="je-btn je-btn-big je-f16 bz" selected="selected">本周</button>
-				        			<button class="je-btn je-btn-big je-f16 je-bg-native xz">下周</button>
-				        		</div>
-				        	</div>
-				        	-->
-
 				            <div class="je-form-item">
 				                <div class="je-w33 je-dib">
 				                    <label class="je-label je-f14">系统</label>
@@ -277,13 +259,6 @@
 				                        <input type="text" name="" autocomplete="off" placeholder="" class="je-input fwcrq" readonly disabled>
 				                    </div>
 				                </div>
-				            </div>
-
-				            <div class="je-form-item">
-				            	<label class="je-label je-f14">Support包</label>
-				            	<div class="je-inputbox je-w100">
-				            		<select class="support-packn je-w100"></select>
-				            	</div>
 				            </div>
 
 				            <div class="je-form-item">
@@ -433,92 +408,100 @@
 					<span class="title">添加Support包记录</span>
 					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
 				</div>
-				<table>
-					<tr class='row'>
-						<td class='lab'>系统</td>			<td class='content system'></td>
-						<td class='lab'>模块</td>			<td class='content module'></td>
-						<td class='lab'>包类型</td>			<td class='content type'>
-							<input type="text" name="">
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>Support包名称</td>	<td class='content sname' colspan='5'>
-							<input type="text" name="">
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>FTP地址</td>		<td class='content ftp' colspan='5'>
-							<input type="text" name="">
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>发布内容</td>		<td class='content detail' colspan='5'>
-							<textarea></textarea>
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>基础版本</td>		<td class='content bversion' colspan='2'>
-							<input type="text" name="">
-						</td>
-						<td class='lab'>发布流程号</td>		<td class='content pulno' colspan='2'>
-							<input type="text" name="">
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>发布日期</td>		<td class='content pdate'>
-							<input type="date" name="">
-						</td>
-						<td class='lab'>跟新次数</td>		<td class='content uptno'>
-							<input type="number" name="">
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>补充说明</td>		<td class='content remark' colspan='5'>
-							<textarea></textarea>
-						</td>
-					</tr>
-					<tr class="row">
-						<td class='lab'>负责人员</td>		<td class='content charger'>
-							<input type="text" name="">
-						</td>
-						<td class="lab">问题个数</td>		<td class="content pronum">
-							<input type="number" name="">
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>开发人员</td>		<td class='content developer'>
-							<input type="text" name="">
-						</td>
-						<td class='lab'>协作号</td>			<td class='content collaboration'>
-							<input type="text" name="">
-						</td>
-						<td class='lab'>状态</td>			<td class='content status'>
-							<input type="text" name="">
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>计划版本</td>		<td class='content pversion'>
-							<input type="text" name="">
-						</td>
-						<td class='lab'>Git分支</td>		<td class='content gitb'>
-							<input type="text" name="">
-						</td>
-						<td class='lab'>升级版本</td>		<td class='content uversion'>
-							<input type="text" name="">
-						</td>
-					</tr>
-					<tr class='row'>
-						<td class='lab'>备注</td>			<td class='content note' colspan='5'>
-							<textarea></textarea>
-						</td>
-					</tr>
-					<tr class="row">
-						<td style="text-align: center" colspan="6">
-							<button class="confirm">确定</button>
-							<button class="cancle">取消</button>
-						</td>
-					</tr>
-				</table>
+				<div class="body">
+					<table>
+						<tr class='row'>
+							<td class='lab'>系统</td>			<td class='content system'></td>
+							<td class='lab'>模块</td>			<td class='content module'></td>
+							<td class='lab'>包类型</td>			<td class='content type'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>Support包名称</td>	<td class='content sname' colspan='5'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>FTP地址</td>		<td class='content ftp' colspan='5'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>发布内容</td>		<td class='content detail' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>基础版本</td>		<td class='content bversion' colspan='2'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>发布流程号</td>		<td class='content pulno' colspan='2'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>发布日期</td>		<td class='content pdate'>
+								<input type="date" name="">
+							</td>
+							<td class='lab'>跟新次数</td>		<td class='content uptno'>
+								<input type="number" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>补充说明</td>		<td class='content remark' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class="row">
+							<td class='lab'>负责人员</td>		<td class='content charger'>
+								<input type="text" name="">
+							</td>
+							<td class="lab">问题个数</td>		<td class="content pronum">
+								<input type="number" name="">
+							</td>
+						</tr>
+						<tr class="row">
+							<td class="lab">Redmine</td>
+							<td class="content redmine" colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>开发人员</td>		<td class='content developer'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>协作号</td>			<td class='content collaboration'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>状态</td>			<td class='content status'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>计划版本</td>		<td class='content pversion'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>Git分支</td>		<td class='content gitb'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>升级版本</td>		<td class='content uversion'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>备注</td>			<td class='content note' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class="row">
+							<td style="text-align: center" colspan="6">
+								<button class="confirm">确定</button>
+								<button class="cancle">取消</button>
+							</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 
 			<div class="exp-sel">

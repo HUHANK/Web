@@ -84,6 +84,7 @@ var g_ALL_GROUP = [];
 var g_ALL_SYSTEM = {};
 var g_ALL_TYPE = {};
 var g_ALL_PROPERTY = {};
+var g_ALL_DICT = {};
 
 var g_QUERY_TREE;
 var g_CURRENT_WEEK = 0;
@@ -92,7 +93,7 @@ var g_CURRENT_YEAR = 0;
 var g_CURRENT_QPAGE = 0;
 var g_CURRENT_USER_IS_ADMIN = 0;
 
-var g_SUPPORT_PACKAGE_NAMES = [];
+var g_SUPPORT  = {};
 
 Options = new Object();
 Options.QueryCondition = new Object();
