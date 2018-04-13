@@ -89,6 +89,7 @@ var g_ALL_DICT = {};
 var g_QUERY_TREE;
 var g_CURRENT_WEEK = 0;
 var g_CURRENT_USER = "";
+var g_CURRENT_USER_ID = 0;
 var g_CURRENT_YEAR = 0;
 var g_CURRENT_QPAGE = 0;
 var g_CURRENT_USER_IS_ADMIN = 0;

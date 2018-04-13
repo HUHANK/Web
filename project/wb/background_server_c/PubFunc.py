@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import os, math
+import os, math, json
 from MTime import *
 
 def WriteFile(fpath, data):
@@ -38,6 +38,16 @@ def setErrMsg(ret, code, msg):
     ret["ErrCode"] = code
     ret["msg"] = msg
 
+def ErrorDeal(ret, msg):
+    ret["ErrCode"] = 4
+    ret["msg"] = msg
+    return json.dumps(ret)
+
+def SuccessDeal(ret):
+    ret["ErrCode"] = 0
+    ret["msg"] = ''
+    return json.dumps(ret)
+
 def CalExpireDate(db, start_date, days):
     year = start_date[0] + start_date[1] + start_date[2] + start_date[3]
     #ydays = getYearTotalDays(int(year))
@@ -62,3 +72,15 @@ def CalExpireDate(db, start_date, days):
             continue
         days -= 1
     return sdate
+
+
+def ArrayHas(arr, dest):
+    if len(arr) == 1:
+        if arr[0] == dest:
+            return True
+        return False
+    m = len(arr)/2
+    if ArrayHas(arr[:m], dest) or ArrayHas(arr[m:], dest):
+        return True
+    else:
+        return False

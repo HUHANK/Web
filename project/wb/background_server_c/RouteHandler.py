@@ -1,17 +1,18 @@
-# -*- coding:utf-8 -*-
+# -*- coding: utf-8 -*-
 
-import json
-from wrap import  route
-from MySQL_db import *
-from Session import *
-import uuid
-from MTime import *
-from PubFunc import *
-import base64
+#import json
+from    wrap        import route
+from    MySQL_db    import *
+from    Session     import *
+from    MTime       import *
+from    PubFunc     import *
+from    RedmineProc import Redmine_GetData
+import  base64
+import  uuid
 
-import sys
-reload(sys)
-sys.setdefaultencoding("utf-8")
+# import sys
+# reload(sys)
+# sys.setdefaultencoding("utf-8")
 
 
 @route("/")
@@ -82,10 +83,11 @@ def baseinfo(data):
         return json.dumps(ret)
     userName = sessionData.get("UserName", "")
 
-    sql = "select NOTE, ADMIN from user where UNAME='%s'" % (userName)
+    sql = "select UID, NOTE, ADMIN from user where UNAME='%s'" % (userName)
     res = db.select2(sql)
     ret["UserName"] = res["data"][0]["NOTE"]
     ret["IsAdmin"]  = res["data"][0]["ADMIN"]
+    ret['UserID']  = res['data'][0]['UID']
 
     ret["Date"] = getNowDate1()
     (year, week, day) = getNowYearWeek()
@@ -1409,6 +1411,101 @@ def Support(data):
 
     return json.dumps(ret)
 
+
+#----------------------------------------REDMINE-----------------------------------------------
+@route("/sync_from_redmine/")
+def SyncFromRedmine(data):
+    data = json.loads(data)
+
+    ret = {}
+    db =  Options['mysql']
+    mode = data.get("mode", '')
+    (Year, Week, Day) = getNowYearWeek()
+
+    if mode == 'SINGLE':
+        #---Get Redmine User Name
+        UID = data.get('UID', 0)
+        sql = "SELECT REDMINE_UNAME FROM user WHERE UID = %s" % (UID)
+        res = db.select2(sql)
+        if res is None:
+            return ErrorDeal(ret, "1数据库查询失败！")
+        if len(res['data']) < 1:
+            return ErrorDeal(ret, "未查找到与您匹配的Redmine用户信息！")
+        redmine_uname = res['data'][0]['REDMINE_UNAME']
+
+        #-----Get This Week's Redmine IDs
+        sql = "SELECT id, TraceNo FROM work_detail WHERE id in (SELECT WID from user_work WHERE YEAR = %s AND WEEK = %s AND UID = %s)" % (Year, Week, UID)
+        res = db.select2(sql)
+        if res is None:
+            return ErrorDeal(ret, "2数据库查询失败！")
+        RedmineIDs = {}
+        for row in res['data']:
+            ta  = row.get('TraceNo','').split("#")
+            _id = row.get('id', 0)
+            if len(ta) > 1:
+                RedmineIDs[ta[1]] = _id
+
+        #-----Get Redmine Infos
+        res = Redmine_GetData(mode, redmine_uname)
+
+        for row in res:
+            if ArrayHas(RedmineIDs.keys(), str(row.get("ID", '0'))):
+                #----------UPDATE------------
+                wid = RedmineIDs[str(row.get("ID", '0'))]
+
+                sql = " UPDATE work_detail SET \
+                            System      = '%s',\
+                            Module      = '%s',\
+                            Type        = '%s',\
+                            Detail      = '%s',\
+                            Property    = '%s',\
+                            ProgressRate=  %s ,\
+                            NeedDays    =  %s ,\
+                            EditDate    = '%s',\
+                            Note        = '%s'\
+                        WHERE id = %s" % ( \
+                            row.get("System",''),\
+                            row.get('Module',''),\
+                            row.get('Type',''),\
+                            row.get('Detail',''),\
+                            row.get("Property",''),\
+                            row.get('ProgressRate',0),\
+                            row.get('NeedDays',0),\
+                            row.get("EditDate",''),\
+                            row.get('Note',''),\
+                            wid)
+                res = db.update(sql)
+                if res < 0:
+                    return ErrorDeal(ret, "插入数据库失败！")
+            else:
+                #-----------INSERT
+                sql = " INSERT INTO work_detail(\
+                            System,     Module,         Type,       TraceNo,    Detail,\
+                            Property,   ProgressRate,   StartDate,  NeedDays,   AddDate,\
+                            EditDate,   ExpireDate,     Note,       AddMode\
+                        ) VALUES (\
+                            '%s',       '%s',           '%s',       '%s',       '%s',\
+                            '%s',        %s ,           '%s',        %s ,       '%s',\
+                            '%s',       '%s',           '%s',       2\
+                        )" % ( \
+                row.get("System",''),   row.get('Module',''),       row.get('Type',''),     row.get('TraceNo',''), row.get('Detail',''),\
+                row.get("Property",''), row.get('ProgressRate',0),  row.get('StartDate',''),row.get('NeedDays',0), row.get('AddDate',''),\
+                row.get("EditDate",''), row.get('ExpireDate',''),   row.get('Note','')\
+                        )
+
+                wid = db.update(sql)
+                if wid < 0:
+                    return ErrorDeal(ret, "插入数据库失败！")
+
+                sql = "INSERT INTO user_work(UID, WID, YEAR, WEEK) VALUES(%s,%s,%s,%s)"%(UID, wid, Year, Week)
+                res = db.update(sql)
+                if res < 0:
+                    return ErrorDeal(ret, "2插入数据库失败！")
+
+    else:
+        return ErrorDeal(ret, "模式无效！")
+
+    return SuccessDeal(ret)
 
 
 

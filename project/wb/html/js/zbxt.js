@@ -56,6 +56,7 @@ function InitHeader() {
 		g_CURRENT_WEEK = d.Week;
 		g_CURRENT_USER = d.UserName;
 		g_CURRENT_USER_IS_ADMIN = d.IsAdmin;
+		g_CURRENT_USER_ID = d.UserID;
 
 		var tmp = d.Date[0] + d.Date[1] + d.Date[2] + d.Date[3];
 		g_CURRENT_YEAR = parseInt(tmp);

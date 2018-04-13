@@ -111,6 +111,28 @@ function add_zb_ginit() {
 		show_edit_wrap_pop_box();
 	});
 
+	$(".add-zb .head-wrap .options .sync-redmine").click(function(event) {
+		/*产生等待的效果*/
+		//$(".wrap1 .unshow").removeClass('unshow');
+		$(".wrap1 .wait").show(100, function() {});
+
+		var param = new Object();
+		param.SessionID = Options.SessionID;
+		param.mode = "SINGLE";
+		param.UID = g_CURRENT_USER_ID;
+
+		post_data("/sync_from_redmine/", JSON.stringify(param), function(d) {
+			d = $.parseJSON(d);
+			if (d.ErrCode != 0) {
+				alert(d.msg);
+			}
+			add_zb_show_work();
+
+			//$(".wrap1 .wait").addClass('unshow');
+			$(".wrap1 .wait").hide(200, function() {});
+		});
+	});
+
 	$(".add-zb .edit-wrap .head .exit").click(function(event) {
 		hide_edit_wrap_pop_box();
 	});

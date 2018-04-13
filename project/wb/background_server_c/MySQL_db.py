@@ -92,7 +92,7 @@ class MySQLOption:
         self.connect()
         if sql is None:
             print 'The param sql is None!'
-            return None
+            return -1
         cursor = self.conn.cursor()
 
         ret = True
