@@ -18,6 +18,10 @@
 	float: left;
 }
 
+.show{
+	display: block;
+}
+
 .sidebar .content{
 	display: none;
 }
@@ -48,7 +52,17 @@
   	color: white;
   	font-weight: bold;
 }
-
 .wrap .wrap1{
 	float: left;
+}
+
+.wrap .wrap1 .xzyh{
+	padding-top: 30px;
+	padding-left: 30px;
+	display: none;
+}
+.wrap .wrap1 .xzyh .title{
+	font-size: 16px;
+	color: rgb(74, 181,247);
+	margin-bottom: 10px;
 }

@@ -21,5 +21,8 @@ function SidebarEventInit(){
 	$(".sidebar .leaf").click(function(event) {
 		$(".sidebar .leaf.selected").removeClass('selected');
 		$(this).addClass('selected');
+		var sel = ".wrap1 ."+$(this).attr("class").split(' ')[1];
+		$(sel+'[display=block]').toggle();
+		$(sel).toggle();
 	});
 }
