@@ -73,9 +73,6 @@ function InitHeader() {
 }
 
 function GInit(){
-	
-	/*动态加载CSS文件*/
-	//$("<link>").attr({ rel: "stylesheet",type: "text/css",href: "css/zbxt.css"}).appendTo("head");
 
 	Options.QueryCondition = new Object();
 	Options.QueryCondition.User = [];
@@ -85,24 +82,6 @@ function GInit(){
 	Options.QueryCondition.Page = 0;
 	Options.QueryCondition.PageSize = 25;
 	GUpdateBaseinfo();
-
-	// jeDate.skin('gray');
-	// jeDate({
-	// 	dateCell:".query .sidebar .yj-content .ksrq",//isinitVal:true,
-	// 	format:"YYYY-MM-DD",
-	// 	isTime:false, //isClear:false,
-	// 	isinitVal:true,
-	// 	minDate:"2014-10-19 00:00:00",
-	// 	maxDate:"2020-11-8 00:00:00"
-	// });
-	// jeDate({
-	// 	dateCell:".query .sidebar .yj-content .jsrq",//isinitVal:true,
-	// 	format:"YYYY-MM-DD",
-	// 	isTime:false, //isClear:false,
-	// 	isinitVal:true,
-	// 	minDate:"2014-10-19 00:00:00",
-	// 	maxDate:"2020-11-8 00:00:00"
-	// });
 
 	jeui.use(["jeSelect"], function(){
 		$(".sjwh .wrap .xzgl .xzcysz .zcy").jeSelect({

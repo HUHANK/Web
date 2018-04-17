@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>系统管理</title>
+
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=1.5.8"></script>
+	<script type="text/javascript" src="js/hyl.js?version=1.5.8"></script>
+
+	<link rel="stylesheet" type="text/css" href="css/system.css?version=1.5.8">
+	<script type="text/javascript" src="js/system.js?version=1.5.8"></script>
+</head>
+<body>
+	<div class="wrap">
+		<div class="sidebar">
+			<div class="layer1 title">账户管理</div>
+			<div class="layer1 content">
+				<div class="leaf xzyh">新增账户</div>
+				<div class="leaf">修改密码</div>
+				<div class="leaf">删除账户</div>
+				<div class="leaf">修改权限</div>
+				<div class="leaf">API-KEY修改</div>
+			</div>
+
+			<div class="layer1 title">部门管理</div>
+			<div class="layer1 content"></div>
+
+			<div class="layer1 title">字典管理</div>
+			<div class="layer1 content"></div>
+		</div>
+		<div class="wrap1">
+			<div class="xzyh">
+				<div class="title">创建一个新用户</div>
+				<table>
+					<tbody>
+						<tr>
+							<td><label>添加登陆用户</label></td><td></td>
+						</tr>
+						<tr>
+							<td><label><pre>登  陆 账 户：</pre></label></td>
+							<td><input type="text" name=""></td>
+						</tr>
+						<tr>
+							<td><label><pre>密        码：</pre></label></td>
+							<td><input type="password" name=""></td>
+						</tr>
+						<tr>
+							<td><label><pre>确  认 密 码：</pre></label></td>
+							<td><input type="password" name=""></td>
+						</tr>
+						<tr>
+							<td><label>设置账户信息</label></td><td></td>
+						</tr>
+						<tr>
+							<td><label><pre>账  户  姓 名：</pre></label></td>
+							<td><input type="text" name=""></td>
+						</tr>
+						<tr>
+							<td><label><pre>Redmine用户名：</pre></label></td>
+							<td><input type="text" name=""></td>
+						</tr>
+						<tr>
+							<td><label><pre>Redmine用户ID：</pre></label></td>
+							<td><input type="text" name=""></td>
+						</tr>
+					</tbody>
+				</table>
+				<div>选择一个账户户类型</div>
+				<div>
+					<span><input type="radio" name=""><label>普通账户</label></span>
+					<span><input type="radio" name=""><label>管理员</label></span>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

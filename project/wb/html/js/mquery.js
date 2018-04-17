@@ -535,8 +535,6 @@ function query_get_result(page) {
 			}
 
 			var tmp = d.data[i].AddDate;
-			console.info(tmp);
-			console.info(tmp.length);
 			if (tmp.length > 7)
 				d.data[i].AddDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 			tmp = d.data[i].EditDate;

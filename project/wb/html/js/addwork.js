@@ -66,7 +66,7 @@ function add_zb_ginit() {
 		param.StartDate = $(this).val();
 		param.NeedDays = hxrr;
 
-		console.info($(this).val());
+		//console.info($(this).val());
 		sync_post_data("/pubinterface/", JSON.stringify(param), function(d) {
 			if (d.ErrCode == 0) {
 				var tmp = d.ExpireDate;
@@ -121,6 +121,12 @@ function add_zb_ginit() {
 		param.mode = "SINGLE";
 		param.UID = g_CURRENT_USER_ID;
 
+		setTimeout(function(){
+			if ($(".wrap1 .wait").is(':hidden') == false) {
+				alert("连接超时！");
+				$(".wrap1 .wait").hide(200, function() {});
+			}
+		},5000);
 		post_data("/sync_from_redmine/", JSON.stringify(param), function(d) {
 			d = $.parseJSON(d);
 			if (d.ErrCode != 0) {
@@ -511,7 +517,7 @@ function add_zb_show_work() {
 			if (CurWeekData.length < 1){
 				bzgz.html("暂无本周工作记录")
 			} else {
-				console.info(CurWeekData);
+				//console.info(CurWeekData);
 				je_table($(".add-zb .bzgz"),{
 					width:"1433",
 					isPage: false,
