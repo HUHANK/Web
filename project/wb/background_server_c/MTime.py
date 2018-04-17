@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-import datetime, calendar, time
+import datetime, calendar, time, pytz
 
 def getNowTimestamp():
     return time.time()
@@ -122,6 +122,16 @@ def getNextWeek(year, week):
         year = year + 1
         return (year, week)
     return (year, week)
+
+def Datetime_UTC2Shanghai(str, fmt):
+    """把世界时间转换成中国上海时区的标准时间"""
+    date = datetime.datetime.strptime(str, fmt).replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai'))
+    return date.strftime(fmt)
+
+def Datetime_UTC2Shanghai2(date, fmt):
+    """把世界时间转换成中国上海时区的标准时间"""
+    date = date.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai'))
+    return date.strftime(fmt)
 
 #print getWeekFirstday("2017#44")
 #print getNextWeek(2017, 52)

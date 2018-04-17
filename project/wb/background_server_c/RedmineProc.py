@@ -4,6 +4,7 @@ from config import REDMINE_HOST, REDMINE_QUERY_ID, REDMINE_API_KEY
 from redminelib import Redmine
 import json
 import urllib2
+from MTime import * 
 
 def Redmine_DateTrf(date):
     str = date[0:10]
@@ -14,7 +15,7 @@ def Redmine_DateTrf(date):
     return res
 
 
-def Redmine_UpdatedThisWeek():
+def Redmine_GetUpdatedThisWeekByHttpAll():
     """该函数主要是用于获取本周跟新的Redmine记录"""
     header_dic = {
         'Content-Type'      : 'application/json',
@@ -73,7 +74,7 @@ def Redmine_GetIssue(id):
 def Redmine_DataTransfrom(user):
     """主要是把Redmine的数据转换成周报系统能识别的数据"""
     ret = []
-    rs = Redmine_UpdatedThisWeek()
+    rs = Redmine_GetUpdatedThisWeekByHttpAll()
     #row = rs[2]
     for row in rs:
         # for key in row:
@@ -91,6 +92,10 @@ def Redmine_DataTransfrom(user):
         # print row['done_ratio']
         if user is None or user != row['assigned_to']['name']:
             continue
+
+        fmt = '%Y-%m-%dT%H:%M:%SZ'
+        row['created_on']   = Datetime_UTC2Shanghai(row['created_on'], fmt)
+        row['updated_on']   = Datetime_UTC2Shanghai(row['updated_on'], fmt)
 
         tr = {}
         tr['System']        = row['project']['name']
@@ -122,10 +127,71 @@ def Redmine_DataTransfrom(user):
 
     return ret
 
+def Redmine_GetUpdateThisWeekByPdll(uid):
+    (Year,Week,Day) = getNowYearWeek()
+    (wFirstDay, wEndDay) = getWeekFirstLastday( "%s#%s" % (Year, Week))
+    redmine = Redmine('http://%s/redmine'%(REDMINE_HOST), key=REDMINE_API_KEY)
+    issues = redmine.issue.filter(updated_on="><%s|%s"%(wFirstDay,wEndDay), assigned_to_id=uid, status_id="*")
 
-def Redmine_GetData(mode, username):
+    ret = []
+    for issue in issues:
+        tr = {}
+        tr["ID"]        = issue.id
+        tr['System']    = issue.project['name']
+        tr['User']      = issue.assigned_to['id']
+        for custom_field in issue.custom_fields:
+            if custom_field.id == 7:
+                tr["Type"] = custom_field.value
+
+        tr['TraceNo']   = "%s #%s" % (issue.tracker['name'], issue.id)
+        tr['Detail'] = issue.description
+
+        for time_entry in issue.time_entries:
+            tr['Property'] = time_entry.activity['name']
+        tr['ProgressRate'] = issue.done_ratio
+        if hasattr(issue, 'start_date'):
+            tr['StartDate'] = issue.start_date
+        tr['AddDate'] = issue.created_on
+        tr['EditDate'] = issue.updated_on
+        if hasattr(issue, 'due_date'):
+            tr['ExpireDate'] = issue.due_date
+        ret.append(tr)
+    return ret
+
+def Redmine_DataTransfrom2(ret):
+    """主要处理一些数据问题"""
+    fmt = '%Y-%m-%d %H:%M:%S'
+    for row in ret:
+        #时间时区和格式的转换
+        key = 'EditDate'
+        if row.has_key(key):
+            row[key] = Datetime_UTC2Shanghai2(row[key], fmt)
+            row[key] =Redmine_DateTrf(row[key])
+
+        key = 'StartDate'
+        if row.has_key(key):
+            #row[key] = Datetime_UTC2Shanghai2(row[key], fmt)
+            #row[key] = row[key][0:10]
+            row[key]  = row[key]
+        else:
+            row[key] = Datetime_UTC2Shanghai2(row['AddDate'], fmt)[0:10]
+
+        key = 'AddDate'
+        if row.has_key(key):
+            row[key] = Datetime_UTC2Shanghai2(row[key], fmt)
+            row[key] =Redmine_DateTrf(row[key])
+
+        key = 'ExpireDate'
+        if row.has_key(key):
+            # row[key] = Datetime_UTC2Shanghai2(row[key], fmt)
+            row[key] =Redmine_DateTrf(row[key].strftime("%Y-%m-%d"))
+    return ret
+
+
+
+def Redmine_GetData(mode, uid):
     if mode == "SINGLE":
-        return Redmine_DataTransfrom(username)
+        return Redmine_DataTransfrom2(Redmine_GetUpdateThisWeekByPdll(uid))
     elif mode == "ALL":
         return Redmine_DataTransfrom(None)
     else:

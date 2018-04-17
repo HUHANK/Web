@@ -467,9 +467,11 @@ function add_zb_show_work() {
 				var row = d.current[i];
 				var tmp = row.EditDate;
 				var eDate = row.EditDate;
-				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				if (tmp.length > 7)
+					row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 				tmp = row.ExpireDate;
-				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				if (tmp.length > 7)
+					row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 				/**==================================================*/
 				if (row.ProgressRate < 100) {
 					if (parseInt(tmp) < NowDate) {
@@ -487,9 +489,11 @@ function add_zb_show_work() {
 				var row = d.next[i];
 				var tmp = row.EditDate;
 				var eDate = row.EditDate;
-				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				if (tmp.length > 7)
+					row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 				tmp = row.ExpireDate;
-				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
+				if (tmp.length > 7)
+					row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
 				/**==================================================*/
 				if (row.ProgressRate < 100) {
 					if (parseInt(tmp) < NowDate) {

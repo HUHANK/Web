@@ -1425,13 +1425,13 @@ def SyncFromRedmine(data):
     if mode == 'SINGLE':
         #---Get Redmine User Name
         UID = data.get('UID', 0)
-        sql = "SELECT REDMINE_UNAME FROM user WHERE UID = %s" % (UID)
+        sql = "SELECT REDMINE_UID FROM user WHERE UID = %s" % (UID)
         res = db.select2(sql)
         if res is None:
             return ErrorDeal(ret, "1数据库查询失败！")
         if len(res['data']) < 1:
             return ErrorDeal(ret, "未查找到与您匹配的Redmine用户信息！")
-        redmine_uname = res['data'][0]['REDMINE_UNAME']
+        redmine_uid = res['data'][0]['REDMINE_UID']
 
         #-----Get This Week's Redmine IDs
         sql = "SELECT id, TraceNo FROM work_detail WHERE id in (SELECT WID from user_work WHERE YEAR = %s AND WEEK = %s AND UID = %s)" % (Year, Week, UID)
@@ -1446,7 +1446,7 @@ def SyncFromRedmine(data):
                 RedmineIDs[ta[1]] = _id
 
         #-----Get Redmine Infos
-        res = Redmine_GetData(mode, redmine_uname)
+        res = Redmine_GetData(mode, redmine_uid)
 
         for row in res:
             if ArrayHas(RedmineIDs.keys(), str(row.get("ID", '0'))):
@@ -1461,8 +1461,7 @@ def SyncFromRedmine(data):
                             Property    = '%s',\
                             ProgressRate=  %s ,\
                             NeedDays    =  %s ,\
-                            EditDate    = '%s',\
-                            Note        = '%s'\
+                            EditDate    = '%s'\
                         WHERE id = %s" % ( \
                             row.get("System",''),\
                             row.get('Module',''),\
@@ -1472,7 +1471,6 @@ def SyncFromRedmine(data):
                             row.get('ProgressRate',0),\
                             row.get('NeedDays',0),\
                             row.get("EditDate",''),\
-                            row.get('Note',''),\
                             wid)
                 res = db.update(sql)
                 if res < 0:
@@ -1489,7 +1487,7 @@ def SyncFromRedmine(data):
                             '%s',       '%s',           '%s',       2\
                         )" % ( \
                 row.get("System",''),   row.get('Module',''),       row.get('Type',''),     row.get('TraceNo',''), row.get('Detail',''),\
-                row.get("Property",''), row.get('ProgressRate',0),  row.get('StartDate',''),row.get('NeedDays',0), row.get('AddDate',''),\
+                row.get("Property",''), row.get('ProgressRate',0),  row.get('StartDate',''), row.get('NeedDays',0), row.get('AddDate',''),\
                 row.get("EditDate",''), row.get('ExpireDate',''),   row.get('Note','')\
                         )
 
