@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50719
 File Encoding         : 65001
 
-Date: 2018-04-13 17:22:50
+Date: 2018-04-18 18:03:48
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -189,32 +189,10 @@ CREATE TABLE `session` (
 -- ----------------------------
 -- Records of session
 -- ----------------------------
-INSERT INTO `session` VALUES ('043c8364-3012-4594-a4df-d2d5707f1a6a', 'zyz', '1523609722', '2018-04-13 16:55:21');
-INSERT INTO `session` VALUES ('19d3714e-9a36-43c7-8206-de8de6596775', 'xjf', '1523581625', '2018-04-13 09:07:05');
-INSERT INTO `session` VALUES ('1cb721da-658b-4d05-96a8-cd35306c72ea', 'lc', '1523599412', '2018-04-13 14:03:32');
-INSERT INTO `session` VALUES ('2e74ff4e-dac0-4610-9f10-aec53dd4722f', 'ChaiY', '1523579879', '2018-04-13 08:37:58');
-INSERT INTO `session` VALUES ('3524e131-eeb7-4268-954b-a31803f317b1', 'ww', '1523583742', '2018-04-13 09:42:21');
-INSERT INTO `session` VALUES ('4075643c-a3b3-4871-a892-6e97982da9b8', 'cdz', '1523605871', '2018-04-13 15:51:11');
-INSERT INTO `session` VALUES ('47069a68-8a21-43e4-85a4-c8ede3b90f33', 'zhw', '1523603800', '2018-04-13 15:16:39');
-INSERT INTO `session` VALUES ('48e39129-a140-4703-b467-498ea0f1d658', 'hyl', '1523603294', '2018-04-13 15:08:13');
-INSERT INTO `session` VALUES ('4d9ab997-63c2-409e-85cc-8f70ade6ba9a', 'dl', '1523580676', '2018-04-13 08:51:15');
-INSERT INTO `session` VALUES ('5716b015-32e2-4923-91d6-3862002eb781', 'qwj', '1523596351', '2018-04-13 13:12:30');
-INSERT INTO `session` VALUES ('5d9a478d-2406-42ec-a47d-740760f069e7', 'sl', '1523603684', '2018-04-13 15:14:43');
-INSERT INTO `session` VALUES ('6db4e14d-c7e2-47fd-93c2-7d7b4fdf98f7', 'CaiWH', '1523578909', '2018-04-13 08:21:48');
-INSERT INTO `session` VALUES ('76bd5237-56b9-48ac-be0c-d13b195438a3', 'zmh', '1523596368', '2018-04-13 13:12:48');
-INSERT INTO `session` VALUES ('a1b4d2f0-4714-41ee-a6b0-636d269fcc97', 'hyl', '1523589802', '2018-04-13 11:23:22');
-INSERT INTO `session` VALUES ('a93fdeff-ba0d-473d-9806-9610568a29c5', 'js', '1523580251', '2018-04-13 08:44:10');
-INSERT INTO `session` VALUES ('aa171bb5-330c-43fb-b813-d2cc63ccff66', 'LiYL', '1523610609', '2018-04-13 17:10:08');
-INSERT INTO `session` VALUES ('abc4a98b-8019-482d-af4a-4eb982a107b2', 'lwx', '1523603807', '2018-04-13 15:16:47');
-INSERT INTO `session` VALUES ('ad0d06b5-5f15-4ebd-b9a4-82289387ca64', 'zsj', '1523596356', '2018-04-13 13:12:35');
-INSERT INTO `session` VALUES ('b3371250-feae-44fc-948d-16d85eee74f6', 'xjf', '1523605798', '2018-04-13 15:49:58');
-INSERT INTO `session` VALUES ('b9869f4a-3d4a-406b-b7ee-d8bad89e5a1d', 'ckx', '1523583362', '2018-04-13 09:36:02');
-INSERT INTO `session` VALUES ('bb4ff7af-ca28-4d04-9945-3c006313dd20', 'ly', '1523582599', '2018-04-13 09:23:18');
-INSERT INTO `session` VALUES ('bc5bac77-3076-4038-82e4-90adf829bb64', 'lwx', '1523588387', '2018-04-13 10:59:46');
-INSERT INTO `session` VALUES ('c0d9aa2e-e66d-4233-8409-b5b5203c44c5', 'xjj', '1523599719', '2018-04-13 14:08:39');
-INSERT INTO `session` VALUES ('c2596837-12c4-4ae9-8900-e7c899c48884', 'dl', '1523609744', '2018-04-13 16:55:43');
-INSERT INTO `session` VALUES ('c8186448-4b9a-44a2-a769-462146ff91a1', 'dl', '1523581646', '2018-04-13 09:07:25');
-INSERT INTO `session` VALUES ('f9dbea20-78f8-4968-a4d1-ae6c1ad23830', 'km', '1523585743', '2018-04-13 10:15:43');
+INSERT INTO `session` VALUES ('1617e5cd-f553-4700-a8b5-59c0b1267612', 'hyl', '1524029500', '2018-04-18 13:31:39');
+INSERT INTO `session` VALUES ('1a27a7e4-b4b6-413c-8232-710e6202ec26', 'hyl', '1524029498', '2018-04-18 13:31:37');
+INSERT INTO `session` VALUES ('27568f60-f228-462b-8b8f-29b413ca8de3', 'ly', '1524012568', '2018-04-18 08:49:27');
+INSERT INTO `session` VALUES ('d7f0e0d9-6be7-4938-9a65-4905810011b1', 'CaiWH', '1524018888', '2018-04-18 10:34:47');
 
 -- ----------------------------
 -- Table structure for support
@@ -272,7 +250,7 @@ CREATE TABLE `sys_param` (
 -- ----------------------------
 -- Records of sys_param
 -- ----------------------------
-INSERT INTO `sys_param` VALUES ('1', '0001', '系统当前周期', '2018,15', '用于判断系统是否调整到下周');
+INSERT INTO `sys_param` VALUES ('1', '0001', '系统当前周期', '2018,16', '用于判断系统是否调整到下周');
 INSERT INTO `sys_param` VALUES ('2', '0002', '转下周时间点', '5,12', '参数：1，星期几；2，时间（小时）');
 
 -- ----------------------------
@@ -286,6 +264,7 @@ CREATE TABLE `user` (
   `UPWD` varchar(32) NOT NULL DEFAULT '123456',
   `LAST_LOGIN_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `REDMINE_UNAME` varchar(64) NOT NULL DEFAULT '',
+  `REDMINE_UID` int(10) unsigned NOT NULL DEFAULT '0',
   `NOTE` varchar(128) NOT NULL,
   `ADMIN` int(255) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`UID`),
@@ -296,31 +275,31 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('3', '16', 'zyz', '026159ab', '2018-04-13 16:55:21', 'zyz周尤珠', '周尤珠', '1');
-INSERT INTO `user` VALUES ('4', '12', 'czy', '123456', '2018-04-04 08:56:43', 'czy曹卓娅', '曹卓娅', '0');
-INSERT INTO `user` VALUES ('5', '13', 'zhw', '123456', '2018-04-13 15:16:39', 'zhw张华伟', '张华伟', '0');
-INSERT INTO `user` VALUES ('6', '12', 'sl', '123456', '2018-04-13 15:14:43', 'sl隋亮', '隋亮', '0');
-INSERT INTO `user` VALUES ('7', '12', 'hyl', '123456', '2018-04-13 15:08:13', 'ExtXYKJ胡有亮', '胡有亮', '1');
-INSERT INTO `user` VALUES ('9', '13', 'zxx', '123456', '2018-04-12 13:29:58', 'ExtCS张修兴', '张修兴', '0');
-INSERT INTO `user` VALUES ('10', '13', 'lwx', '123456', '2018-04-13 15:16:47', 'Extrykj李武需', '李武需', '0');
-INSERT INTO `user` VALUES ('11', '13', 'qwj', '123456', '2018-04-13 13:12:30', 'ExtXY乔伟健', '乔伟健', '0');
-INSERT INTO `user` VALUES ('12', '15', 'lc', 'ustc0310', '2018-04-13 14:03:32', 'lc李昶', '李昶', '0');
-INSERT INTO `user` VALUES ('13', '15', 'dwb', '123456', '2018-03-30 16:37:19', '', '端伟彬', '0');
-INSERT INTO `user` VALUES ('15', '15', 'xjf', '456123', '2018-04-13 15:49:58', 'xjf徐剑锋', '徐剑锋', '0');
-INSERT INTO `user` VALUES ('16', '12', 'cdz', '123456', '2018-04-13 15:51:11', 'cdz陈岱宗', '陈岱宗', '0');
-INSERT INTO `user` VALUES ('17', '15', 'ckx', '123456', '2018-04-13 09:36:02', 'ckx陈凯祥', '陈凯祥', '0');
-INSERT INTO `user` VALUES ('18', '15', 'ww', '123456', '2018-04-13 09:42:21', 'ww王伟', '王伟', '0');
-INSERT INTO `user` VALUES ('19', '14', 'het', '123456', '2018-03-16 11:02:45', '', '胡二涛', '0');
-INSERT INTO `user` VALUES ('20', '14', 'ly', '123456', '2018-04-13 09:23:18', 'ly刘阳', '刘阳', '0');
-INSERT INTO `user` VALUES ('24', '14', 'zsj', '123456', '2018-04-13 13:12:35', 'zsj朱沈杰', '朱沈杰', '0');
-INSERT INTO `user` VALUES ('25', '13', 'dl', '123456', '2018-04-13 16:55:43', 'dl丁力', '丁力', '0');
-INSERT INTO `user` VALUES ('26', '15', 'js', '123456', '2018-04-13 08:44:10', 'js贾森', '贾森', '0');
-INSERT INTO `user` VALUES ('27', '14', 'xjj', '123456', '2018-04-13 14:08:39', 'xjj徐晶晶', '徐晶晶', '1');
-INSERT INTO `user` VALUES ('28', '13', 'zmh', '123456', '2018-04-13 13:12:48', 'zmh战明浩', '战明浩', '0');
-INSERT INTO `user` VALUES ('30', '15', 'km', '123456', '2018-04-13 10:15:43', '', '孔明', '0');
-INSERT INTO `user` VALUES ('31', '12', 'CaiWH', '123456', '2018-04-13 08:21:48', 'cwh蔡文豪', '蔡文豪', '0');
-INSERT INTO `user` VALUES ('32', '13', 'LiYL', '123456', '2018-04-13 17:10:08', 'lyl李彦丽', '李彦丽', '0');
-INSERT INTO `user` VALUES ('33', '13', 'ChaiY', 'chaiyi010880', '2018-04-13 08:37:58', 'cy柴毅', '柴毅', '0');
+INSERT INTO `user` VALUES ('3', '16', 'zyz', '026159ab', '2018-04-17 10:19:44', 'zyz周尤珠', '53', '周尤珠', '1');
+INSERT INTO `user` VALUES ('4', '12', 'czy', '123456', '2018-04-04 08:56:43', 'czy曹卓娅', '65', '曹卓娅', '0');
+INSERT INTO `user` VALUES ('5', '13', 'zhw', '123456', '2018-04-16 18:02:36', 'zhw张华伟', '71', '张华伟', '0');
+INSERT INTO `user` VALUES ('6', '12', 'sl', '123456', '2018-04-13 15:14:43', 'sl隋亮', '98', '隋亮', '0');
+INSERT INTO `user` VALUES ('7', '12', 'hyl', '123456', '2018-04-18 13:31:39', 'ExtXYKJ胡有亮', '100', '胡有亮', '1');
+INSERT INTO `user` VALUES ('9', '13', 'zxx', '123456', '2018-04-12 13:29:58', 'ExtCS张修兴', '59', '张修兴', '0');
+INSERT INTO `user` VALUES ('10', '13', 'lwx', '123456', '2018-04-13 15:16:47', 'Extrykj李武需', '87', '李武需', '0');
+INSERT INTO `user` VALUES ('11', '13', 'qwj', '123456', '2018-04-13 13:12:30', 'ExtXY乔伟健', '186', '乔伟健', '0');
+INSERT INTO `user` VALUES ('12', '15', 'lc', 'ustc0310', '2018-04-13 14:03:32', 'lc李昶', '92', '李昶', '0');
+INSERT INTO `user` VALUES ('13', '0', 'dwb', '123456', '2018-03-30 16:37:19', '', '0', '端伟彬', '0');
+INSERT INTO `user` VALUES ('15', '15', 'xjf', '456123', '2018-04-16 14:43:01', 'xjf徐剑锋', '69', '徐剑锋', '0');
+INSERT INTO `user` VALUES ('16', '12', 'cdz', '123456', '2018-04-13 15:51:11', 'cdz陈岱宗', '195', '陈岱宗', '0');
+INSERT INTO `user` VALUES ('17', '15', 'ckx', '123456', '2018-04-13 09:36:02', 'ckx陈凯祥', '169', '陈凯祥', '0');
+INSERT INTO `user` VALUES ('18', '15', 'ww', '123456', '2018-04-13 09:42:21', 'ww王伟', '97', '王伟', '0');
+INSERT INTO `user` VALUES ('19', '0', 'het', '123456', '2018-03-16 11:02:45', '', '0', '胡二涛', '0');
+INSERT INTO `user` VALUES ('20', '14', 'ly', '123456', '2018-04-18 08:49:27', 'ly刘阳', '196', '刘阳', '0');
+INSERT INTO `user` VALUES ('24', '14', 'zsj', '123456', '2018-04-13 13:12:35', 'zsj朱沈杰', '50', '朱沈杰', '0');
+INSERT INTO `user` VALUES ('25', '13', 'dl', '123456', '2018-04-13 16:55:43', 'dl丁力', '202', '丁力', '0');
+INSERT INTO `user` VALUES ('26', '15', 'js', '123456', '2018-04-13 08:44:10', 'js贾森', '197', '贾森', '0');
+INSERT INTO `user` VALUES ('27', '14', 'xjj', '123456', '2018-04-13 14:08:39', 'xjj徐晶晶', '72', '徐晶晶', '1');
+INSERT INTO `user` VALUES ('28', '13', 'zmh', '123456', '2018-04-13 13:12:48', 'zmh战明浩', '209', '战明浩', '0');
+INSERT INTO `user` VALUES ('30', '15', 'km', '123456', '2018-04-13 10:15:43', 'km孔明', '233', '孔明', '0');
+INSERT INTO `user` VALUES ('31', '12', 'CaiWH', '123456', '2018-04-18 10:34:47', 'cwh蔡文豪', '5', '蔡文豪', '0');
+INSERT INTO `user` VALUES ('32', '13', 'LiYL', '123456', '2018-04-13 17:10:08', 'lyl李彦丽', '10', '李彦丽', '0');
+INSERT INTO `user` VALUES ('33', '13', 'ChaiY', 'chaiyi010880', '2018-04-13 08:37:58', 'cy柴毅', '9', '柴毅', '0');
 
 -- ----------------------------
 -- Table structure for user_work
@@ -852,7 +831,6 @@ INSERT INTO `user_work` VALUES ('16', '470', '2018', '12');
 INSERT INTO `user_work` VALUES ('16', '470', '2018', '13');
 INSERT INTO `user_work` VALUES ('16', '470', '2018', '14');
 INSERT INTO `user_work` VALUES ('16', '470', '2018', '15');
-INSERT INTO `user_work` VALUES ('16', '470', '2018', '16');
 INSERT INTO `user_work` VALUES ('20', '473', '2017', '41');
 INSERT INTO `user_work` VALUES ('6', '474', '2017', '42');
 INSERT INTO `user_work` VALUES ('6', '474', '2017', '43');
@@ -3344,7 +3322,6 @@ INSERT INTO `user_work` VALUES ('5', '1358', '2018', '12');
 INSERT INTO `user_work` VALUES ('5', '1358', '2018', '13');
 INSERT INTO `user_work` VALUES ('5', '1358', '2018', '14');
 INSERT INTO `user_work` VALUES ('5', '1358', '2018', '15');
-INSERT INTO `user_work` VALUES ('5', '1358', '2018', '16');
 INSERT INTO `user_work` VALUES ('5', '1359', '2018', '3');
 INSERT INTO `user_work` VALUES ('5', '1360', '2018', '3');
 INSERT INTO `user_work` VALUES ('5', '1360', '2018', '4');
@@ -3795,7 +3772,6 @@ INSERT INTO `user_work` VALUES ('5', '1535', '2018', '12');
 INSERT INTO `user_work` VALUES ('5', '1535', '2018', '13');
 INSERT INTO `user_work` VALUES ('5', '1535', '2018', '14');
 INSERT INTO `user_work` VALUES ('5', '1535', '2018', '15');
-INSERT INTO `user_work` VALUES ('5', '1535', '2018', '16');
 INSERT INTO `user_work` VALUES ('16', '1536', '2018', '9');
 INSERT INTO `user_work` VALUES ('16', '1536', '2018', '10');
 INSERT INTO `user_work` VALUES ('16', '1536', '2018', '11');
@@ -3909,7 +3885,6 @@ INSERT INTO `user_work` VALUES ('5', '1574', '2018', '12');
 INSERT INTO `user_work` VALUES ('5', '1574', '2018', '13');
 INSERT INTO `user_work` VALUES ('5', '1574', '2018', '14');
 INSERT INTO `user_work` VALUES ('5', '1574', '2018', '15');
-INSERT INTO `user_work` VALUES ('5', '1574', '2018', '16');
 INSERT INTO `user_work` VALUES ('5', '1575', '2018', '10');
 INSERT INTO `user_work` VALUES ('5', '1576', '2018', '10');
 INSERT INTO `user_work` VALUES ('5', '1576', '2018', '11');
@@ -3917,7 +3892,6 @@ INSERT INTO `user_work` VALUES ('5', '1576', '2018', '12');
 INSERT INTO `user_work` VALUES ('5', '1576', '2018', '13');
 INSERT INTO `user_work` VALUES ('5', '1576', '2018', '14');
 INSERT INTO `user_work` VALUES ('5', '1576', '2018', '15');
-INSERT INTO `user_work` VALUES ('5', '1576', '2018', '16');
 INSERT INTO `user_work` VALUES ('20', '1577', '2018', '11');
 INSERT INTO `user_work` VALUES ('20', '1578', '2018', '11');
 INSERT INTO `user_work` VALUES ('3', '1579', '2018', '11');
@@ -4023,7 +3997,6 @@ INSERT INTO `user_work` VALUES ('28', '1640', '2018', '12');
 INSERT INTO `user_work` VALUES ('28', '1640', '2018', '13');
 INSERT INTO `user_work` VALUES ('28', '1640', '2018', '14');
 INSERT INTO `user_work` VALUES ('28', '1640', '2018', '15');
-INSERT INTO `user_work` VALUES ('28', '1640', '2018', '16');
 INSERT INTO `user_work` VALUES ('28', '1641', '2018', '12');
 INSERT INTO `user_work` VALUES ('28', '1642', '2018', '12');
 INSERT INTO `user_work` VALUES ('24', '1643', '2018', '12');
@@ -4092,7 +4065,6 @@ INSERT INTO `user_work` VALUES ('33', '1675', '2018', '13');
 INSERT INTO `user_work` VALUES ('16', '1676', '2018', '13');
 INSERT INTO `user_work` VALUES ('16', '1676', '2018', '14');
 INSERT INTO `user_work` VALUES ('16', '1676', '2018', '15');
-INSERT INTO `user_work` VALUES ('16', '1676', '2018', '16');
 INSERT INTO `user_work` VALUES ('31', '1677', '2018', '13');
 INSERT INTO `user_work` VALUES ('16', '1678', '2018', '13');
 INSERT INTO `user_work` VALUES ('33', '1679', '2018', '13');
@@ -4126,7 +4098,6 @@ INSERT INTO `user_work` VALUES ('30', '1690', '2018', '16');
 INSERT INTO `user_work` VALUES ('28', '1691', '2018', '13');
 INSERT INTO `user_work` VALUES ('28', '1691', '2018', '14');
 INSERT INTO `user_work` VALUES ('28', '1691', '2018', '15');
-INSERT INTO `user_work` VALUES ('28', '1691', '2018', '16');
 INSERT INTO `user_work` VALUES ('33', '1692', '2018', '13');
 INSERT INTO `user_work` VALUES ('33', '1692', '2018', '14');
 INSERT INTO `user_work` VALUES ('33', '1692', '2018', '15');
@@ -4249,28 +4220,48 @@ INSERT INTO `user_work` VALUES ('33', '1775', '2018', '16');
 INSERT INTO `user_work` VALUES ('33', '1776', '2018', '15');
 INSERT INTO `user_work` VALUES ('33', '1776', '2018', '16');
 INSERT INTO `user_work` VALUES ('11', '1777', '2018', '15');
+INSERT INTO `user_work` VALUES ('11', '1777', '2018', '16');
 INSERT INTO `user_work` VALUES ('24', '1778', '2018', '15');
 INSERT INTO `user_work` VALUES ('28', '1779', '2018', '15');
 INSERT INTO `user_work` VALUES ('24', '1780', '2018', '15');
 INSERT INTO `user_work` VALUES ('28', '1781', '2018', '15');
 INSERT INTO `user_work` VALUES ('24', '1782', '2018', '15');
+INSERT INTO `user_work` VALUES ('24', '1782', '2018', '16');
 INSERT INTO `user_work` VALUES ('28', '1783', '2018', '15');
+INSERT INTO `user_work` VALUES ('28', '1783', '2018', '16');
 INSERT INTO `user_work` VALUES ('28', '1784', '2018', '15');
+INSERT INTO `user_work` VALUES ('28', '1784', '2018', '16');
 INSERT INTO `user_work` VALUES ('12', '1785', '2018', '15');
+INSERT INTO `user_work` VALUES ('12', '1785', '2018', '16');
 INSERT INTO `user_work` VALUES ('6', '1798', '2018', '15');
+INSERT INTO `user_work` VALUES ('6', '1798', '2018', '16');
 INSERT INTO `user_work` VALUES ('17', '1799', '2018', '15');
+INSERT INTO `user_work` VALUES ('17', '1799', '2018', '16');
 INSERT INTO `user_work` VALUES ('16', '1800', '2018', '15');
+INSERT INTO `user_work` VALUES ('16', '1800', '2018', '16');
 INSERT INTO `user_work` VALUES ('16', '1801', '2018', '15');
+INSERT INTO `user_work` VALUES ('16', '1801', '2018', '16');
 INSERT INTO `user_work` VALUES ('16', '1802', '2018', '15');
+INSERT INTO `user_work` VALUES ('16', '1802', '2018', '16');
 INSERT INTO `user_work` VALUES ('5', '1803', '2018', '15');
 INSERT INTO `user_work` VALUES ('5', '1804', '2018', '15');
+INSERT INTO `user_work` VALUES ('5', '1804', '2018', '16');
 INSERT INTO `user_work` VALUES ('5', '1818', '2018', '15');
+INSERT INTO `user_work` VALUES ('5', '1818', '2018', '16');
 INSERT INTO `user_work` VALUES ('5', '1819', '2018', '15');
+INSERT INTO `user_work` VALUES ('5', '1819', '2018', '16');
 INSERT INTO `user_work` VALUES ('27', '1820', '2018', '15');
+INSERT INTO `user_work` VALUES ('27', '1820', '2018', '16');
 INSERT INTO `user_work` VALUES ('32', '1825', '2018', '15');
+INSERT INTO `user_work` VALUES ('32', '1825', '2018', '16');
 INSERT INTO `user_work` VALUES ('32', '1826', '2018', '15');
 INSERT INTO `user_work` VALUES ('32', '1827', '2018', '15');
 INSERT INTO `user_work` VALUES ('32', '1828', '2018', '15');
+INSERT INTO `user_work` VALUES ('31', '1830', '2018', '16');
+INSERT INTO `user_work` VALUES ('3', '1851', '2018', '16');
+INSERT INTO `user_work` VALUES ('7', '1852', '2018', '16');
+INSERT INTO `user_work` VALUES ('31', '1853', '2018', '16');
+INSERT INTO `user_work` VALUES ('31', '1854', '2018', '16');
 
 -- ----------------------------
 -- Table structure for work_detail
@@ -4294,7 +4285,7 @@ CREATE TABLE `work_detail` (
   `ExpireDate` char(8) NOT NULL DEFAULT '',
   `Note` varchar(512) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1829 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1855 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of work_detail
@@ -5565,7 +5556,7 @@ INSERT INTO `work_detail` VALUES ('1655', '0000000000', '1', '周边模块', '�
 INSERT INTO `work_detail` VALUES ('1656', '0000000000', '1', '周边模块', '行情转换', '在线问题', '任务 #14328', 'NST上海股票行情转换不对修正确认。\n160开头上海债券转换不对修正确认。', '问题排查', '100', '2018-03-19', '4', '20180323', '20180319', '20180323', '');
 INSERT INTO `work_detail` VALUES ('1657', '0000000000', '1', '集中交易', '', '在线问题', 'BUG #14337', '关于要约收购没有调整成本价的投诉', '问题排查', '100', '2018-03-26', '0', '20180326', '20180326', '20180326', '协作已回复（修正方案已定），但需要业务部门提出具体需求才执行。暂时关闭问题');
 INSERT INTO `work_detail` VALUES ('1658', '0000000000', '1', '场外资金结算', '', '项目管理', '任务#14336', '场外资金系统升级包验证', '进度跟踪', '100', '2018-03-26', '0', '20180326', '20180411', '20180411', '');
-INSERT INTO `work_detail` VALUES ('1659', '0000000000', '1', '场外资金结算', '', '项目管理', '任务#14371', '自动化运维方案沟通部署', '进度跟踪', '80', '2018-03-26', '2', '20180326', '20180411', '20180413', '还缺产品中心otcjsxx文件复制自动化。');
+INSERT INTO `work_detail` VALUES ('1659', '0000000000', '1', '场外资金结算系统', '', '', '任务#14371', '与生产环境的运维脚本沟通，目标自动化。', '', '100', '2018-03-26', '0', '20180326', '20180417', '20180413', '还缺产品中心otcjsxx文件复制自动化。');
 INSERT INTO `work_detail` VALUES ('1660', '0000000000', '1', '场外资金结算', '', '项目管理', '任务#14363', '场外资金结算上线与业务部门协调沟通', '进度跟踪', '100', '2018-03-26', '0', '20180326', '20180330', '20180330', '');
 INSERT INTO `work_detail` VALUES ('1661', '0000000000', '1', 'OTC注册登记', '', '在线问题', '需求#14397', '20180326OTC开户18人登记成功，集中交易失败', '进度跟踪', '100', '2018-03-27', '0', '20180327', '20180327', '20180327', '');
 INSERT INTO `work_detail` VALUES ('1662', '0000000000', '1', '信用管理', '股票质押', '升级', 'BUG #14314', '新增专户时传值有误，提示“未传入质权人类型”错误', '开发', '100', '2018-03-27', '0', '20180327', '20180327', '20180327', '');
@@ -5630,14 +5621,14 @@ INSERT INTO `work_detail` VALUES ('1731', '0000000000', '1', '集中交易', '',
 INSERT INTO `work_detail` VALUES ('1732', '0000000000', '1', 'OTC撮合', '', '业务需求', '需求#14968任务#14961', 'OTC撮合实时交易数据入数据仓库，入库申请单和数据字典表填写', '设计', '100', '2018-03-26', '0', '20180404', '20180404', '20180404', '');
 INSERT INTO `work_detail` VALUES ('1733', '0000000000', '1', '集中交易', '', '在线问题', '问题单#14728', '客户信用资料查询 营业部职工不应该能查其他营业部信息 问题排查', '问题排查', '100', '2018-04-02', '0', '20180404', '20180404', '20180404', '问题原因已定位，属于融资融券交易柜台界面问题，待修正');
 INSERT INTO `work_detail` VALUES ('1735', '0000000000', '1', '集中交易', '', '内部优化', '需求 #8641', '法人清算文件生成，运营6月估计就超限了，必须尽快了结。', '设计', '0', '2018-04-10', '30', '20180410', '20180410', '20180524', '');
-INSERT INTO `work_detail` VALUES ('1736', '0000000000', '1', '集中交易', '', '业务需求', '需求 #15072', '公募基金托管项目', '设计', '10', '2018-04-10', '84', '20180410', '20180410', '20180809', '');
+INSERT INTO `work_detail` VALUES ('1736', '0000000000', '1', '集中交易', '', '业务需求', '需求 #15072', '公募基金托管项目\n--20180417立项提交', '设计', '10', '2018-04-10', '84', '20180410', '20180417', '20180816', '');
 INSERT INTO `work_detail` VALUES ('1737', '0000000000', '1', '信用管理', '管理系统', '升级', '需求 #13729 ', '合并金仕达V3.0.5patch2和V3.0.5patch3升级包，并整理V1.0.7.2升级包文档', '整理文档', '100', '2018-04-09', '0', '20180411', '20180413', '20180413', '');
-INSERT INTO `work_detail` VALUES ('1738', '0000000000', '1', '信用管理', '管理系统', '业务需求', '需求 #14037', '优化贷后管理模块', '开发', '70', '2018-04-09', '1', '20180411', '20180413', '20180416', '需求变更：1.增加累计流入汇总（项目编号，客户号，银行账号），2.流入金额，流出金额与余额对账（相同银行账号），3.增加股质专户号，最后划出时间，客户名 4.同名转账高亮显示 4.导入流水新增项目编号');
+INSERT INTO `work_detail` VALUES ('1738', '0000000000', '1', '信用管理', '管理系统', '业务需求', '需求 #14037', '优化贷后管理模块', '开发', '100', '2018-04-09', '0', '20180411', '20180418', '20180418', '需求变更：1.增加累计流入汇总（项目编号，客户号，银行账号），2.流入金额，流出金额与余额对账（相同银行账号），3.增加股质专户号，最后划出时间，客户名 4.同名转账高亮显示 4.导入流水新增项目编号 5.历史银行流水同名划转的重点标注');
 INSERT INTO `work_detail` VALUES ('1739', '0000000000', '1', '信用管理', '约定购回', '业务需求', '需求 #14946', '管理平台约定购回交易集中度控制', '开发', '0', '2018-04-12', '4', '20180411', '20180413', '20180419', '需即时查询风险管理系统中该标的券的集中度额度上限');
-INSERT INTO `work_detail` VALUES ('1740', '0000000000', '1', '场外资金结算', '', '项目管理', '任务#15148', '业务单元收件人邮箱不够长', '测试沟通', '0', '2018-04-11', '3', '20180411', '20180411', '20180416', '');
-INSERT INTO `work_detail` VALUES ('1741', '0000000000', '1', '周报系统', '', '内部优化', '任务#0000', '讨论从redmine同步的需求及初步方案', '测试沟通', '0', '2018-04-11', '10', '20180411', '20180411', '20180425', '');
-INSERT INTO `work_detail` VALUES ('1742', '0000000000', '1', '场外资金结算', '', '项目管理', '任务#15151', '邮件标题不够长', '测试沟通', '0', '2018-04-11', '3', '20180411', '20180411', '20180416', '');
-INSERT INTO `work_detail` VALUES ('1743', '0000000000', '1', '场外资金结算', '', '项目管理', '任务#15152', '交收结果核对按收付轧拆计算', '测试沟通', '0', '2018-04-11', '5', '20180411', '20180411', '20180418', '');
+INSERT INTO `work_detail` VALUES ('1740', '0000000000', '1', '场外资金结算系统', '', '', '任务#15148', '', '', '100', '2018-04-11', '0', '20180411', '20180417', '20180417', '');
+INSERT INTO `work_detail` VALUES ('1741', '0000000000', '1', '周报系统', '', '内部优化', '任务#0000', '周报系统同步redmine的需求及初步方案', '测试沟通', '60', '2018-04-11', '10', '20180411', '20180416', '20180502', 'demo可以生成，本周五计划上线');
+INSERT INTO `work_detail` VALUES ('1742', '0000000000', '1', '场外资金结算系统', '', '', '任务#15151', '', '', '100', '2018-04-11', '0', '20180411', '20180416', '20180417', '');
+INSERT INTO `work_detail` VALUES ('1743', '0000000000', '1', '场外资金结算系统', '', '', '任务#15152', '运营中心资金管理部测试时提出。', '', '100', '2018-04-11', '0', '20180411', '20180416', '20180417', '');
 INSERT INTO `work_detail` VALUES ('1744', '0000000000', '1', '场外资金结算', '', '项目管理', '任务#0000', '产品中心日间新增产品导致晚上清算无此产品，梳理完成应急方案。', '测试沟通', '100', '2018-04-11', '1', '20180411', '20180411', '20180412', '');
 INSERT INTO `work_detail` VALUES ('1745', '0000000000', '1', '周报系统', '', '内部优化', '任务#0000', '如何使用redmine api讨论实践', '测试沟通', '50', '2018-04-11', '3', '20180411', '20180411', '20180416', '');
 INSERT INTO `work_detail` VALUES ('1746', '0000000000', '1', '信用交易', '', '业务需求', '需求 #14728', '1：补充设计文档\n2：配合测试提出的问题修改。', '开发', '100', '2018-04-12', '0', '20180412', '20180412', '20180412', '完毕');
@@ -5645,7 +5636,7 @@ INSERT INTO `work_detail` VALUES ('1747', '0000000000', '1', '集中交易', '',
 INSERT INTO `work_detail` VALUES ('1748', '0000000000', '1', '信用交易', '', '内部优化', 'bug #12886', '几个菜单，融资融券系统升级后，进入柜台个菜单时有三个菜单报错\n1: 外围确认信息界面，118环境，试验，正常。\n2：数据采集 KS.GATHER_LIST \'采集列表\'; 没有数据 没有数据，导致报错， 柜台代码做优化：在数据空的情况下，不能报错，要出合适的提示。\n3：强身份认证设置- 程序不需要修改， 0368营业部内部参数，需要配置', '开发', '90', '2018-04-12', '1', '20180412', '20180412', '20180413', '等分支提交');
 INSERT INTO `work_detail` VALUES ('1749', '0000000000', '1', '信用交易', '', '业务需求', '需求 #15026', '【协议交易补委托单】菜单界面参考【协议交易委托与撤单】菜单，增加“特定减持标志”复选框， 修改点菜单界面参考【协议交易委托与撤单】菜单，增加“特定减持标志”复选框。', '开发', '90', '2018-04-12', '1', '20180412', '20180412', '20180413', '完毕，等分支提交。');
 INSERT INTO `work_detail` VALUES ('1750', '0000000000', '1', '小工具', '', '在线问题', '任务#0000', 'redmine服务异常处理及问题排查', '问题排查', '100', '2018-04-12', '0', '20180412', '20180412', '20180412', '');
-INSERT INTO `work_detail` VALUES ('1751', '0000000000', '1', 'OTC注册登记', '', '升级', '任务#0000', 'v3.5版本业务测试准备。', '测试沟通', '0', '2018-04-13', '3', '20180413', '20180413', '20180418', '');
+INSERT INTO `work_detail` VALUES ('1751', '0000000000', '1', 'OTC注册登记', '', '升级', '任务#0000', 'v3.5版本业务测试准备，测试案例准备。', '测试沟通', '0', '2018-04-13', '5', '20180413', '20180416', '20180423', '');
 INSERT INTO `work_detail` VALUES ('1752', '0000000000', '1', 'QFII订单系统', 'KSTP', '业务需求', '需求#14976', 'KSTP前台支持,委托交易界面以及指令监控界面以及交易查询需要展示后台的算法平台标记', '开发', '100', '2018-04-13', '10', '20180413', '20180413', '20180427', '');
 INSERT INTO `work_detail` VALUES ('1753', '0000000000', '1', 'QFII订单系统', 'KSTP', '业务需求', '需求#14980', '后台支持: 414710-kstp发起算法策略单转发 ', '开发', '20', '2018-04-13', '10', '20180413', '20180413', '20180427', '');
 INSERT INTO `work_detail` VALUES ('1754', '0000000000', '1', 'QFII订单系统', 'KSTP', '业务需求', '需求#14983', '系统初始化增加将TP_SORDER以及TP_AORDER表的字段落地到HS_SORDER以及HS_AORDER表 ', '开发', '50', '2018-04-13', '5', '20180413', '20180413', '20180420', '');
@@ -5694,6 +5685,11 @@ INSERT INTO `work_detail` VALUES ('1825', '0000000000', '1', 'OTC撮合', '', '�
 INSERT INTO `work_detail` VALUES ('1826', '0000000000', '1', '信用交易', '', '升级', '任务#13070#13007', '关于完善转融通归还时证券停牌控制和归还指令撤单功能 测试', '测试沟通', '100', '2018-04-10', '0', '20180413', '20180413', '20180413', '');
 INSERT INTO `work_detail` VALUES ('1827', '0000000000', '1', 'OTC撮合', '', '数据维护', '任务#0000', '在线临时发产品，协调运维、柜台部工作', '进度跟踪', '100', '2018-04-11', '0', '20180413', '20180411', '20180411', '');
 INSERT INTO `work_detail` VALUES ('1828', '0000000000', '1', 'OTC撮合', '', '在线问题', '任务#0000', '产品份额认购产品SZ3938，做市商报价卖数量足够时，客户要买2000份，结果只成交1000份问题排查', '问题排查', '100', '2018-04-13', '0', '20180413', '20180413', '20180413', '排查结果：撮合系统无错误，此笔2000份委托，报进来的委托数量是1000份，价格200.');
+INSERT INTO `work_detail` VALUES ('1830', '0000000000', '1', '小工具', '', '项目管理', '任务#0000', 'Redmine工作交接', '进度跟踪', '0', '2018-04-16', '3', '20180416', '20180416', '20180419', '初步交接完成。');
+INSERT INTO `work_detail` VALUES ('1851', '0000000000', '1', '集中交易', '', '监管需求', '需求 #14157', '《全国中小企业股份转让系统周边技术系统开发者指南（V1.0）》\n-------20180403HYH\n1.根据股转公司《周边技术系统开发者指南（V1.0）.pdf》 ：对于 挂牌 公司股票 协议 转让 业务 ，还应明确 揭示 该证券代码 当日 是否 可以 进行 协议转让 。即 挂牌公司股票大宗交易时，需要揭示用户输入的股票当日是否可以进行大宗交易。\n2.集中产易提供接口供周边查询该股票当日可否进行大宗交易的标志。请尽快先提供接口文档。\n3.该功能必须在20180501号前上线，周边计划20180413号发一个版本，20180427号发一个版本，请集中产易后台尽快支持并上线。', '进度跟踪', '30', '2018-04-17', '16', '20180417', '20180417', '20180511', '');
+INSERT INTO `work_detail` VALUES ('1852', '0000000000', '2', '信用交易核心系统', '', '代码问题－功能缺陷', 'Bug #15173', '20180305融资融券交易（3.21.4.17）-功能130212非交易明细升级前后显示的都是升级后信息-详见附件', '开发', '100', '2018-04-16', '0', '20180411', '20180416', '20180417', '');
+INSERT INTO `work_detail` VALUES ('1853', '0000000000', '1', 'OTC注册登记', '', '升级', '任务#0000', '组织业务测试', '单元测试', '0', '2018-04-17', '3', '20180417', '20180417', '20180420', '');
+INSERT INTO `work_detail` VALUES ('1854', '0000000000', '1', 'OTC注册登记', '', '在线问题', '任务#0000', '[生产]T+1申赎标志参数未打补救', '问题排查', '100', '2018-04-18', '1', '20180418', '20180418', '20180419', '已解决');
 
 -- ----------------------------
 -- Table structure for xgroup
