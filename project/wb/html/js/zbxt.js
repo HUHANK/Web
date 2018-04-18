@@ -1,4 +1,8 @@
-window.onload = main;
+//window.onload = main;
+
+jQuery(document).ready(function($) {
+	main();
+});
 
 // Options = new Object();
 var NavbarIndexCookies = "HTZQ_NavbarIndex";
@@ -40,6 +44,9 @@ function init_window() {
 
 	qheight = wheight - $("body .wrapper-top").height();
 	$(".body .query").height(qheight);
+	/*设置设置界面的高度*/
+	$(".body .sjwh").height(wheight-$("body .wrapper-top").outerHeight());
+	$(".body .sjwh iframe").height(wheight-$("body .wrapper-top").outerHeight());
 	SuportRepaint();
 }
 
@@ -221,7 +228,7 @@ function initNavbar(index){
 			break;
 		case 4:
 			$(".body .sjwh"		).css("display", "block");
-			data_protect();
+			//data_protect();
 			break;
 		case 3:
 			$(".body .support"	).css("display", "block");
@@ -278,7 +285,7 @@ function navbar() {
 			$(".body .add-zb"	).css("display", "none");
 			$(".body .support"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 4);
-			data_protect();
+			//data_protect();
 		} else if (value == "Support") {
 			$(".body .support"	).css("display", "block");
 
@@ -292,6 +299,7 @@ function navbar() {
 
 	});
 }
+
 
 function data_protect(){
 	//update_sjwh_dict();
@@ -1232,7 +1240,18 @@ function home_page() {
 }
 
 
-
+/*
+function system_onload(){
+	console.info($(".body .sjwh iframe")[0].contentWindow);
+	//console.info($(window).height()-$(".wrapper-top").outerHeight());
+	var iframe_body = $(".body .sjwh iframe")[0].contentDocument.body;
+	var iframe_win = $(".body .sjwh iframe")[0].contentWindow;
+	$(iframe_body).children('.wrap').height($(window).height()-$(".wrapper-top").outerHeight());
+	console.info(iframe_win.location);
+	console.info(iframe_win.window.document.body);
+	$(".body .sjwh iframe").attr("scrolling", "yes");
+	//$(".body .sjwh iframe").attr("scrolling", "no");
+}*/
 
 
 
