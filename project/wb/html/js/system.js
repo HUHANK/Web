@@ -8,9 +8,13 @@ function main(){
 	window.onrezie = function() {
 		SidebarSizeInit();
 	}
+
 }
 
 function SidebarSizeInit() {
+	//console.info($(parent.document.body).find(".sjwh"));
+	var h = $(parent.document.body).find(".sjwh").height();
+	$(".wrap").height(h);
 	parent.window.onload = function(){
 		var height = $($(this)[0].document.body).find(".sjwh").height();
 		$(".wrap").height(height);
@@ -18,6 +22,7 @@ function SidebarSizeInit() {
 }
 
 function SidebarEventInit(){
+	$(".wrap .wrap1").children('div').css("display", "none");
 	/*-----------------------------------------------*/
 	NowSelItem = $.cookie('SystemSidebarSelItem')
 	if (NowSelItem.length != 0){

@@ -18,10 +18,9 @@
 			<div class="layer1 title">账户管理</div>
 			<div class="layer1 content">
 				<div class="leaf xzyh">新增账户</div>
-				<div class="leaf">修改密码</div>
-				<div class="leaf">删除账户</div>
-				<div class="leaf">修改权限</div>
-				<div class="leaf">API-KEY修改</div>
+				<div class="leaf xgmm">修改密码</div>
+				<div class="leaf sczh">删除账户</div>
+				<div class="leaf xgqx">修改权限</div>
 			</div>
 
 			<div class="layer1 title">部门管理</div>
@@ -29,6 +28,11 @@
 
 			<div class="layer1 title">字典管理</div>
 			<div class="layer1 content"></div>
+
+			<div  class="layer1 title">Redmine设置</div>
+			<div class="layer1 content">
+				<div class="leaf rcspz">参数设置</div>
+			</div>
 		</div>
 		<div class="wrap1">
 			<div class="xzyh">
@@ -73,6 +77,61 @@
 					<span><input type="radio" name=""><label>管理员</label></span>
 				</div>
 				<button>创建账户</button><button>取消</button>
+			</div>
+			<div class="xgmm">
+				<div class="title">修改账户密码</div>
+				<table>
+					<tbody>
+						<tr>
+							<td><pre>登录账户:</pre></td>
+							<td><input type="text" name=""></td>
+						</tr>
+						<tr>
+							<td><pre>原始密码:</pre></td>
+							<td><input type="password" name=""></td>
+						</tr>
+						<tr>
+							<td><pre>更新密码:</pre></td>
+							<td><input type="password" name=""></td>
+						</tr>
+					</tbody>
+				</table>
+				<button>更改</button><button>取消</button>
+			</div>
+			<div class="sczh">
+				<div>删除账户</div>
+				<div>
+					<label>请选择删除账户:</label>
+					<input type="text" name="">
+				</div>
+				<div>
+					<label>请选择交接账户:</label>
+					<input type="text" name="">
+				</div>
+				<div>
+					<input type="radio" name="">
+					<label>删除用户所有周报记录</label>
+				</div>
+				<button>删除</button><button>取消</button>
+			</div>
+			<div class="xgqx">
+				<div>修改账户权限</div>
+				<div>
+					<label>选择账户:</label>
+					<input type="text" name="">
+				</div>
+				<p>
+					<p>权限详情:</p>
+					<p>
+						<span><input type="radio" name=""><label>管理员</label></span>
+						<span><input type="radio" name=""><label>非管理员</label></span>
+					</p>
+				</p>
+				<button>修改</button><button>取消</button>
+			</div>
+
+			<div class="rcspz">
+				
 			</div>
 		</div>
 	</div>

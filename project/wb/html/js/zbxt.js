@@ -18,6 +18,7 @@ function main() {
 	initNavbar(index);
 	navbar();
 
+	/*退出登出*/
 	$(".header .subhead .logout").click(function(){
 		var param = new Object();
 		param.SessionID = GetSessionID();
@@ -28,7 +29,7 @@ function main() {
 		$.cookie(NavbarIndexCookies, null);
 		$.cookie("htzq_SessionID", null);
 		Options.SessionID = null;
-		window.location.href = "login.html";
+		window.location = "./login.html";
 	});
 
 	window.onresize = function() {
@@ -47,6 +48,10 @@ function init_window() {
 	/*设置设置界面的高度*/
 	$(".body .sjwh").height(wheight-$("body .wrapper-top").outerHeight());
 	$(".body .sjwh iframe").height(wheight-$("body .wrapper-top").outerHeight());
+
+	/**/
+	var iframe_body = $(".body .sjwh iframe")[0].contentDocument.body;
+	$(iframe_body).children('.wrap').height($(".body .sjwh").height());
 	SuportRepaint();
 }
 
@@ -177,8 +182,8 @@ function GUpdateBaseinfo(){
 			//console.info(g_ALL_DEPART);
 			//console.info(g_ALL_GROUP);
 		}else{
-			alert("您没有登录！");
-			window.location.href = "login.html";
+			//alert("您没有登录！");
+			window.location = "./login.html";
 		}
 	});
 	param.method = "GET";
@@ -228,7 +233,7 @@ function initNavbar(index){
 			break;
 		case 4:
 			$(".body .sjwh"		).css("display", "block");
-			//data_protect();
+			system_init();
 			break;
 		case 3:
 			$(".body .support"	).css("display", "block");
@@ -285,7 +290,7 @@ function navbar() {
 			$(".body .add-zb"	).css("display", "none");
 			$(".body .support"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 4);
-			//data_protect();
+			system_init();
 		} else if (value == "Support") {
 			$(".body .support"	).css("display", "block");
 
@@ -300,6 +305,12 @@ function navbar() {
 	});
 }
 
+
+function system_init() {
+	var html = "<iframe src='system.html' frameborder='0' onload = '' width='100%' ></iframe>"
+	$(".sjwh").html(html);
+	$(".body .sjwh iframe").height($(window).height()-$("body .wrapper-top").outerHeight());
+}
 
 function data_protect(){
 	//update_sjwh_dict();

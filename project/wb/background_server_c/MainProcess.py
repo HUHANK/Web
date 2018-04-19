@@ -88,6 +88,6 @@ def MainProcess(queue):
             queue.put(ret)
             endTime = getNowTimestamp()
             print "METHOD: ",method, " USETIME: ", str(endTime - startTime)
-        except Exception, e:
+        except:
             print traceback.format_exc()
 

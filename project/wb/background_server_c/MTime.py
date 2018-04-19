@@ -108,7 +108,7 @@ def getYearLastWeek(year):
         md = md -1
         tmp = "%s%s" % (year, md)
         (y, w, d) = getWeekInfoByDate(tmp)
-        print tmp
+        #print tmp
     return getWeekInfoByDate(tmp)
 
 #获取指定周的下一个周

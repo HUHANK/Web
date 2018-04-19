@@ -27,7 +27,7 @@ function main() {
 			ret = $.parseJSON(d);
 			if (ret.result == "OK") {
 				$.cookie("htzq_SessionID", ret.sessionid, { expires: 1 });
-				window.location.href = "zbxt.html";
+				window.location = "zbxt.html";
 			}
 			else
 			{
@@ -35,6 +35,73 @@ function main() {
 				alert(ret.note);
 			}
 		});
+	});
+
+	$("input#username").keydown(function(event) {
+		/* Act on the event */
+		if (event.keyCode == 13) {
+			UserName = $("#username").val();
+			PassWord = $("input[type=password]").val();
+			if (UserName.length == 0) {
+				$("#username").focus();
+				return ;
+			}
+			if (PassWord.length == 0) {
+				$("#passwd").focus();
+				return ;
+			}
+
+			/*登陆相关*/
+			var data = new Object();
+			data.UserName = $("#username").val();
+			data.PassWord = $("input[type=password]").val();
+
+			post_data("/login/", JSON.stringify(data), function(d){
+				ret = $.parseJSON(d);
+				if (ret.result == "OK") {
+					$.cookie("htzq_SessionID", ret.sessionid, { expires: 1 });
+					window.location = "zbxt.html";
+				}
+				else
+				{
+					$("#tishi").text(ret.note);
+					alert(ret.note);
+				}
+			});
+		}
+	});
+	$("input#passwd").keydown(function(event) {
+		/* Act on the event */
+		if (event.keyCode == 13) {
+			UserName = $("#username").val();
+			PassWord = $("input[type=password]").val();
+			if (UserName.length == 0) {
+				$("#username").focus();
+				return ;
+			}
+			if (PassWord.length == 0) {
+				$("#passwd").focus();
+				return ;
+			}
+
+			/*登陆相关*/
+			var data = new Object();
+			data.UserName = $("#username").val();
+			data.PassWord = $("input[type=password]").val();
+
+			post_data("/login/", JSON.stringify(data), function(d){
+				ret = $.parseJSON(d);
+				if (ret.result == "OK") {
+					$.cookie("htzq_SessionID", ret.sessionid, { expires: 1 });
+					window.location = "zbxt.html";
+				}
+				else
+				{
+					$("#tishi").text(ret.note);
+					alert(ret.note);
+				}
+			});
+		}
 	});
 
 	initLoginBox();

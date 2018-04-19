@@ -79,7 +79,6 @@ function add_zb_ginit() {
 
 	});
 
-
 	$(".add-zb .edit .form .fhxrr").change(function(){
 		var ksrq = $(".add-zb .edit .form .ksrq").val();
 		if (ksrq.length < 1) return;
@@ -112,6 +111,10 @@ function add_zb_ginit() {
 	});
 
 	$(".add-zb .head-wrap .options .sync-redmine").click(function(event) {
+		/*判断是否操作过于频繁*/
+		if (IsOperationFrequent("SyncRedmine", 15)) {
+			return ;
+		}
 		/*产生等待的效果*/
 		//$(".wrap1 .unshow").removeClass('unshow');
 		$(".wrap1 .wait").show(100, function() {});
@@ -126,7 +129,7 @@ function add_zb_ginit() {
 				alert("连接超时！");
 				$(".wrap1 .wait").hide(200, function() {});
 			}
-		},5000);
+		},10000);
 		post_data("/sync_from_redmine/", JSON.stringify(param), function(d) {
 			d = $.parseJSON(d);
 			if (d.ErrCode != 0) {

@@ -269,8 +269,8 @@ function deal_query_condition(name, attr, isAdd) {
 
 function GetSessionID() {
 	if (Options.SessionID == null || typeof(Options.SessionID) == "undefined") {
-		alert("您还没有登录，请先登录！");
-		window.location.href = "login.html";
+		//alert("您还没有登录，请先登录！");
+		window.location = "./login.html";
 	} else {
 		return Options.SessionID;
 	}
@@ -445,6 +445,24 @@ var tableToExcel = (function() {
     window.location.href = uri + base64(format(template, ctx))
   }
 })()
+
+var oFrequentTimes = {};
+function IsOperationFrequent(name, interval){
+	var dt = (new Date()).valueOf();
+	if (oFrequentTimes[name] == 'undefined') {
+		oFrequentTimes[name] = dt;
+		return false;
+	}
+	
+	if ((dt - oFrequentTimes[name]) < interval*1000){
+		var str = "您的操作过于频繁，请于"+(interval - parseInt((dt-oFrequentTimes[name])/1000))+"秒之后再试。";
+		alert(str);
+		return true;
+	}
+	oFrequentTimes[name] = dt;
+	return false;
+}
+
 
 
 

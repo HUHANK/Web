@@ -4,6 +4,7 @@ from config import REDMINE_HOST, REDMINE_QUERY_ID, REDMINE_API_KEY
 from redminelib import Redmine
 import json
 import urllib2
+import traceback
 from MTime import * 
 
 def Redmine_DateTrf(date):
@@ -135,6 +136,9 @@ def Redmine_GetUpdateThisWeekByPdll(uid):
 
     ret = []
     for issue in issues:
+        created_on = datetime.datetime.strftime(issue.created_on, "%Y-%m-%d")
+        if created_on >= wFirstDay and issue.done_ratio == 0:
+            continue
         tr = {}
         tr["ID"]        = issue.id
         tr['System']    = issue.project['name']
@@ -190,13 +194,17 @@ def Redmine_DataTransfrom2(ret):
 
 
 def Redmine_GetData(mode, uid):
-    if mode == "SINGLE":
-        return Redmine_DataTransfrom2(Redmine_GetUpdateThisWeekByPdll(uid))
-    elif mode == "ALL":
-        return Redmine_DataTransfrom(None)
-    else:
-        print "Error Param!"
-        return []
+    try:
+        if mode == "SINGLE":
+            return Redmine_DataTransfrom2(Redmine_GetUpdateThisWeekByPdll(uid))
+        elif mode == "ALL":
+            return Redmine_DataTransfrom(None)
+        else:
+            print "Error Param!"
+            return []
+    except:
+        print traceback.format_exc()
+    return []
 
 
 #-------------------test---------------------------

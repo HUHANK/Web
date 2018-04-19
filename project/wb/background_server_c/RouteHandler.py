@@ -256,9 +256,9 @@ def reportProcess(data):
         #---------------------------------------------------------
         sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate, EditDate, ExpireDate, SID) VALUES(" \
               "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s', '%s', '%s', %s)" %(
-                data['System'], data['Module'], data['Type'], data["TraceNo"], Detail, \
-                data["Property"], data["ProgressRate"], data["StartDate"], data["NeedDays"], Note,
-                getNowDate2(), editDate, CalExpireDate(db, data["StartDate"], data["NeedDays"]),\
+                data.get('System',''), data.get('Module',''), data.get('Type',''), data.get("TraceNo",''), Detail, \
+                data.get("Property",''), data.get("ProgressRate",0), data.get("StartDate",''), data.get("NeedDays",0), Note,
+                getNowDate2(), editDate, CalExpireDate(db, data.get("StartDate",''), data.get("NeedDays",0)),\
                 data.get('SID', '0'))
         id = db.update(sql)
         if id < 0:
@@ -284,9 +284,9 @@ def reportProcess(data):
         EditDate = EditDate[0]+EditDate[1]+EditDate[2]+EditDate[3]+ EditDate[5]+EditDate[6]+ EditDate[8]+EditDate[9];
         #-----------------------------------------------------
         sql = "update work_detail set System='%s', Module='%s', Type='%s', TraceNo='%s', Detail='%s', Property='%s', ProgressRate=%s, EditDate='%s', NeedDays=%s, Note='%s', ExpireDate='%s' where id=%s" \
-            % (d["System"], d["Module"], d["Type"],d["TraceNo"],Detail,d["Property"],d["ProgressRate"],
-               EditDate,d["NeedDays"],Note, CalExpireDate(db, d["EditDate"], d["NeedDays"]),
-               d["id"])
+            % (d.get("System",''), d.get("Module",''), d.get("Type",''),d.get("TraceNo",''),Detail,d.get("Property",''),d.get("ProgressRate",0),
+               EditDate,d.get("NeedDays",0),Note, CalExpireDate(db, d.get("EditDate",''), d.get("NeedDays",0)),
+               d.get("id", -1))
         #print sql
         if db.update(sql) < 0:
             setErrMsg(ret, 2, u"数据库跟新失败！")
@@ -1443,13 +1443,13 @@ def SyncFromRedmine(data):
             ta  = row.get('TraceNo','').split("#")
             _id = row.get('id', 0)
             if len(ta) > 1:
-                RedmineIDs[ta[1]] = _id
+                RedmineIDs[ta[1].strip()] = _id
 
         #-----Get Redmine Infos
         res = Redmine_GetData(mode, redmine_uid)
 
         for row in res:
-            if ArrayHas(RedmineIDs.keys(), str(row.get("ID", '0'))):
+            if ArrayHas(RedmineIDs.keys(), str(row.get("ID", '0')).strip()):
                 #----------UPDATE------------
                 wid = RedmineIDs[str(row.get("ID", '0'))]
 
