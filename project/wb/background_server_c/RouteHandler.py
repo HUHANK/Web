@@ -6,7 +6,7 @@ from    MySQL_db    import *
 from    Session     import *
 from    MTime       import *
 from    PubFunc     import *
-from    RedmineProc import Redmine_GetData
+from    RedmineProc import Redmine_GetData, AddRedmineUptInfo, GetRedmineUptInfo
 import  base64
 import  uuid
 
@@ -1190,7 +1190,9 @@ def isAdmin(name):
     rs = db.select2(sql)
     if rs is None:
         return 0
-    return rs["data"][0]["ADMIN"];
+    if len(rs["data"]) < 1:
+        return 0
+    return rs["data"][0].get("ADMIN",0);
 
 def supportADD( d ):
     db =  Options['mysql']
@@ -1418,6 +1420,7 @@ def SyncFromRedmine(data):
     data = json.loads(data)
 
     ret = {}
+    redmine_uid = ''
     db =  Options['mysql']
     mode = data.get("mode", '')
     (Year, Week, Day) = getNowYearWeek()
@@ -1450,6 +1453,8 @@ def SyncFromRedmine(data):
 
         for row in res:
             if ArrayHas(RedmineIDs.keys(), str(row.get("ID", '0')).strip()):
+                #
+                AddRedmineUptInfo(redmine_uid, '3', row['TraceNo'], row['Subject'], row.get("EditDate",''))
                 #----------UPDATE------------
                 wid = RedmineIDs[str(row.get("ID", '0'))]
 
@@ -1461,7 +1466,9 @@ def SyncFromRedmine(data):
                             Property    = '%s',\
                             ProgressRate=  %s ,\
                             NeedDays    =  %s ,\
-                            EditDate    = '%s'\
+                            EditDate    = '%s',\
+                            StartDate   = '%s',\
+                            ExpireDate  = '%s' \
                         WHERE id = %s" % ( \
                             row.get("System",''),\
                             row.get('Module',''),\
@@ -1471,11 +1478,14 @@ def SyncFromRedmine(data):
                             row.get('ProgressRate',0),\
                             row.get('NeedDays',0),\
                             row.get("EditDate",''),\
+                            row.get("StartDate",''),\
+                            row.get("ExpireDate",''),\
                             wid)
                 res = db.update(sql)
                 if res < 0:
                     return ErrorDeal(ret, "插入数据库失败！")
             else:
+                AddRedmineUptInfo(redmine_uid, '2', row['TraceNo'], row['Subject'], row.get("AddDate",''))
                 #-----------INSERT
                 sql = " INSERT INTO work_detail(\
                             System,     Module,         Type,       TraceNo,    Detail,\
@@ -1503,6 +1513,7 @@ def SyncFromRedmine(data):
     else:
         return ErrorDeal(ret, "模式无效！")
 
+    ret['data'] = GetRedmineUptInfo(redmine_uid)
     return SuccessDeal(ret)
 
 

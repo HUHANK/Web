@@ -32,6 +32,20 @@ function main() {
 		window.location = "./login.html";
 	});
 
+	$(document).keydown(function(event) {
+		/* Act on the event */
+		if (event.keyCode == 27){
+			var param = new Object();
+			param.SessionID = GetSessionID();
+			sync_post_data("/logout/", JSON.stringify(param), function(d) {});
+
+			$.cookie(NavbarIndexCookies, null);
+			$.cookie("htzq_SessionID", null);
+			Options.SessionID = null;
+			window.location = "./login.html";
+		}
+	});
+
 	window.onresize = function() {
 		init_window();
 		query_get_result(g_CURRENT_QPAGE);
@@ -41,17 +55,22 @@ function main() {
 
 function init_window() {
 	wheight = $(window).height();
-	wwidth = $(window).width();
+	wwidth = $(window).width() ;
 
 	qheight = wheight - $("body .wrapper-top").height();
 	$(".body .query").height(qheight);
 	/*设置设置界面的高度*/
-	$(".body .sjwh").height(wheight-$("body .wrapper-top").outerHeight());
-	$(".body .sjwh iframe").height(wheight-$("body .wrapper-top").outerHeight());
+	var hsjwh = qheight - g_system_fix_height;
+	$(".body .sjwh").height(hsjwh);
+	$(".body .sjwh iframe").height(hsjwh);
 
 	/**/
 	var iframe_body = $(".body .sjwh iframe")[0].contentDocument.body;
-	$(iframe_body).children('.wrap').height($(".body .sjwh").height());
+	wwrap1 = wwidth - $(iframe_body).find('.wrap .sidebar').outerWidth();
+
+	$(iframe_body).children('.wrap').height(hsjwh);
+	$(iframe_body).find('.wrap .wrap1').height(hsjwh);
+	$(iframe_body).find('.wrap .wrap1').width(wwrap1);
 	SuportRepaint();
 }
 
@@ -307,9 +326,24 @@ function navbar() {
 
 
 function system_init() {
-	var html = "<iframe src='system.html' frameborder='0' onload = '' width='100%' ></iframe>"
+	var html = "<iframe src='system.html' frameborder='0' onload = '' width='100%'  scrolling='no'></iframe>"
 	$(".sjwh").html(html);
-	$(".body .sjwh iframe").height($(window).height()-$("body .wrapper-top").outerHeight());
+	$(".body .sjwh iframe").height($(window).height()-$("body .wrapper-top").outerHeight() - g_system_fix_height);
+
+	$(".body .sjwh iframe")[0].contentWindow.onload = function() {
+		// console.info("xxxxxxxxxxxxxxxxxxxxxx");
+		// console.info($(window).height());
+		var h = $(window).height() - $("body .wrapper-top").outerHeight() - g_system_fix_height;
+		// console.info(h);
+		var iframe_body = $(".body .sjwh iframe")[0].contentDocument.body;
+		$(iframe_body).find(".wrap").height(h);
+		$(iframe_body).find(".wrap .sidebar").height(h);
+		$(iframe_body).find(".wrap .wrap1").height(h);
+
+		var w = $(".body .sjwh").innerWidth() - $(iframe_body).find(".wrap .sidebar").outerWidth();
+		$(iframe_body).find(".wrap .wrap1").width(w);
+	}
+
 }
 
 function data_protect(){

@@ -130,11 +130,13 @@ function add_zb_ginit() {
 				$(".wrap1 .wait").hide(200, function() {});
 			}
 		},10000);
+
 		post_data("/sync_from_redmine/", JSON.stringify(param), function(d) {
 			d = $.parseJSON(d);
 			if (d.ErrCode != 0) {
 				alert(d.msg);
 			}
+			//console.info(d);
 			add_zb_show_work();
 
 			//$(".wrap1 .wait").addClass('unshow');

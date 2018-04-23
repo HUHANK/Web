@@ -12,7 +12,6 @@ function hyl_select( obj, data, selFunc ) {
 	$(obj).append(_input);
 	_input = $(obj).children("input");
 
-	console.info($(obj).outerWidth());
 	/*添加下拉框*/
 	var _dropbox = $("<div></div>")
 					.attr("class", "hyl-drop-down")
@@ -83,7 +82,6 @@ function hyl_select( obj, data, selFunc ) {
 		}, 100);
 	});
 
-	
 }
 
 
@@ -147,8 +145,8 @@ function hyl_table(obj, conf) {
 		_tbody.append(_tr);
 	});
 
-	 console.info(_obj.height());
-	 console.info( _obj.find(".hyl-grid-thead").outerHeight())
+	 // console.info(_obj.height());
+	 // console.info( _obj.find(".hyl-grid-thead").outerHeight())
 
 	_obj.find(".hyl-grid-tbody").css("height", (_obj.height()-_obj.find(".hyl-grid-thead").outerHeight())+"px");
 

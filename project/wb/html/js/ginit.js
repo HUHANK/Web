@@ -96,6 +96,8 @@ var g_CURRENT_USER_IS_ADMIN = 0;
 
 var g_SUPPORT  = {};
 
+var g_system_fix_height = 3;
+
 Options = new Object();
 Options.QueryCondition = new Object();
 QueryCondi = Options.QueryCondition;

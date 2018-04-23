@@ -8,9 +8,6 @@
 	width: 100%;
 	height: 100%;
 }
-.wrap .wrap1{
-	height: 100%;
-}
 .sidebar{
 	width: 150px;
 	height: 100%;
@@ -58,15 +55,171 @@
 }
 .wrap .wrap1{
 	float: left;
+	background-color: #F0F0F8;
 }
 
-.wrap .wrap1 .xzyh{
-	padding-top: 30px;
-	padding-left: 30px;
+.wrap .wrap1 > div{
+	padding: 30px 30px;
 	display: none;
 }
-.wrap .wrap1 .xzyh .title{
-	font-size: 16px;
-	color: rgb(74, 181,247);
+.wrap .wrap1 > div .title{
+	font-size: 18px;
+	color: #008080;
+	padding: 10px 0;
+	border-bottom: 1px solid #029C9C;
+	margin: 2px 0;
+}
+/*-----------------------公共样式------------------------*/
+.hyl-button{
+	background:none;  
+    outline:none;  
+    border:0px;
+
+    border: 1px solid #ACABAB;
+    border-radius: 4px;
+    width: 90px;
+    height: 28px;
+    background-color: white;
+    font-size: 14px;
+    color: #444444;
+    margin-right: 20px;
+}
+.hyl-input{
+	background:none;  
+    outline:none;  
+    border:0px;
+
+    border: 1px solid #ACABAB;
+    border-radius: 3px;
+    font-size: 14px;
+    width: 160px;
+    //height: px;
+    padding: 3px;
+}
+.hyl-input:focus{
+	border: 1px solid #3BB4F2;
+    box-shadow: 0px 0px 3px #3BB4F2;
+    background-color: #FFEE9A;
+    transition: all 0.3s;
+}
+.hyl-button:hover{
+	opacity: 0.8;
+}
+
+.hyl-bottom{
+	position: absolute;
+	right: 30px;
+	bottom: 15px;
+}
+/*-----------------------新增用户------------------------*/
+.wrap1 .xzyh .title1{
+	font-size: 14px;
+	font-weight: bold;
+	padding-top: 20px;
+}
+.wrap1 .xzyh table tr{
+	height: 34px;
+}
+.wrap1 .xzyh table pre{
+	font-size: 14px;
+}
+.wrap1 .xzyh .user-type{
+
+}
+.wrap1 .xzyh .user-type .title1{
+	border-bottom: 1px solid #C0C0C0;
+	padding-bottom: 4px;
+	margin-bottom: 4px;
+}
+.wrap1 .xzyh .user-type span{
+	margin-right: 40px;
+}
+
+/*-----------------------修改密码------------------------*/
+.wrap1 .xgmm table{
+	margin-top: 20px;
+}
+.wrap1 .xgmm table tr{
+	height: 34px;
+}
+.wrap1 .xgmm table pre{
+	font-size: 14px;
+}
+
+/*-----------------------删除账户------------------------*/
+
+.wrap1 .sczh table{
+	margin-top: 20px;
 	margin-bottom: 10px;
+}
+.wrap1 .sczh table tr{
+	height: 34px;
+}
+.wrap1 .sczh table pre{
+	font-size: 14px;
+}
+.wrap1 .sczh .option{
+	font-size: 14px;
+	border-top: 1px solid #C0C0C0;
+	padding: 5px;
+}
+
+/*-----------------------字典管理------------------------*/
+.wrap1 .xzb{
+	font-size: 14px;
+
+}
+.wrap1 .xzb .unit{
+	float: left;
+	margin-right: 10px;
+}
+.wrap1 .xzb .table {
+	border: 1px solid #9AB3DE;
+	box-shadow: 0px 0px 4px #9AB3DE;
+	border-radius: 2px;
+	width: 200px;
+	height: 400px;
+	background-color: white;
+	cursor: default;
+}
+.wrap1 .xzb .table .head{
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
+	padding: 4px;
+	background-color: #EEFCD5;
+}
+.wrap1 .xzb .table .body{
+	overflow: auto;
+}
+.wrap1 .xzb .table .body .row{
+	text-align: center;
+	padding: 2px;
+}
+.wrap1 .xzb .table .body .row:hover{
+	background-color: #DBF6F0;
+}
+.wrap1 .xzb .unit .option{
+	margin-top: 4px;
+}
+.wrap1 .xzb .unit .option button{
+	background:none;  
+    outline:none;  
+    border:0px;
+
+    color: #5E6664;
+    border: 1px solid gray;
+    width: 67.5px;
+}
+
+
+/*-----------------------Redmine 参数配置------------------------*/
+.wrap1 .rcspz input{
+	width: 280px;
+}
+.wrap1 .rcspz table{
+	margin-top: 30px;
+}
+.wrap1 .rcspz table tr{
+	height: 34px;
 }

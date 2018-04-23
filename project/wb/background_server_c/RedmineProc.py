@@ -7,6 +7,30 @@ import urllib2
 import traceback
 from MTime import * 
 
+RedmineUpdateInfo = {}
+
+
+def AddRedmineUptInfo(uid, mode, traceNo, descript, time):
+    """用户ID， 模式【1:Redmine录入, 2:从Redmine添加，3:从Redmine更新】， 跟踪号， 描述， 时间"""
+    dic = RedmineUpdateInfo;
+    uid = str(uid)
+    mode = str(mode)
+    traceNo = str(traceNo)
+
+    if dic.get(uid, None) is None:
+        dic[uid] = {}
+
+    dic = dic[uid]
+    if dic.get(mode, None) is None:
+        dic[mode] = {}
+
+    dic = dic[mode]
+    dic[traceNo] = "%s|%s" % (descript, time)
+
+def GetRedmineUptInfo(uid):
+    return RedmineUpdateInfo.get(str(uid), '')
+
+
 def Redmine_DateTrf(date):
     str = date[0:10]
     str = str.split('-')
@@ -136,9 +160,6 @@ def Redmine_GetUpdateThisWeekByPdll(uid):
 
     ret = []
     for issue in issues:
-        created_on = datetime.datetime.strftime(issue.created_on, "%Y-%m-%d")
-        if created_on >= wFirstDay and issue.done_ratio == 0:
-            continue
         tr = {}
         tr["ID"]        = issue.id
         tr['System']    = issue.project['name']
@@ -146,12 +167,23 @@ def Redmine_GetUpdateThisWeekByPdll(uid):
         for custom_field in issue.custom_fields:
             if custom_field.id == 7:
                 tr["Type"] = custom_field.value
+        if tr.get("Type",'').strip() == '':
+            tr["Type"] = u'项目管理';
 
         tr['TraceNo']   = "%s #%s" % (issue.tracker['name'], issue.id)
-        tr['Detail'] = issue.description
+        tr['Detail'] = (issue.description).strip()
+        if tr['Detail'] == '':
+            tr['Detail'] = (issue.subject).strip()
+        tr['Subject'] = (issue.subject).strip()
 
         for time_entry in issue.time_entries:
-            tr['Property'] = time_entry.activity['name']
+            tr['Property'] = (time_entry.activity['name']).strip()
+        if tr.get('Property','') == '':
+            tr['Property'] = u'进度跟踪'
+
+        if hasattr(issue, 'category'):
+            tr['Module'] = issue.category.name
+
         tr['ProgressRate'] = issue.done_ratio
         if hasattr(issue, 'start_date'):
             tr['StartDate'] = issue.start_date
@@ -159,6 +191,17 @@ def Redmine_GetUpdateThisWeekByPdll(uid):
         tr['EditDate'] = issue.updated_on
         if hasattr(issue, 'due_date'):
             tr['ExpireDate'] = issue.due_date
+        else:
+            tr['ExpireDate'] = tr['EditDate']
+
+        created_on = datetime.datetime.strftime(issue.created_on, "%Y-%m-%d")
+        updated_on = datetime.datetime.strftime(issue.updated_on, "%Y-%m-%d")
+        #如果创建时间和更新时间是一天，并且进度为0，认为该任务只是添加，不做本周任务；
+        #考虑到有人一周添加了几百条任务，但他只是做工作任务的录入这种情况；
+        if created_on == updated_on and issue.done_ratio == 0:
+            AddRedmineUptInfo(uid, '1', tr['TraceNo'], tr['Subject'], datetime.datetime.strftime(issue.created_on, "%Y-%m-%d %H:%M:%S"))
+            continue
+
         ret.append(tr)
     return ret
 

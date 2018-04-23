@@ -20,14 +20,17 @@
 				<div class="leaf xzyh">新增账户</div>
 				<div class="leaf xgmm">修改密码</div>
 				<div class="leaf sczh">删除账户</div>
-				<div class="leaf xgqx">修改权限</div>
+				<!--<div class="leaf xgqx">修改权限</div>-->
 			</div>
 
 			<div class="layer1 title">部门管理</div>
 			<div class="layer1 content"></div>
 
 			<div class="layer1 title">字典管理</div>
-			<div class="layer1 content"></div>
+			<div class="layer1 content">
+				<div class="leaf xzb">周报</div>
+				<div class="leaf support">Support</div>
+			</div>
 
 			<div  class="layer1 title">Redmine设置</div>
 			<div class="layer1 content">
@@ -36,86 +39,102 @@
 		</div>
 		<div class="wrap1">
 			<div class="xzyh">
-				<div class="title">创建一个新用户</div>
+				<div class="title">>> 创建一个新用户</div>
 				<table>
 					<tbody>
 						<tr>
-							<td><label>添加登陆用户</label></td><td></td>
+							<td colspan='2'><label class="title1">添加登陆用户</label></td>
 						</tr>
 						<tr>
-							<td><label><pre>登  陆 账 户：</pre></label></td>
-							<td><input type="text" name=""></td>
+							<td><label><pre>登  陆 账 户:</pre></label></td>
+							<td><input class="hyl-input" type="text" name=""></td>
 						</tr>
 						<tr>
-							<td><label><pre>密        码：</pre></label></td>
-							<td><input type="password" name=""></td>
+							<td><label><pre>密        码:</pre></label></td>
+							<td><input class="hyl-input" type="password" name=""></td>
 						</tr>
 						<tr>
-							<td><label><pre>确  认 密 码：</pre></label></td>
-							<td><input type="password" name=""></td>
+							<td><label><pre>确  认 密 码:</pre></label></td>
+							<td><input class="hyl-input" type="password" name=""></td>
 						</tr>
 						<tr>
-							<td><label>设置账户信息</label></td><td></td>
+							<td colspan='2'><label class="title1">设置账户信息</label></td><td></td>
 						</tr>
 						<tr>
-							<td><label><pre>账  户  姓 名：</pre></label></td>
-							<td><input type="text" name=""></td>
+							<td><label><pre>账  户  姓 名:</pre></label></td>
+							<td><input class="hyl-input" type="text" name=""></td>
 						</tr>
 						<tr>
-							<td><label><pre>Redmine用户名：</pre></label></td>
-							<td><input type="text" name=""></td>
+							<td><label><pre>Redmine用户名:</pre></label></td>
+							<td><input class="hyl-input" type="text" name=""></td>
 						</tr>
 						<tr>
-							<td><label><pre>Redmine用户ID：</pre></label></td>
-							<td><input type="text" name=""></td>
+							<td><label><pre>Redmine用户ID:</pre></label></td>
+							<td><input class="hyl-input" type="text" name=""></td>
 						</tr>
 					</tbody>
 				</table>
-				<div>选择一个账户户类型</div>
-				<div>
-					<span><input type="radio" name=""><label>普通账户</label></span>
-					<span><input type="radio" name=""><label>管理员</label></span>
+				<div class="user-type">
+					<div class="title1">选择一个账户户类型</div>
+					<div>
+						<span><input type="radio" name="type" value="normal" /> 普通账户 </span>
+						<span><input type="radio" name="type" value="admin" /> 管理员</span>
+					</div>
 				</div>
-				<button>创建账户</button><button>取消</button>
+				<div class="submit hyl-bottom">
+					<button class="hyl-button">创建账户</button><button class="hyl-button">取消</button>
+				</div>
 			</div>
 			<div class="xgmm">
-				<div class="title">修改账户密码</div>
+				<div class="title">>> 修改账户密码</div>
 				<table>
 					<tbody>
 						<tr>
 							<td><pre>登录账户:</pre></td>
-							<td><input type="text" name=""></td>
+							<td><input class="hyl-input" type="text" name=""></td>
 						</tr>
 						<tr>
 							<td><pre>原始密码:</pre></td>
-							<td><input type="password" name=""></td>
+							<td><input class="hyl-input" type="password" name=""></td>
 						</tr>
 						<tr>
 							<td><pre>更新密码:</pre></td>
-							<td><input type="password" name=""></td>
+							<td><input class="hyl-input" type="password" name=""></td>
 						</tr>
 					</tbody>
 				</table>
-				<button>更改</button><button>取消</button>
+				<div class="submit hyl-bottom">
+					<button class="hyl-button">更改</button><button class="hyl-button">取消</button>
+				</div>
 			</div>
 			<div class="sczh">
-				<div>删除账户</div>
-				<div>
-					<label>请选择删除账户:</label>
-					<input type="text" name="">
-				</div>
-				<div>
-					<label>请选择交接账户:</label>
-					<input type="text" name="">
-				</div>
-				<div>
-					<input type="radio" name="">
+				<div class="title">>> 删除账户</div>
+
+				<table>
+					<tbody>
+						<tr>
+							<td><pre>请选择删除账户:</pre></td>
+							<td><input class="hyl-input" type="text" name=""></td>
+						</tr>
+						<tr>
+							<td><pre>请选择交接账户:</pre></td>
+							<td><input class="hyl-input" type="text" name=""></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="option">
+					<input type="checkbox" name="">
 					<label>删除用户所有周报记录</label>
 				</div>
-				<button>删除</button><button>取消</button>
+				
+				<div class="hyl-bottom submit">
+					<button class="hyl-button">删除</button><button class="hyl-button">取消</button>
+				</div>
 			</div>
+		<!--
 			<div class="xgqx">
-				<div>修改账户权限</div>
+				<div class="title">>> 修改账户权限</div>
 				<div>
 					<label>选择账户:</label>
 					<input type="text" name="">
@@ -129,10 +148,66 @@
 				</p>
 				<button>修改</button><button>取消</button>
 			</div>
+		-->
 
 			<div class="rcspz">
-				
+				<div class="title">>> Redmine配置参数</div>
+				<table>
+					<tbody>
+						<tr>
+							<td><pre>Redmine        URL:</pre></td>
+							<td><input class="hyl-input" type="text" name=""></td>
+						</tr>
+						<tr>
+							<td><pre>Redmine  API   Key:</pre></td>
+							<td><input class="hyl-input" type="text" name=""></td>
+						</tr>
+						<tr>
+							<td><pre>Redmine同步间隔(s):</pre></td>
+							<td><input class="hyl-input" type="text" name=""></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="submit hyl-bottom">
+					<button class="hyl-button">保存</button>
+				</div>
 			</div>
+
+			<div class="xzb">
+				<div class="unit">
+					<div class="table">
+						<div class="head">周报.类型</div>
+						<div class="body">
+							<div class="row">监管需求</div>
+							<div class="row">业务需求</div>
+						</div>
+					</div>
+					<div class="option">
+						<button>Add</button><button style="margin-left: -1px;">Edit</button><button  style="margin-left: -1px;">Del</button>
+					</div>
+				</div>
+				<div class="unit">
+					<div class="table">
+						<div class="head">周报.性质</div>
+						<div class="body">
+							<div class="row">单元测试</div>
+							<div class="row">开发</div>
+						</div>
+					</div>
+				</div>
+				<div class="unit">
+					<div class="table">
+						<div class="head">周报.系统</div>
+						<div class="body">
+							<div class="row">集中交易</div>
+							<div class="row">融资融券</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
 		</div>
 	</div>
 </body>

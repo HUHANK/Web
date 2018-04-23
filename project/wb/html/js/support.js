@@ -138,7 +138,7 @@ function SupportMouseRightDown(e) {
 				alert("获取任务信息失败！");
 				return ;
 			}
-			console.info(d);
+			//console.info(d);
 
 			var conf = {};
 			conf.columns = [
@@ -212,7 +212,7 @@ function init_add_record ( ) {
 	hyl_select($(".support .add-record table .charger"), users);
 
 
-	console.info(g_SUPPORT);
+	//console.info(g_SUPPORT);
 	$(g_SUPPORT).each(function(index, el) {
 		if (el.name == "包类型"){
 			data = []
@@ -316,7 +316,7 @@ function init_add_record ( ) {
 				alert("数据库查询失败！");
 				return ;
 			}
-			console.info(d);
+			//console.info(d);
 			var data = d.data[0];
 
 			$(".support .add-record table .system 	input").val(data.SYSTEM);
@@ -383,7 +383,7 @@ function init_add_record ( ) {
 		param.method = "EXPORT";
 
 		sync_post_data("/support/", JSON.stringify(param), function(d) {
-			console.info(d);
+			//console.info(d);
 			if (d.ErrCode != 0) {
 				alert(d.msg);
 				return;
