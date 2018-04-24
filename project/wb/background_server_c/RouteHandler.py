@@ -1,18 +1,6 @@
 # -*- coding: utf-8 -*-
 
-#import json
-from    wrap        import route
-from    MySQL_db    import *
-from    Session     import *
-from    MTime       import *
-from    PubFunc     import *
-from    RedmineProc import Redmine_GetData, AddRedmineUptInfo, GetRedmineUptInfo
-import  base64
-import  uuid
-
-# import sys
-# reload(sys)
-# sys.setdefaultencoding("utf-8")
+from RouteHandlerEx import *
 
 
 @route("/")
@@ -1516,7 +1504,21 @@ def SyncFromRedmine(data):
     ret['data'] = GetRedmineUptInfo(redmine_uid)
     return SuccessDeal(ret)
 
+#-----------------------------------------系统设置-------------------------------------------
 
+@route("/system_set/")
+def SystemSettings(data):
+    data = json.loads(data)
+    method = data.get('method', '')
+    ret = {}
+
+    if method == 'GET_ALL_DICT':
+        rs = systemGetAllDict()
+        if rs is None:
+            return ErrorDeal(ret, "字典数据获取失败!")
+        ret['data'] = rs
+
+    return SuccessDeal(ret)
 
 
 

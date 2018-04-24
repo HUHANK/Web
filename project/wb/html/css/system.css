@@ -177,8 +177,8 @@
 	border: 1px solid #9AB3DE;
 	box-shadow: 0px 0px 4px #9AB3DE;
 	border-radius: 2px;
-	width: 200px;
-	height: 400px;
+	width: 260px;
+	//height: 400px;
 	background-color: white;
 	cursor: default;
 }
@@ -191,6 +191,7 @@
 }
 .wrap1 .xzb .table .body{
 	overflow: auto;
+	height: 400px;
 }
 .wrap1 .xzb .table .body .row{
 	text-align: center;
@@ -199,8 +200,13 @@
 .wrap1 .xzb .table .body .row:hover{
 	background-color: #DBF6F0;
 }
+.wrap1 .xzb .table .body .selected{
+	color: white;
+	background-color: #429742;
+}
 .wrap1 .xzb .unit .option{
 	margin-top: 4px;
+	text-align: center;
 }
 .wrap1 .xzb .unit .option button{
 	background:none;  
@@ -210,8 +216,26 @@
     color: #5E6664;
     border: 1px solid gray;
     width: 67.5px;
+    padding: 3px;
 }
-
+.wrap1 .xzb .unit .option button:hover{
+	opacity: 0.8;
+}
+.wrap1 .xzb .unit .option .add{
+	background-color: #1A82DD;
+	color: white;
+}
+.wrap1 .xzb .unit .option .upt{
+	background-color: #1A82DD;
+	color: white;
+}
+.wrap1 .xzb .unit .option .del{
+	background-color: #E1605B;
+	color: white;
+}
+.wrap1 .xzb .module{
+	//display: none;
+}
 
 /*-----------------------Redmine 参数配置------------------------*/
 .wrap1 .rcspz input{
