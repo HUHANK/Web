@@ -125,7 +125,9 @@ function add_zb_ginit() {
 		param.UID = g_CURRENT_USER_ID;
 
 		setTimeout(function(){
-			if ($(".wrap1 .wait").is(':hidden') == false) {
+			var bsync = $(".wrap1 .redmine-sync").is(":hidden");
+			var bwait = $(".wrap1 .wait").is(':hidden');
+			if ((bsync == true && bwait == false)){
 				alert("连接超时！");
 				$(".wrap1 .wait").hide(200, function() {});
 			}
@@ -136,18 +138,89 @@ function add_zb_ginit() {
 			if (d.ErrCode != 0) {
 				alert(d.msg);
 			}
-			//console.info(d);
-			add_zb_show_work();
-
+			console.info(d);
+			show_redmin_sync_info(d.data);
+			
+			//add_zb_show_work();
 			//$(".wrap1 .wait").addClass('unshow');
-			$(".wrap1 .wait").hide(200, function() {});
 		});
+	});
+
+	$(".wrap1 .redmine-sync .head .exit").click(function(event) {
+		$(".wrap1 .wait").hide(10, function() {});
+		$(".wrap1 .redmine-sync .m0,.m1,.m2,.m3").hide(10);
+		$(".wrap1 .redmine-sync").hide(10);
+		add_zb_show_work();
 	});
 
 	$(".add-zb .edit-wrap .head .exit").click(function(event) {
 		hide_edit_wrap_pop_box();
 	});
 
+}
+
+function show_redmin_sync_info(data){
+	//console.info(data);
+	if (data == '') {
+		/*显示无任何信息*/
+		$(".wrap1 .redmine-sync .m0").show(10);
+	}else{
+		$.map(data, function(val, mode){
+			//console.info(mode, val);
+			if (mode == '1'){
+				var hb = $(".wrap1 .redmine-sync .m1 .res");
+				hb.html("");
+				var i = 0;
+				$.map(val, function(v, k){
+					i = i + 1;
+					var rs = k+"|"+v;
+					//hb.append($("<p></p>").text(rs));	
+					rs = "<span>"+i+". </span>" + rs;
+					hb.append($("<p></p>").html(rs));
+				})
+				$(".wrap1 .redmine-sync .m1").show(10);
+			}else if ('2' == mode){
+				var hb = $(".wrap1 .redmine-sync .m2 .res");
+				hb.html("");
+				var i = 0;
+				$.map(val, function(v, k){
+					i = i + 1;
+					var rs = k+"|"+v;
+					rs = "<span>"+i+". </span>" + rs;
+					hb.append($("<p></p>").html(rs));	
+				})
+				$(".wrap1 .redmine-sync .m2").show(10);
+			}else if ('3' == mode){
+				var hb = $(".wrap1 .redmine-sync .m3 .res");
+				hb.html("");
+				var i = 0;
+				$.map(val, function(v, k){
+					i = i + 1;
+					var rs = k+"|"+v;
+					rs = "<span>"+i+". </span>" + rs;
+					hb.append($("<p></p>").html(rs));
+				})
+				$(".wrap1 .redmine-sync .m3").show(10);
+			}
+		});
+	}
+	$(".wrap1 .redmine-sync").ready(function() {
+		$(".wrap1 .redmine-sync").css({
+			'left': '50%',
+			'top': '50%'
+		});
+		$(".wrap1 .redmine-sync").show(10);
+		var h = $(".wrap1 .redmine-sync").height();
+		var w = $(".wrap1 .redmine-sync").width();
+		var left = $(".wrap1 .redmine-sync").offset().left;
+		var top = $(".wrap1 .redmine-sync").offset().top;
+		left = left - w/2;
+		top = top - h/2-10;
+		$(".wrap1 .redmine-sync").css({
+			'left': left+'px',
+			'top': top+'px'
+		});
+	});
 }
 
 function show_edit_wrap_pop_box(){

@@ -186,4 +186,48 @@ body .wrap1 {
 }
 
 
+/*------------------------------周报同步信息界面--------------------------------------*/
 
+.wrap1 .redmine-sync{
+	background-color: #C5F6EA;
+	font-size: 14px;
+	display: none;
+	z-index: 1001;
+
+	width: 600px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+
+	border-radius: 3px;
+}
+.wrap1 .redmine-sync .head {
+	background-color: #C3C5C5;
+	padding: 3px;
+	font-size: 15px;
+	font-weight: bold;
+
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+.wrap1 .redmine-sync .head .exit{
+	float: right;
+}
+.wrap1 .redmine-sync .res{
+	max-height: 60px;
+	color: #666666;
+	font-style: italic;
+}
+.wrap1 .redmine-sync .res span{
+	font-style: normal;
+	font-weight: bold;
+	color: #505050;
+}
+.wrap1 .redmine-sync .m0,.m1,.m2,.m3{
+	display: none;
+	margin: 4px;
+}
+.wrap1 .redmine-sync h3{
+	font-weight: bold;
+	color: #082A4E;
+}

@@ -27,9 +27,14 @@ def AddRedmineUptInfo(uid, mode, traceNo, descript, time):
     dic = dic[mode]
     dic[traceNo] = "%s|%s" % (descript, time)
 
-def GetRedmineUptInfo(uid):
-    return RedmineUpdateInfo.get(str(uid), '')
+def ResetRedmineUptInfo(uid):
+    if RedmineUpdateInfo.has_key(uid):
+        RedmineUpdateInfo.pop(uid)
 
+def GetRedmineUptInfo(uid):
+    res = RedmineUpdateInfo.get(str(uid), '')
+    ResetRedmineUptInfo(str(uid))
+    return res
 
 def Redmine_DateTrf(date):
     str = date[0:10]
