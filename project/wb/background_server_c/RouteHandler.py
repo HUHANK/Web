@@ -1517,7 +1517,17 @@ def SystemSettings(data):
         if rs is None:
             return ErrorDeal(ret, "字典数据获取失败!")
         ret['data'] = rs
-
+    elif method == "UPDATE_DICT_ITEM":
+        rs = systemUpdateDictItem(data)
+        if rs is False:
+            return ErrorDeal(ret, "字典数据跟新失败!")
+    elif method == "ADD_DICT_ITEM":
+        id = systemAddDictItem(data)
+        if id < 1:
+            return  ErrorDeal(ret, "字典数据添加失败!")
+        ret['id'] = id
+    else:
+        return ErrorDeal(ret, "模式无效！")
     return SuccessDeal(ret)
 
 

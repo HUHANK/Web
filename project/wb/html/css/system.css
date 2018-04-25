@@ -195,14 +195,30 @@
 }
 .wrap1 .xzb .table .body .row{
 	text-align: center;
-	padding: 2px;
+	line-height: 24px;
+}
+.wrap1 .xzb .table .body .row input{
+	background:none;  
+    outline:none;  
+    border:none;
+
+    border: 1px solid #2AF6FC;
+}
+.wrap1 .xzb .table .body .row input:focus{
+	background-color: #FFEE9A;
+    transition: all 0.3s;
+}
+.wrap1 .xzb .table .body .row.selected:hover{
+	background-color: #429742;
 }
 .wrap1 .xzb .table .body .row:hover{
 	background-color: #DBF6F0;
+	opacity: 0.8;
 }
 .wrap1 .xzb .table .body .selected{
 	color: white;
 	background-color: #429742;
+	height: 24px;
 }
 .wrap1 .xzb .unit .option{
 	margin-top: 4px;

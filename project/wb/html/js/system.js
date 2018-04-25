@@ -36,6 +36,11 @@ function SidebarEventInit(){
 	if (typeof NowSelItem != 'undefined' && NowSelItem != ''){
 		$(".wrap .sidebar .leaf."+NowSelItem).addClass('selected');
 		$(".wrap .wrap1 ."+NowSelItem).show(100);
+		switch(NowSelItem){
+			case 'xzb':
+			xzb_init();
+			break;
+		}
 	}
 	
 	/*-----------------------------------------------*/
@@ -60,8 +65,8 @@ function SidebarEventInit(){
 		$.cookie('SystemSidebarSelItem', NowSelItem);
 		switch(NowSelItem){
 			case 'xzb':
-			xzb_init();
-			break;
+				xzb_init();
+				break;
 		}
 	});
 }
@@ -74,6 +79,7 @@ function xzb_init() {
 		console.info(d);
 		if (d.ErrCode != 0) {
 			alert(d.msg);
+			return;
 		}
 		var data = d.data;
 		var propertys = data['性质'];
@@ -149,11 +155,127 @@ function xzb_init() {
 								$(this).parent().find(".selected").removeClass('selected');
 								$(this).addClass('selected');
 							});
+							$(".wrap1 .xzb .module .body .row").dblclick(function(event) {
+								dblclick_to_edit($(this), dict_item_edit_process);
+							});
 						});
 					}
 				}
 			});
 		});
 
+		/*双击事件*/
+		$(".wrap1 .xzb .body .row").dblclick(function(event) {
+			dblclick_to_edit($(this), dict_item_edit_process);
+		});
+
+		/*按钮*/
+		$(".wrap1 .xzb .unit .option button.upt").click(function(event) {
+			var unit = $(this).parents("div.unit");
+			var sel = unit.find(".selected");
+			if (sel.length > 0)
+				dblclick_to_edit(sel, dict_item_edit_process);
+		});
+
+		$(".wrap1 .xzb .unit .option button.add").click(function(event) {
+			var unit = $(this).parents("div.unit");
+			unit.find(".selected").removeClass('selected');
+			var ele = $("<p></p>").addClass('row').addClass('selected');
+			unit.find(".body").append(ele);
+
+			unit.find(".body").ready(function() {
+				dblclick_to_edit(unit.find(".selected"), dict_item_add_process);
+			});
+		});
+	});
+}
+
+function dict_item_add_process(obj, val) {
+	var res = true;
+	var param = new Object();
+	param.method="ADD_DICT_ITEM";
+
+	var unit = $(obj).parents("div.unit");
+	if (unit.hasClass('type')) {
+		param.parent = 'type';
+	}
+	else if (unit.hasClass('property')) {
+		param.parent = 'property';
+	}
+	else if (unit.hasClass('system')) {
+		param.parent = 'system';
+	}
+	else if (unit.hasClass('module')) {
+		var sel = $(".wrap1 .xzb .system .body .selected");
+		if (sel.length < 1) return false;
+		param.parent = 'module';
+		param.parent_id = sel.attr("key");
+	}
+	param.name = val;
+
+	sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+		if (d.ErrCode != 0) {
+			alert(d.msg);
+			res = false;
+			return;
+		}
+
+		$(obj).attr("key", d.id);
+		$(obj).dblclick(function(event) {
+			/* Act on the event */
+		});
+	});
+
+	return res;
+}
+
+function dict_item_edit_process(obj, new_val){
+	//console.info("CALLBACK!");
+	var param = new Object();
+	var res = true;
+	param.method = 'UPDATE_DICT_ITEM';
+	param.id = $(obj).attr("key");
+	param.new_name = new_val;
+
+	sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+		if (d.ErrCode != 0) {
+			alert(d.msg);
+			res = false;
+			return;
+		}
+	});
+	return res;
+}
+
+function dblclick_to_edit(obj, callback){
+	var _width = $(obj).width();
+	var _height = $(obj).height();
+	var _text = $(obj).text();
+	//console.info(_width, _height, _text);
+
+	$(obj).html('');
+	var new_input = $('<input class="" type="text" name="">');
+	new_input.val(_text);
+	new_input.width(_width);
+	new_input.height(_height-2);
+
+	$(obj).append(new_input);
+
+	$(obj).children('input').ready(function() {
+		var _input = $(obj).children('input');
+		_input.focus();
+		_input.blur(function(event) {
+			if (typeof callback != "undefined") {
+				if (_text != $(this).val()){
+					if (!callback($(obj), $(this).val()) ) {
+						$(obj).html("");
+						$(obj).text(_text);
+						return;
+					}
+				}
+			}
+			$(obj).html("");
+			$(obj).text($(this).val());
+		});
 	});
 }
