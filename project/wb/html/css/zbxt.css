@@ -295,6 +295,12 @@ table tbody tr:hover{
 .add-zb .reminder .ts-unit:hover{
 	color: #2761FD;
 }
+.add-zb .reminder .redmine span{
+	color: #14686A;
+}
+.add-zb .reminder .redmine span:hover{
+	color: #2761FD;
+}
 
 .add-zb .bzgz{
 	//display: none;

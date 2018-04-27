@@ -256,7 +256,7 @@ def reportProcess(data):
         sql = "SELECT UID FROM user where UNAME = '%s'" %(userName)
         ret = db.select(sql)
         UID = ret["datas"][0][0]
-        sql = "INSERT INTO user_work(UID,WID, YEAR, WEEK) VALUES(%s, %s, %s, %s)" % (UID, id, Year, Week)
+        sql = "INSERT INTO user_work(UID,WID, YEAR, WEEK, STATU) VALUES(%s, %s, %s, %s, '10')" % (UID, id, Year, Week)
         if db.update(sql) < 0 :
             setErrMsg(ret, 2, "数据库插入失败！")
             return json.dumps(ret)
@@ -275,10 +275,11 @@ def reportProcess(data):
             % (d.get("System",''), d.get("Module",''), d.get("Type",''),d.get("TraceNo",''),Detail,d.get("Property",''),d.get("ProgressRate",0),
                EditDate,d.get("NeedDays",0),Note, CalExpireDate(db, d.get("EditDate",''), d.get("NeedDays",0)),
                d.get("id", -1))
-        #print sql
+
         if db.update(sql) < 0:
             setErrMsg(ret, 2, u"数据库跟新失败！")
             return json.dumps(ret)
+        UpdateThisWeekStatu(d.get("id", 0), None, 1)
         setErrMsg(ret, 0, "")
         return json.dumps(ret)
 
@@ -320,6 +321,7 @@ def reportProcess(data):
               % (userName, NYear, NWeek, userName, Year, Week, NextWeekFirstDay, NextWeekFirstDay2)
         rs = db.select2(sql)
         ret["next"] = rs["data"]
+        ret["ThisWeekWorkStatus"] = GetThisWeekWorkStatus(data.get('UserID', 0))
         setErrMsg(ret, 0, "")
         return json.dumps(ret)
     elif data["method"] == "DELETE":
@@ -1471,7 +1473,8 @@ def SyncFromRedmine(data):
                             wid)
                 res = db.update(sql)
                 if res < 0:
-                    return ErrorDeal(ret, "插入数据库失败！")
+                    return ErrorDeal(ret, "更新数据库失败！")
+                UpdateThisWeekStatu(wid, None, 2)
             else:
                 AddRedmineUptInfo(redmine_uid, '2', row['TraceNo'], row['Subject'], row.get("AddDate",''))
                 #-----------INSERT
@@ -1493,7 +1496,7 @@ def SyncFromRedmine(data):
                 if wid < 0:
                     return ErrorDeal(ret, "插入数据库失败！")
 
-                sql = "INSERT INTO user_work(UID, WID, YEAR, WEEK) VALUES(%s,%s,%s,%s)"%(UID, wid, Year, Week)
+                sql = "INSERT INTO user_work(UID, WID, YEAR, WEEK, STATU) VALUES(%s,%s,%s,%s,'20')"%(UID, wid, Year, Week)
                 res = db.update(sql)
                 if res < 0:
                     return ErrorDeal(ret, "2插入数据库失败！")

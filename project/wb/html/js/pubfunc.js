@@ -287,8 +287,20 @@ function GenProgressBarHtml(width, height, pro) {
     return html;
 }
 
-function OpenRedmineWindow(url) {
-	window.open(url, "newwindow", "height=800, width=700, toolbar=no, menubar=no, scrollbars=yes, location=no, status=no");
+function OpenRedmineWindow(url, h, w, title) {
+	if (typeof h == "undefined") {
+		h = 800;
+	}
+	if (typeof w == "undefined") {
+		w = 700;
+	}
+	nw = window.open(url, "newwindow", "height="+h+", width="+w+", toolbar=no, menubar=no, scrollbars=yes, location=no, status=no");
+	if (typeof title != "undefined") {
+		setTimeout(function(){
+			nw.document.title = title;
+		}, 500);
+		nw.document.title = title;
+	}
 }
 
 function GenTraceNoAhref( traceNo ) {

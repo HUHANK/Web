@@ -263,3 +263,10 @@ def Redmine_GetData(mode, uid):
 #     print "----------------------------------------"
 #     for key in row:
 #         print "%s : %s" % (key, row[key])
+
+
+
+def GenRedmineIssuesQueryUrl(siid):
+    url = "http://%s/redmine/issues?utf8=?&set_filter=1&f[]=issue_id&op[issue_id]==&v[issue_id][]=%s&f[]=&c[]=project&c[]=tracker&c[]=subject&c[]=status&c[]=priority&c[]=done_ratio&c[]=due_date&c[]=assigned_to&c[]=fixed_version&group_by=assigned_to&t[]=estimated_hours&t[]=spent_hours&t[]="
+    url = url % (REDMINE_HOST,siid)
+    return url

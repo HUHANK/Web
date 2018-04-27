@@ -529,9 +529,42 @@ function add_zb_show_work() {
 	var param = new Object()
 	param.SessionID = Options.SessionID;
 	param.method = "GET";
+	param.UserID = g_CURRENT_USER_ID;
+	
 	sync_post_data("/report/", JSON.stringify(param), function(d) {
 		//d = $.parseJSON(d);
 		//console.info(d);
+		if (d.ErrCode != 0) {
+			alert(d.msg)
+			return;
+		}
+		ThisWeekWorkStatus = d.ThisWeekWorkStatus;
+		console.info(ThisWeekWorkStatus);
+		$(".add-zb .head-wrap .reminder .redmine .self-add").text(ThisWeekWorkStatus.self.add.count)
+		$(".add-zb .head-wrap .reminder .redmine .self-upt").text(ThisWeekWorkStatus.self.upt.count)
+		$(".add-zb .head-wrap .reminder .redmine .all-add").text(ThisWeekWorkStatus.all.add.count)
+		$(".add-zb .head-wrap .reminder .redmine .all-upt").text(ThisWeekWorkStatus.all.upt.count)
+		$(".add-zb .head-wrap .reminder .redmine span").unbind();
+		$(".add-zb .head-wrap .reminder .redmine span").click(function(event) {
+			var url = "";
+			var title = '';
+			if ($(this).hasClass('self-add')) {
+				url = ThisWeekWorkStatus.self.add.url;
+				title = "本人本周从Redmine同步添加的Issues";
+			} else if ($(this).hasClass('self-upt')){
+				url = ThisWeekWorkStatus.self.upt.url;
+				title = "本人本周从Redmine同步更新的Issues";
+			}
+			else if ($(this).hasClass('all-add')){
+				url = ThisWeekWorkStatus.all.add.url;
+				title = "所有人员本周从Redmine同步添加的Issues";
+			}
+			else if ($(this).hasClass('all-upt')){
+				url = ThisWeekWorkStatus.all.upt.url;
+				title = "所有人员本周从Redmine同步更新的Issues";
+			}
+			OpenRedmineWindow(url, 800, 1500, title);
+		});
 		if (d.ErrCode == 0) {
 			var CurWeekData = d.current;
 			var NextWeekData = d.next;
