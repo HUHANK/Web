@@ -161,9 +161,10 @@ function add_zb_ginit() {
 
 function show_redmin_sync_info(data){
 	//console.info(data);
+	$(".wrap1 .redmine-sync").show(0);
 	if (data == '') {
 		/*显示无任何信息*/
-		$(".wrap1 .redmine-sync .m0").show(10);
+		$(".wrap1 .redmine-sync .m0").show(0);
 	}else{
 		$.map(data, function(val, mode){
 			//console.info(mode, val);
@@ -178,7 +179,7 @@ function show_redmin_sync_info(data){
 					rs = "<span>"+i+". </span>" + rs;
 					hb.append($("<p></p>").html(rs));
 				})
-				$(".wrap1 .redmine-sync .m1").show(10);
+				$(".wrap1 .redmine-sync .m1").show(0);
 			}else if ('2' == mode){
 				var hb = $(".wrap1 .redmine-sync .m2 .res");
 				hb.html("");
@@ -189,7 +190,7 @@ function show_redmin_sync_info(data){
 					rs = "<span>"+i+". </span>" + rs;
 					hb.append($("<p></p>").html(rs));	
 				})
-				$(".wrap1 .redmine-sync .m2").show(10);
+				$(".wrap1 .redmine-sync .m2").show(0);
 			}else if ('3' == mode){
 				var hb = $(".wrap1 .redmine-sync .m3 .res");
 				hb.html("");
@@ -200,26 +201,23 @@ function show_redmin_sync_info(data){
 					rs = "<span>"+i+". </span>" + rs;
 					hb.append($("<p></p>").html(rs));
 				})
-				$(".wrap1 .redmine-sync .m3").show(10);
+				$(".wrap1 .redmine-sync .m3").show(0);
 			}
 		});
 	}
-	$(".wrap1 .redmine-sync").ready(function() {
-		$(".wrap1 .redmine-sync").css({
-			'left': '50%',
-			'top': '50%'
-		});
-		$(".wrap1 .redmine-sync").show(10);
-		var h = $(".wrap1 .redmine-sync").height();
-		var w = $(".wrap1 .redmine-sync").width();
-		var left = $(".wrap1 .redmine-sync").offset().left;
-		var top = $(".wrap1 .redmine-sync").offset().top;
-		left = left - w/2;
-		top = top - h/2-10;
-		$(".wrap1 .redmine-sync").css({
-			'left': left+'px',
-			'top': top+'px'
-		});
+		
+	var h = $(".wrap1 .redmine-sync").height();
+	var w = $(".wrap1 .redmine-sync").width();
+	var clientW = $(window).width();
+	var clientH = $(window).height();
+	//console.info(h,w, clientW, clientH);
+	lleft = (clientW-w)/2;
+	ttop =  (clientH-h)/2;
+	//console.info(lleft, ttop);
+	//$(".wrap1 .redmine-sync").css('margin', '-300px 0 0 -'+h/2+"px");
+	$(".wrap1 .redmine-sync").css({
+		'left': lleft+'px',
+		'top': ttop+'px'
 	});
 }
 

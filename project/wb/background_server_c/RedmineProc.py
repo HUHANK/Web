@@ -206,6 +206,15 @@ def Redmine_GetUpdateThisWeekByPdll(uid):
         if created_on == updated_on and issue.done_ratio == 0:
             AddRedmineUptInfo(uid, '1', tr['TraceNo'], tr['Subject'], datetime.datetime.strftime(issue.created_on, "%Y-%m-%d %H:%M:%S"))
             continue
+        NeedAdd = True
+        for journal in issue.journals:
+            if journal.user.id == uid:
+                tt = datetime.datetime.strftime(journal.created_on, "%Y-%m-%d")
+                if tt >=wFirstDay and tt <= wEndDay:
+                    NeedAdd = False
+        if NeedAdd is True:
+            AddRedmineUptInfo(uid, '1', tr['TraceNo'], tr['Subject'], datetime.datetime.strftime(issue.created_on, "%Y-%m-%d %H:%M:%S"))
+            continue
 
         ret.append(tr)
     return ret
