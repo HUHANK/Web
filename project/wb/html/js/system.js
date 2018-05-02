@@ -98,6 +98,22 @@ function support_init() {
 				status = el;
 		});
 
+		/*类型*/
+		var dom = $(".wrap1 .support .type .body");
+		dom.html('');
+		$(type.data).each(function(index, el) {
+			var tmp = $("<p></p>").text(el['name']).addClass('row').attr("key", el['id']);
+			dom.append(tmp);
+		});
+
+		/*状态*/
+		var dom = $(".wrap1 .support .statu .body");
+		dom.html('');
+		$(status.data).each(function(index, el) {
+			var tmp = $("<p></p>").text(el['name']).addClass('row').attr("key", el['id']);
+			dom.append(tmp);
+		});
+
 		
 	});
 }
