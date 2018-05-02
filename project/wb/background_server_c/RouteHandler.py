@@ -1529,6 +1529,9 @@ def SystemSettings(data):
         if id < 1:
             return  ErrorDeal(ret, "字典数据添加失败!")
         ret['id'] = id
+    elif method == "DEL_DICT_ITEM":
+        if systemDeleteDictItem(data) == False:
+            return ErrorDeal(ret, "字典数据删除失败!")
     else:
         return ErrorDeal(ret, "模式无效！")
     return SuccessDeal(ret)

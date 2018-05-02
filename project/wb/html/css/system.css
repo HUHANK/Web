@@ -1,14 +1,15 @@
-*{
+* {
 	margin: 0;
 	padding: 0;
 	//cursor: default;
 }
 
-.wrap{
+.wrap {
 	width: 100%;
 	height: 100%;
 }
-.sidebar{
+
+.sidebar {
 	width: 150px;
 	height: 100%;
 	background-color: #DFE1E3;
@@ -19,247 +20,373 @@
 	cursor: default;
 }
 
-.show{
+.show {
 	display: block;
 }
 
-.sidebar .content{
+.sidebar .content {
 	display: none;
 }
 
-.sidebar .layer1.title{
+.sidebar .layer1.title {
 	padding-left: 20px;
 	padding-bottom: 2px;
 	padding-top: 2px;
 	font-weight: bold;
 }
 
-.sidebar .leaf{
+.sidebar .leaf {
 	padding-left: 30px;
 	padding-bottom: 1px;
 	padding-top: 1px;
 }
-.sidebar .layer1.title:hover{
+
+.sidebar .layer1.title:hover {
 	background-color: #C3D2E1;
 }
-.sidebar .leaf:hover{
+
+.sidebar .leaf:hover {
 	background-color: #C3D2E1;
 }
-.sidebar .leaf.selected{
+
+.sidebar .leaf.selected {
 	background: -webkit-linear-gradient(#7B8DA0, #4B627A); /* Safari 5.1 - 6.0 */
-  	background: -o-linear-gradient(#7B8DA0, #4B627A); /* Opera 11.1 - 12.0 */
-  	background: -moz-linear-gradient(#7B8DA0, #4B627A); /* Firefox 3.6 - 15 */
-  	background: linear-gradient(#7B8DA0, #4B627A); /* 标准的语法 */
-  	color: white;
-  	font-weight: bold;
+	background: -o-linear-gradient(#7B8DA0, #4B627A); /* Opera 11.1 - 12.0 */
+	background: -moz-linear-gradient(#7B8DA0, #4B627A); /* Firefox 3.6 - 15 */
+	background: linear-gradient(#7B8DA0, #4B627A); /* 标准的语法 */
+	color: white;
+	font-weight: bold;
 }
-.wrap .wrap1{
+
+.wrap .wrap1 {
 	float: left;
 	background-color: #F0F0F8;
 }
 
-.wrap .wrap1 > div{
+.wrap .wrap1 > div {
 	padding: 30px 30px;
 	display: none;
 }
-.wrap .wrap1 > div .title{
+
+.wrap .wrap1 > div .title {
 	font-size: 18px;
 	color: #008080;
 	padding: 10px 0;
 	border-bottom: 1px solid #029C9C;
 	margin: 2px 0;
 }
+
 /*-----------------------公共样式------------------------*/
-.hyl-button{
-	background:none;  
-    outline:none;  
-    border:0px;
-
-    border: 1px solid #ACABAB;
-    border-radius: 4px;
-    width: 90px;
-    height: 28px;
-    background-color: white;
-    font-size: 14px;
-    color: #444444;
-    margin-right: 20px;
+.hyl-button {
+	background: none;
+	outline: none;
+	border: 0px;
+	border: 1px solid #ACABAB;
+	border-radius: 4px;
+	width: 90px;
+	height: 28px;
+	background-color: white;
+	font-size: 14px;
+	color: #444444;
+	margin-right: 20px;
 }
-.hyl-input{
-	background:none;  
-    outline:none;  
-    border:0px;
 
-    border: 1px solid #ACABAB;
-    border-radius: 3px;
-    font-size: 14px;
-    width: 160px;
-    //height: px;
-    padding: 3px;
+.hyl-input {
+	background: none;
+	outline: none;
+	border: 0px;
+	border: 1px solid #ACABAB;
+	border-radius: 3px;
+	font-size: 14px;
+	width: 160px;
+	//height: px;
+	padding: 3px;
 }
-.hyl-input:focus{
+
+.hyl-input:focus {
 	border: 1px solid #3BB4F2;
-    box-shadow: 0px 0px 3px #3BB4F2;
-    background-color: #FFEE9A;
-    transition: all 0.3s;
+	box-shadow: 0px 0px 3px #3BB4F2;
+	background-color: #FFEE9A;
+	transition: all 0.3s;
 }
-.hyl-button:hover{
+
+.hyl-button:hover {
 	opacity: 0.8;
 }
 
-.hyl-bottom{
+.hyl-bottom {
 	position: absolute;
 	right: 30px;
 	bottom: 15px;
 }
+
 /*-----------------------新增用户------------------------*/
-.wrap1 .xzyh .title1{
+.wrap1 .xzyh .title1 {
 	font-size: 14px;
 	font-weight: bold;
 	padding-top: 20px;
 }
-.wrap1 .xzyh table tr{
+
+.wrap1 .xzyh table tr {
 	height: 34px;
 }
-.wrap1 .xzyh table pre{
+
+.wrap1 .xzyh table pre {
 	font-size: 14px;
 }
-.wrap1 .xzyh .user-type{
 
+.wrap1 .xzyh .user-type {
 }
-.wrap1 .xzyh .user-type .title1{
+
+.wrap1 .xzyh .user-type .title1 {
 	border-bottom: 1px solid #C0C0C0;
 	padding-bottom: 4px;
 	margin-bottom: 4px;
 }
-.wrap1 .xzyh .user-type span{
+
+.wrap1 .xzyh .user-type span {
 	margin-right: 40px;
 }
 
 /*-----------------------修改密码------------------------*/
-.wrap1 .xgmm table{
+.wrap1 .xgmm table {
 	margin-top: 20px;
 }
-.wrap1 .xgmm table tr{
+
+.wrap1 .xgmm table tr {
 	height: 34px;
 }
-.wrap1 .xgmm table pre{
+
+.wrap1 .xgmm table pre {
 	font-size: 14px;
 }
 
 /*-----------------------删除账户------------------------*/
-
-.wrap1 .sczh table{
+.wrap1 .sczh table {
 	margin-top: 20px;
 	margin-bottom: 10px;
 }
-.wrap1 .sczh table tr{
+
+.wrap1 .sczh table tr {
 	height: 34px;
 }
-.wrap1 .sczh table pre{
+
+.wrap1 .sczh table pre {
 	font-size: 14px;
 }
-.wrap1 .sczh .option{
+
+.wrap1 .sczh .option {
 	font-size: 14px;
 	border-top: 1px solid #C0C0C0;
 	padding: 5px;
 }
 
 /*-----------------------字典管理------------------------*/
-.wrap1 .xzb{
+/*---------------XZB-----------------*/
+.wrap1 .xzb {
 	font-size: 14px;
-
 }
-.wrap1 .xzb .unit{
+
+.wrap1 .xzb .unit {
 	float: left;
 	margin-right: 10px;
 }
+
 .wrap1 .xzb .table {
 	border: 1px solid #9AB3DE;
 	box-shadow: 0px 0px 4px #9AB3DE;
 	border-radius: 2px;
-	width: 260px;
+	width: 230px;
 	//height: 400px;
 	background-color: white;
 	cursor: default;
 }
-.wrap1 .xzb .table .head{
-	font-size: 16px;
+
+.wrap1 .xzb .table .head {
+	font-size: 15px;
 	font-weight: bold;
 	text-align: center;
 	padding: 4px;
 	background-color: #EEFCD5;
 }
-.wrap1 .xzb .table .body{
+
+.wrap1 .xzb .table .body {
 	overflow: auto;
 	height: 400px;
 }
-.wrap1 .xzb .table .body .row{
+
+.wrap1 .xzb .table .body .row {
 	text-align: center;
 	line-height: 24px;
 }
-.wrap1 .xzb .table .body .row input{
-	background:none;  
-    outline:none;  
-    border:none;
 
-    border: 1px solid #2AF6FC;
+.wrap1 .xzb .table .body .row input {
+	background: none;
+	outline: none;
+	border: none;
+	border: 1px solid #2AF6FC;
 }
-.wrap1 .xzb .table .body .row input:focus{
+
+.wrap1 .xzb .table .body .row input:focus {
 	background-color: #FFEE9A;
-    transition: all 0.3s;
+	transition: all 0.3s;
 }
-.wrap1 .xzb .table .body .row.selected:hover{
+
+.wrap1 .xzb .table .body .row.selected:hover {
 	background-color: #429742;
 }
-.wrap1 .xzb .table .body .row:hover{
+
+.wrap1 .xzb .table .body .row:hover {
 	background-color: #DBF6F0;
 	opacity: 0.8;
 }
-.wrap1 .xzb .table .body .selected{
+
+.wrap1 .xzb .table .body .selected {
 	color: white;
 	background-color: #429742;
 	height: 24px;
 }
-.wrap1 .xzb .unit .option{
+
+.wrap1 .xzb .unit .option {
 	margin-top: 4px;
 	text-align: center;
 }
-.wrap1 .xzb .unit .option button{
-	background:none;  
-    outline:none;  
-    border:0px;
 
-    color: #5E6664;
-    border: 1px solid gray;
-    width: 67.5px;
-    padding: 3px;
+.wrap1 .xzb .unit .option button {
+	background: none;
+	outline: none;
+	border: 0px;
+	color: #5E6664;
+	border: 1px solid gray;
+	width: 67.5px;
+	padding: 3px;
 }
-.wrap1 .xzb .unit .option button:hover{
+
+.wrap1 .xzb .unit .option button:hover {
 	opacity: 0.8;
 }
-.wrap1 .xzb .unit .option .add{
+
+.wrap1 .xzb .unit .option .add {
 	background-color: #1A82DD;
 	color: white;
 }
-.wrap1 .xzb .unit .option .upt{
+
+.wrap1 .xzb .unit .option .upt {
 	background-color: #1A82DD;
 	color: white;
 }
-.wrap1 .xzb .unit .option .del{
+
+.wrap1 .xzb .unit .option .del {
 	background-color: #E1605B;
 	color: white;
 }
-.wrap1 .xzb .module{
-	//display: none;
+/*---------------Support-----------------*/
+.wrap1 .support {
+	font-size: 14px;
 }
 
+.wrap1 .support .unit {
+	float: left;
+	margin-right: 10px;
+}
+
+.wrap1 .support .table {
+	border: 1px solid #9AB3DE;
+	box-shadow: 0px 0px 4px #9AB3DE;
+	border-radius: 2px;
+	width: 230px;
+	//height: 400px;
+	background-color: white;
+	cursor: default;
+}
+
+.wrap1 .support .table .head {
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+	padding: 4px;
+	background-color: #EEFCD5;
+}
+
+.wrap1 .support .table .body {
+	overflow: auto;
+	height: 400px;
+}
+
+.wrap1 .support .table .body .row {
+	text-align: center;
+	line-height: 24px;
+}
+
+.wrap1 .support .table .body .row input {
+	background: none;
+	outline: none;
+	border: none;
+	border: 1px solid #2AF6FC;
+}
+
+.wrap1 .support .table .body .row input:focus {
+	background-color: #FFEE9A;
+	transition: all 0.3s;
+}
+
+.wrap1 .support .table .body .row.selected:hover {
+	background-color: #429742;
+}
+
+.wrap1 .support .table .body .row:hover {
+	background-color: #DBF6F0;
+	opacity: 0.8;
+}
+
+.wrap1 .support .table .body .selected {
+	color: white;
+	background-color: #429742;
+	height: 24px;
+}
+
+.wrap1 .support .unit .option {
+	margin-top: 4px;
+	text-align: center;
+}
+
+.wrap1 .support .unit .option button {
+	background: none;
+	outline: none;
+	border: 0px;
+	color: #5E6664;
+	border: 1px solid gray;
+	width: 67.5px;
+	padding: 3px;
+}
+
+.wrap1 .support .unit .option button:hover {
+	opacity: 0.8;
+}
+
+.wrap1 .support .unit .option .add {
+	background-color: #1A82DD;
+	color: white;
+}
+
+.wrap1 .support .unit .option .upt {
+	background-color: #1A82DD;
+	color: white;
+}
+
+.wrap1 .support .unit .option .del {
+	background-color: #E1605B;
+	color: white;
+}
 /*-----------------------Redmine 参数配置------------------------*/
-.wrap1 .rcspz input{
+.wrap1 .rcspz input {
 	width: 280px;
 }
-.wrap1 .rcspz table{
+
+.wrap1 .rcspz table {
 	margin-top: 30px;
 }
-.wrap1 .rcspz table tr{
+
+.wrap1 .rcspz table tr {
 	height: 34px;
 }

@@ -38,8 +38,11 @@ function SidebarEventInit(){
 		$(".wrap .wrap1 ."+NowSelItem).show(100);
 		switch(NowSelItem){
 			case 'xzb':
-			xzb_init();
-			break;
+				xzb_init();
+				break;
+			case 'support':
+				support_init();
+				break;
 		}
 	}
 	
@@ -67,7 +70,35 @@ function SidebarEventInit(){
 			case 'xzb':
 				xzb_init();
 				break;
+			case 'support':
+				support_init();
+				break;
 		}
+	});
+}
+
+function support_init() {
+	var param = new Object();
+	param.method = "GET_ALL_DICT"
+
+	sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+		console.info(d);
+		if (d.ErrCode != 0) {
+			alert(d.msg);
+			return;
+		}
+		var sup = d.data.Support;
+
+		var type = '';
+		var status = '';
+		$(sup).each(function(index, el) {
+			if (el.name == "包类型")
+				type = el;
+			else if (el.name == "状态")
+				status = el;
+		});
+
+		
 	});
 }
 
@@ -76,7 +107,6 @@ function xzb_init() {
 	param.method = "GET_ALL_DICT"
 
 	sync_post_data("/system_set/", JSON.stringify(param), function(d) {
-		console.info(d);
 		if (d.ErrCode != 0) {
 			alert(d.msg);
 			return;
@@ -187,6 +217,28 @@ function xzb_init() {
 				dblclick_to_edit(unit.find(".selected"), dict_item_add_process);
 			});
 		});
+		/*删除*/
+		$(".wrap1 .xzb .unit .option button.del").click(function(event) {
+			var row = $(this).parents("div.unit").find(".selected");
+
+			if (row.length < 1) return;
+
+			var canDel = false;
+			var param = new Object();
+			param.id = row.attr("key");
+			param.method = "DEL_DICT_ITEM";
+			
+			sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+				if (d.ErrCode != 0) {
+					alert(d.msg);
+					return;
+				}
+				canDel = true;
+			});
+			if (canDel) {
+				row.remove();
+			}
+		});
 	});
 }
 
@@ -212,6 +264,7 @@ function dict_item_add_process(obj, val) {
 		param.parent_id = sel.attr("key");
 	}
 	param.name = val;
+	console.info(param);
 
 	sync_post_data("/system_set/", JSON.stringify(param), function(d) {
 		if (d.ErrCode != 0) {
@@ -222,7 +275,11 @@ function dict_item_add_process(obj, val) {
 
 		$(obj).attr("key", d.id);
 		$(obj).dblclick(function(event) {
-			/* Act on the event */
+			dblclick_to_edit($(this), dict_item_edit_process);
+		});
+		$(obj).click(function(event) {
+			$(this).parent().find(".selected").removeClass('selected');
+			$(this).addClass('selected');
 		});
 	});
 
@@ -251,7 +308,7 @@ function dblclick_to_edit(obj, callback){
 	var _width = $(obj).width();
 	var _height = $(obj).height();
 	var _text = $(obj).text();
-	//console.info(_width, _height, _text);
+	console.info(_width, _height, _text);
 
 	$(obj).html('');
 	var new_input = $('<input class="" type="text" name="">');

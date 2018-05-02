@@ -6,5 +6,5 @@ function main() {
 
 function InitSideBar() {
 	var sidebar = $(".sidebar > ul");
-	
+
 }

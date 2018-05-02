@@ -55,6 +55,22 @@ def systemUpdateDictItem(data):
 		return False
 	return True
 
+def systemDeleteDictItem(data):
+	db =  Options['mysql']
+
+	id = data.get('id', None)
+	if id is None:
+		return True
+
+	sql = "DELETE FROM dict WHERE parent = %s" % (id)
+	if db.update(sql) < 0:
+		return False
+
+	sql = "DELETE FROM dict WHERE id = %s" % (id)
+	if db.update(sql) < 0:
+		return False
+	return True
+
 def systemAddDictItem(data):
 	db =  Options['mysql']
 	name = data.get("name", None)
@@ -65,7 +81,7 @@ def systemAddDictItem(data):
 	if parent is None or len(parent) < 1:
 		print "systemAddDictItem: parameter parent Error!"
 		return -1
-	parent_id = data.get('', None)
+	parent_id = data.get('parent_id', None)
 
 	sql = "INSERT INTO dict(name,title, parent,isRoot) VALUES('%s', 0, %s, 0)"
 	if parent == 'type':

@@ -17,10 +17,10 @@ function InitWindow() {
 }
 
 function InitTabBar() {
-	$(".tab-bar button").click(function(){
+	$(".tab-bar button").click(function() {
 		var sel = "selected";
 		if ($(this).hasClass(sel)) {
-			return ;
+			return;
 		}
 		$(this).siblings().removeClass(sel);
 		$(this).addClass(sel);
@@ -45,8 +45,8 @@ function InitTitleBar() {
 		//console.info(seld);
 		if (seld.hasClass("field")) {
 			var tbody = seld.find("tbody");
-			var id = tbody.children().length+1;
-			var html = '<tr><td align="center">'+id+'</td> \
+			var id = tbody.children().length + 1;
+			var html = '<tr><td align="center">' + id + '</td> \
 						<td class="field-name"></td> \
 						<td class="field-type"></td> \
 						<td class="field-length"></td> \
@@ -56,7 +56,7 @@ function InitTitleBar() {
 						<td class="field-note"></td>	\
 						</tr>';
 			tbody.append(html);
-			
+
 			tbody.find('tr').unbind("click");
 			tbody.find('tr').click(function(event) {
 				$(this).siblings().removeClass("selected");
@@ -69,7 +69,7 @@ function InitTitleBar() {
 				var sel = "selected";
 				if ($(this).hasClass(sel)) {
 					$(this).removeClass(sel);
-				}else{
+				} else {
 					$(this).addClass(sel);
 					if ($(this).parent().hasClass("primary-key")) {
 						$(this).parent().parent().find(".is-null button").addClass('selected');
@@ -79,11 +79,11 @@ function InitTitleBar() {
 
 			tbody.find("td").unbind("click");
 			tbody.find("td").click(function(event) {
-				if ($(this).hasClass("field-name") || 
-					$(this).hasClass("field-length")||
-					$(this).hasClass("field-default")||
+				if ($(this).hasClass("field-name") ||
+					$(this).hasClass("field-length") ||
+					$(this).hasClass("field-default") ||
 					$(this).hasClass("field-note")
-					) {
+				) {
 					var twidth = $(this).width();
 					var theight = $(this).height();
 					var txt = $(this).text();
@@ -91,31 +91,30 @@ function InitTitleBar() {
 					$(this).find("input").val(txt);
 					$(this).find("input").css({
 						"border": "none",
-						"width": (twidth)+"px",
-						"height": (theight)+"px"
+						"width": (twidth) + "px",
+						"height": (theight) + "px"
 					});
 					$(this).find("input").focus();
-					
 
-					$(this).find("input").blur(function(){
+
+					$(this).find("input").blur(function() {
 						var tmp = $(this).val();
 						console.info(tmp);
 						$(this).parent().append(tmp);
 						$(this).remove();
 					});
-				}
-				else if ($(this).hasClass("field-type")) {
+				} else if ($(this).hasClass("field-type")) {
 					var twidth = $(this).width();
 					var theight = $(this).height();
-					var ttop = $(this).offset().top+theight+1;
+					var ttop = $(this).offset().top + theight + 1;
 					var tleft = $(this).offset().left;
 					var html = '<input type="text" name="" class="tunit">';
 					$(this).addClass(gCLASSID1);
 					$(this).html(html);
 					$(this).find("input").css({
 						"border": "none",
-						"width": (twidth)+"px",
-						"height": (theight)+"px"
+						"width": (twidth) + "px",
+						"height": (theight) + "px"
 					});
 					html = '<div class="hyl-global-box-1"> \
 								<div class="hyl-global-unit">CHAR</div>\
@@ -126,18 +125,18 @@ function InitTitleBar() {
 					$("body").append(html);
 					$(".hyl-global-box-1").css({
 						"border": "1px solid #15D7F3",
-						"width" : twidth+"px",
+						"width": twidth + "px",
 						"position": "absolute",
-						"top": ttop+"px",
+						"top": ttop + "px",
 						"left": tleft + "px",
 						"background-color": "white",
 						"z-index": "999"
 					});
 
-					$(".hyl-global-box-1 .hyl-global-unit").click(function(){
+					$(".hyl-global-box-1 .hyl-global-unit").click(function() {
 						console.info($(this).text());
-						$("."+gCLASSID1).html($(this).text());
-						$("."+gCLASSID1).removeClass(gCLASSID1);
+						$("." + gCLASSID1).html($(this).text());
+						$("." + gCLASSID1).removeClass(gCLASSID1);
 						$(this).parent().remove();
 					});
 
@@ -159,7 +158,7 @@ function genPreSQL() {
 		Table.TableName = $(".table-name input").val();
 		Table.Cols = new Array();
 		var arr = $(".show-area .field tbody").children();
-		for (var i=0; i<arr.length; i++) {
+		for (var i = 0; i < arr.length; i++) {
 			var element = arr[i];
 			var obj = new Object();
 			obj.name = $(element).find(".field-name").text();
@@ -167,12 +166,12 @@ function genPreSQL() {
 			obj.len = $(element).find(".field-length").text();
 			if ($(element).find(".is-null .radio").hasClass("selected")) {
 				obj.isNull = true;
-			}else {
+			} else {
 				obj.isNull = false;
 			}
-			if ($(element).find(".primary-key .radio").hasClass("selected")) {	
+			if ($(element).find(".primary-key .radio").hasClass("selected")) {
 				obj.isPrimary = true;
-			}else{
+			} else {
 				obj.isPrimary = false;
 			}
 			obj.default = $(element).find(".field-default").text();
@@ -185,45 +184,43 @@ function genPreSQL() {
 		var comments = "";
 		var sStruct = "struct st_" + Table.TableName.toLowerCase() + "\n{\n";
 		sql = "CREATE TABLE " + Table.TableName + "(\n";
-		for (var i=0; i<Table.Cols.length; i++) {
+		for (var i = 0; i < Table.Cols.length; i++) {
 			var row = Table.Cols[i];
-			if (row.len.length>0){
-				sql += "\t"+row.name + "  " + row.type + "(" + row.len + ")";
-			}else{
-				sql += "\t"+row.name + "  " + row.type;
+			if (row.len.length > 0) {
+				sql += "\t" + row.name + "  " + row.type + "(" + row.len + ")";
+			} else {
+				sql += "\t" + row.name + "  " + row.type;
 			}
 			if (row.isNull) {
-				sql += " NOT NULL"; 
+				sql += " NOT NULL";
 			}
-			if (row.default.length != 0){
+			if (row.default.length != 0) {
 				sql += " WITH DEFAULT " + row.default;
 			}
-			
+
 			sql += ",\n";
 			if (row.isPrimary) {
 				primaryKey += row.name + ",";
 			}
-			/*--------------æ³¨é‡Š------------------*/
-			comments += " comment on column "+Table.TableName+ "." + row.name + " is '"+row.note +"';\n";
-			/*--------------Cç»“æž„ä½“------------------*/
+			/*--------------×¢ÊÍ------------------*/
+			comments += " comment on column " + Table.TableName + "." + row.name + " is '" + row.note + "';\n";
+			/*--------------C½á¹¹Ìå------------------*/
 			sStruct += "\t";
 			var ty = row.type.toLowerCase();
-			if ( ty == "char" || ty == "varchar" ){
-				sStruct += "char\ts"+row.name.toLowerCase()+"["+row.len+"];";
-			}
-			else if ( ty == "int" || ty == "integer" ){
-				sStruct += "int\ti"+row.name.toLowerCase()+";";
-			}
-			else if ( ty == "decimal" || ty == "float" || ty == "double"){
-				sStruct += "double\td"+ row.name.toLowerCase()+";";
+			if (ty == "char" || ty == "varchar") {
+				sStruct += "char\ts" + row.name.toLowerCase() + "[" + row.len + "];";
+			} else if (ty == "int" || ty == "integer") {
+				sStruct += "int\ti" + row.name.toLowerCase() + ";";
+			} else if (ty == "decimal" || ty == "float" || ty == "double") {
+				sStruct += "double\td" + row.name.toLowerCase() + ";";
 			}
 			sStruct += "\n";
 		}
 		if (primaryKey.length == 0) {
-			sql = sql.substring(0, sql.length-2) + "\n";
-		}else{
-			primaryKey = primaryKey.substring(0, primaryKey.length-1);
-			primaryKey = '\tCONSTRAINT "P_Key_1" PRIMARY KEY ('+primaryKey+')\n';
+			sql = sql.substring(0, sql.length - 2) + "\n";
+		} else {
+			primaryKey = primaryKey.substring(0, primaryKey.length - 1);
+			primaryKey = '\tCONSTRAINT "P_Key_1" PRIMARY KEY (' + primaryKey + ')\n';
 			sql = sql + primaryKey;
 		}
 		sql += ");";
@@ -234,4 +231,3 @@ function genPreSQL() {
 		$(".show-area .cstruct textarea").val(sStruct);
 	});
 }
-
