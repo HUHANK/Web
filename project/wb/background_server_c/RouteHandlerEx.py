@@ -95,6 +95,8 @@ def systemAddDictItem(data):
 			print "systemAddDictItem: parameter parent_id Error!"
 			return -1
 		sql = sql % (name, parent_id)
+	else:
+		sql = sql % (name, parent)
 
 	return db.update(sql)
 

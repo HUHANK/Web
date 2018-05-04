@@ -25,7 +25,7 @@ def AddRedmineUptInfo(uid, mode, traceNo, descript, time):
         dic[mode] = {}
 
     dic = dic[mode]
-    dic[traceNo] = "%s|%s" % (descript, time)
+    dic[traceNo] = "%s" % (descript)
 
 def ResetRedmineUptInfo(uid):
     if RedmineUpdateInfo.has_key(uid):

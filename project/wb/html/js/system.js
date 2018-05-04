@@ -35,7 +35,7 @@ function SidebarEventInit(){
 	NowSelItem = $.cookie('SystemSidebarSelItem')
 	if (typeof NowSelItem != 'undefined' && NowSelItem != ''){
 		$(".wrap .sidebar .leaf."+NowSelItem).addClass('selected');
-		$(".wrap .wrap1 ."+NowSelItem).show(100);
+		$(".wrap .wrap1 ."+NowSelItem).show(1);
 		switch(NowSelItem){
 			case 'xzb':
 				xzb_init();
@@ -59,7 +59,7 @@ function SidebarEventInit(){
 		$(this).addClass('selected');
 		if (NowSelItem == sel || NowSelItem == ''){}
 		else{
-			$(".wrap .wrap1 ."+NowSelItem).hide(10, function() {});
+			$(".wrap .wrap1 ."+NowSelItem).hide(1, function() {});
 			// $(".wrap .sidebar .leaf."+NowSelItem).removeClass('selected');
 			// $(".wrap .sidebar .leaf."+sel).addClass('selected');
 		}
@@ -75,6 +75,9 @@ function SidebarEventInit(){
 				break;
 		}
 	});
+
+	//创建账户
+	
 }
 
 function support_init() {
@@ -100,6 +103,7 @@ function support_init() {
 
 		/*类型*/
 		var dom = $(".wrap1 .support .type .body");
+		dom.attr("key", ""+ type.id);
 		dom.html('');
 		$(type.data).each(function(index, el) {
 			var tmp = $("<p></p>").text(el['name']).addClass('row').attr("key", el['id']);
@@ -108,12 +112,70 @@ function support_init() {
 
 		/*状态*/
 		var dom = $(".wrap1 .support .statu .body");
+		dom.attr("key", ""+ status.id);
 		dom.html('');
 		$(status.data).each(function(index, el) {
 			var tmp = $("<p></p>").text(el['name']).addClass('row').attr("key", el['id']);
 			dom.append(tmp);
 		});
 
+		/*单击事件*/
+		var dom = $(".wrap1 .support .body .row");
+		dom.unbind();
+		dom.click(function(event) {
+			$(this).parent().find(".selected").removeClass('selected');
+			$(this).addClass('selected');
+		});
+
+		/*双击事件*/
+		$(".wrap1 .support .body .row").dblclick(function(event) {
+			dblclick_to_edit($(this), dict_item_edit_process);
+		});
+
+		/*按钮*/
+		$(".wrap1 .support .unit .option button.upt").unbind();
+		$(".wrap1 .support .unit .option button.upt").click(function(event) {
+			var unit = $(this).parents("div.unit");
+			var sel = unit.find(".selected");
+			if (sel.length > 0)
+				dblclick_to_edit(sel, dict_item_edit_process);
+		});
+
+		$(".wrap1 .support .unit .option button.add").unbind();
+		$(".wrap1 .support .unit .option button.add").click(function(event) {
+			var unit = $(this).parents("div.unit");
+			unit.find(".selected").removeClass('selected');
+			var ele = $("<p></p>").addClass('row').addClass('selected');
+			unit.find(".body").append(ele);
+
+			unit.find(".body").ready(function() {
+				dblclick_to_edit(unit.find(".selected"), dict_item_add_process);
+			});
+		});
+
+		/*删除*/
+		$(".wrap1 .support .unit .option button.del").unbind();
+		$(".wrap1 .support .unit .option button.del").click(function(event) {
+			var row = $(this).parents("div.unit").find(".selected");
+
+			if (row.length < 1) return;
+
+			var canDel = false;
+			var param = new Object();
+			param.id = row.attr("key");
+			param.method = "DEL_DICT_ITEM";
+			
+			sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+				if (d.ErrCode != 0) {
+					alert(d.msg);
+					return;
+				}
+				canDel = true;
+			});
+			if (canDel) {
+				row.remove();
+			}
+		});
 		
 	});
 }
@@ -138,6 +200,7 @@ function xzb_init() {
 			var tmp = $("<p></p>").text(el['name']).addClass('row').attr("key", el['id']);
 			dom.append(tmp);
 		});
+		$(".wrap1 .xzb .type .option button").unbind();
 	 	$(".wrap1 .xzb .type .option button").click(function(event) {
 			if ($(this).attr("class") == 'add'){
 				/*添加*/
@@ -168,16 +231,19 @@ function xzb_init() {
 
 		/*单击事件*/
 		var dom = $(".wrap1 .xzb .type .body .row");
+		dom.unbind();
 		dom.click(function(event) {
 			$(this).parent().find(".selected").removeClass('selected');
 			$(this).addClass('selected');
 		});
 		var dom = $(".wrap1 .xzb .property .body .row");
+		dom.unbind();
 		dom.click(function(event) {
 			$(this).parent().find(".selected").removeClass('selected');
 			$(this).addClass('selected');
 		});
 		var dom = $(".wrap1 .xzb .system .body .row");
+		dom.unbind();
 		dom.click(function(event) {
 			$(this).parent().find(".selected").removeClass('selected');
 			$(this).addClass('selected');
@@ -216,6 +282,7 @@ function xzb_init() {
 		});
 
 		/*按钮*/
+		$(".wrap1 .xzb .unit .option button.upt").unbind();
 		$(".wrap1 .xzb .unit .option button.upt").click(function(event) {
 			var unit = $(this).parents("div.unit");
 			var sel = unit.find(".selected");
@@ -223,6 +290,7 @@ function xzb_init() {
 				dblclick_to_edit(sel, dict_item_edit_process);
 		});
 
+		$(".wrap1 .xzb .unit .option button.add").unbind();
 		$(".wrap1 .xzb .unit .option button.add").click(function(event) {
 			var unit = $(this).parents("div.unit");
 			unit.find(".selected").removeClass('selected');
@@ -234,6 +302,7 @@ function xzb_init() {
 			});
 		});
 		/*删除*/
+		$(".wrap1 .xzb .unit .option button.del").unbind();
 		$(".wrap1 .xzb .unit .option button.del").click(function(event) {
 			var row = $(this).parents("div.unit").find(".selected");
 
@@ -264,8 +333,13 @@ function dict_item_add_process(obj, val) {
 	param.method="ADD_DICT_ITEM";
 
 	var unit = $(obj).parents("div.unit");
+	var support = unit.parent("div").hasClass('support');
 	if (unit.hasClass('type')) {
-		param.parent = 'type';
+		if (!support)
+			param.parent = 'type';
+		else{
+			param.parent = $(obj).parent("div.body").attr("key");
+		}
 	}
 	else if (unit.hasClass('property')) {
 		param.parent = 'property';
@@ -279,8 +353,11 @@ function dict_item_add_process(obj, val) {
 		param.parent = 'module';
 		param.parent_id = sel.attr("key");
 	}
+	else if (unit.hasClass('statu')) {
+		param.parent = $(obj).parent("div.body").attr("key");
+	}
 	param.name = val;
-	console.info(param);
+	//console.info(param);
 
 	sync_post_data("/system_set/", JSON.stringify(param), function(d) {
 		if (d.ErrCode != 0) {
@@ -329,7 +406,7 @@ function dblclick_to_edit(obj, callback){
 	$(obj).html('');
 	var new_input = $('<input class="" type="text" name="">');
 	new_input.val(_text);
-	new_input.width(_width);
+	new_input.width(_width-2);
 	new_input.height(_height-2);
 
 	$(obj).append(new_input);

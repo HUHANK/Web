@@ -43,7 +43,7 @@ function draw_drop_down_box_select(obj, datas) {
 }
 
 
-var HostUrl = "http://10.10.14.36:5010";
+var HostUrl = "http://10.10.14.36:5000";
 
 function post_data(path, data, func) {
 	var surl = HostUrl;

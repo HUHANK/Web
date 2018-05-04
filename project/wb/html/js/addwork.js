@@ -174,7 +174,7 @@ function show_redmin_sync_info(data){
 				var i = 0;
 				$.map(val, function(v, k){
 					i = i + 1;
-					var rs = k+"|"+v;
+					var rs = "["+k+"] "+v;
 					//hb.append($("<p></p>").text(rs));	
 					rs = "<span>"+i+". </span>" + rs;
 					hb.append($("<p></p>").html(rs));
@@ -186,7 +186,7 @@ function show_redmin_sync_info(data){
 				var i = 0;
 				$.map(val, function(v, k){
 					i = i + 1;
-					var rs = k+"|"+v;
+					var rs = "["+k+"] "+v;
 					rs = "<span>"+i+". </span>" + rs;
 					hb.append($("<p></p>").html(rs));	
 				})
@@ -197,7 +197,7 @@ function show_redmin_sync_info(data){
 				var i = 0;
 				$.map(val, function(v, k){
 					i = i + 1;
-					var rs = k+"|"+v;
+					var rs = "["+k+"] "+v;
 					rs = "<span>"+i+". </span>" + rs;
 					hb.append($("<p></p>").html(rs));
 				})
