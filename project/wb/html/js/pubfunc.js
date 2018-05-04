@@ -475,8 +475,101 @@ function IsOperationFrequent(name, interval){
 	return false;
 }
 
+var CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+function UUID(len, radix) {
+	var chars = CHARS, uuid = [], i;
+	radix = radix || chars.length;
 
+	if (len) {
+		//compact form
+		for (i=0; i < len; i++) uuid[i] = chars[0 | Math.random()*radix];
+	} else {
+		var r;
 
+		uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+		uuid[14] = '4';
+
+		for (i =0; i<36; i++) {
+			r = 0|Math.random()*16;
+			uuid[i] = chars[(i==19)?(r &0x3) | 0x8 : r];
+		}
+	}
+
+	return uuid.join('');
+}
+
+function hyl_alert(msg) {
+	var id = UUID(12);
+	var clientW = $(window).width();
+	var clientH = $(window).height();
+
+	var dom = $("<div></div>").attr("id", id);
+	dom.append($("<div></div>").addClass('bkg'));
+	dom.append($("<div></div>").addClass('main').append(
+		$("<div></div>").addClass('note').text(msg),
+		$("<div class='opt'><button>确定</button></div>")
+		));
+	$("body").append(dom);
+	//console.info(dom);
+
+	dom = $("body").find("#"+id);
+	dom.find(".bkg").css({
+		'position': 'fixed',
+		'top': '0',
+		'left': '0',
+		'width': '100%',
+		'height': '100%',
+		'background-color': 'black',
+		'opacity': '0.4',
+		'z-index': '100'
+	});
+	dom.find(".main").css({
+		'position': 'fixed',
+		'top': '50%',
+		'left': '50%',
+		'background-color': 'white',
+		'z-index': '1001',
+		'border': '1px solid #696969'
+	});
+	dom.find(".note").css({
+		'text-align': 'center',
+		'width': '240px',
+		'min-height': '60px',
+		'line-height': '60px',
+		'font-size': '12px'
+	});
+	dom.find(".opt").css({
+		'height': '60px',
+		'line-height': '60px',
+		'background-color': '#F2F2F2'
+	});
+	dom.find(".opt button").css({
+		'outline': 'none',
+		'background': 'none',
+		'border': 'none',
+		'border': '1px solid #2963C7',
+		'border-radius': '2px',
+		'width': '70px',
+		'height': '28px',
+		'background-color': '#5A97FF',
+		'color': 'white',
+		'margin-left': '150px'
+	});
+
+	var main = dom.find(".main");
+	var h = main.height();
+	var w = main.width();
+	
+	main.css({
+		'left': (clientW-w)/2+'px',
+		'top': (180)+'px'
+	});
+
+	dom.find(".opt button").click(function(event) {
+		dom.remove();
+	});
+	
+}
 
 
 

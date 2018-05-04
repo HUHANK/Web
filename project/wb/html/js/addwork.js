@@ -283,6 +283,7 @@ function add_zb() {
 
 	add_zb_form_select_init();
 
+	$(".add-zb .edit .form .add").unbind();
 	$(".add-zb .edit .form .add").click(function(){
 		$(this).attr("disabled", "");
 		var fom = $(".add-zb .edit .form");
@@ -400,6 +401,7 @@ function add_zb() {
 		});
 	})
 
+	$(".add-zb .edit .form .update").unbind();
 	$(".add-zb .edit .form .update").click(function() {
 		var fom = $(".add-zb .edit .form");
 		var sys = fom.find(".fsys");
@@ -483,6 +485,7 @@ function add_zb() {
 		});
 	});
 
+	$(".add-zb .edit .form .cancle").unbind();
 	$(".add-zb .edit .form .cancle").click(function () {
 		var fom = $(".add-zb .edit .form");
 		var sys = fom.find(".fsys");

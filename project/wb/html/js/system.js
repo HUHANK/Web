@@ -77,7 +77,47 @@ function SidebarEventInit(){
 	});
 
 	//创建账户
-	
+	$(".wrap1 .xzyh .submit .add").unbind();
+	$(".wrap1 .xzyh .submit .add").click(function(event) {
+		var param = new Object();
+		param.mthod = "ADD_NEW_USER";
+		param.UNAME = $(".wrap1 .xzyh table input.login-account").val();
+		if (param.UNAME.length < 1) {
+			hyl_alert("登陆账户不能为空!");
+			return ;
+		}
+		var pwd = $(".wrap1 .xzyh table input.login-passwd[type=password]").val();
+		if (pwd.length < 1) {
+			hyl_alert("密码不能为空!");
+			return ;
+		}
+		var cpwd = $(".wrap1 .xzyh table input.confirm-passwd[type=password]").val();
+		if (cpwd.length < 1) {
+			hyl_alert("确认密码不能为空!");
+			return ;
+		}
+		if (pwd != cpwd) {
+			hyl_alert("密码和确认密码不一致!");
+			return;
+		}
+		param.UPWD = pwd;
+		param.NOTE = $(".wrap1 .xzyh table input.user-name").val();
+		if (param.NOTE.length < 1) {
+			hyl_alert("账户姓名不能为空!");
+			return;
+		}
+		param.REDMINE_UNAME = $(".wrap1 .xzyh table input.rd-uname").val();
+		param.REDMINE_UID = $(".wrap1 .xzyh table input.rd-uid").val();
+		if ($(".wrap1 .xzyh .user-type .normal").is(':checked')) {
+			param.ADMIN = 0;
+		}
+		if ($(".wrap1 .xzyh .user-type .admin").is(':checked')) {
+			param.ADMIN = 1;
+		}
+		
+
+	});
+
 }
 
 function support_init() {
