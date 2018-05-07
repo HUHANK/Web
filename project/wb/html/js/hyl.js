@@ -151,3 +151,67 @@ function hyl_table(obj, conf) {
 	_obj.find(".hyl-grid-tbody").css("height", (_obj.height()-_obj.find(".hyl-grid-thead").outerHeight())+"px");
 
 }
+
+
+function hyl_select2(obj, data) {
+	var id = UUID(16);
+
+	console.info($(obj));
+	var obj_top  = $(obj).offset().top;
+	var obj_left = $(obj).offset().left;
+	var obj_oheight = $(obj).outerHeight();
+	var obj_owidth = $(obj).outerWidth();
+	var h_interval = 2;
+
+	$("body").append($("<div></div>").attr("id", id+""));
+	var dom = $("body").children('#'+id);
+	console.info(dom);
+	dom.css({
+		'cursor': 'default',
+		'position': "fixed",
+		'top': (obj_top+obj_oheight+h_interval)+"px",
+		'left': obj_left + "px",
+		'width': obj_owidth+'px',
+		'max-height': '180px',
+		'border': '1px solid #D9D9D9',
+		'border-radius': '3px',
+		'overflow': 'auto',
+		'font-size': '14px',
+		'background-color':'white'
+	}); 
+
+	var key = $(obj).attr("key");
+	$(data).each(function(index, el) {
+		if (typeof key != 'undefined' && key == el.id){
+			dom.append(
+				$("<div></div>").addClass('row').addClass('selected').text(el.name).attr("key", el.id)
+			);
+		}else {
+			dom.append(
+				$("<div></div>").addClass('row').text(el.name).attr("key", el.id)
+			);
+		}
+	});
+	$("#"+id +" .row").css({
+		'line-height': '14px',
+		'padding': '3px'
+	});
+
+	$("#"+id +" .row").click(function(event) {
+		$(this).addClass('selected');
+		$(obj).val($(this).text());
+		$(obj).attr("key", $(this).attr("key"));
+		$("#"+id).remove();
+	});
+	
+	
+	$("#"+id + " .selected").css({
+		'background-color': '#429742',
+		'color': 'white'
+	});
+
+	/*焦点失去事件*/
+	// $(obj).blur(function(event) {
+	// 	$("#"+id).remove();
+	// });
+}

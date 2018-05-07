@@ -3,15 +3,27 @@ jQuery(document).ready(function($) {
 	main();
 });
 NowSelItem = '';
+G_ALL_DICT = '';
 
 
 function main(){
+	/*--------------------获取初始化的信息----------------------------*/
+	var param = new Object();
+	param.method = "GET_BASEINFO";
+	sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+		if (d.ErrCode != 0) {
+			hyl_alert(d.msg);
+			return;
+		}
+
+		G_ALL_DICT = d.data;
+	});
+
 	SidebarEventInit();
 	SidebarSizeInit();
 	window.onrezie = function() {
 		SidebarSizeInit();
 	}
-
 }
 
 function SidebarSizeInit() {
@@ -76,11 +88,21 @@ function SidebarEventInit(){
 		}
 	});
 
+	//组selecte
+	var groups = [];
+	$(G_ALL_DICT.Group).each(function(index, el) {
+		groups[index] = {};
+		groups[index]['id'] = el.id;
+		groups[index]['name'] = el.name;
+	});
+	$(".wrap1 .xzyh table input.group").focus(function(event) {
+		hyl_select2($(this), groups);
+	});
 	//创建账户
 	$(".wrap1 .xzyh .submit .add").unbind();
 	$(".wrap1 .xzyh .submit .add").click(function(event) {
 		var param = new Object();
-		param.mthod = "ADD_NEW_USER";
+		param.method = "ADD_NEW_USER";
 		param.UNAME = $(".wrap1 .xzyh table input.login-account").val();
 		if (param.UNAME.length < 1) {
 			hyl_alert("登陆账户不能为空!");
@@ -108,16 +130,131 @@ function SidebarEventInit(){
 		}
 		param.REDMINE_UNAME = $(".wrap1 .xzyh table input.rd-uname").val();
 		param.REDMINE_UID = $(".wrap1 .xzyh table input.rd-uid").val();
+		if (param.REDMINE_UID.length < 1) {
+			param.REDMINE_UID = '0';
+		}
 		if ($(".wrap1 .xzyh .user-type .normal").is(':checked')) {
 			param.ADMIN = 0;
 		}
 		if ($(".wrap1 .xzyh .user-type .admin").is(':checked')) {
 			param.ADMIN = 1;
 		}
-		
 
+		param.group_id = $(".wrap1 .xzyh table input.group").attr("key");
+		if (typeof param.group_id == 'undefined' && param.group_id.length < 1) {
+			param.group_id  = 0;
+		}
+
+		sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0) {
+				hyl_alert(d.msg);
+				return;
+			}
+			hyl_alert("用户添加成功!");
+			$(".wrap1 .xzyh table input.login-account").val('');
+			$(".wrap1 .xzyh table input.login-passwd[type=password]").val('');
+			$(".wrap1 .xzyh table input.confirm-passwd[type=password]").val('');
+			$(".wrap1 .xzyh table input.user-name").val('');
+			$(".wrap1 .xzyh table input.rd-uname").val('');
+			$(".wrap1 .xzyh table input.rd-uid").val('');
+			$(".wrap1 .xzyh table input.group").attr("key",'');
+			$(".wrap1 .xzyh table input.group").val('');
+		});
 	});
 
+	//修改用户密码
+	var users = [];
+	$(G_ALL_DICT.User).each(function(index, el) {
+		users[index] = {};
+		users[index].id = el.UID;
+		users[index].name = el.NOTE;
+	});
+	$(".wrap1 .xgmm table input.login-account").focus(function(event) {
+		hyl_select2($(this), users);
+	});
+	$(".wrap1 .xgmm .submit .upt").unbind();
+	$(".wrap1 .xgmm .submit .upt").click(function(event) {
+		var id = $(".wrap1 .xgmm table input.login-account").attr("key");
+		if (typeof id == 'undefined' && id.length < 1) {
+			hyl_alert("请选择需要修改的登录帐号!")
+			return;
+		}
+		var oldPwd = $(".wrap1 .xgmm table input.old-pwd[type=password]").val();
+		var newPwd = $(".wrap1 .xgmm table input.new-pwd[type=password]").val();
+		if (oldPwd.length < 1) {
+			hyl_alert("旧密码不能为空!");
+			return;
+		}
+		if (newPwd.length < 1){
+			hyl_alert("新密码不能为空!");
+			return;
+		}
+		if (oldPwd == newPwd) {
+			hyl_alert("新旧密码一样，无需修改!");
+			return;
+		}
+
+		var param = new Object();
+		param.method = "UPDATE_USER_PWD";
+		param.UID =  id;
+		param.OldPwd = oldPwd;
+		param.NewPwd = newPwd;
+
+		sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0) {
+				hyl_alert(d.msg);
+				return;
+			}
+			hyl_alert("密码修改成功!")
+			$(".wrap1 .xgmm table input.login-account").val('');
+			$(".wrap1 .xgmm table input.login-account").attr("key", '');
+			$(".wrap1 .xgmm table input.old-pwd[type=password]").val('');
+			$(".wrap1 .xgmm table input.new-pwd[type=password]").val('');
+		});
+	});
+
+	//删除用户
+	$(".wrap1 .sczh table input.delete-account").focus(function(event) {
+		hyl_select2($(this), users);
+	});
+	$(".wrap1 .sczh table input.join-account").focus(function(event) {
+		hyl_select2($(this), users);
+	});
+
+	$(".wrap1 .sczh .submit .delete").unbind();
+	$(".wrap1 .sczh .submit .delete").click(function(event) {
+		var deleteid = $(".wrap1 .sczh table input.delete-account").attr("key");
+		var joinid = $(".wrap1 .sczh table input.join-account").attr("key");
+		if (typeof deleteid == 'undefined' && deleteid.length < 1) {
+			hyl_alert("请选择需要删除的账户!")
+			return;
+		}
+		if (typeof joinid == 'undefined' && joinid.length < 1) {
+			joinid = '0';
+		}
+
+		var param = {};
+		param.method = "DELETE_USER";
+		param.DeleteID = deleteid;
+		param.JoinID = joinid;
+		param.DelAllRec = 0;
+		if($(".wrap1 .sczh .option .del-all-rec").is(':checked')){
+			param.DelAllRec = 1;
+		}
+
+		sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0){
+				hyl_alert(d.msg)
+				return;
+			}
+			hyl_alert("用户删除成功!");
+			$(".wrap1 .sczh table input.delete-account").val('');
+			$(".wrap1 .sczh table input.delete-account").attr("key", '');
+			$(".wrap1 .sczh table input.join-account").val('');
+			$(".wrap1 .sczh table input.join-account").attr('key','');
+		});
+
+	});
 }
 
 function support_init() {

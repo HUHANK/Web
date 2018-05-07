@@ -1515,7 +1515,12 @@ def SystemSettings(data):
     method = data.get('method', '')
     ret = {}
 
-    if method == 'GET_ALL_DICT':
+    if method == "GET_BASEINFO":
+        rs = systemGetBaseInfo(data)
+        if rs is None:
+            return ErrorDeal(ret, "基础数据获取失败!")
+        ret['data'] = rs
+    elif method == 'GET_ALL_DICT':
         rs = systemGetAllDict()
         if rs is None:
             return ErrorDeal(ret, "字典数据获取失败!")
@@ -1532,6 +1537,23 @@ def SystemSettings(data):
     elif method == "DEL_DICT_ITEM":
         if systemDeleteDictItem(data) == False:
             return ErrorDeal(ret, "字典数据删除失败!")
+    elif method == "ADD_NEW_USER":
+        if systemAddNewUser(data) < 0:
+            return ErrorDeal(ret, "用户添加失败!")
+    elif method == "UPDATE_USER_PWD":
+        rs = systemUptUserPwd(data)
+        if rs == 2:
+            return ErrorDeal(ret, "无此用户!")
+        elif rs == 3:
+            return ErrorDeal(ret, "原始密码输入有误!")
+        elif rs == 0:
+            return SuccessDeal(ret)
+        else:
+            return ErrorDeal(ret, "密码修改失败!")
+    elif method == "DELETE_USER":
+        rs = systemDeleteUser(data)
+        if rs != 0:
+            return ErrorDeal(ret, "用户删除失败!")
     else:
         return ErrorDeal(ret, "模式无效！")
     return SuccessDeal(ret)

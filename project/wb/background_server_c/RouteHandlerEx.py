@@ -130,8 +130,6 @@ def UpdateThisWeekStatu(wid, madd, mupt):
 
 	return db.update(sql)
 
-
-
 def GetThisWeekWorkStatus(uid):
 	""" 获取工作状态的信息
 	"""
@@ -271,4 +269,93 @@ def GetThisWeekWorkStatus(uid):
 	return ret
 
 
+def systemGetBaseInfo(data):
+	db =  Options['mysql']
+	ret = {}
+
+	sql = "SELECT * FROM xgroup"
+	res = db.select2(sql)
+	if res is None:
+		print "Error : %s" % (sql)
+		return None
+	ret['Group'] = res['data']
+
+	sql = "SELECT UID,group_id,UNAME,REDMINE_UNAME,REDMINE_UID,NOTE,ADMIN FROM user"
+	res = db.select2(sql)
+	if res is None:
+		print "Error : %s" % (sql)
+		return None
+	ret["User"] = res['data']
+
+	return ret
+
+def systemAddNewUser(data):
+	db =  Options['mysql']
+
+	sql = "INSERT INTO user(group_id,UNAME,UPWD,REDMINE_UNAME,REDMINE_UID,NOTE,ADMIN) VALUES( %s, '%s', '%s', '%s', %s, '%s', %s)" % (	\
+			data.get("group_id", '0'), 		data.get("UNAME",''), 	data.get('UPWD',''), 	data.get('REDMINE_UNAME',''), \
+			data.get('REDMINE_UID', 0), 	data.get('NOTE',''), 	data.get('ADMIN', '0') 	)
+	print sql
+	return db.update(sql)
+
+def systemUptUserPwd(data):
+	db =  Options['mysql']
+
+	sql = "SELECT UPWD FROM user WHERE UID = %s" % (data.get("UID", -1))
+	rs = db.select2(sql)
+	if rs is None:
+		return 1
+	if len(rs['data']) < 1:
+		return 2
+	if rs['data'][0]['UPWD'] != data.get("OldPwd",''):
+		return 3
+
+
+	sql = "UPDATE user SET UPWD = '%s' WHERE UID = %s" % (data.get("NewPwd",''), data.get("UID", -1))
+
+	return db.update(sql)
+
+def systemDeleteUser(data):
+	db =  Options['mysql']
+	UID = data.get("DeleteID",0)
+	JoinUID = data.get('JoinID', 0)
+
+	sql = "DELETE FROM user WHERE UID = %s" % (UID)
+	rs = db.update(sql)
+	if rs < 0 :
+		return 1
+
+	if str(JoinUID) != '0':
+		(Year, Week, Day) = getNowYearWeek()
+		sql = "SELECT A.WID FROM user_work A left join work_detail B ON A.UID = B.id WHERE A.UID=%s AND A.YEAR=%s AND A.WEEK=%s AND B.ProgressRate != 100"%(
+			UID, Year, Week)
+		rs = db.select2(sql)
+		if rs is None:
+			return 1
+		if len(rs['data']) > 0:
+			wids = ''
+			for e in rs['data']:
+				wids = wids + str(e['WID']) + ','
+			wids.rstrip(',')
+			sql = "UPDATE user_work SET UID=%s WHERE UID=%s AND YEAR=%s AND WEEK=%s AND WID IN (%s)" % (
+				JoinUID, UID, Year, Week, wids)
+			if db.update(sql) < 0:
+				return 1
+
+	if str(data.get("DelAllRec", 0)) == '1' and str(JoinUID) != '0':
+		sql = "DELETE from work_detail where ProgressRate == 100 and id in (SELECT WID user_work where UID =%s)" % (UID)
+		if db.update(sql) < 0:
+			return 1
+		sql = "DELETE FROM user_work WHERE UID = %s" % (UID)
+		if db.update(sql) < 0 :
+			return 1
+	else:
+		sql = "DELETE from work_detail where id in (SELECT WID user_work where UID =%s)" % (UID)
+		if db.update(sql) < 0:
+			return 1
+		sql = "DELETE FROM user_work WHERE UID = %s" % (UID)
+		if db.update(sql) < 0 :
+			return 1
+
+	return 0
 
