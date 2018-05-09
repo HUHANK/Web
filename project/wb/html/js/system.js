@@ -7,6 +7,16 @@ G_ALL_DICT = '';
 
 
 function main(){
+	
+	GetBaseInfo();
+	SidebarEventInit();
+	SidebarSizeInit();
+	window.onrezie = function() {
+		SidebarSizeInit();
+	}
+}
+
+function GetBaseInfo() {
 	/*--------------------获取初始化的信息----------------------------*/
 	var param = new Object();
 	param.method = "GET_BASEINFO";
@@ -18,12 +28,6 @@ function main(){
 
 		G_ALL_DICT = d.data;
 	});
-
-	SidebarEventInit();
-	SidebarSizeInit();
-	window.onrezie = function() {
-		SidebarSizeInit();
-	}
 }
 
 function SidebarSizeInit() {
@@ -88,6 +92,78 @@ function SidebarEventInit(){
 		}
 	});
 
+	AddUserInit();
+	UpdateUserInit();
+	DeleteUserInit();
+	RedmineConfigInit();
+}
+
+function RedmineConfigInit() {
+	var RedmineHost = '';
+	var RedmineApiKey = '';
+	var RedmineSyncTime = '0';
+	$(G_ALL_DICT.SystemParameter).each(function(index, el) {
+		if (el.ParamCode == '0005') {
+			RedmineHost = el.ParamValue;
+		}
+		else if (el.ParamCode == '0004') {
+			RedmineApiKey = el.ParamValue;
+		}
+		else if (el.ParamCode == '0006') {
+			RedmineSyncTime = el.ParamValue;
+		}
+	});
+	$(".wrap1 .rcspz table .rd-host").val(RedmineHost);
+	$(".wrap1 .rcspz table .rd-api-key").val(RedmineApiKey);
+	$(".wrap1 .rcspz table .rd-sync-time").val(RedmineSyncTime);
+
+	$(".wrap1 .rcspz .submit .save").unbind();
+	$(".wrap1 .rcspz .submit .save").click(function(event) {
+		var param = new Object();
+		var bChange = false;
+
+		param.method = "UPDATE_SYSTEM_PARAM";
+		param.data = [];
+		if ($(".wrap1 .rcspz table .rd-host").val() != RedmineHost) {
+			bChange = true;
+			var o = {};
+			o.ParamCode = '0005';
+			o.ParamValue = $(".wrap1 .rcspz table .rd-host").val();
+			param.data.push(o);
+		}
+		if ($(".wrap1 .rcspz table .rd-api-key").val() != RedmineApiKey) {
+			bChange = true;
+			var o = {};
+			o.ParamCode = '0004';
+			o.ParamValue = $(".wrap1 .rcspz table .rd-api-key").val();
+			param.data.push(o);
+		}
+		if ($(".wrap1 .rcspz table .rd-sync-time").val() != RedmineSyncTime) {
+			bChange = true;
+			var o = {};
+			o.ParamCode = '0006';
+			o.ParamValue = $(".wrap1 .rcspz table .rd-sync-time").val();
+			param.data.push(o);
+		}
+
+		if (bChange) {
+			sync_post_data("/system_set/", JSON.stringify(param), function(d) {
+				if (d.ErrCode != 0) {
+					hyl_alert(d.msg);
+					GetBaseInfo();
+					RedmineConfigInit();
+					return;
+				}
+				hyl_alert("保存成功!")
+				GetBaseInfo();
+				RedmineConfigInit();
+			});
+		}
+	});
+
+}
+
+function AddUserInit() {
 	//组selecte
 	var groups = [];
 	$(G_ALL_DICT.Group).each(function(index, el) {
@@ -159,9 +235,14 @@ function SidebarEventInit(){
 			$(".wrap1 .xzyh table input.rd-uid").val('');
 			$(".wrap1 .xzyh table input.group").attr("key",'');
 			$(".wrap1 .xzyh table input.group").val('');
+			GetBaseInfo();
+			UpdateUserInit();
+			DeleteUserInit();
 		});
 	});
+}
 
+function UpdateUserInit() {
 	//修改用户密码
 	var users = [];
 	$(G_ALL_DICT.User).each(function(index, el) {
@@ -175,7 +256,7 @@ function SidebarEventInit(){
 	$(".wrap1 .xgmm .submit .upt").unbind();
 	$(".wrap1 .xgmm .submit .upt").click(function(event) {
 		var id = $(".wrap1 .xgmm table input.login-account").attr("key");
-		if (typeof id == 'undefined' && id.length < 1) {
+		if (typeof id == 'undefined' || id.length < 1) {
 			hyl_alert("请选择需要修改的登录帐号!")
 			return;
 		}
@@ -212,11 +293,22 @@ function SidebarEventInit(){
 			$(".wrap1 .xgmm table input.new-pwd[type=password]").val('');
 		});
 	});
+}
+
+function DeleteUserInit() {
+	var users = [];
+	$(G_ALL_DICT.User).each(function(index, el) {
+		users[index] = {};
+		users[index].id = el.UID;
+		users[index].name = el.NOTE;
+	});
 
 	//删除用户
+	$(".wrap1 .sczh table input.delete-account").unbind();
 	$(".wrap1 .sczh table input.delete-account").focus(function(event) {
 		hyl_select2($(this), users);
 	});
+	$(".wrap1 .sczh table input.join-account").unbind();
 	$(".wrap1 .sczh table input.join-account").focus(function(event) {
 		hyl_select2($(this), users);
 	});
@@ -225,11 +317,11 @@ function SidebarEventInit(){
 	$(".wrap1 .sczh .submit .delete").click(function(event) {
 		var deleteid = $(".wrap1 .sczh table input.delete-account").attr("key");
 		var joinid = $(".wrap1 .sczh table input.join-account").attr("key");
-		if (typeof deleteid == 'undefined' && deleteid.length < 1) {
+		if (typeof deleteid == 'undefined' || deleteid.length < 1) {
 			hyl_alert("请选择需要删除的账户!")
 			return;
 		}
-		if (typeof joinid == 'undefined' && joinid.length < 1) {
+		if (typeof joinid == 'undefined' || joinid.length < 1) {
 			joinid = '0';
 		}
 
@@ -241,7 +333,6 @@ function SidebarEventInit(){
 		if($(".wrap1 .sczh .option .del-all-rec").is(':checked')){
 			param.DelAllRec = 1;
 		}
-
 		sync_post_data("/system_set/", JSON.stringify(param), function(d) {
 			if (d.ErrCode != 0){
 				hyl_alert(d.msg)
@@ -252,6 +343,8 @@ function SidebarEventInit(){
 			$(".wrap1 .sczh table input.delete-account").attr("key", '');
 			$(".wrap1 .sczh table input.join-account").val('');
 			$(".wrap1 .sczh table input.join-account").attr('key','');
+			GetBaseInfo();
+			DeleteUserInit();
 		});
 
 	});

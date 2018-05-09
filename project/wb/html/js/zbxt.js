@@ -267,6 +267,9 @@ function initNavbar(index){
 }
 
 function navbar() {
+	if (g_CURRENT_USER_IS_ADMIN == 0) {
+		$("body .wrapper-top .navbar li[value=SZWH]").css('display', 'none');
+	}
 	$(".navbar ul li").click(function(){
 		//删除li的所有的class
 		$(".navbar ul").children("li").each(function(index, data){
@@ -326,7 +329,7 @@ function navbar() {
 
 
 function system_init() {
-	var html = "<iframe src='system.html' frameborder='0' onload = '' width='100%'  scrolling='no'></iframe>"
+	var html = "<iframe src='system.html?version=1.8.4' frameborder='0' onload = '' width='100%'  scrolling='no'></iframe>"
 	$(".sjwh").html(html);
 	$(".body .sjwh iframe").height($(window).height()-$("body .wrapper-top").outerHeight() - g_system_fix_height);
 

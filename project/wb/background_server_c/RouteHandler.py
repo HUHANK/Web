@@ -1554,6 +1554,9 @@ def SystemSettings(data):
         rs = systemDeleteUser(data)
         if rs != 0:
             return ErrorDeal(ret, "用户删除失败!")
+    elif method == 'UPDATE_SYSTEM_PARAM':
+        rs = systemUpdateSystemParam(data)
+        
     else:
         return ErrorDeal(ret, "模式无效！")
     return SuccessDeal(ret)

@@ -287,6 +287,14 @@ def systemGetBaseInfo(data):
 		return None
 	ret["User"] = res['data']
 
+	#取sys_param的相关参数
+	sql = "SELECT * FROM sys_param"
+	res = db.select2(sql)
+	if res is None:
+		print "Error : %s" % (sql)
+		return None
+	ret["SystemParameter"] = res['data']
+
 	return ret
 
 def systemAddNewUser(data):
@@ -295,7 +303,6 @@ def systemAddNewUser(data):
 	sql = "INSERT INTO user(group_id,UNAME,UPWD,REDMINE_UNAME,REDMINE_UID,NOTE,ADMIN) VALUES( %s, '%s', '%s', '%s', %s, '%s', %s)" % (	\
 			data.get("group_id", '0'), 		data.get("UNAME",''), 	data.get('UPWD',''), 	data.get('REDMINE_UNAME',''), \
 			data.get('REDMINE_UID', 0), 	data.get('NOTE',''), 	data.get('ADMIN', '0') 	)
-	print sql
 	return db.update(sql)
 
 def systemUptUserPwd(data):
@@ -327,35 +334,58 @@ def systemDeleteUser(data):
 
 	if str(JoinUID) != '0':
 		(Year, Week, Day) = getNowYearWeek()
-		sql = "SELECT A.WID FROM user_work A left join work_detail B ON A.UID = B.id WHERE A.UID=%s AND A.YEAR=%s AND A.WEEK=%s AND B.ProgressRate != 100"%(
+		sql = "SELECT A.WID FROM user_work A left join work_detail B ON A.WID = B.id WHERE A.UID=%s AND A.YEAR=%s AND A.WEEK=%s AND B.ProgressRate != 100"%(
 			UID, Year, Week)
+		print sql
 		rs = db.select2(sql)
 		if rs is None:
 			return 1
+		print rs
 		if len(rs['data']) > 0:
 			wids = ''
 			for e in rs['data']:
 				wids = wids + str(e['WID']) + ','
-			wids.rstrip(',')
+			print wids
+			wids = wids.rstrip(',')
+			print wids
 			sql = "UPDATE user_work SET UID=%s WHERE UID=%s AND YEAR=%s AND WEEK=%s AND WID IN (%s)" % (
 				JoinUID, UID, Year, Week, wids)
+			print sql
 			if db.update(sql) < 0:
 				return 1
 
 	if str(data.get("DelAllRec", 0)) == '1' and str(JoinUID) != '0':
-		sql = "DELETE from work_detail where ProgressRate == 100 and id in (SELECT WID user_work where UID =%s)" % (UID)
+		sql = "DELETE from work_detail where ProgressRate = 100 and id in (SELECT WID FROM user_work where UID =%s)" % (UID)
 		if db.update(sql) < 0:
 			return 1
 		sql = "DELETE FROM user_work WHERE UID = %s" % (UID)
 		if db.update(sql) < 0 :
 			return 1
 	else:
-		sql = "DELETE from work_detail where id in (SELECT WID user_work where UID =%s)" % (UID)
+		sql = "DELETE from work_detail where id IN (SELECT WID FROM user_work where UID =%s)" % (UID)
 		if db.update(sql) < 0:
 			return 1
 		sql = "DELETE FROM user_work WHERE UID = %s" % (UID)
 		if db.update(sql) < 0 :
 			return 1
 
+	#删除session数据
+
 	return 0
 
+def systemUpdateSystemParam(data):
+	db =  Options['mysql']
+
+	d = data.get("data", None)
+
+	if d is None:
+		return True
+
+	for el in d:
+		ParamCode = el.get("ParamCode", '0')
+		ParamValue = el.get("ParamValue", '')
+
+		sql = "UPDATE sys_param SET ParamValue = '%s' WHERE ParamCode = '%s'" % (ParamValue, ParamCode)
+		if db.update(sql) < 0:
+			return False
+	return True

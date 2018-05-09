@@ -1,3 +1,5 @@
+/*后台访问地址url设定*/
+var HostUrl = "http://10.10.14.36:5000";
 
 function draw_table(obj, headers, datas) {
 	
@@ -41,9 +43,6 @@ function draw_drop_down_box_select(obj, datas) {
 	shtml = shtml + "</select>";
 	$(obj).html(shtml);
 }
-
-
-var HostUrl = "http://10.10.14.36:5010";
 
 function post_data(path, data, func) {
 	var surl = HostUrl;
