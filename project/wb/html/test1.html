@@ -6,63 +6,21 @@
   <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-
-  <div class="d1"></div>
-
-  <div class="d4"></div>
-  <div class="d2"></div>
-  <div class="d3"></div>
-
-  
+  <input type="file" name="ufile" id="ufile" accept="application/zip">
 </body>
 
-<style type="text/css">
-  .d1{
-    width: 200px;
-    height: 200px;
-    background-color: #BCECAD;
-  }
-  .d2{
-    width: 0px;
-    height: 0px;
-
-    border-top: 100px solid transparent;
-    border-right: 100px solid black;
-    border-bottom: 100px solid transparent;
-  }
-  
-  .d4{
-    position: relative;
-    top: 210px;
-    left: 100px;
-
-    width: 300px;
-    height: 300px;
-    border: 1px solid black;
-    border-radius: 10px;
-  }
-
-  .d3{
-    width: 0;
-    height: 0;
-    position: relative;
-    top: -200px;
-    left: 1px;
-    
-    border-top: 100px solid transparent;
-    border-right: 100px solid white;
-    border-bottom: 100px solid transparent;
-  }
-</style>
 <script type="text/javascript">
   jQuery(document).ready(function($) {
-    $(".d1").mouseover(function(event) {
+    $("#ufile").change(function(event) {
       /* Act on the event */
-      console.info("over");
-      setTimeout(test1,1000);
-      function test1() {
+      console.info("XXXXXXXXXXXXXXXXXXXXXX");
+      console.info($(this));
+      var files = $("#ufile")[0].files;
+      console.info(files);
 
-      }
+      if (files.length == 0) return;
+
+      var form = new FormData();
     });
   });
 </script>

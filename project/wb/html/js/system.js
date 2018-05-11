@@ -324,6 +324,10 @@ function DeleteUserInit() {
 		if (typeof joinid == 'undefined' || joinid.length < 1) {
 			joinid = '0';
 		}
+		if (typeof joinid != 'undefined' && deleteid == joinid) {
+			hyl_alert("交接的账户不能是删除的账户！");
+			return;
+		}
 
 		var param = {};
 		param.method = "DELETE_USER";
