@@ -16,7 +16,6 @@ sys.setdefaultencoding("utf-8")
 MProcess = []
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-
     def do_GET(self):
         self.process(2)
 

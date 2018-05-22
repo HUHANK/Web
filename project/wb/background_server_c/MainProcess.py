@@ -62,9 +62,15 @@ def MainProcess(queue):
     while True:
         try:
             data = queue.get()
+            if not isinstance(data, dict):
+                ret = {}
+                setErrMsg(ret, 2, u"请求无法处理，未指定处理方法！")
+                queue.put(json.dumps(ret))
+                continue
+
             startTime = getNowTimestamp()
             method = data.get("method", None)
-            if method is None:
+            if method is None or len(method) < 1:
                 #print u"请求无法处理，未指定处理方法！"
                 ret = {}
                 setErrMsg(ret, 2, u"请求无法处理，未指定处理方法！")
