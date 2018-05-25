@@ -176,10 +176,10 @@ def Redmine_GetUpdateThisWeekByPdll(uid):
             tr["Type"] = u'项目管理';
 
         tr['TraceNo']   = "%s #%s" % (issue.tracker['name'], issue.id)
-        tr['Detail'] = (issue.description).strip()
-        if tr['Detail'] == '':
-            tr['Detail'] = (issue.subject).strip()
         tr['Subject'] = (issue.subject).strip()
+        tr['Detail'] = (issue.description).strip()
+        if str(tr['Subject']) not in str(tr['Detail']):
+            tr['Detail'] = str(tr['Subject']) + "\n" + str(tr['Detail'])
 
         for time_entry in issue.time_entries:
             tr['Property'] = (time_entry.activity['name']).strip()
