@@ -3,6 +3,12 @@
 import MySQLdb, time
 from config import *
 
+
+
+def MySQLEscapeStr(str):
+    return MySQLdb.escape_string(str)
+
+
 class MySQLOption:
 
     def __init__(self):

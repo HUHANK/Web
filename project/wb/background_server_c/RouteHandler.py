@@ -239,8 +239,10 @@ def reportProcess(data):
         editDate = data["StartDate"];
         editDate = editDate[0]+editDate[1]+editDate[2]+editDate[3]+editDate[5]+editDate[6]+editDate[8]+editDate[9]
 
-        Detail = data["Detail"].replace("'", "''")
-        Note = data["Note"].replace("'", "''")
+        # Detail = data["Detail"].replace("'", "''")
+        # Note = data["Note"].replace("'", "''")
+        Detail = MySQLEscapeStr(data["Detail"])
+        Note = MySQLEscapeStr(data["Note"])
         #---------------------------------------------------------
         sql = "INSERT INTO work_detail(System, Module,Type,TraceNo,Detail,Property,ProgressRate,StartDate,NeedDays,Note, AddDate, EditDate, ExpireDate, SID) VALUES(" \
               "'%s', '%s', '%s','%s','%s','%s',%s, '%s', %s, '%s', '%s', '%s', '%s', %s)" %(
@@ -1463,7 +1465,7 @@ def SyncFromRedmine(data):
                             row.get("System",''),\
                             row.get('Module',''),\
                             row.get('Type',''),\
-                            row.get('Detail',''),\
+                            MySQLEscapeStr(row.get('Detail','')),\
                             row.get("Property",''),\
                             row.get('ProgressRate',0),\
                             row.get('NeedDays',0),\
@@ -1487,9 +1489,9 @@ def SyncFromRedmine(data):
                             '%s',        %s ,           '%s',        %s ,       '%s',\
                             '%s',       '%s',           '%s',       2\
                         )" % ( \
-                row.get("System",''),   row.get('Module',''),       row.get('Type',''),     row.get('TraceNo',''), row.get('Detail',''),\
+                row.get("System",''),   row.get('Module',''),       row.get('Type',''),     row.get('TraceNo',''), MySQLEscapeStr(row.get('Detail','')),\
                 row.get("Property",''), row.get('ProgressRate',0),  row.get('StartDate',''), row.get('NeedDays',0), row.get('AddDate',''),\
-                row.get("EditDate",''), row.get('ExpireDate',''),   row.get('Note','')\
+                row.get("EditDate",''), row.get('ExpireDate',''),   MySQLEscapeStr(row.get('Note',''))\
                         )
 
                 wid = db.update(sql)
