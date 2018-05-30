@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+HTTP_SERVER_MASTER = '10.10.14.36'
 HTTP_SERVER_PORT = 5010
 
 MAIN_PROCESS_NUM = 4

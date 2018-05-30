@@ -1,5 +1,7 @@
 # -*- coding:utf-8 -*-
 import os, math, json
+import random
+import socket
 from MTime import *
 
 def WriteFile(fpath, data):
@@ -84,3 +86,26 @@ def ArrayHas(arr, dest):
         return True
     else:
         return False
+
+
+def PortIsUsed(port, ip='127.0.0.1'):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.connect((ip, int(port)))
+        s.shutdown(2)
+        # 利用shutdown()函数使socket双向数据传输变为单向数据传输。shutdown()需要一个单独的参数，
+        # 该参数表示了如何关闭socket。具体为：0表示禁止将来读；1表示禁止将来写；2表示禁止将来读和写。
+        print "%s:%s is used!" %(ip, port)
+        return True
+    except:
+        print "%s:%s is unused!" % (ip, port)
+        return False
+
+def GetUnusedPort(ip='127.0.0.1'):
+    port = random.randint(10000, 20000)
+    while PortIsUsed(port):
+        port = random.randint(20000, 30000)
+    return port
+
+
+print GetUnusedPort()
