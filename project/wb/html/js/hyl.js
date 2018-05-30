@@ -68,19 +68,19 @@ function hyl_select( obj, data, selFunc ) {
         	event.data.func($(this));
 	});
 
-	$(document).on("scroll", function(ev) {
-		//console.info(ev);
-		setTimeout(function(){
-			$(".hyl-drop-down").slideUp(10);
-		}, 1);
-	});
+	// $(document).on("scroll", function(ev) {
+	// 	//console.info(ev);
+	// 	setTimeout(function(){
+	// 		$(".hyl-drop-down").slideUp(10);
+	// 	}, 1);
+	// });
 
-	_input.blur(function(event) {
-		/* Act on the event */
-		setTimeout(function(){
-			$(".hyl-drop-down").slideUp(10);
-		}, 100);
-	});
+	// _input.blur(function(event) {
+	// 	/* Act on the event */
+	// 	setTimeout(function(){
+	// 		$(".hyl-drop-down").slideUp(10);
+	// 	}, 100);
+	// });
 
 }
 

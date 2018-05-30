@@ -1,5 +1,5 @@
 /*后台访问地址url设定*/
-var HostUrl = "http://10.10.14.36:5010";
+var HostUrl = "http://10.10.14.36:5000";
 
 function draw_table(obj, headers, datas) {
 	
