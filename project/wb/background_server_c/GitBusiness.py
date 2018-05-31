@@ -7,7 +7,6 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-GIT_URL = "http://10.10.12.120/rzrq/jzjy.git"
 
 Commit = namedtuple('Commit',['user', 'commit_time', 'summary', 'hexsha'])
 
@@ -35,7 +34,7 @@ def gb2312_utf8(str):
 
 class GitProc(object):
     """Git Business"""
-    def __init__(self, path=None, url=GIT_URL):
+    def __init__(self, path=None, url=''):
         self._path = path
         self._url = url
         self._repo = None
@@ -202,8 +201,8 @@ class GitProc(object):
             ret.append(line)
         return ret
 
-# g = GitProc(path="D:/GIT/python_git_test")
-# g.repo()
+g = GitProc(path="./git/jzjy", url = 'http://wb_hyl:hyl12345678@10.10.12.120/rzrq/jzjy.git')
+g.repo()
 # for e in g.remote_branches_name():
 #     print e
 #
