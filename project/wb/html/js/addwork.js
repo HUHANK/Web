@@ -364,9 +364,9 @@ function add_zb() {
 			$(this).removeAttr("disabled");
 			return;
 		}
-		re = /^.*(需求|任务|BUG|问题单)\s*#/i
+		re = /^.*(需求|任务|BUG|问题单|功能点)\s*#/i
 		if (!re.test(param.TraceNo)) {
-			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG, 问题单]#[XXXX]格式填写！没有跟踪号，请按照 [需求, 任务, BUG, 问题单]#[0000]格式填写！");
+			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG, 问题单, 功能点]#[XXXX]格式填写！");
 			$(this).removeAttr("disabled");
 			return;
 		}
@@ -442,9 +442,9 @@ function add_zb() {
 			alert("后续人日不能为非正整数！");
 			return;
 		}
-		re = /^.*(需求|任务|BUG|问题单)\s*#/i
+		re = /^.*(需求|任务|BUG|问题单|功能点)\s*#/i
 		if (!re.test(param.TraceNo)) {
-			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG, 问题单]#[XXXX]格式填写！没有跟踪号，请按照 [需求, 任务, BUG, 问题单]#[0000]格式填写！");
+			alert("跟踪号的格式不对，请按照 [需求, 任务, BUG, 问题单, 功能点]#[XXXX]格式填写！");
 			return;
 		}
 
