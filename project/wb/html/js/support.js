@@ -278,7 +278,7 @@ function init_add_record ( ) {
 		$(".support .add-record table .detail 	textarea").val('');
 		$(".support .add-record table .bversion input").val('');
 		$(".support .add-record table .pulno 	input").val('');
-		//$(".support .add-record table .pdate 	input").val('');
+		$(".support .add-record table .pdate 	input").val(GetNowDate2());
 		$(".support .add-record table .uptno 	input").val(0);
 		$(".support .add-record table .status 	input").val('');
 		$(".support .add-record table .remark 	textarea").val('');
@@ -288,7 +288,7 @@ function init_add_record ( ) {
 		$(".support .add-record table .pversion input").val('');
 		$(".support .add-record table .gitb 	input").val('');
 		$(".support .add-record table .uversion input").val('');
-		$(".support .add-record table .pronum 	input").val('');
+		$(".support .add-record table .pronum 	input").val('0');
 		$(".support .add-record table .note 	textarea").val('');
 		$(".support .add-record table .redmine 	textarea").val('');
 
@@ -490,6 +490,9 @@ function addSupport(opt) {
 	param.note			= sGetTextareaVal("note");
 	param.redmine		= sGetTextareaVal("redmine");
 
+	if (param.uptno.length < 1) param.uptno = '0';
+	if (param.pronum.length < 1) param.pronum = '0';
+	
 	param.SessionID = Options.SessionID;
 
 	if (opt == "ADD") {
