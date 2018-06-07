@@ -252,14 +252,6 @@ table tbody tr:hover{
 	background: linear-gradient(#EEEEEE, #EEEEEE, #4C9ED9);
 }
 
-.query .result .box tbody .content-omit{
-	position: relative;
-	line-height: 1.2em;
-	height: 3.6em;
-	overflow: hidden;
-}
-
-
 /*------------------------------------ADD_ZB--------------------------------------*/
 .add-zb{
 	display: none;
@@ -731,4 +723,13 @@ table tbody tr:hover{
 	border: 1px solid  #66F2F9;
 	background-color: #C2FCFF;
 	opacity: 0.8;
+}
+
+
+
+tbody .content-omit{
+	position: relative;
+	line-height: 1.2em;
+	height: 3.6em;
+	overflow: hidden;
 }

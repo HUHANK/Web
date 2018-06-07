@@ -395,24 +395,6 @@ function query_sidebar_init() {
 		if (QueryCondi.sortCols.length > 0)
 			query_get_result(0);
 	});
-/*
-	function Cleanup() {
-        window.clearInterval(idTmr);
-        CollectGarbage();
-    }
-    var tableToExcel = (function() {
-          var uri = 'data:application/vnd.ms-excel;base64,',
-          template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
-            base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) },
-            format = function(s, c) {
-                return s.replace(/{(\w+)}/g,
-                function(m, p) { return c[p]; }) }
-            return function(table, name) {
-            //if (!table.nodeType) table = document.getElementById(table)
-            var ctx = {worksheet: name || 'Worksheet', table: table}
-            window.location.href = uri + base64(format(template, ctx))
-          }
-        })()*/
 	$(".query .sidebar .export .content button").click(function() {
 		var param = new Object();
 		param.method = "EXPORT";
@@ -596,7 +578,7 @@ function query_get_result(page) {
 				{name: "延期天数", 	field:"ExpireDays", 	width:"70", align:"center"},
 				{name: "备注", 	field:"Note", 	width:"300", 	align:"left",
 	                renderer:function(obj, rowidex) {
-						return '<pre class="content-omit" title="'+obj.Detail+'" style="font-size:12px;">' + obj.Note + "</pre>";
+						return '<pre class="content-omit" title="'+obj.Note+'" style="font-size:12px;">' + obj.Note + "</pre>";
 					}
 	            },
 				{name: "<div class='rhead' name='WEEK'>周期</div>", field:"WEEK", 	width:"100", align:"center"}

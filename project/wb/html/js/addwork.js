@@ -646,7 +646,7 @@ function add_zb_show_work() {
 						},
 						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
 							renderer:function(obj, rowidex) {
-								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
+								return '<pre class="content-omit" title="'+obj.Detail+'" style="font-size:12px;">' + obj.Detail + "</pre>";
 							}
 						},
 						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
@@ -682,7 +682,7 @@ function add_zb_show_work() {
 						},
 						{name: "备注", 	field:"Note", 	width:"200", 	align:"left",
 	                		renderer:function(obj, rowidex) {
-								return '<pre style="font-size:12px;">' + obj.Note + "</pre>";
+								return '<pre class="content-omit" title="'+obj.Note+'" style="font-size:12px;">' + obj.Note + "</pre>";
 							}
 	                	},
 						{name: "操作", field:'id', width:"100", align:"center", 
