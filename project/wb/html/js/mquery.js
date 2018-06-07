@@ -578,7 +578,7 @@ function query_get_result(page) {
 				},
 				{name: "工作内容", field:"Detail", 	width:"360", align:"left",
 					renderer:function(obj, rowidex) {
-						return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
+						return '<pre class="content-omit" title="'+obj.Detail+'" style="font-size:12px;">' + obj.Detail + "</pre>";
 					}
 				},
 				{name: "<div class='rhead' name='Property'>性质</div>", field:"Property", 	width:"80", align:"center"},
@@ -596,7 +596,7 @@ function query_get_result(page) {
 				{name: "延期天数", 	field:"ExpireDays", 	width:"70", align:"center"},
 				{name: "备注", 	field:"Note", 	width:"300", 	align:"left",
 	                renderer:function(obj, rowidex) {
-						return '<pre style="font-size:12px;">' + obj.Note + "</pre>";
+						return '<pre class="content-omit" title="'+obj.Detail+'" style="font-size:12px;">' + obj.Note + "</pre>";
 					}
 	            },
 				{name: "<div class='rhead' name='WEEK'>周期</div>", field:"WEEK", 	width:"100", align:"center"}

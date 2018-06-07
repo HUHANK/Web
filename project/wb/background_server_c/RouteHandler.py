@@ -1283,13 +1283,13 @@ def supportQUERY(d):
         DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
         UPT_USER,    \
         DATE_FORMAT(UPT_TIME,'%Y-%m-%d %H:%I:%S') AS UPT_TIME\
-        FROM support "
+        FROM support  "
     if isAdmin(user):
         sql = sql + ""
     else:
         sql = sql + " WHERE CHARGER='%s' OR DEVELOPER='%s' " % (user, user)
     
-    sql = sql + " ORDER BY ID DESC";
+    sql = sql + " ORDER BY STATUS";
     return db.select2(sql)
 
 def supportQUERY_ONE(d):

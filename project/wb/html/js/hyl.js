@@ -17,14 +17,24 @@ function hyl_select( obj, data, selFunc ) {
 					.attr("class", "hyl-drop-down")
 					.css("display", "none")
 					.css("position", "fixed")
-					//.css("width", _input.outerWidth()+"px")
-					.css("background-color", "white");
+					.css({
+						'font-size': '14px',
+						"background-color": "white"
+					});
 	_input.after(_dropbox);
 	_dropbox = _input.next(".hyl-drop-down");
 
 	/*添加下拉框里面的元素*/
 	$(data).each(function(index, el) {
-		var tmp = $("<div></div>").text(el);
+		if (0 == index) {
+			_dropbox.append($("<div></div>").css('height', '24px'));	
+		}
+		var tmp = $("<div></div>").text(el).attr("title", el);
+		tmp.css({
+			'white-space': 'nowrap',
+			'overflow': 'hidden',
+			'text-overflow': 'ellipsis'
+		});
 		_dropbox.append(tmp);
 	});
 

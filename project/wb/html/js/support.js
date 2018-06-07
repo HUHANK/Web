@@ -531,7 +531,7 @@ function querySupport() {
 		conf.width = 2600;
 		conf.height = 400;
 		conf.columns = [
-			{name: 'ID', 		field:'ID', 			width:'20', align:'center'},
+			//{name: 'ID', 		field:'ID', 			width:'20', align:'center'},
 			{name: '包类型', 	field:'TYPE', 			width:'40', align:'center'},
 			{name: '系统', 		field:'SYSTEM', 		width:'40', align:'center'},
 			{name: '模块', 		field:'MODULE', 		width:'40', align:'center'},
