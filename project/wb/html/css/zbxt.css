@@ -396,21 +396,23 @@ table tbody tr:hover{
 }
 
 .support .add-record{
-	//width: 850px;
-	//height: 900px;
+	width: 1000px;
+	height: 840px;
 	display: none;
 	position: fixed;
 	top: 50%;
 	left: 50%;
-	margin: -415px 0 0 -410px;
+	margin: -420px 0 0 -500px;
 	background-color: white;
 	font-size: 12px;
 	//overflow: hidden;
 }
 .support .add-record .body{
-	width: 830px;
-	height: 820px;
+	width: 100%;
+	height: 810px;
 	overflow: auto;
+	padding-right: 10px;
+	padding-left: 10px;
 }
 
 .support .add-record.show{
@@ -435,8 +437,7 @@ table tbody tr:hover{
 	border-collapse: separate;
 	border-spacing: 0px 20px;
 	//background-color: #C3C5C5;
-	width: 800px;
-	margin: 10px;
+	width: 100%;
 }
 
 .support .add-record .row{
@@ -717,31 +718,84 @@ table tbody tr:hover{
 	position: fixed;
 	background-color: white;
 
-	//width: 820px;
-	//height: 400px;
+	width: 1000px;
+	height: 800px;
 	top: 50%;
 	left: 50%;
-	margin: -200px 0 0 -410px;
+	margin: -400px 0 0 -500px;
 	z-index: 10;
 
 	border-radius: 3px;
 }
 .support .task-show .head{
-	font-size: 15px;
+	font-size: 14px;
+	line-height: 24px;
+	color: #2996CF;
 	font-weight: bold;
 	background-color: #C3C5C5;
-	padding: 5px;
+	padding-left: 2px;
 	border-top-left-radius: 3px;
 	border-top-right-radius: 3px;
 }
 .support .task-show .head .exit{
 	float: right;
 }
-.support .task-show .result{
+
+.support .task-show .content{
+	font-size: 14px;
+	color: #555555;
+	width: 100%;
+	height: 776px;
 	overflow: auto;
-	width: 820px;
-	height: 400px;
+	padding-left: 20px;
+	padding-right: 10px;
+	background-color: #FFFFDD;
 }
+.support .task-show .content > div{
+	margin-top: 8px;
+}
+.support .task-show .content pre{
+	padding: 3px;
+	font-size: 14px;
+}
+.support .task-show .content .subject .title{
+	font-size: 16px;
+	font-weight: bold;
+	color: #555;
+
+	font-family: "Trebuchet MS", Verdana, sans-serif;
+	padding: 2px 10px 1px 10px;
+}
+.support .task-show .content .author{
+	margin-bottom: 10px;
+}
+.support .task-show .content .author span{
+	color: #29ADD3;
+}
+
+.support .task-show .content .attributes{
+	overflow: auto;
+}
+.support .task-show .content .attributes .attribute{
+	margin-top: 4px;
+}
+.support .task-show .content .splitcontentleft{
+	float: left;
+	width: 49%;
+}
+.support .task-show .content .attribute .label{
+	display: inline-block;
+	width: 30%;
+}
+.support .task-show .content .attribute .value{
+	display: inline-block;
+	width: 69%;
+}
+.support .task-show .content .label{
+	font-weight: bold;
+}
+
+
 
 /*-------------------------------------鼠标右键弹出框----------------------------------------*/
 .mouse-right-down{

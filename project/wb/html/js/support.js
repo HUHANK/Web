@@ -4,7 +4,7 @@ function Support ( ) {
 }
 
 function InitSupport ( ) {
-	//SuportRepaint();
+	SuportRepaint();
 	init_add_record();
 	$(".support").bind("contextmenu",function(e){
    		return false;
@@ -24,12 +24,9 @@ function SuportRepaint () {
 			- parseInt($(".support .wrap .option").outerHeight(true)) 
 			- parseInt($(".support .wrap .show .table .thead").outerHeight());
 
-	//console.info(window.screen.availHeight);
-	console.info(wheight, $("body .wrapper-top").outerHeight(), $(".support .wrap .option").outerHeight(true), 
-		$(".support .wrap .show .table .thead").outerHeight(), qheight);
-	
 	$(".support .wrap .show ").css("width", (wwidth)+"px");
 	$(".support .wrap .show .table .tbody").css("height", (qheight-getScrollWidth()-1)+"px");
+	// $(".support .wrap .show .table .tbody").css('width', wwidth+'px');
 }
 
 function SupportMouseRightDown(e) {
@@ -42,7 +39,7 @@ function SupportMouseRightDown(e) {
 	dropbox.html(' 	<div class="upt">更改</div>\
 					<div class="del">删除</div>\
 					<div class="refresh">刷新</div>\
-					<div class="examine">查看任务</div>');
+					<div class="examine">查看详细</div>');
 
 	$("body").click(function(event) {
 		setTimeout(function(){
@@ -79,7 +76,7 @@ function SupportMouseRightDown(e) {
 			$(".support .add-record table .module 	input").val(data.MODULE);
 			$(".support .add-record table .type 	input").val(data.TYPE);
 			$(".support .add-record table .sname 	input").val(data.PACKAGE_NAME);
-			$(".support .add-record table .ftp 		input").val(data.FTP_ADDR);
+			$(".support .add-record table .ftp 		textarea").val(data.FTP_ADDR);
 			$(".support .add-record table .detail 	textarea").val(data.CONTENT);
 			$(".support .add-record table .bversion input").val(data.BASE_VERSION);
 			$(".support .add-record table .pulno 	input").val(data.PUBLISH_SERIAL);
@@ -108,13 +105,13 @@ function SupportMouseRightDown(e) {
 
 	dropbox.find('.del').click(function(event) {
 		/* Act on the event */
-		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
+		if ($('.support .wrap .show .table .tbody .tr.selected' ).length < 1) {
 			alert("请选取需要删除的行！");
 			return true;
 		}
 
 		var param = {};
-		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.ID = $('.support .wrap .show .table .tbody .tr.selected').attr("row");
 		param.SessionID = Options.SessionID;
 		param.method = "DELETE";
 		sync_post_data("/support/", JSON.stringify(param), function(d) {
@@ -132,50 +129,78 @@ function SupportMouseRightDown(e) {
 	});
 
 	dropbox.find('.examine').click(function(event) {
-		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
-			alert("请选中一行数据！");
+		if ($('.support .wrap .show .table .tbody .tr.selected' ).length < 1) {
+			alert("请选取需要更新的行！");
 			return true;
 		}
 		var param = {};
-		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.ID = $('.support .wrap .show .table .tbody .tr.selected').attr("row");
 		param.SessionID = Options.SessionID;
-		param.method = "GETTASKINFO";
+		param.method = "QUERY_ONE";
 		sync_post_data("/support/", JSON.stringify(param), function(d) {
 			if (d.ErrCode != 0) {
-				alert("获取任务信息失败！");
+				alert("数据库查询失败！");
 				return ;
 			}
-			//console.info(d);
+			var data = d.data[0];
+			/*设置标题*/
+			$(".support .task-show .head .title").text(" # "+data.ID);
 
-			var conf = {};
-			conf.columns = [
-				{name: '人员', 		field:'User', 			width:'60', align:'center'},
-				{name: '系统', 		field:'System', 		width:'80', align:'center'},
-				{name: '模块', 		field:'Module', 		width:'80', align:'center'},
-				{name: '类型', 		field:'Type', 			width:'80', align:'center'},
-				{name: '性质', 		field:'Property', 		width:'70', align:'center'},
-				{name: '跟踪号', 	field:'TraceNo', 		width:'70', align:'center',
-					renderer: function(data){
-						return GenTraceNoAhref(data);
-					}
-				},
-				{name: '工作内容', 	field:'Detail', 		width:'300', align:'left',
-					renderer: function(data){
-						return '<pre style="font-size:12px;">' + data + "</pre>";
-					}
-				},
-				{name: '进度', 		field:'ProgressRate', 	width:'60', align:'center',
-					renderer: function(data){
-						return GenProgressBarHtml(60, 14, data);
-					}
-				}
-			];
-			conf.datas = d.data;
+			/*设置主题*/
+			$(".support .task-show .content .subject .title").text(data.PACKAGE_NAME);
 
-			hyl_table($(".support .task-show .result"), conf);
+			/*Set Author*/
+			$(".support .task-show .content .author .cuser").text(data.CRT_USER);
+			$(".support .task-show .content .author .uuser").text(data.UPT_USER);
+			var tmp = data.CRT_TIME.substring(0,10);
+			var tstr = '';
+			var diff = 0;
+			if ((diff=DateDiffNow('m', tmp)) != 0) tstr = diff+"个月";
+			else if ((diff=DateDiffNow('w', tmp)) != 0) tstr = diff+"周";
+			else if ((diff=DateDiffNow('d', tmp)) != 0) tstr = diff+"天";
+			else if ((diff=DateDiffNow('h', tmp)) != 0) tstr = diff+"小时";
+			else if ((diff=DateDiffNow('n', tmp)) != 0) tstr = diff+"分钟";
+			else tstr = "刚刚";
+			$(".support .task-show .content .author .cdate").text(tstr);
+			tmp = data.UPT_TIME.substring(0, 10);
+			if ((diff=DateDiffNow('m', tmp)) != 0) tstr = diff+"个月";
+			else if ((diff=DateDiffNow('w', tmp)) != 0) tstr = diff+"周";
+			else if ((diff=DateDiffNow('d', tmp)) != 0) tstr = diff+"天";
+			else if ((diff=DateDiffNow('h', tmp)) != 0) tstr = diff+"小时";
+			else if ((diff=DateDiffNow('n', tmp)) != 0) tstr = diff+"分钟";
+			else tstr = "刚刚";
+			$(".support .task-show .content .author .udate").text(tstr);
 
-			$("body").children(".hyl-bokeh").addClass("hyl-show");
-			$(".support .task-show").show(200, function() {});
+			/*---------------------------*/
+			$(".support .task-show .content .attributes .status .value").text(data.STATUS);
+			$(".support .task-show .content .attributes .publishdate .value").text(data.PUBLISH_DATE.substring(0, 10));
+			$(".support .task-show .content .attributes .crtuser .value").text(data.CRT_USER);
+			$(".support .task-show .content .attributes .crtdate .value").text(data.CRT_TIME.substring(0, 10));
+			$(".support .task-show .content .attributes .uptdate .value").text(data.UPT_TIME.substring(0, 10));
+			$(".support .task-show .content .attributes .uptuser .value").text(data.UPT_USER);
+			$(".support .task-show .content .attributes .type .value").text(data.TYPE);
+			$(".support .task-show .content .attributes .publishserial .value").text(data.PUBLISH_SERIAL);
+			$(".support .task-show .content .attributes .system .value").text(data.SYSTEM);
+			$(".support .task-show .content .attributes .module .value").text(data.MODULE);
+			$(".support .task-show .content .attributes .baseversion .value").text(data.BASE_VERSION);
+			$(".support .task-show .content .ftp .value").text(data.FTP_ADDR);
+			$(".support .task-show .content .pcontent .value").text(data.CONTENT.length == 0 ? '无' : data.CONTENT);
+
+			$(".support .task-show .content .attributes .charger .value").text(data.CHARGER);
+			$(".support .task-show .content .attributes .developer .value").text(data.DEVELOPER);
+			$(".support .task-show .content .attributes .collaboration .value").text(data.COLLABORATION);
+			$(".support .task-show .content .attributes .gitbranch .value").text(data.GIT_BRANCH);
+			$(".support .task-show .content .attributes .uptnum .value").text(data.UPT_NUM);
+			$(".support .task-show .content .attributes .problemnum .value").text(data.PROBLEM_NUM);
+			$(".support .task-show .content .attributes .planversion .value").text(data.PLAN_VERSION);
+			$(".support .task-show .content .attributes .upgradeversion .value").text(data.UPGRADE_VERSION);
+
+			$(".support .task-show .content .remark .value").text(data.REMARK.length == 0 ? '无' : data.REMARK);
+			$(".support .task-show .content .redmines .value").text(data.REDMINES.length == 0 ? '无' : data.REDMINES);
+			$(".support .task-show .content .note .value").text(data.NOTE.length == 0 ? '无' : data.NOTE);
+
+			$("body").children(".hyl-bokeh").addClass('hyl-show');
+			$(".support .task-show").show(10);
 		});
 	});
 
@@ -281,7 +306,7 @@ function init_add_record ( ) {
 		$(".support .add-record table .module 	input").val('');
 		$(".support .add-record table .type 	input").val('');
 		$(".support .add-record table .sname 	input").val('');
-		$(".support .add-record table .ftp 		input").val('');
+		$(".support .add-record table .ftp 		textarea").val('');
 		$(".support .add-record table .detail 	textarea").val('');
 		$(".support .add-record table .bversion input").val('');
 		$(".support .add-record table .pulno 	input").val('');
@@ -330,7 +355,7 @@ function init_add_record ( ) {
 			$(".support .add-record table .module 	input").val(data.MODULE);
 			$(".support .add-record table .type 	input").val(data.TYPE);
 			$(".support .add-record table .sname 	input").val(data.PACKAGE_NAME);
-			$(".support .add-record table .ftp 		input").val(data.FTP_ADDR);
+			$(".support .add-record table .ftp 		textarea").val(data.FTP_ADDR);
 			$(".support .add-record table .detail 	textarea").val(data.CONTENT);
 			$(".support .add-record table .bversion input").val(data.BASE_VERSION);
 			$(".support .add-record table .pulno 	input").val(data.PUBLISH_SERIAL);
@@ -479,7 +504,7 @@ function addSupport(opt) {
 	param.module 		= sGetInputVal("module");
 	param.type 			= sGetInputVal("type");
 	param.name 			= sGetInputVal("sname");
-	param.ftp 			= sGetInputVal("ftp");
+	param.ftp 			= sGetTextareaVal("ftp");
 	param.detail 		= sGetTextareaVal("detail");
 	param.bversion 		= sGetInputVal("bversion");
 	param.pulno 		= sGetInputVal("pulno");

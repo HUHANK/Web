@@ -16,16 +16,16 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.0.4"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.0.4"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.0.4"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.0.4"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.0.4"></script>
-	<script type="text/javascript" src="js/support.js?version=2.0.4"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.0.4"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.0.4">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.0.4">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.0.4">
+	<script type="text/javascript" src="js/ginit.js?version=2.0.5"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.0.5"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.0.5"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.0.5"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.0.5"></script>
+	<script type="text/javascript" src="js/support.js?version=2.0.5"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.0.5"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.0.5">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.0.5">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.0.5">
 </head>
 <body>
 	<!--弹出框-->
@@ -293,126 +293,6 @@
 		</div>
 
 		<div class="sjwh">
-			<!--
-			<div class="sidebar">
-				<ul class="je-navs-secondary je-bg-white je-rdu3 je-f16 je-fl">
-		        	<li class="item" name="mmxg">密码修改</li>
-		        	<li class="item" name="bmgl">部门管理</li>
-		        	<li class="item" name="xzgl">小组管理</li>
-		        	<li class="item" name="qxgl">权限管理</li>
-		        	<li class="item" name="zdwh">字典维护</li>
-	    		</ul>
-    		</div>
-    		<div class="wrap">
-    			<div class="mmxg">
-    				<div class="main">
-    					<div class="je-form-item">
-    						<label class="je-label je-f14">旧密码</label>
-    						<div class="je-inputbox">
-                    			<input type="password" name="" autocomplete="off" placeholder="请输入旧密码" class="je-input jmm">
-                			</div>
-    					</div>
-    					<div class="je-form-item">
-    						<label class="je-label je-f14">新密码</label>
-    						<div class="je-inputbox">
-                    			<input type="password" name="" autocomplete="off" placeholder="请输入新密码" class="je-input xmm1">
-                			</div>
-    					</div>
-    					<div class="je-form-item">
-    						<label class="je-label je-f14">确认密码</label>
-    						<div class="je-inputbox">
-                    			<input type="password" name="" autocomplete="off" placeholder="请输入确认密码" class="je-input xmm2">
-                			</div>
-    					</div>
-    					<button class="je-btn submit">确认修改</button>
-    				</div>
-    			</div>	
-
-    			<div class="bmgl">
-    				<div class="table">
-    					
-    				</div>
-    				<button class="je-btn add" name="add">添加</button>
-    			</div>	
-
-    			<div class="xzgl">
-    				<div>
-	    				<div class="table">
-	    					
-	    				</div>
-	    				<button class="je-btn add" name="add">添加</button>
-    				</div>
-    				<div class="xzcysz">
-    					<fieldset class="je-field je-p10">
-    						<legend class="je-f14">小组成员</legend>
-							<div>
-								<label class="je-label je-f14">选择组成员</label>
-								<select class="zcy">
-									
-								</select>
-								<button class="je-btn je-btn-small add">添加</button>
-							</div>
-							<div class="table2">
-							</div>
-    					</fieldset>
-    				</div>
-    			</div>
-    			<div class="zdwh">
-    				<fieldset class="je-field je-p10" style="margin-bottom: 0;">
-    					<legend class="je-f16">查询</legend>
-    					<div class="je-form-item" style="margin-bottom: 0;">
-			                <div class="je-w25 je-dib">
-			                    <label class="je-label je-f14">根字典</label>
-			                    <div class="je-inputbox">
-			                    <select class="root">
-			                        
-			                    </select>
-			                    </div>
-			                </div>
-			                <div class="je-w25 je-dib">
-			                    <label class="je-label je-f14">一级字典</label>
-			                    <div class="je-inputbox">
-			                    <select class="first">
-			                        
-			                    </select>
-			                    </div>
-			                </div>
-			                <div class="je-w25 je-dib">
-			                    <label class="je-label je-f14">二级字典</label>
-			                    <div class="je-inputbox">
-			                    <select class="second">
-			                        
-			                    </select>
-			                    </div>
-			                </div>
-			                <button class="je-btn submit" style="margin-left: 40px;">查询</button>
-			            </div>
-    				</fieldset>
-    				<div class="tool" style="">
-    					<button class="je-btn-mini je-bg-native je-rdu add">
-    						<i class="je-icon" style="">&#xe61a;</i>
-    					</button>
-    					<button class="je-btn-mini je-bg-red je-rdu del">
-    						<i class="je-icon">&#xe636;</i>
-    					</button>
-    					<button class="je-btn-mini je-bg-green je-rdu">
-    						<i class="je-icon">&#xe63f;</i>
-    					</button>
-						
-						<button class="je-btn-mini je-bg-native je-rdu" style="float: right; margin-right: 10px;">
-    						<i class="je-icon" style="">&#xe60f;</i>
-    					</button>
-    					<label style="float: right;"><i class="je-icon">&#xe63d;</i></label>
-    					<button class="je-btn-mini je-bg-native je-rdu" style="float: right;">
-    						<i class="je-icon" style="">&#xe613;</i>
-    					</button>
-    				</div>
-    				<div class="result">
-    					
-    				</div>
-    			</div>
-    		</div>
-    		-->
     		<iframe src="system.html"
     		frameborder='0'
     		onload = ''
@@ -442,7 +322,7 @@
 						</tr>
 						<tr class='row'>
 							<td class='lab'>FTP地址</td>		<td class='content ftp' colspan='5'>
-								<input type="text" name="">
+								<textarea></textarea>
 							</td>
 						</tr>
 						<tr class='row'>
@@ -462,7 +342,7 @@
 							<td class='lab'>发布日期</td>		<td class='content pdate'>
 								<input type="date" name="">
 							</td>
-							<td class='lab'>跟新次数</td>		<td class='content uptno'>
+							<td class='lab'>更新次数</td>		<td class='content uptno'>
 								<input type="number" name="">
 							</td>
 						</tr>
@@ -574,7 +454,7 @@
 								<tr><td class="CRT_USER			col1"><div>创建者 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
 								<tr><td class="CRT_TIME			col1"><div>创建时间     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
 								<tr><td class="UPT_USER			col1"><div>更新者 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
-								<tr><td class="UPT_TIME			col1"><div>跟新时间     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPT_TIME			col1"><div>更新时间     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
 							</tbody>
 						</table>
 					</div>
@@ -586,10 +466,134 @@
 
 			<div class="task-show">
 				<div class="head">
-					<span class="title">此Support包包含的任务信息</span>
+					<span class="title"></span>
 					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
 				</div>
-				<div class="result"></div>
+				<div class="content">
+					<div class="subject">
+						<div class="title"></div>
+					</div>
+					<p class="author">由
+						<span class="cuser"></span>
+						在
+						<span class="cdate"></span>
+						之前添加. 
+						<span class="uuser"></span>
+						更新于
+						<span class="udate"></span>
+						之前.
+					</p>
+					<div class="attributes">
+						<div class="splitcontentleft">
+							<div class="status attribute">
+								<div class="label">状态:</div>
+								<div class="value"></div>
+							</div>
+							<div class="crtuser attribute">
+								<div class="label">创建人员:</div>
+								<div class="value"></div>
+							</div>
+							<div class="uptuser attribute">
+								<div class="label">更新人员:</div>
+								<div class="value"></div>
+							</div>
+							<div class="publishserial attribute">
+								<div class="label">发布流程号:</div>
+								<div class="value"></div>
+							</div>
+							<div class="system attribute">
+								<div class="label">系统:</div>
+								<div class="value"></div>
+							</div>
+							<div class="baseversion attribute">
+								<div class="label">基础版本:</div>
+								<div class="value"></div>
+							</div>
+						</div>
+						<div class="splitcontentleft">
+							<div class="type attribute">
+								<div class="label">包类型:</div>
+								<div class="value"></div>
+							</div>
+							<div class="crtdate attribute">
+								<div class="label">创建日期:</div>
+								<div class="value"></div>
+							</div>
+							<div class="uptdate attribute">
+								<div class="label">更新日期:</div>
+								<div class="value"></div>
+							</div>
+							<div class="publishdate attribute">
+								<div class="label">发布日期:</div>
+								<div class="value"></div>
+							</div>
+							<div class="module attribute">
+								<div class="label">模块:</div>
+								<div class="value"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="ftp">
+						<div class="label">FTP地址</div>
+						<pre class="value"></pre>
+					</div>
+					<div class="pcontent">
+						<div class="label">发布内容</div>
+						<pre class="value"></pre>
+					</div>
+					<div class="remark">
+						<div class="label">补充说明</div>
+						<pre class="value"></pre>
+					</div>
+					<div class="attributes">
+						<div class="splitcontentleft">
+							<div class="charger attribute">
+								<div class="label">负责人员:</div>
+								<div class="value"></div>
+							</div>
+							<div class="developer attribute">
+								<div class="label">开发人员:</div>
+								<div class="value"></div>
+							</div>
+							<div class="collaboration attribute">
+								<div class="label">协作号:</div>
+								<div class="value"></div>
+							</div>
+							<div class="gitbranch attribute">
+								<div class="label">Git分支:</div>
+								<div class="value"></div>
+							</div>
+						</div>
+						<div class="splitcontentleft">
+							<div class="uptnum attribute">
+								<div class="label">更新次数:</div>
+								<div class="value"></div>
+							</div>
+							<div class="problemnum attribute">
+								<div class="label">问题个数:</div>
+								<div class="value"></div>
+							</div>
+							<div class="planversion attribute">
+								<div class="label">计划版本:</div>
+								<div class="value"></div>
+							</div>
+							<div class="upgradeversion attribute">
+								<div class="label">升级版本:</div>
+								<div class="value"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="redmines">
+						<div class="label">Redmine</div>
+						<pre class="value"></pre>
+					</div>
+					<div class="note">
+						<div class="label">备注</div>
+						<pre class="value"></pre>
+					</div>
+				</div>
 			</div>
 
 			<div class="wrap">
