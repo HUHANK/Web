@@ -531,7 +531,7 @@ table tbody tr:hover{
 	background-color: #6BB9FE;
 }
 
-.support .wrap .show{
+/*.support .wrap .show{
 	height: 100%;
 	//border: 1px solid blue;
 	width: auto;
@@ -570,7 +570,50 @@ table tbody tr:hover{
 }
 .support .wrap .show table tbody tr.selected{
 	background-color: #FDFD6D;
+}*/
+
+.support .wrap .show{
+	overflow: auto;
 }
+.support .wrap .show .table{
+	border-top:	1px solid #D7D7D7;
+	border-left:1px solid #D7D7D7;
+	display: table;
+}
+.support .wrap .show .table .tr .th{
+	display: inline-block;
+	border-bottom:1px solid #D7D7D7;
+	border-right: 1px solid #D7D7D7;
+	color: #2996CC;
+	font-size: 14px;
+	font-weight: bold;
+	height: 32px;
+	line-height: 32px;
+	background-color: #EEEEEE;
+}
+.support .wrap .show .table .tr .tb{
+	display: inline-block;
+	border-bottom:1px solid #D7D7D7;
+	border-right: 1px solid #D7D7D7;
+	color: #444444;
+	font-size: 13px;
+	display: table-cell;
+	vertical-align: middle;
+	padding: 2px;
+}
+.support .wrap .show .table .tr:hover{
+	background-color: white;
+}
+.support .wrap .show .table .tbody{
+	overflow: auto;
+}
+
+.support .wrap .show .table .tbody .selected{
+	background-color: #FDFD6D;
+}
+
+
+
 
 .support .exp-sel{
 	display: none;

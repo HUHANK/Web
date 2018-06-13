@@ -4,7 +4,7 @@ function Support ( ) {
 }
 
 function InitSupport ( ) {
-	SuportRepaint();
+	//SuportRepaint();
 	init_add_record();
 	$(".support").bind("contextmenu",function(e){
    		return false;
@@ -15,14 +15,21 @@ function InitSupport ( ) {
 }
 
 function SuportRepaint () {
-	wheight = $(window).height();
+	wheight = $(window).outerHeight();
 	wwidth = $(window).width();
 
-	qheight = wheight - $("body .wrapper-top").height();
 
-	$(".support .wrap").css("height", qheight+"px");
-	$(".support .wrap .show").css("height", ($(".support .wrap").height() 
-		- $(".support .wrap .option").outerHeight(true)) + "px");
+	qheight = parseInt(wheight) 
+			- parseInt($("body .wrapper-top").outerHeight())
+			- parseInt($(".support .wrap .option").outerHeight(true)) 
+			- parseInt($(".support .wrap .show .table .thead").outerHeight());
+
+	//console.info(window.screen.availHeight);
+	console.info(wheight, $("body .wrapper-top").outerHeight(), $(".support .wrap .option").outerHeight(true), 
+		$(".support .wrap .show .table .thead").outerHeight(), qheight);
+	
+	$(".support .wrap .show ").css("width", (wwidth)+"px");
+	$(".support .wrap .show .table .tbody").css("height", (qheight-getScrollWidth()-1)+"px");
 }
 
 function SupportMouseRightDown(e) {
@@ -52,13 +59,13 @@ function SupportMouseRightDown(e) {
 	});
 
 	dropbox.find(".upt").click(function(event) {
-		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
+		if ($('.support .wrap .show .table .tbody .tr.selected' ).length < 1) {
 			alert("请选取需要更新的行！");
 			return true;
 		}
 
 		var param = {};
-		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.ID = $('.support .wrap .show .table .tbody .tr.selected').attr("row");
 		param.SessionID = Options.SessionID;
 		param.method = "QUERY_ONE";
 		sync_post_data("/support/", JSON.stringify(param), function(d) {
@@ -531,43 +538,38 @@ function querySupport() {
 		conf.width = 2600;
 		conf.height = 400;
 		conf.columns = [
-			//{name: 'ID', 		field:'ID', 			width:'20', align:'center'},
-			{name: '包类型', 	field:'TYPE', 			width:'40', align:'center'},
-			{name: '系统', 		field:'SYSTEM', 		width:'40', align:'center'},
-			{name: '模块', 		field:'MODULE', 		width:'40', align:'center'},
-			{name: '包名称', 	field:'PACKAGE_NAME', 	width:'150', align:'center'},
-			{name: 'FTP地址', 	field:'FTP_ADDR', 		width:'150', align:'center'},
-			{name: '发布内容', 	field:'CONTENT', 		width:'300', align:'center'},
+			{name: '#', 		field:'ID', 			width:'40', align:'center'},
+			{name: '包类型', 	field:'TYPE', 			width:'50', align:'center'},
+			{name: '系统', 		field:'SYSTEM', 		width:'100', align:'center'},
+			{name: '模块', 		field:'MODULE', 		width:'80', align:'center'},
+			{name: '包名称', 	field:'PACKAGE_NAME', 	width:'350', align:'center'},
+			//{name: 'FTP地址', 	field:'FTP_ADDR', 		width:'150', align:'center'},
+			//{name: '发布内容', 	field:'CONTENT', 		width:'300', align:'center'},
 			{name: '基础版本', 	field:'BASE_VERSION', 	width:'100', align:'center'},
 			{name: '发布流程号',field:'PUBLISH_SERIAL', width:'110', align:'center'},
-			{name: '补充说明', 	field:'REMARK', 		width:'100', align:'center'},
-			{name: '更新次数', 	field:'UPT_NUM', 		width:'40', align:'center'},
-			{name: '发布日期', 	field:'PUBLISH_DATE', 	width:'70', align:'center'},
-			{name: '状态', 		field:'STATUS', 		width:'40', align:'center'},
-			{name: '开发员', 	field:'DEVELOPER', 		width:'50', align:'center'},
-			{name: '负责人', 	field:'CHARGER', 		width:'50', align:'center'},
+			// {name: '补充说明', 	field:'REMARK', 		width:'100', align:'center'},
+			{name: '更新次数', 	field:'UPT_NUM', 		width:'60', align:'center'},
+			{name: '发布日期', 	field:'PUBLISH_DATE', 	width:'80', align:'center'},
+			{name: '状态', 		field:'STATUS', 		width:'70', align:'center'},
+			{name: '开发员', 	field:'DEVELOPER', 		width:'60', align:'center'},
+			{name: '负责人', 	field:'CHARGER', 		width:'60', align:'center'},
 			{name: '计划版本', 	field:'PLAN_VERSION', 	width:'90', align:'center'},
-			{name: 'Git分支', 	field:'GIT_BRANCH', 	width:'90', align:'center'},
+			{name: 'Git分支', 	field:'GIT_BRANCH', 	width:'140', align:'center'},
 			{name: '升级版本', 	field:'UPGRADE_VERSION',width:'90', align:'center'},
 			{name: '协作号', 	field:'COLLABORATION', 	width:'100', align:'center'},
-			{name: '创建者', 	field:'CRT_USER', 		width:'50', align:'center'},
-			{name: '创建时间', 	field:'CRT_TIME', 		width:'80', align:'center'},
-			{name: '更新者', 	field:'UPT_USER', 		width:'50', align:'center'},
-			{name: '更新时间', 	field:'UPT_TIME', 		width:'80', align:'center'}
+			{name: '创建者', 	field:'CRT_USER', 		width:'60', align:'center'},
+			{name: '创建时间', 	field:'CRT_TIME', 		width:'140', align:'center'},
+			{name: '更新者', 	field:'UPT_USER', 		width:'60', align:'center'},
+			{name: '更新时间', 	field:'UPT_TIME', 		width:'140', align:'center'}
 		];
 		conf.datas = d.data;
 
-		hyl_table($(".support .show"), conf);
+		hyl_table2($(".support .show"), conf);
 
-		// $(".support .show .hyl-grid-tbody tbody tr").click(function(event) {
-		// 	/* Act on the event */
-		// 	var sel = "selected"
-		// 	$(this).parent().find(("."+sel)).removeClass(sel);
-		// 	$(this).addClass(sel);
-		// });
+		/*重新绘制宽度和高度，去掉滚动条的宽度*/
+		SuportRepaint();
 
-		$(".support .show .hyl-grid-tbody tbody tr").mousedown(function(event) {
-			/* Act on the event */
+		$(".support .show .table .tbody .tr").mousedown(function(event) {
 			var sel = "selected"
 			$(this).parent().find(("."+sel)).removeClass(sel);
 			$(this).addClass(sel);

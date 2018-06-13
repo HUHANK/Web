@@ -572,3 +572,20 @@ function hyl_alert(msg) {
 
 
 
+/*!
+ * 获取浏览器竖向滚动条宽度
+ * 首先创建一个用户不可见、无滚动条的DIV，获取DIV宽度后，
+ * 再将DIV的Y轴滚动条设置为永远可见，再获取此时的DIV宽度
+ * 删除DIV后返回前后宽度的差值
+ *
+ * @return    Integer     竖向滚动条宽度
+ */
+function getScrollWidth() {
+  var noScroll, scroll, oDiv = document.createElement("DIV");
+  oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
+  noScroll = document.body.appendChild(oDiv).clientWidth;
+  oDiv.style.overflowY = "scroll";
+  scroll = oDiv.clientWidth;
+  document.body.removeChild(oDiv);
+  return noScroll-scroll;
+}

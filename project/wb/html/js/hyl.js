@@ -225,3 +225,64 @@ function hyl_select2(obj, data) {
 	// 	$("#"+id).remove();
 	// });
 }
+
+
+function hyl_table2(obj, conf) {
+	obj = $(obj);
+	obj.html('');
+	_div = "<div></div>";
+	table = $(_div).addClass('table');
+	thead = $(_div).addClass('thead');
+	tbody = $(_div).addClass('tbody');
+	scrollw = getScrollWidth();
+
+	tr = $(_div).addClass('tr');
+	all_width = 0;
+	$(conf.columns).each(function(index, el) {
+		th = $(_div).addClass('th').text(el.name);
+		th.css({
+			'width': el.width+'px',
+			'text-align': ''+el.align
+		});
+		tr.append(th);
+		all_width = all_width + parseInt(el.width);
+	});
+	// th = $(_div).addClass('th').css('width', (scrollw-1)+'px');
+	// tr.append(th);
+	thead.append(tr);
+	table.css('width', (all_width+1+scrollw)+'px');
+
+	$(conf.datas).each(function(index, el) {
+		row = el;
+		tr = $(_div).addClass('tr');
+		tr.attr('row', row['ID']);
+		var status = row['STATUS'];
+		var bkc = 'white';
+		if (status == '已分配'){
+			bkc = "";
+		}else if (status == '已合并'){
+			bkc = "#E1FEBB";
+		}else if (status == '已升级') {
+			bkc = "#BBFEBB";
+		}else if (status == '已失效') {
+			bkc = "#FEBBBB";
+		}else if (status == '基线问题') {
+			bkc = "#D5BBFE";
+		}
+		tr.css('background-color', bkc);
+		$(conf.columns).each(function(index, ell) {
+			ele = row[ell.field];
+			tb = $(_div).addClass('tb').text(ele);
+			tb.css({
+				'width': ell.width+"px",
+				'text-align': ''+ell.align
+			});
+			tr.append(tb)
+		});
+		tbody.append(tr)		
+	});
+
+	table.append(thead);
+	table.append(tbody);
+	obj.append(table);
+}
