@@ -23,10 +23,12 @@ function SuportRepaint () {
 			- parseInt($("body .wrapper-top").outerHeight())
 			- parseInt($(".support .wrap .option").outerHeight(true)) 
 			- parseInt($(".support .wrap .show .table .thead").outerHeight());
+	// console.info(wheight, $("body .wrapper-top").outerHeight(), $(".support .wrap .option").outerHeight(true), $(".support .wrap .show .table .thead").outerHeight());
 
 	$(".support .wrap .show ").css("width", (wwidth)+"px");
-	$(".support .wrap .show .table .tbody").css("height", (qheight-getScrollWidth()-1)+"px");
+	$(".support .wrap .show .table .tbody").css("height", (qheight-getScrollWidth()-3)+"px");
 	// $(".support .wrap .show .table .tbody").css('width', wwidth+'px');
+	// console.info("AAAAAAAAAAAAAA", qheight, getScrollWidth());
 }
 
 function SupportMouseRightDown(e) {
@@ -348,7 +350,6 @@ function init_add_record ( ) {
 				alert("数据库查询失败！");
 				return ;
 			}
-			//console.info(d);
 			var data = d.data[0];
 
 			$(".support .add-record table .system 	input").val(data.SYSTEM);
@@ -591,15 +592,14 @@ function querySupport() {
 
 		hyl_table2($(".support .show"), conf);
 
-		/*重新绘制宽度和高度，去掉滚动条的宽度*/
-		SuportRepaint();
-
 		$(".support .show .table .tbody .tr").mousedown(function(event) {
 			var sel = "selected"
 			$(this).parent().find(("."+sel)).removeClass(sel);
 			$(this).addClass(sel);
 		});
 
+		/*重新绘制宽度和高度，去掉滚动条的宽度*/
+		setTimeout(SuportRepaint, 10);
 	});
 
 }
