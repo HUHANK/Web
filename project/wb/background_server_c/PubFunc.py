@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import os, math, json
+import os, math, json, sys
 import random
 import socket
 from MTime import *
@@ -107,5 +107,9 @@ def GetUnusedPort(ip='127.0.0.1'):
         port = random.randint(20000, 30000)
     return port
 
+def execfunc(funcname, param):
+    main = sys.modules["__main__"]
 
-print GetUnusedPort()
+    if not hasattr(main, funcname):
+        pass
+    return getattr(main, funcname)(param)
