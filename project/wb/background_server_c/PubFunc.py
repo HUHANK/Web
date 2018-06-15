@@ -111,5 +111,5 @@ def execfunc(funcname, param):
     main = sys.modules["__main__"]
 
     if not hasattr(main, funcname):
-        pass
+        raise Exception("Module hasn't function: "+str(funcname))
     return getattr(main, funcname)(param)
