@@ -7,7 +7,7 @@ from    MTime       import *
 from    PubFunc     import *
 from    RedmineProc import Redmine_GetData, AddRedmineUptInfo, GetRedmineUptInfo, GenRedmineIssuesQueryUrl
 import  base64
-import  uuid
+
 import  traceback
 
 

@@ -2,6 +2,7 @@
 import os, math, json, sys
 import random
 import socket
+import  uuid
 from MTime import *
 
 def WriteFile(fpath, data):
@@ -113,3 +114,6 @@ def execfunc(funcname, param):
     if not hasattr(main, funcname):
         raise Exception("Module hasn't function: "+str(funcname))
     return getattr(main, funcname)(param)
+
+def genUUID():
+    return str(uuid.uuid4())

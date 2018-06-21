@@ -48,6 +48,7 @@ class GitProc(object):
             print "Now clone from remote url: %s to local path: %s" % (self._url, self._path)
             p = Progress()
             self._repo = git.Repo.clone_from(self._url, self._path, branch='master', progress=p)
+            print "##############Clone Sucess!###############"
 
     def current_branch(self):
         return (self._repo.active_branch.name)
@@ -201,8 +202,8 @@ class GitProc(object):
             ret.append(line)
         return ret
 
-g = GitProc(path="./git/jzjy", url = 'http://wb_hyl:hyl12345678@10.10.12.120/rzrq/jzjy.git')
-g.repo()
+# g = GitProc(path="./git/jzjy", url = 'http://wb_hyl:hyl12345678@10.10.12.120/rzrq/jzjy.git')
+# g.repo()
 # for e in g.remote_branches_name():
 #     print e
 #
