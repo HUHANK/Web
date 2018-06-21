@@ -1,0 +1,12 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+#level1{
+    background-color: #FBF1B4;
+}
+
+#level1 .unit{
+    display: inline-block;
+}
