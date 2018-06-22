@@ -5,6 +5,7 @@
 }
 
 #level1{
+    display: none;
     background-color: #FBF1B4;
 }
 
@@ -32,7 +33,7 @@
 
 /*---------------------------------------------------------------------*/
 #level2{
-    display: none;
+    /*display: none;*/
 }
 #level2 .head{
     width: 100%;
@@ -43,6 +44,9 @@
 
 
 /*---------------------------------------------------------------------*/
+#level3{
+    display: none;
+}
 #level3 .bkg{
     position: fixed;
     top: 0;
@@ -76,3 +80,40 @@
     border-radius: 2px;
     border: 1px solid #828790;
 }
+
+#level3 .gitlog .wrap1 .log{
+    width: 100%;
+    //background-color: #C1D2F1;
+    border-bottom: 1px solid #828790;
+}
+#level3 .gitlog .wrap1 .log .table-head{
+    padding-right: 17px;
+    background-color: #EEEEEE;
+    color: #2996CC;
+    font-size: 14px;
+}
+#level3 .gitlog .wrap1 .log .table-body{
+    width: 100%;
+    height: 200px;
+    overflow-y: scroll;
+    font-size: 13px;
+    color: #666666;
+}
+#level3 .gitlog .wrap1 .log table th, table td{
+    border-left: 1px solid #D5D5D5;
+    border-top: 1px solid #D5D5D5;
+}
+#level3 .gitlog .wrap1 .log .table-head table, .table-body table{
+    width: 100%;
+    border-collapse: collapse;
+    border-right: 1px solid #D5D5D5;
+    border-bottom: 1px solid #D5D5D5;
+}
+#level3 .gitlog .wrap1 .log .table-body table tr:nth-child(2n+1){
+    background-color: #F6F7F8;
+}
+#level3 .gitlog .wrap1 .log .table-body table tr:hover{
+    background-color: #CFDBFD;
+}
+
+

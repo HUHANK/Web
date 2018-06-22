@@ -92,7 +92,8 @@ function winResize() {
 }
 
 jQuery(document).ready(function($) {
-    InitLevel1();
+    InitLevel2(2345,'JZJY');
+    //InitLevel1();
     ID_OF_SETINTERVAL = setInterval(InitLevel1, 2000);
     winResize();
     window.onresize = winResize;
