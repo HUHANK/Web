@@ -31,6 +31,82 @@ function SuportRepaint () {
 	// console.info("AAAAAAAAAAAAAA", qheight, getScrollWidth());
 }
 
+function fexamine(){
+	if ($('.support .wrap .show .table .tbody .tr.selected' ).length < 1) {
+		alert("请选取需要更新的行！");
+		return true;
+	}
+	var param = {};
+	param.ID = $('.support .wrap .show .table .tbody .tr.selected').attr("row");
+	param.SessionID = Options.SessionID;
+	param.method = "QUERY_ONE";
+	sync_post_data("/support/", JSON.stringify(param), function(d) {
+		if (d.ErrCode != 0) {
+			alert("数据库查询失败！");
+			return ;
+		}
+		var data = d.data[0];
+		/*设置标题*/
+		$(".support .task-show .head .title").text(" # "+data.ID);
+
+		/*设置主题*/
+		$(".support .task-show .content .subject .title").text(data.PACKAGE_NAME);
+
+		/*Set Author*/
+		$(".support .task-show .content .author .cuser").text(data.CRT_USER);
+		$(".support .task-show .content .author .uuser").text(data.UPT_USER);
+		var tmp = data.CRT_TIME.substring(0,10);
+		var tstr = '';
+		var diff = 0;
+		if ((diff=DateDiffNow('m', tmp)) != 0) tstr = diff+"个月";
+		else if ((diff=DateDiffNow('w', tmp)) != 0) tstr = diff+"周";
+		else if ((diff=DateDiffNow('d', tmp)) != 0) tstr = diff+"天";
+		else if ((diff=DateDiffNow('h', tmp)) != 0) tstr = diff+"小时";
+		else if ((diff=DateDiffNow('n', tmp)) != 0) tstr = diff+"分钟";
+		else tstr = "刚刚";
+		$(".support .task-show .content .author .cdate").text(tstr);
+		tmp = data.UPT_TIME.substring(0, 10);
+		if ((diff=DateDiffNow('m', tmp)) != 0) tstr = diff+"个月";
+		else if ((diff=DateDiffNow('w', tmp)) != 0) tstr = diff+"周";
+		else if ((diff=DateDiffNow('d', tmp)) != 0) tstr = diff+"天";
+		else if ((diff=DateDiffNow('h', tmp)) != 0) tstr = diff+"小时";
+		else if ((diff=DateDiffNow('n', tmp)) != 0) tstr = diff+"分钟";
+		else tstr = "刚刚";
+		$(".support .task-show .content .author .udate").text(tstr);
+
+		/*---------------------------*/
+		$(".support .task-show .content .attributes .status .value").text(data.STATUS);
+		$(".support .task-show .content .attributes .publishdate .value").text(data.PUBLISH_DATE.substring(0, 10));
+		$(".support .task-show .content .attributes .crtuser .value").text(data.CRT_USER);
+		$(".support .task-show .content .attributes .crtdate .value").text(data.CRT_TIME.substring(0, 10));
+		$(".support .task-show .content .attributes .uptdate .value").text(data.UPT_TIME.substring(0, 10));
+		$(".support .task-show .content .attributes .uptuser .value").text(data.UPT_USER);
+		$(".support .task-show .content .attributes .type .value").text(data.TYPE);
+		$(".support .task-show .content .attributes .publishserial .value").text(data.PUBLISH_SERIAL);
+		$(".support .task-show .content .attributes .system .value").text(data.SYSTEM);
+		$(".support .task-show .content .attributes .module .value").text(data.MODULE);
+		$(".support .task-show .content .attributes .baseversion .value").text(data.BASE_VERSION);
+		$(".support .task-show .content .ftp .value").text(data.FTP_ADDR);
+		$(".support .task-show .content .pcontent .value").text(data.CONTENT.length == 0 ? '无' : data.CONTENT);
+
+		$(".support .task-show .content .attributes .charger .value").text(data.CHARGER);
+		$(".support .task-show .content .attributes .developer .value").text(data.DEVELOPER);
+		$(".support .task-show .content .attributes .collaboration .value").text(data.COLLABORATION);
+		$(".support .task-show .content .attributes .gitbranch .value").text(data.GIT_BRANCH);
+		$(".support .task-show .content .attributes .uptnum .value").text(data.UPT_NUM);
+		$(".support .task-show .content .attributes .problemnum .value").text(data.PROBLEM_NUM);
+		$(".support .task-show .content .attributes .planversion .value").text(data.PLAN_VERSION);
+		$(".support .task-show .content .attributes .upgradeversion .value").text(data.UPGRADE_VERSION);
+
+		$(".support .task-show .content .remark .value").text(data.REMARK.length == 0 ? '无' : data.REMARK);
+		$(".support .task-show .content .redmines .value").text(data.REDMINES.length == 0 ? '无' : data.REDMINES);
+		$(".support .task-show .content .note .value").text(data.NOTE.length == 0 ? '无' : data.NOTE);
+
+		$("body").children(".hyl-bokeh").addClass('hyl-show');
+		$(".support .task-show").show(10);
+	});
+}
+
 function SupportMouseRightDown(e) {
 	var dropbox = $("body .mouse-right-down");
 
@@ -131,79 +207,7 @@ function SupportMouseRightDown(e) {
 	});
 
 	dropbox.find('.examine').click(function(event) {
-		if ($('.support .wrap .show .table .tbody .tr.selected' ).length < 1) {
-			alert("请选取需要更新的行！");
-			return true;
-		}
-		var param = {};
-		param.ID = $('.support .wrap .show .table .tbody .tr.selected').attr("row");
-		param.SessionID = Options.SessionID;
-		param.method = "QUERY_ONE";
-		sync_post_data("/support/", JSON.stringify(param), function(d) {
-			if (d.ErrCode != 0) {
-				alert("数据库查询失败！");
-				return ;
-			}
-			var data = d.data[0];
-			/*设置标题*/
-			$(".support .task-show .head .title").text(" # "+data.ID);
-
-			/*设置主题*/
-			$(".support .task-show .content .subject .title").text(data.PACKAGE_NAME);
-
-			/*Set Author*/
-			$(".support .task-show .content .author .cuser").text(data.CRT_USER);
-			$(".support .task-show .content .author .uuser").text(data.UPT_USER);
-			var tmp = data.CRT_TIME.substring(0,10);
-			var tstr = '';
-			var diff = 0;
-			if ((diff=DateDiffNow('m', tmp)) != 0) tstr = diff+"个月";
-			else if ((diff=DateDiffNow('w', tmp)) != 0) tstr = diff+"周";
-			else if ((diff=DateDiffNow('d', tmp)) != 0) tstr = diff+"天";
-			else if ((diff=DateDiffNow('h', tmp)) != 0) tstr = diff+"小时";
-			else if ((diff=DateDiffNow('n', tmp)) != 0) tstr = diff+"分钟";
-			else tstr = "刚刚";
-			$(".support .task-show .content .author .cdate").text(tstr);
-			tmp = data.UPT_TIME.substring(0, 10);
-			if ((diff=DateDiffNow('m', tmp)) != 0) tstr = diff+"个月";
-			else if ((diff=DateDiffNow('w', tmp)) != 0) tstr = diff+"周";
-			else if ((diff=DateDiffNow('d', tmp)) != 0) tstr = diff+"天";
-			else if ((diff=DateDiffNow('h', tmp)) != 0) tstr = diff+"小时";
-			else if ((diff=DateDiffNow('n', tmp)) != 0) tstr = diff+"分钟";
-			else tstr = "刚刚";
-			$(".support .task-show .content .author .udate").text(tstr);
-
-			/*---------------------------*/
-			$(".support .task-show .content .attributes .status .value").text(data.STATUS);
-			$(".support .task-show .content .attributes .publishdate .value").text(data.PUBLISH_DATE.substring(0, 10));
-			$(".support .task-show .content .attributes .crtuser .value").text(data.CRT_USER);
-			$(".support .task-show .content .attributes .crtdate .value").text(data.CRT_TIME.substring(0, 10));
-			$(".support .task-show .content .attributes .uptdate .value").text(data.UPT_TIME.substring(0, 10));
-			$(".support .task-show .content .attributes .uptuser .value").text(data.UPT_USER);
-			$(".support .task-show .content .attributes .type .value").text(data.TYPE);
-			$(".support .task-show .content .attributes .publishserial .value").text(data.PUBLISH_SERIAL);
-			$(".support .task-show .content .attributes .system .value").text(data.SYSTEM);
-			$(".support .task-show .content .attributes .module .value").text(data.MODULE);
-			$(".support .task-show .content .attributes .baseversion .value").text(data.BASE_VERSION);
-			$(".support .task-show .content .ftp .value").text(data.FTP_ADDR);
-			$(".support .task-show .content .pcontent .value").text(data.CONTENT.length == 0 ? '无' : data.CONTENT);
-
-			$(".support .task-show .content .attributes .charger .value").text(data.CHARGER);
-			$(".support .task-show .content .attributes .developer .value").text(data.DEVELOPER);
-			$(".support .task-show .content .attributes .collaboration .value").text(data.COLLABORATION);
-			$(".support .task-show .content .attributes .gitbranch .value").text(data.GIT_BRANCH);
-			$(".support .task-show .content .attributes .uptnum .value").text(data.UPT_NUM);
-			$(".support .task-show .content .attributes .problemnum .value").text(data.PROBLEM_NUM);
-			$(".support .task-show .content .attributes .planversion .value").text(data.PLAN_VERSION);
-			$(".support .task-show .content .attributes .upgradeversion .value").text(data.UPGRADE_VERSION);
-
-			$(".support .task-show .content .remark .value").text(data.REMARK.length == 0 ? '无' : data.REMARK);
-			$(".support .task-show .content .redmines .value").text(data.REDMINES.length == 0 ? '无' : data.REDMINES);
-			$(".support .task-show .content .note .value").text(data.NOTE.length == 0 ? '无' : data.NOTE);
-
-			$("body").children(".hyl-bokeh").addClass('hyl-show');
-			$(".support .task-show").show(10);
-		});
+		fexamine();
 	});
 
 	return false;
@@ -592,10 +596,15 @@ function querySupport() {
 
 		hyl_table2($(".support .show"), conf);
 
+		$(".support .show .table .tbody .tr").unbind();
 		$(".support .show .table .tbody .tr").mousedown(function(event) {
 			var sel = "selected"
 			$(this).parent().find(("."+sel)).removeClass(sel);
 			$(this).addClass(sel);
+		});
+		$(".support .show .table .tbody .tr").dblclick(function(event) {
+			/* Act on the event */
+			fexamine();
 		});
 
 		/*重新绘制宽度和高度，去掉滚动条的宽度*/
