@@ -268,6 +268,8 @@ function hyl_table2(obj, conf) {
 			bkc = "#FEBBBB";
 		}else if (status == '基线问题') {
 			bkc = "#D5BBFE";
+		}else{
+			bkc = "#FEBBBB";
 		}
 		tr.css('background-color', bkc);
 		$(conf.columns).each(function(index, ell) {

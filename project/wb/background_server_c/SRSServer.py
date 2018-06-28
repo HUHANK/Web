@@ -8,8 +8,8 @@ from config import Options
 import urlparse
 import traceback
 
-from PubFunc import *
-from GitBusiness import *
+import SRSSRouter
+from SRSSRouter import *
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -27,10 +27,10 @@ class CMainProcess:
         self.GitUrl     = ''
         self.PID        = 0
 
-    def process(self, data):
+    def mprocess(self, data):
         try:
             self.queue.put(data)
-            return self.queue.get(timeout=2)
+            return self.queue.get(timeout=10)
         except :
             print traceback.format_exc()
             return ErrorDeal({}, "系统异常或繁忙，请查看后台日志，稍后再试!")
@@ -72,15 +72,22 @@ def MainProcess(queue):
     data = json.loads(data)
     print ("Git Path: %s" % data.get("path", ''))
     print ("Git  URL: %s" % data.get("url", ''))
-    git = GitProc(data.get("path", ''), data.get("url", ''))
-    git.repo()
+    GitInit(data.get("path", ''), data.get("url", ''))
 
     while True:
+        ret = {}
         try:
             data = queue.get()
             data = json.loads(data)
 
-
+            func = data.get('func', None)
+            param = data.get('param', None)
+            if func is None or len(func) < 1:
+                ret = ErrorDeal(ret, "函数参数不能为空!")
+            else:
+                ret = execfunc(func, param)
+                #ret = GitGetInitInfo(param)
+            queue.put(ret)
         except:
             print traceback.format_exc()
 
@@ -133,8 +140,9 @@ class SRSServer(BaseHTTPServer.BaseHTTPRequestHandler):
 
         #如果是普通的请求处理则在这里处理
         SessionID = data['param'].get('sid', None)
-        if SessionID is None :
+        if SessionID is None or len(SessionID) == 0:
             return ErrorDeal({}, "请求ID不能为空!")
+        SessionID = SessionID[0]
 
         if data['func'] == 'logout':
             bFind = False
@@ -150,7 +158,7 @@ class SRSServer(BaseHTTPServer.BaseHTTPRequestHandler):
         data = json.dumps(data)
         for p in processes:
             if p.getSessionID() == SessionID:
-                return p.process(data)
+                return p.mprocess(data)
         return ErrorDeal({}, "无法找到请求ID对应的处理环境!")
 
 

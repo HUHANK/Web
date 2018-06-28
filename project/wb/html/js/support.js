@@ -538,7 +538,7 @@ function addSupport(opt) {
 	} else if (opt == "UPT") {
 		param.method = "UPDATE";
 		param.uptuser = g_CURRENT_USER;
-		param.ID = $('.support .wrap .show table tbody tr.selected').attr("row");
+		param.ID = $('.support .wrap .show .table .tbody .tr.selected').attr("row");
 	}
 
 	sync_post_data("/support/", JSON.stringify(param), function(d) {

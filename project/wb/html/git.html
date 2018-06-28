@@ -5,6 +5,7 @@
     <title>Git</title>
 
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
     <script type="text/javascript" src="js/git.js"></script>
     <link rel="stylesheet" type="text/css" href="css/git.css">
 </head>
@@ -12,36 +13,40 @@
 
   <div id="level1"></div>
   <div id="level2">
-      <div class="head">融资融券升级</div>
+      <div class="head"><span class="left"></span><span class="right"></span></div>
       <div class="submit">
         <div class="row1">
           <span>
             <label>服务器IP</label>
-            <input type="text" name="">
+            <input class="host" type="text" name="" value="10.10.14.36">
           </span>
           <span>
-            <label>登陆用户</label>
-            <input type="text" name="">
+            <label>back账户</label>
+            <input class="back-user" type="text" name="" value="back">
           </span>
           <span>
-            <label>登陆密码</label>
-            <input type="password" name="">
+            <label>back密码</label>
+            <input class="back-pwd" type="password" name="" value="back">
           </span>
         </div>
         <div class="row2">
-          <span>
+          <span class="branchs">
             <label>Git分支</label>
-            <select style="width: 200px;">
-              <option>AAAAAAAA</option>
-              <option>BBBBBBBB</option>
-              <option>CCCCCCCC</option>
-              <option>DDDDDDDD</option>
+            <select style="width: 600px;">
             </select>
           </span>
           <span>
-            <button>更新</button>
+            <button class="upt-branch">更新分支</button>
           </span>
         </div>
+        <div class="row3">
+          <span>
+            <label>Commit:</label>
+            <input type="text" name="" class="icommit">
+            <button class="show-commits">...</button>
+            <button class="start-upgrade">开始升级</button>
+          </span>
+        </div> 
       </div>
       <div class="result"></div>
   </div>
@@ -54,8 +59,8 @@
                 <div class="table-head">
                   <table border="1">
                     <colgroup>
-                      <col style="width: 50px;" />
-                      <col style="width: 140px;" />
+                      <col style="width: 71px;" />
+                      <col style="width: 141px;" />
                       <col />
                     </colgroup>
                     <thead>
@@ -70,26 +75,18 @@
                 <div class="table-body">
                   <table border="1">
                     <colgroup>
-                      <col style="width: 50px;" />
-                      <col style="width: 140px;" />
+                      <col style="width: 71px;" />
+                      <col style="width: 141px;" />
                       <col />
                     </colgroup>
                     <tbody>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
                       <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
                     </tbody>
                   </table>
                 </div>
               </div>
+              <pre class="detail"></pre>
+              <div class="submit"><button class="yes">确认</button></div>
             </div>
         </div>
   </div>

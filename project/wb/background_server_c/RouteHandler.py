@@ -1280,9 +1280,9 @@ def supportQUERY(d):
         STATUS,    DEVELOPER,    CHARGER,    PLAN_VERSION,\
         GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE, PROBLEM_NUM, REDMINES,\
         CRT_USER,    \
-        DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
+        DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%i:%S') AS CRT_TIME,    \
         UPT_USER,    \
-        DATE_FORMAT(UPT_TIME,'%Y-%m-%d %H:%I:%S') AS UPT_TIME\
+        DATE_FORMAT(UPT_TIME,'%Y-%m-%d %H:%i:%S') AS UPT_TIME\
         FROM support  "
     if isAdmin(user):
         sql = sql + ""
@@ -1302,9 +1302,9 @@ def supportQUERY_ONE(d):
         STATUS,    DEVELOPER,    CHARGER,    PLAN_VERSION,\
         GIT_BRANCH,    UPGRADE_VERSION,    COLLABORATION,    NOTE, PROBLEM_NUM, REDMINES,\
         CRT_USER,    \
-        DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%I:%S') AS CRT_TIME,    \
+        DATE_FORMAT(CRT_TIME,'%Y-%m-%d %H:%i:%S') AS CRT_TIME,    \
         UPT_USER,    \
-        DATE_FORMAT(UPT_TIME,'%Y-%m-%d %H:%I:%S') AS UPT_TIME\
+        DATE_FORMAT(UPT_TIME,'%Y-%m-%d %H:%i:%S') AS UPT_TIME\
         FROM support WHERE ID = " + str(d.get('ID', 0))
 
     return db.select2(sql) 

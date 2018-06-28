@@ -7,7 +7,6 @@ import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-
 Commit = namedtuple('Commit',['user', 'commit_time', 'summary', 'hexsha'])
 
 class Progress(git.RemoteProgress):
@@ -15,11 +14,6 @@ class Progress(git.RemoteProgress):
         print "[%s],[%s],[%s],[%s]" % (op_code, cur_count, max_count, message)
 
 def print_commit(commit):
-    # print("-------")
-    # print(str(commit.hexsha))
-    # print('"{}" by {} ({})'.format(commit.summary, commit.author.name, commit.author.email))
-    # print(str(commit.authored_datetime))
-    # print(str("count: {} and size: {}".format(commit.count(), commit.size)))
     print("[%s][%s][%s]"%(commit.author.name,str(commit.authored_datetime), commit.summary))
 
 def utf8_gb2312(str):
@@ -68,7 +62,8 @@ class GitProc(object):
     def local_branches_name(self):
         ret = []
         for br in self._repo.heads:
-            ret.append(gb2312_utf8(br.name))
+            #ret.append(gb2312_utf8(br.name))
+            ret.append(br.name)
         return ret
 
     def checkout_remote(self, branch = None):
@@ -77,18 +72,16 @@ class GitProc(object):
         # 字符编码转换
         branch = utf8_gb2312(branch)
         git = self._repo.git
-        git.checkout(t=branch)
-        git.pull()
-        git.fetch()
+        return git.checkout(t=branch)
+
 
     def checkout_local(self, branch = None):
         if branch is None:
             raise ValueError("Param branch can't be None!")
         branch = utf8_gb2312(branch)
         git = self._repo.git
-        git.checkout(branch)
-        git.pull()
-        git.fetch()
+        return git.checkout(branch)
+
 
     def del_local_branch(self, branch = ''):
 
@@ -146,8 +139,8 @@ class GitProc(object):
         #         print path, stage
 
     def _log_parse(self, section):
-        # print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-        # print section
+        print "+++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        print section
         ret = {}
         BlankLineNum = 0
         for line in section.split("\n"):
@@ -172,7 +165,8 @@ class GitProc(object):
 
     def logs(self, count=10, skip=0):
         git = self._repo.git
-        res = git.log("--name-status",'--encoding=UTF-8','--max-count=%s'%count, '--skip=%s'%skip)
+        res = git.log("--name-status",'--encoding=UTF-8','--max-count=%s'%count,
+                      '--skip=%s'%skip, '--date=iso')
 
         ret = []
         section = ''
@@ -201,6 +195,17 @@ class GitProc(object):
         for line in res.split("\n"):
             ret.append(line)
         return ret
+
+    def pull_fetch(self):
+        git = self._repo.git
+        res = "Pull...\n"
+        rs = git.pull()
+        res = res + rs
+        res = res + "Fetch...\n"
+        rs = git.fetch()
+        res = res + rs
+        return res
+
 
 # g = GitProc(path="./git/jzjy", url = 'http://wb_hyl:hyl12345678@10.10.12.120/rzrq/jzjy.git')
 # g.repo()
