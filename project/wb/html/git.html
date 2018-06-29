@@ -14,81 +14,56 @@
   <div id="level1"></div>
   <div id="level2">
       <div class="head"><span class="left"></span><span class="right"></span></div>
-      <div class="submit">
-        <div class="row1">
-          <span>
-            <label>服务器IP</label>
-            <input class="host" type="text" name="" value="10.10.14.36">
-          </span>
-          <span>
-            <label>back账户</label>
-            <input class="back-user" type="text" name="" value="back">
-          </span>
-          <span>
-            <label>back密码</label>
-            <input class="back-pwd" type="password" name="" value="back">
-          </span>
-        </div>
-        <div class="row2">
-          <span class="branchs">
-            <label>Git分支</label>
-            <select style="width: 600px;">
-            </select>
-          </span>
-          <span>
-            <button class="upt-branch">更新分支</button>
-          </span>
-        </div>
-        <div class="row3">
-          <span>
-            <label>Commit:</label>
-            <input type="text" name="" class="icommit">
-            <button class="show-commits">...</button>
-            <button class="start-upgrade">开始升级</button>
-          </span>
-        </div> 
-      </div>
-      <div class="result"></div>
-  </div>
-  <div id="level3">
-        <div class="bkg"></div>
-        <div class="gitlog">
-            <div class="title">集中交易分支</div>
-            <div class="wrap1">
-              <div class="log">
-                <div class="table-head">
-                  <table border="1">
-                    <colgroup>
-                      <col style="width: 71px;" />
-                      <col style="width: 141px;" />
-                      <col />
-                    </colgroup>
-                    <thead>
-                      <tr>
-                        <th>作者</th>
-                        <th>日期</th>
-                        <th>信息</th>
-                      </tr>
-                    </thead>
-                  </table>
-                </div>
-                <div class="table-body">
-                  <table border="1">
-                    <colgroup>
-                      <col style="width: 71px;" />
-                      <col style="width: 141px;" />
-                      <col />
-                    </colgroup>
-                    <tbody>
-                      <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
-                    </tbody>
-                  </table>
-                </div>
+      <div class="wrap1">
+        <div class="left">
+          <div class="row">
+            <span><label>Git版本分支: </label><select class="sbranch" style="width: 400px;"></select></span>
+            <span><button class="upt-branch">更新分支信息</button></span>
+          </div>
+          <div class="row">
+            <div class="cmlog">
+              <div class="table-head">
+                <table border="1">
+                  <colgroup>
+                    <col style="width: 71px;" />
+                    <col style="width: 141px;" />
+                    <col />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>作者</th>
+                      <th>日期</th>
+                      <th>信息</th>
+                    </tr>
+                  </thead>
+                </table>
               </div>
-              <pre class="detail"></pre>
-              <div class="submit"><button class="yes">确认</button></div>
+              <div class="table-body">
+                <table border="1">
+                  <colgroup>
+                    <col style="width: 71px;" />
+                    <col style="width: 141px;" />
+                    <col />
+                  </colgroup>
+                  <tbody>
+                    <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+            <pre class="cmdtl"></pre>
+          </div>
+
+          <div class="row">
+            <button class="kssj">开始升级</button><button class="exit">清空缓存</button>
+          </div>
         </div>
+        <div class="right">
+          <div class="result">
+            
+          </div>
+        </div>
+      </div>
   </div>
 
 </body>
