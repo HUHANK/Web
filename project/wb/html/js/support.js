@@ -245,7 +245,7 @@ function init_add_record ( ) {
 	$(g_ALL_USER).each(function(index, el) {
 		users.push(el.cname);
 	});
-	users.sort();
+	users = arraySortByPinyin(users);
 	hyl_select($(".support .add-record table .developer"), users);
 	hyl_select($(".support .add-record table .charger"), users);
 

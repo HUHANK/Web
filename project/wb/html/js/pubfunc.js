@@ -589,3 +589,24 @@ function getScrollWidth() {
   document.body.removeChild(oDiv);
   return noScroll-scroll;
 }
+
+function arraySortByPinyin(arr){
+	if (!arr || arr.length < 1) return [];
+
+	var ta = new Array();
+	for (i in arr){
+		var spy = makePy(arr[i])[0];
+		//console.info(arr[i], spy);
+		if ($.inArray(spy, ta) == -1)
+			ta.push(spy);
+	}
+	var tmp = ta.sort();
+	var new_arr = new Array();
+	for (i in tmp){
+		var spy = tmp[i];
+		for (ii in arr){
+			if (spy == makePy(arr[ii])[0]) new_arr.push(arr[ii]);
+		}
+	}
+	return new_arr;
+}
