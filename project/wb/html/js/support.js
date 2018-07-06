@@ -58,20 +58,21 @@ function fexamine(){
 		var tmp = data.CRT_TIME.substring(0,10);
 		var tstr = '';
 		var diff = 0;
-		if ((diff=DateDiffNow('m', tmp)) != 0) tstr = diff+"个月";
-		else if ((diff=DateDiffNow('w', tmp)) != 0) tstr = diff+"周";
-		else if ((diff=DateDiffNow('d', tmp)) != 0) tstr = diff+"天";
-		else if ((diff=DateDiffNow('h', tmp)) != 0) tstr = diff+"小时";
-		else if ((diff=DateDiffNow('n', tmp)) != 0) tstr = diff+"分钟";
-		else tstr = "刚刚";
+		if ((diff=DateDiffNow('n', tmp)) < 1) tstr = "刚刚";
+		else if((diff=DateDiffNow('n', tmp)) < 60) tstr = diff + "分钟";
+		else if((diff=DateDiffNow('h', tmp)) < 24) tstr = diff + "小时";
+		else if((diff=DateDiffNow('d', tmp)) < 7) tstr = diff + "天";
+		else if((diff=DateDiffNow('w', tmp)) < 6) tstr = diff + "周";
+		else if((diff=DateDiffNow('m', tmp))) tstr = diff+"个月";
+		
 		$(".support .task-show .content .author .cdate").text(tstr);
 		tmp = data.UPT_TIME.substring(0, 10);
-		if ((diff=DateDiffNow('m', tmp)) != 0) tstr = diff+"个月";
-		else if ((diff=DateDiffNow('w', tmp)) != 0) tstr = diff+"周";
-		else if ((diff=DateDiffNow('d', tmp)) != 0) tstr = diff+"天";
-		else if ((diff=DateDiffNow('h', tmp)) != 0) tstr = diff+"小时";
-		else if ((diff=DateDiffNow('n', tmp)) != 0) tstr = diff+"分钟";
-		else tstr = "刚刚";
+		if ((diff=DateDiffNow('n', tmp)) < 1) tstr = "刚刚";
+		else if((diff=DateDiffNow('n', tmp)) < 60) tstr = diff + "分钟";
+		else if((diff=DateDiffNow('h', tmp)) < 24) tstr = diff + "小时";
+		else if((diff=DateDiffNow('d', tmp)) < 7) tstr = diff + "天";
+		else if((diff=DateDiffNow('w', tmp)) < 6) tstr = diff + "周";
+		else if((diff=DateDiffNow('m', tmp))) tstr = diff+"个月";
 		$(".support .task-show .content .author .udate").text(tstr);
 
 		/*---------------------------*/
