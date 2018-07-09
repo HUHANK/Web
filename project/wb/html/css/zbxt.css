@@ -503,6 +503,16 @@ table tbody tr:hover{
 	color: white;
 }
 
+.support .add-record table div.option-item:hover{
+	background-color: #BAFB86;
+}
+.support .add-record table div.option-item.selected:hover{
+	background-color: #429742;
+}
+.support .add-record table div.selected{
+	background-color: #429742;
+	color: white;
+}
 
 
 .support .wrap{

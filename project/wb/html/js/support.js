@@ -242,25 +242,182 @@ function init_add_record ( ) {
 		});
 	}
 
-	var users = [];
+	var users = {};
 	$(g_ALL_USER).each(function(index, el) {
-		users.push(el.cname);
+		uname = el.cname;
+		gname = el.group_name;
+		if (gname) {
+			if (!users[gname]) users[gname] = [];
+			users[gname].push(uname);
+		}
 	});
-	users = arraySortByPinyin(users);
-	hyl_select($(".support .add-record table .developer"), users);
-	hyl_select($(".support .add-record table .charger"), users);
+	for (key in users) {
+		users[key] = arraySortByPinyin(users[key]);
+	}
 
+	/*-----------------------------负责人下拉框----------------------------------------*/
+	var charger = $(".support .add-record table .charger");
+	var obj = $("<div></div>").addClass('combo-dropdown');
+	obj.css({
+		'display':'none',
+		'position': 'fixed',
+		'max-height':'200px',
+		'background-color': 'white',
+		'border': '1px solid #3BB4F2',
+		'box-shadow': '0px 0px 3px #3BB4F2',
+		'margin-top': '2px',
+		'overflow': 'auto'
+	});
+	
+	obj.append($('<div><<我>></div>').addClass('option-item').css("padding-left", "10px"));
+	for (key in users) {
+		var managerName = '';
+		for (i in g_ALL_GROUP) {
+			if (g_ALL_GROUP[i].name == key) {
+				managerName = g_ALL_GROUP[i].manager_name;
+			}
+		}
+		var gt = $("<div></div>").addClass('option-group').text(">> "+key);
+		gt.css({
+			'font-style': 'italic',
+			'color': '#ACACAC',
+			'background-color': '#EDEDED'
+		});
+		obj.append(gt);
+		for (i in users[key]) {
+			var ut =$("<div></div>").addClass('option-item').text(users[key][i]);
+			ut.css({
+				'padding-left': '10px'
+			});
+			if (users[key][i] == managerName) {
+				ut.css({'color': '#FB3636', 'font-weight':'bold'});
+			}
+			obj.append(ut)
+		}
+	}
+	charger.append(obj);
+	charger.children('div').css({
+		'padding': '2px'
+	});
 
-	//console.info(g_SUPPORT);
+	var _input = charger.find("input");
+	_input.unbind();
+	_input.focus(function(event) {
+		charger.find('.combo-dropdown').css({
+			'width': $(_input).outerWidth()+"px",
+			'top'  : $(_input).outerHeight()+($(_input).offset().top-$(document).scrollTop())+"px",
+			'left' : $(_input).offset().left+"px"
+		});
+		charger.find('.combo-dropdown').slideDown();
+	});
+
+	charger.find(".option-item").unbind();
+	charger.find(".option-item").click(function(event) {
+		charger.find(".selected").removeClass('selected');
+		$(this).addClass('selected'); 
+		if ($(this).text() == "<<我>>") { 
+			_input.val(g_CURRENT_USER);
+			init_develop_select(g_CURRENT_USER);
+		}
+		else{ 
+			_input.val($(this).text());
+			init_develop_select($(this).text());
+		}
+		charger.find('.combo-dropdown').hide();
+	});
+	/*-----------------------------开发人下拉框----------------------------------------*/
+	function init_develop_select(scharger){
+		var developer = $(".support .add-record table .developer");
+		if (developer.children('.combo-dropdown').length < 1) {
+			var obj = $("<div></div>").addClass('combo-dropdown');
+			obj.css({
+				'display':'none',
+				'position': 'fixed',
+				'max-height':'200px',
+				'background-color': 'white',
+				'border': '1px solid #3BB4F2',
+				'box-shadow': '0px 0px 3px #3BB4F2',
+				'margin-top': '2px',
+				'overflow': 'auto'
+			});
+			developer.append(obj);
+		} 
+
+		developer.find(".combo-dropdown").html("");
+		for (_group in users) {
+			var us = users[_group];
+			var bFind = false;
+			for (i in us) {
+				if (us[i] == scharger){
+					bFind = true;
+					break;
+				}
+			}
+			if (bFind) {
+				var managerName = '';
+				for (i in g_ALL_GROUP) {
+					if (g_ALL_GROUP[i].name == _group) {
+						managerName = g_ALL_GROUP[i].manager_name;
+					}
+				}
+				for (i in us) {
+					var ut = $("<div></div>").addClass('option-item').text(us[i]);
+					ut.css({'padding-left': '10px'});
+					if (us[i] == managerName) {
+						ut.css({'color': '#FB3636', 'font-weight':'bold'});
+					}
+					developer.find(".combo-dropdown").append(ut);
+				}
+				
+				bFind = false;
+				break;
+			}
+		}
+
+		var _input = developer.find("input");
+		_input.unbind();
+		_input.focus(function(event) {
+			developer.find('.combo-dropdown').css({
+				'width': $(_input).outerWidth()+"px",
+				'top'  : $(_input).outerHeight()+($(_input).offset().top-$(document).scrollTop())+"px",
+				'left' : $(_input).offset().left+"px"
+			});
+			developer.find(".combo-dropdown").slideDown();
+		});
+
+		developer.find(".option-item").unbind();
+		developer.find(".option-item").click(function(event) {
+			console.info(developer.find(".selected"));
+			developer.find(".selected").removeClass('selected');
+			console.info($(this));
+			$(this).addClass('selected'); 
+			if ($(this).text() == "<<我>>") { 
+				_input.val(g_CURRENT_USER);
+			}
+			else{ 
+				_input.val($(this).text());	
+			}
+			developer.find('.combo-dropdown').hide();
+		});
+	}
+	
+	/*当填写升级版本后，状态直接变更为已完成@!*/
+	$(".support .add-record table .uversion input").unbind();
+	$(".support .add-record table .uversion input").change(function(event) {
+		if ($(this).val().length < 1) return;
+		$(".support .add-record table .status input").val("已升级");
+		$(".support .add-record table .status .hyl-drop-down").find(".selected").removeClass('selected');
+	});
+
 	$(g_SUPPORT).each(function(index, el) {
 		if (el.name == "包类型"){
-			data = []
+			data = [];
 			$(el.data).each(function(index, el) {
 				data.push(el.name);
 			});
 			hyl_select($(".support .add-record table .type"), data);
 		}else if(el.name == "状态"){
-			data = []
+			data = [];
 			$(el.data).each(function(index, el) {
 				data.push(el.name);
 			});
@@ -269,7 +426,7 @@ function init_add_record ( ) {
 	});
 	
 
-
+	$('.support .wrap .show').unbind();
 	$('.support .wrap .show').mousedown(function(e){
 		//console.info(e.which); // 1 = 鼠标左键 left; 2 = 鼠标中键; 3 = 鼠标右键
 		if (e.which == 3) {
@@ -278,12 +435,14 @@ function init_add_record ( ) {
 		return false;//阻止链接跳转
 	});
 
+	$(".support .add-record .head .exit").unbind();
 	$(".support .add-record .head .exit").click(function(event) {
 		/* Act on the event */
 		$("body").children(".hyl-bokeh").removeClass('hyl-show');
 		$(".support .add-record").removeClass('show');
 	});
 
+	$(".support .add-record table .confirm").unbind();
 	$(".support .add-record table .confirm").click(function(event) {
 		/* Act on the event */
 		var ret = false;
@@ -301,12 +460,14 @@ function init_add_record ( ) {
 		}
 	});
 
+	$(".support .add-record table .cancle").unbind();
 	$(".support .add-record table .cancle").click(function(event) {
 		/* Act on the event */
 		$("body").children(".hyl-bokeh").removeClass('hyl-show');
 		$(".support .add-record").removeClass('show');
 	});
 
+	$('.support .wrap .option button.add').unbind();
 	$('.support .wrap .option button.add').click(function(event) {
 
 		$(".support .add-record table .system 	input").val('');
@@ -339,6 +500,7 @@ function init_add_record ( ) {
 		$(".support .add-record table .confirm").addClass('add');
 	});
 
+	$('.support .wrap .option button.upt').unbind();
 	$('.support .wrap .option button.upt').click(function(event) {
 		/* Act on the event */
 		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
@@ -385,6 +547,7 @@ function init_add_record ( ) {
 		$(".support .add-record table .confirm").addClass('upt');
 	});
 
+	$('.support .wrap .option button.del').unbind();
 	$('.support .wrap .option button.del').click(function(event) {
 		/* Act on the event */
 		if ($('.support .wrap .show table tbody tr.selected' ).length < 1) {
@@ -405,6 +568,7 @@ function init_add_record ( ) {
 		});
 	});
 
+	$('.support .wrap .option button.exp').unbind();
 	$('.support .wrap .option button.exp').click(function(event) {
 		$(".support .exp-sel .body table .col2 i").each(function(index, el) {
 			$(el).addClass('selected');	
@@ -415,6 +579,7 @@ function init_add_record ( ) {
 		$(".support .exp-sel").show(200, function() {});
 	});
 
+	$('.support .exp-sel button.exp').unbind();
 	$('.support .exp-sel button.exp').click(function(event) {
 		var param = {};
 		param.SessionID = Options.SessionID;
@@ -469,12 +634,14 @@ function init_add_record ( ) {
 		});
 	});
 
+	$(".support .exp-sel .head .exit").unbind();
 	$(".support .exp-sel .head .exit").click(function(event) {
 		var tb = $("body").children(".hyl-bokeh");
 		tb.removeClass("hyl-show");
 		$(".support .exp-sel").hide(300, function() {});
 	});
 
+	$(".support .exp-sel .body .table-body .col2 i").unbind();
 	$(".support .exp-sel .body .table-body .col2 i").click(function(event) {
 		if ($(this).hasClass('selected')) {
 			$(this).removeClass('selected');
@@ -483,12 +650,12 @@ function init_add_record ( ) {
 		}
 	});
 
+	$(".support .task-show .head .exit").unbind();
 	$(".support .task-show .head .exit").click(function(event) {
 		$("body").children(".hyl-bokeh").removeClass('hyl-show');
 		$(".support .task-show").hide(200, function() {});
 	});
 
-	
 	if (!g_CURRENT_USER_IS_ADMIN){
 		$(".support .wrap .option button.add").css("display", "none");
 		$('.support .wrap .option button.exp').css("display", "none");
@@ -598,10 +765,12 @@ function querySupport() {
 		hyl_table2($(".support .show"), conf);
 
 		$(".support .show .table .tbody .tr").unbind();
-		$(".support .show .table .tbody .tr").mousedown(function(event) {
+		$(".support .show .table .tbody .tr").click(function(event) {
 			var sel = "selected"
-			$(this).parent().find(("."+sel)).removeClass(sel);
-			$(this).addClass(sel);
+			if (!g_CTRL_KEY_DOWN)
+				$(this).parent().find(("."+sel)).removeClass(sel);
+			if (!$(this).hasClass(sel))
+				$(this).addClass(sel);
 		});
 		$(".support .show .table .tbody .tr").dblclick(function(event) {
 			/* Act on the event */

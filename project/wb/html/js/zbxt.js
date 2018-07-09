@@ -43,6 +43,19 @@ function main() {
 			$.cookie("htzq_SessionID", null);
 			Options.SessionID = null;
 			window.location = "./login.html";
+		} else if (event.keyCode == 17) {//Ctrl键
+			if (!g_CTRL_KEY_DOWN) g_CTRL_KEY_DOWN = true;
+		} else if (event.keyCode == 16) {
+			if (!g_SHIFT_KEY_DOWN) g_SHIFT_KEY_DOWN = true;
+		}
+	});
+
+	$(document).keyup(function(event) {
+		console.info(event.keyCode);
+		if (event.keyCode == 17){
+			if (g_CTRL_KEY_DOWN) g_CTRL_KEY_DOWN = false;
+		} else if (event.keyCode == 16){
+			if (g_SHIFT_KEY_DOWN) g_SHIFT_KEY_DOWN = false;
 		}
 	});
 
@@ -196,10 +209,14 @@ function GUpdateBaseinfo(){
 			g_ALL_SYSTEM = d.System;
 			g_ALL_TYPE = d.Type;
 			g_ALL_PROPERTY = d.Property;
-			//console.info("System",g_ALL_SYSTEM);
-			//console.info(g_ALL_USER);
-			//console.info(g_ALL_DEPART);
-			//console.info(g_ALL_GROUP);
+
+			for( i  in g_ALL_GROUP ){
+				for (ii in g_ALL_USER){
+					if (g_ALL_USER[ii].id == g_ALL_GROUP[i].manager){
+						g_ALL_GROUP[i].manager_name = g_ALL_USER[ii].cname;
+					}
+				}
+			}
 		}else{
 			//alert("您没有登录！");
 			window.location = "./login.html";

@@ -101,3 +101,7 @@ var g_system_fix_height = 3;
 Options = new Object();
 Options.QueryCondition = new Object();
 QueryCondi = Options.QueryCondition;
+
+
+var g_CTRL_KEY_DOWN = false;
+var g_SHIFT_KEY_DOWN = false;
