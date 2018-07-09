@@ -201,7 +201,7 @@ class GitProc(object):
         res = "Pull...\n"
         rs = git.pull()
         res = res + rs
-        res = res + "Fetch...\n"
+        res = res + "\nFetch...\n"
         rs = git.fetch()
         res = res + rs
         return res

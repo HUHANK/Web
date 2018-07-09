@@ -30,7 +30,7 @@ class CMainProcess:
     def mprocess(self, data):
         try:
             self.queue.put(data)
-            return self.queue.get(timeout=10)
+            return self.queue.get(timeout=30)
         except :
             print traceback.format_exc()
             return ErrorDeal({}, "系统异常或繁忙，请查看后台日志，稍后再试!")

@@ -2,9 +2,12 @@
 
 from PubFunc import *
 from GitBusiness import *
+from FileOpt import *
 
 
 Git = None
+UPGRADE_PACKAGE_PATH = "./upg-package"
+UPGRADE_PACKAGE_PATH_TMP = ''
 
 def GitInit(path, url):
     global Git
@@ -64,3 +67,41 @@ def GitLogSnippet(data):
     ret['logs'] = Git.logs(count=count, skip=skip)
     return SuccessDeal(ret)
 
+def GitPackPackage(cmit, type):
+    global Git
+    global UPGRADE_PACKAGE_PATH_TMP
+
+    UPGRADE_PACKAGE_PATH_TMP = genUUID()
+    destPath = os.path.join(UPGRADE_PACKAGE_PATH, UPGRADE_PACKAGE_PATH_TMP)
+    UPGRADE_PACKAGE_PATH_TMP = destPath
+    paths = Git.commit_diff(cmit)
+    if len(paths) == 0:
+        return True
+
+    for fpath in paths:
+        if "JZJY" in type:
+            if "/back2/" in fpath:
+                tmp = os.path.join(Git._path, fpath)
+                git_file_copy(tmp, "/back2/", destPath)
+        if "RZRQ" in type:
+            if "/back/" in fpath:
+                tmp = os.path.join(Git._path, fpath)
+                git_file_copy(tmp, "/back/", destPath)
+    if os.path.exists(os.path.join(destPath, "back2")):
+        zip_dir(os.path.join(destPath, "back2"), os.path.join(destPath, "back2.zip"))
+        shutil.rmtree(os.path.join(destPath, "back2"))
+    return True
+
+def StartUpgrade(data):
+    ret = {}
+    type = data.get("type", None)
+    cmit = data.get("cmit", None)
+    if type is None or cmit is None:
+        return ErrorDeal(ret, "请求参数不全!")
+    type = type[0]
+    cmit = cmit[0]
+    GitPackPackage(cmit, type)
+
+    os
+
+    return SuccessDeal(ret)
