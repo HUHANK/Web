@@ -1341,6 +1341,29 @@ def supportGETTASKINFO(d):
                 data[i]["User"] = res["data"][k]["NOTE"]
     return data
 
+def supportBatchUpdate(d):
+    db = Options['mysql']
+
+    ids = d.get("IDs", '');
+    type = d.get("Type", None)
+    status = d.get("Status", None)
+    bversion = d.get("BVersion", None)
+    charger = d.get("Charger", None)
+
+    sql = "UPDATE support SET "
+    if type is not None:
+        sql += "TYPE = '"+type+"',"
+    if status is not None:
+        sql += "STATUS = '"+status+"',"
+    if bversion is not None:
+        sql += "BASE_VERSION='"+bversion+"',"
+    if charger is not None:
+        sql += "CHARGER='" + charger+"',"
+    sql = sql.rstrip(",")+" "
+    sql += "WHERE ID IN ("+ids+")"
+    db.update(sql)
+
+
 @route("/support/")
 def Support(data):
     data = json.loads(data)
@@ -1351,14 +1374,14 @@ def Support(data):
     if method is None:
         setErrMsg(ret, 2, "未知的方法！")
     
-    if method == "ADD":
+    elif method == "ADD":
         res = supportADD(data)
         if res < 0:
             setErrMsg(ret, 2, "添加数据失败！")
         else:
             setErrMsg(ret, 0, "")
 
-    if method == "QUERY":
+    elif method == "QUERY":
         res = supportQUERY(data)
 
         if res is None:
@@ -1368,7 +1391,7 @@ def Support(data):
 
             setErrMsg(ret, 0, "")
 
-    if method == "QUERY_ONE":
+    elif method == "QUERY_ONE":
         res = supportQUERY_ONE(data)
         if res is None:
             setErrMsg(ret, 2, "数据库查询失败！")
@@ -1376,21 +1399,21 @@ def Support(data):
             ret["data"] = res["data"]
             setErrMsg(ret, 0, "")
 
-    if method == "UPDATE":
+    elif method == "UPDATE":
         res = supportUPDATE(data)
         if res < 0:
             setErrMsg(ret, 2, "数据库更新失败！")
         else:
             setErrMsg(ret, 0, "")
 
-    if method == "DELETE":
+    elif method == "DELETE":
         res = supportDELETE(data)
         if res < 0:
             setErrMsg(ret, 2, "数据库删除失败！")
         else:
             setErrMsg(ret, 0, "")
 
-    if method == "EXPORT":
+    elif method == "EXPORT":
         res = supportQUERY(data)
         if res is None:
             setErrMsg(ret, 2, "数据库查询失败！")
@@ -1398,10 +1421,15 @@ def Support(data):
             ret["data"] = res["data"]
             setErrMsg(ret, 0, "")    
 
-    if method == "GETTASKINFO":
+    elif method == "GETTASKINFO":
         res = supportGETTASKINFO(data)
         ret['data'] = res
         setErrMsg(ret, 0, "")
+    elif method == "BATCH_UPDATE":
+        supportBatchUpdate(data)
+        setErrMsg(ret, 0, "")
+    else:
+        setErrMsg(ret, 4, "未知方法，请先实现该方法，再调用!")
 
     return json.dumps(ret)
 

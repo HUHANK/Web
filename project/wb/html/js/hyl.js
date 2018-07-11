@@ -256,6 +256,7 @@ function hyl_table2(obj, conf) {
 		row = el;
 		tr = $(_div).addClass('tr');
 		tr.attr('row', row['ID']);
+		/*
 		var status = row['STATUS'];
 		var bkc = 'white';
 		if (status == '已分配'){
@@ -271,7 +272,7 @@ function hyl_table2(obj, conf) {
 		}else{
 			bkc = "#FEBBBB";
 		}
-		tr.css('background-color', bkc);
+		tr.css('background-color', bkc);*/
 		$(conf.columns).each(function(index, ell) {
 			ele = row[ell.field];
 			tb = $(_div).addClass('tb').text(ele);

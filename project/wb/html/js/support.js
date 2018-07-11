@@ -110,28 +110,20 @@ function fexamine(){
 
 function SupportMouseRightDown(e) {
 	var dropbox = $("body .mouse-right-down");
-
 	dropbox.css("top", e.clientY+"px")
 			.css("left", e.clientX+"px");
-	dropbox.slideDown(200, function() {});
-	dropbox.focus();
 	dropbox.html(' 	<div class="upt">更改</div>\
 					<div class="del">删除</div>\
 					<div class="refresh">刷新</div>\
 					<div class="examine">查看详细</div>');
+	dropbox.slideDown(60, function() {});
+	dropbox.focus();
 
 	$("body").click(function(event) {
 		setTimeout(function(){
-			$("body .mouse-right-down").slideUp(100);
+			$("body .mouse-right-down").slideUp(20);
 			$("body").unbind('click');
-		}, 100);
-	});
-
-	$(".support .wrap .show").on("scroll", function(ev) {
-		setTimeout(function(){
-			$("body .mouse-right-down").slideUp(100);
-			$(".support .wrap .show").unbind('scroll');
-		}, 1);
+		}, 60);
 	});
 
 	dropbox.find(".upt").click(function(event) {
@@ -214,6 +206,40 @@ function SupportMouseRightDown(e) {
 	return false;
 }
 
+function SupportMouseRightDownBatch(e){
+	var dropbox = $("body .mouse-right-down");
+	dropbox.css("top", e.clientY+"px")
+			.css("left", e.clientX+"px");
+	dropbox.html('<div class="upt">批量更改</div>');
+	dropbox.slideDown(60, function() {});
+	dropbox.focus();
+
+	$("body").click(function(event) {
+		setTimeout(function(){
+			$("body .mouse-right-down").slideUp(20);
+			$("body").unbind('click');
+		}, 60);
+	});
+
+	dropbox.find(".upt").unbind();
+	dropbox.find(".upt").click(function(event) {
+		var l = new Array();
+		$(".support .show .table .tbody .tr.selected").each(function(index, el) {
+			l.push("#"+$(el).attr("row"));
+		});
+		var str = "批量更新Support [" + l.join(", ")+"]";
+		$(".support .batch-wrap .head .title").text(str);
+
+		$(".support .batch-wrap .upt .bversion").val('');
+
+		$(".support .batch-wrap").show();
+		$("body").children(".hyl-bokeh").addClass("hyl-show");
+		
+	});
+
+
+}
+
 function init_add_record ( ) {
 	
 	var system = g_ALL_SYSTEM.data;
@@ -243,8 +269,10 @@ function init_add_record ( ) {
 	}
 
 	var users = {};
+	var usersa = [];
 	$(g_ALL_USER).each(function(index, el) {
 		uname = el.cname;
+		usersa.push(el.cname);
 		gname = el.group_name;
 		if (gname) {
 			if (!users[gname]) users[gname] = [];
@@ -256,6 +284,13 @@ function init_add_record ( ) {
 	}
 
 	/*-----------------------------负责人下拉框----------------------------------------*/
+	var batch_charger = $(".support .batch-wrap .upt .charger");
+	usersa = arraySortByPinyin(usersa);
+	batch_charger.append($("<option></option>"));
+	$(usersa).each(function(index, el) {
+		batch_charger.append($("<option></option>").text(el));
+	});
+	/*---------------------------------*/
 	var charger = $(".support .add-record table .charger");
 	var obj = $("<div></div>").addClass('combo-dropdown');
 	obj.css({
@@ -387,9 +422,7 @@ function init_add_record ( ) {
 
 		developer.find(".option-item").unbind();
 		developer.find(".option-item").click(function(event) {
-			console.info(developer.find(".selected"));
 			developer.find(".selected").removeClass('selected');
-			console.info($(this));
 			$(this).addClass('selected'); 
 			if ($(this).text() == "<<我>>") { 
 				_input.val(g_CURRENT_USER);
@@ -409,17 +442,22 @@ function init_add_record ( ) {
 		$(".support .add-record table .status .hyl-drop-down").find(".selected").removeClass('selected');
 	});
 
+	/*---------------------包的类型和状态下拉数据的填充------------------------------*/
+	$(".support .batch-wrap .upt .type").append($("<option></option>"));
+	$(".support .batch-wrap .upt .status").append($("<option></option>"));
 	$(g_SUPPORT).each(function(index, el) {
 		if (el.name == "包类型"){
 			data = [];
 			$(el.data).each(function(index, el) {
 				data.push(el.name);
+				$(".support .batch-wrap .upt .type").append($("<option></option>").text(el.name));
 			});
 			hyl_select($(".support .add-record table .type"), data);
 		}else if(el.name == "状态"){
 			data = [];
 			$(el.data).each(function(index, el) {
 				data.push(el.name);
+				$(".support .batch-wrap .upt .status").append($("<option></option>").text(el.name));
 			});
 			hyl_select($(".support .add-record table .status"), data);
 		}
@@ -430,9 +468,55 @@ function init_add_record ( ) {
 	$('.support .wrap .show').mousedown(function(e){
 		//console.info(e.which); // 1 = 鼠标左键 left; 2 = 鼠标中键; 3 = 鼠标右键
 		if (e.which == 3) {
-			SupportMouseRightDown(e);
+			if ($(".support .show .table .tbody .tr.selected").length <= 1) SupportMouseRightDown(e);
+			else SupportMouseRightDownBatch(e);
 		}
 		return false;//阻止链接跳转
+	});
+
+	$(".support .batch-wrap .head .exit").unbind();
+	$(".support .batch-wrap .head .exit").click(function(event) {
+		/* Act on the event */
+		$("body").children(".hyl-bokeh").removeClass('hyl-show');
+		$(".support .batch-wrap").hide();
+	});
+
+	$(".support .batch-wrap .foot .confirm").unbind();
+	$(".support .batch-wrap .foot .confirm").click(function(event) {
+		var type = $(".support .batch-wrap .upt .type").val();
+		var status = $(".support .batch-wrap .upt .status").val();
+		var bversion = $(".support .batch-wrap .upt .bversion").val();
+		var charger = $(".support .batch-wrap .upt .charger").val();
+		
+		var ids = [];
+		$(".support .show .table .tbody .tr.selected").each(function(index, el) {
+			ids.push($(el).attr("row"));
+		});
+		ids = ids.join(",");
+
+		if( type.length < 1 && status.length < 1 && bversion.length < 1 && charger.length < 1){
+			$("body").children(".hyl-bokeh").removeClass('hyl-show');
+			$(".support .batch-wrap").hide();
+			return;
+		}
+		var param = {};
+		param.IDs = ids;
+		param.SessionID = Options.SessionID;
+		if (type.length > 0) param.Type = type;
+		if (status.length > 0) param.Status = status;
+		if (bversion.length > 0) param.BVersion = bversion;
+		if (charger.length > 0) param.Charger = charger;
+		param.method = "BATCH_UPDATE";
+
+		sync_post_data("/support/", JSON.stringify(param), function(d) {
+			if (d.ErrCode != 0){
+				alert(d.msg);
+				return;
+			}
+			$("body").children(".hyl-bokeh").removeClass('hyl-show');
+			$(".support .batch-wrap").hide();
+			querySupport();
+		});
 	});
 
 	$(".support .add-record .head .exit").unbind();
@@ -717,7 +801,6 @@ function addSupport(opt) {
 			return ;
 		}
 	});
-
 	return ret;
 }
 
@@ -771,6 +854,8 @@ function querySupport() {
 				$(this).parent().find(("."+sel)).removeClass(sel);
 			if (!$(this).hasClass(sel))
 				$(this).addClass(sel);
+			else
+				$(this).removeClass(sel);
 		});
 		$(".support .show .table .tbody .tr").dblclick(function(event) {
 			/* Act on the event */

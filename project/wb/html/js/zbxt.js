@@ -51,7 +51,6 @@ function main() {
 	});
 
 	$(document).keyup(function(event) {
-		console.info(event.keyCode);
 		if (event.keyCode == 17){
 			if (g_CTRL_KEY_DOWN) g_CTRL_KEY_DOWN = false;
 		} else if (event.keyCode == 16){
