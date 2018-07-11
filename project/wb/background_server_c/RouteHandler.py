@@ -1347,18 +1347,30 @@ def supportBatchUpdate(d):
     ids = d.get("IDs", '');
     type = d.get("Type", None)
     status = d.get("Status", None)
-    bversion = d.get("BVersion", None)
+    pversion = d.get("PVersion", None)
+    gitbranch = d.get("GitBranch", None)
+    uversion = d.get("UVersion", None)
     charger = d.get("Charger", None)
+    uptuser = d.get("UptUser", None)
+
+    if uptuser is None:
+        print "No update user be fund"
+        return
 
     sql = "UPDATE support SET "
     if type is not None:
         sql += "TYPE = '"+type+"',"
     if status is not None:
         sql += "STATUS = '"+status+"',"
-    if bversion is not None:
-        sql += "BASE_VERSION='"+bversion+"',"
+    if pversion is not None:
+        sql += "PLAN_VERSION='"+pversion+"',"
+    if gitbranch is not None:
+        sql += "GIT_BRANCH='"+gitbranch+"',"
+    if uversion is not None:
+        sql += "UPGRADE_VERSION='"+uversion+"',"
     if charger is not None:
         sql += "CHARGER='" + charger+"',"
+    sql += "UPT_USER='"+uptuser+"',UPT_TIME = CURRENT_TIMESTAMP(),"
     sql = sql.rstrip(",")+" "
     sql += "WHERE ID IN ("+ids+")"
     db.update(sql)

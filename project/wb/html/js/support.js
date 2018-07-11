@@ -230,7 +230,9 @@ function SupportMouseRightDownBatch(e){
 		var str = "批量更新Support [" + l.join(", ")+"]";
 		$(".support .batch-wrap .head .title").text(str);
 
-		$(".support .batch-wrap .upt .bversion").val('');
+		$(".support .batch-wrap .upt .pversion").val('');
+		$(".support .batch-wrap .upt .gitbranch").val('');
+		$(".support .batch-wrap .upt .uversion").val('');
 
 		$(".support .batch-wrap").show();
 		$("body").children(".hyl-bokeh").addClass("hyl-show");
@@ -485,8 +487,10 @@ function init_add_record ( ) {
 	$(".support .batch-wrap .foot .confirm").click(function(event) {
 		var type = $(".support .batch-wrap .upt .type").val();
 		var status = $(".support .batch-wrap .upt .status").val();
-		var bversion = $(".support .batch-wrap .upt .bversion").val();
+		var pversion = $(".support .batch-wrap .upt .pversion").val();
 		var charger = $(".support .batch-wrap .upt .charger").val();
+		var gitbranch = $(".support .batch-wrap .upt .gitbranch").val();
+		var uversion = $(".support .batch-wrap .upt .uversion").val();
 		
 		var ids = [];
 		$(".support .show .table .tbody .tr.selected").each(function(index, el) {
@@ -494,7 +498,8 @@ function init_add_record ( ) {
 		});
 		ids = ids.join(",");
 
-		if( type.length < 1 && status.length < 1 && bversion.length < 1 && charger.length < 1){
+		if( type.length < 1 && status.length < 1 && pversion.length < 1 && charger.length < 1 &&
+			gitbranch.length < 1 && uversion.length < 1){
 			$("body").children(".hyl-bokeh").removeClass('hyl-show');
 			$(".support .batch-wrap").hide();
 			return;
@@ -504,8 +509,11 @@ function init_add_record ( ) {
 		param.SessionID = Options.SessionID;
 		if (type.length > 0) param.Type = type;
 		if (status.length > 0) param.Status = status;
-		if (bversion.length > 0) param.BVersion = bversion;
 		if (charger.length > 0) param.Charger = charger;
+		if (pversion.length > 0) param.PVersion = pversion;
+		if (gitbranch.length > 0) param.GitBranch = gitbranch;
+		if (uversion.length > 0) param.UVersion = uversion;
+		param.UptUser = g_CURRENT_USER;
 		param.method = "BATCH_UPDATE";
 
 		sync_post_data("/support/", JSON.stringify(param), function(d) {
