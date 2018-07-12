@@ -256,23 +256,24 @@ function hyl_table2(obj, conf) {
 		row = el;
 		tr = $(_div).addClass('tr');
 		tr.attr('row', row['ID']);
-		/*
+		
 		var status = row['STATUS'];
-		var bkc = 'white';
+		var bkc = '';
 		if (status == '已分配'){
 			bkc = "";
 		}else if (status == '已合并'){
-			bkc = "#E1FEBB";
+			bkc = "color1";
 		}else if (status == '已升级') {
-			bkc = "#BBFEBB";
+			bkc = "color2";
 		}else if (status == '已失效') {
-			bkc = "#FEBBBB";
+			bkc = "color3";
 		}else if (status == '基线问题') {
-			bkc = "#D5BBFE";
+			bkc = "color4";
 		}else{
-			bkc = "#FEBBBB";
+			bkc = "color5";
 		}
-		tr.css('background-color', bkc);*/
+		bkc.length > 0 && tr.addClass(bkc);
+		//tr.css('background-color', bkc);
 		$(conf.columns).each(function(index, ell) {
 			ele = row[ell.field];
 			tb = $(_div).addClass('tb').text(ele);

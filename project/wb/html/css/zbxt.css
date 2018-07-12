@@ -514,7 +514,6 @@ table tbody tr:hover{
 	color: white;
 }
 
-
 .support .wrap{
 	//border: 4px solid red;
 }
@@ -541,47 +540,6 @@ table tbody tr:hover{
 .support .wrap .option button:hover{
 	background-color: #6BB9FE;
 }
-
-/*.support .wrap .show{
-	height: 100%;
-	//border: 1px solid blue;
-	width: auto;
-	//overflow: auto;
-	overflow-x: auto;
-}
-
-.support .wrap .show table *{
-	margin: 0;
-	padding: 0;
-	border: 0;
-}
-
-.support .wrap .show .hyl-grid-tbody{
-	//overflow: auto;
-	//overflow-y: scroll;
-}
-
-.support .wrap .show table{
-	border-collapse: collapse;
-}
-.support .wrap .show table thead th{
-	border: 1px solid #E0E0E0;
-}
-.support .wrap .show table td{
-	border: 1px solid #E0E0E0;
-}
-
-.support .wrap .show table td div{
-	word-wrap: break-all;
-	word-break: break-all;
-}
-
-.support .wrap .show table tbody tr:nth-child(2n+1){
-	//background-color: white;
-}
-.support .wrap .show table tbody tr.selected{
-	background-color: #FDFD6D;
-}*/
 
 .support .wrap .show{
 	overflow: auto;
@@ -613,7 +571,7 @@ table tbody tr:hover{
 	padding: 2px;
 }
 .support .wrap .show .table .tr:hover{
-	background-color: white;
+	background-color: #F1F8FB;
 }
 .support .wrap .show .table .tbody{
 	overflow: auto;
@@ -623,8 +581,16 @@ table tbody tr:hover{
 	background-color: #FDFD6D;
 }
 
-
-
+.color1{ background-color: #E1FEBB; }
+.color2{ background-color: #BBFEBB; }
+.color3{ background-color: #FEBBBB; }
+.color4{ background-color: #D5BBFE; }
+.color5{ background-color: #FEBBBB; }
+.support .wrap .show .table .tbody .selected.color1{background-color: #FDFD6D;}
+.support .wrap .show .table .tbody .selected.color2{background-color: #FDFD6D;}
+.support .wrap .show .table .tbody .selected.color3{background-color: #FDFD6D;}
+.support .wrap .show .table .tbody .selected.color4{background-color: #FDFD6D;}
+.support .wrap .show .table .tbody .selected.color5{background-color: #FDFD6D;}
 
 .support .exp-sel{
 	display: none;
@@ -880,6 +846,7 @@ table tbody tr:hover{
 	height: 100%;
 	margin-top: -4px;
 }
+
 
 /*-------------------------------------鼠标右键弹出框----------------------------------------*/
 .mouse-right-down{
