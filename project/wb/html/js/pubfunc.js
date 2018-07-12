@@ -571,6 +571,27 @@ function hyl_alert(msg) {
 	
 }
 
+function hyl_alert2(type, msg, callBack, delay){
+	if ('success' == type){
+		$(".czxxts .icon .right").css("display", 'block');
+	}else if ("error" == type){
+		$(".czxxts .icon .wrong").css("display", 'block');
+	}else{
+		return;
+	}
+	$(".czxxts").show(10);
+
+	msg && $(".czxxts .msg").text(msg);
+
+	delay = delay || 1000;
+	setTimeout(function(){
+		$(".czxxts").hide(1);
+		$(".czxxts .icon .right").css("display", 'none');
+		$(".czxxts .icon .wrong").css("display", 'none');
+		if (typeof callBack === 'function')
+			callBack();
+	}, delay);
+}
 
 
 /*!

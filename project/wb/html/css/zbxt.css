@@ -417,7 +417,7 @@ table tbody tr:hover{
 
 .support .add-record.show{
 	display: block;
-	z-index: 2010;
+	z-index: 210;
 }
 
 .support .add-record .head{

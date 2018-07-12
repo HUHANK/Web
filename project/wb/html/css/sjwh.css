@@ -1,59 +1,93 @@
 
-.sjwh{
-	margin: 0;
-	padding: 0;
-}
-/*
-.sjwh .sidebar{
-	overflow: hidden;
-	width: 160px;
-	height: 700px;
-	float: left;
-	//background-color: white;
-}
-
-.sjwh .wrap{
-	height: 700px;
-	width: 100%;
-	//background-color: red;
-}
-
-.sjwh .wrap .mmxg{
+.czxxts{
+	display: none;
+	width: 140px;
+	border: 1px solid #D7D7D7;
+	border-radius: 8px;
 	text-align: center;
-	overflow: hidden;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin: -65px 0 0 -70px;
+	background-color: #FFFFFF;
+	box-shadow:2px 2px 4px black;
+	z-index: 1001;
+}
+.czxxts .icon{
+	margin-left: 28px;
+	margin-top: 10px;
+}
+.czxxts .icon .right{
 	display: none;
+	position: relative;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    border: 4px solid #66cc33;
+    border-radius: 50px;
+ }
+
+.czxxts .icon .right .short{
+	width: 25px;
+    height: 5px;
+    border-radius: 4px;
+    background-color: #66cc33;
+    position: absolute;
+    top: 45px;
+    left: 11px;
+    -webkit-transform:rotate(45deg);
+    transform:rotate(45deg);
+}
+.czxxts .icon .right .long{
+	width: 47px;
+    height: 5px;
+    border-radius: 4px;
+    background-color: #66cc33;
+    position: absolute;
+    top: 37px;
+    left: 23px;
+    -webkit-transform:rotate(315deg);
+    transform:rotate(315deg);
 }
 
-.sjwh .wrap .mmxg .main{
-	margin: 0 auto;
-	width: 300px;
-	height: 400px;
-	overflow: hidden;
-	margin-top: 200px;
+.czxxts .msg{
+	width: 100%;
+	text-align: center;
+	margin-top: 8px;
+	margin-bottom: 8px;
+	color: #666666;
 }
 
-.sjwh .wrap .mmxg .ts{
-	border: 1px solid red;
-}
-
-.sjwh .wrap .bmgl{
-	overflow: hidden;
-	//width: 400px;
+.czxxts .icon .wrong{
 	display: none;
+	position: relative;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+    border: 4px solid #FA3E3E;
+    border-radius: 50px;
 }
-
-.sjwh .wrap .xzgl{
-	overflow: hidden;
-	display: none;
+.czxxts .icon .wrong .line1{
+	width: 60px;
+    height: 5px;
+    border-radius: 4px;
+    background-color: #FA3E3E;
+    position: absolute;
+    top: 34px;
+    left: 6px;
+    -webkit-transform:rotate(45deg);
+    transform:rotate(45deg);
 }
-
-.sjwh .wrap .xzgl .clicked{
-	background-color: #94DAE9;
+.czxxts .icon .wrong .line2{
+	width: 60px;
+    height: 5px;
+    border-radius: 4px;
+    background-color: #FA3E3E;
+    position: absolute;
+    top: 34px;
+    left: 6px;
+    -webkit-transform:rotate(315deg);
+    transform:rotate(315deg);
 }
-.sjwh .wrap .xzgl .xzcysz{
-	width: 573px;
-}
-
-.sjwh .wrap .zdwh{
-	display: none;
-}*/

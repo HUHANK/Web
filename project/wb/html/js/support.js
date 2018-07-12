@@ -187,16 +187,20 @@ function SupportMouseRightDown(e) {
 		param.method = "DELETE";
 		sync_post_data("/support/", JSON.stringify(param), function(d) {
 			if (d.ErrCode != 0) {
-				alert("数据库删除失败！");
+				//alert("数据库删除失败！");
+				hyl_alert2("error", "删除失败");
 				return ;
 			}
-			querySupport();
+			hyl_alert2("success", "删除成功", function(){
+				querySupport();
+			});
 		});
 	});
 
 	dropbox.find('.refresh').click(function(event) {
 		/* Act on the event */
 		querySupport();
+		hyl_alert2("success", "成功刷新");
 	});
 
 	dropbox.find('.examine').click(function(event) {
@@ -518,12 +522,14 @@ function init_add_record ( ) {
 
 		sync_post_data("/support/", JSON.stringify(param), function(d) {
 			if (d.ErrCode != 0){
-				alert(d.msg);
+				hyl_alert2("error", "更新失败", function(){});
 				return;
 			}
-			$("body").children(".hyl-bokeh").removeClass('hyl-show');
-			$(".support .batch-wrap").hide();
-			querySupport();
+			hyl_alert2("success", "更新成功", function(){
+				$("body").children(".hyl-bokeh").removeClass('hyl-show');
+				$(".support .batch-wrap").hide();
+				querySupport();
+			});
 		});
 	});
 
@@ -538,17 +544,24 @@ function init_add_record ( ) {
 	$(".support .add-record table .confirm").click(function(event) {
 		/* Act on the event */
 		var ret = false;
+		var msg = "";
 		if ($(this).hasClass('add')) {
 			ret = addSupport("ADD");
 			$(this).removeClass('add');
+			msg = "添加";
 		} else if ($(this).hasClass('upt')) {
 			ret = addSupport("UPT");
 			$(this).removeClass('upt');
+			msg = "更新";
 		}
 		if (ret == true) {
-			$("body").children(".hyl-bokeh").removeClass('hyl-show');
-			$(".support .add-record").removeClass('show');
-			querySupport();
+			hyl_alert2("success", msg+"成功", function(){
+				$("body").children(".hyl-bokeh").removeClass('hyl-show');
+				$(".support .add-record").removeClass('show');
+				querySupport();
+			}, 1000);
+		}else{
+			hyl_alert2("error", msg+"失败", function(){}, 1000);
 		}
 	});
 
@@ -802,9 +815,8 @@ function addSupport(opt) {
 	}
 
 	sync_post_data("/support/", JSON.stringify(param), function(d) {
-		//console.info(d);
 		if (d.ErrCode != 0) {
-			alert("数据库更新失败!");
+			//alert("数据库更新失败!");
 			ret = false;
 			return ;
 		}
