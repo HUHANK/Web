@@ -78,6 +78,8 @@ def CalExpireDate(db, start_date, days):
 
 
 def ArrayHas(arr, dest):
+    if len(arr) == 0:
+        return False
     if len(arr) == 1:
         if arr[0] == dest:
             return True
