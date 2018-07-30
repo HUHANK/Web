@@ -1289,7 +1289,7 @@ def supportQUERY(d):
     else:
         sql = sql + " WHERE CHARGER='%s' OR DEVELOPER='%s' " % (user, user)
     
-    sql = sql + " ORDER BY PUBLISH_SERIAL DESC, STATUS";
+    sql = sql + " ORDER BY STATUS, PUBLISH_SERIAL DESC";
     return db.select2(sql)
 
 def supportQUERY_ONE(d):
