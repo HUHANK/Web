@@ -1,0 +1,45 @@
+html{
+    font: 15px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif;
+    color: #333;
+}
+
+*{
+    margin: auto;
+}
+
+a{
+    text-decoration: none;
+}
+
+body > .head{
+    background-color: #333;
+}
+body > .head > nav{
+    width: 1000px;
+}
+
+.navbar{
+    position: relative;
+    padding: 8px 16px;
+}
+.navbar > a{
+    color: #B0B0B0;
+}
+.navbar > a:hover{
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.5s;
+    transition: font-weight 0.4s;
+    //-webkit-transition: color 0.4s font-weight 0.4s;
+}
+.navbar > a.active{
+    color: #fff;
+    font-weight: bold; 
+}
+
+
+.body .hanq .sidebar{
+    width: 100px;
+    height: 400px;
+    background-color: red;
+}
