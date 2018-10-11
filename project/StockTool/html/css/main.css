@@ -4,7 +4,7 @@ html{
 }
 
 *{
-    margin: auto;
+    margin: 0 auto;
 }
 
 a{
@@ -37,9 +37,19 @@ body > .head > nav{
     font-weight: bold; 
 }
 
-
-.body .hanq .sidebar{
-    width: 100px;
-    height: 400px;
-    background-color: red;
+#hanq{
+    width: 1000px;
+    height: 600px;
+    .sidebar{
+        width: 0;
+        height: 100%;
+        background-color: #FBE0E0;
+        float: left;
+    };
+    .show{
+        width: 1000px;
+        height: 100%;
+        background-color: #F7FBE0;
+        float: right;
+    }
 }
