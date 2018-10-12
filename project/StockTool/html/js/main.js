@@ -20,6 +20,7 @@ function hanqInit() {
     param.method = "get_stock_basics";
     res = sync_post_data(param);
     console.info(res);
+
 }
 
 
@@ -42,8 +43,12 @@ function sync_post_data(data, path="stock.py") {
         data: JSON.stringify(data),
     })
     .done(function(d) {
-        console.log("success");
-        ret = d;
+        //console.log("success");
+        if (d.ErrCode) {
+            console.error(d.ErrMsg);
+        }else{
+            ret = $.parseJSON(d.ret_data); 
+        }
     })
     .fail(function(data, type, err) {
         console.error("ajax错误类型: "+type);
@@ -52,5 +57,6 @@ function sync_post_data(data, path="stock.py") {
     .always(function() {
         console.log("complete");
     });
+
     return ret;
 }

@@ -16,6 +16,8 @@ def get_stock_basics(data):
     print df
     return data
 
+
+
 class StockHandler(tornado.web.RequestHandler):
     def get(self, *args, **kwargs):
         self.write("Hello World! StockHandler get")
