@@ -63,9 +63,17 @@
             background-color: #E3C7C7;
             overflow: auto;
         }
-    .accordionMenu :target h2:before {/*展开时标题三角效果*/
-        border-color: transparent transparent transparent #fff;
-    }
+        .accordionMenu :target h2:before {/*展开时标题三角效果*/
+            border-color: transparent transparent transparent #fff;
+        }
+
+        table{
+            border-collapse: collapse;
+        }
+        th, td{
+            width: 90px;
+            padding: 4px;
+        }
     </style>
 </head>
 <body>
@@ -85,5 +93,43 @@
             <p>Lorem ipsum dolor sit amet...</p>
         </div>
     </div>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>名称</th>
+                <th>代码</th>
+                <th>最新价</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>黄河旋风</td>
+                <td>600172</td>
+                <td>3.05</td>
+            </tr>
+            <tr>
+                <td>黄河旋风</td>
+                <td>600172</td>
+                <td>3.05</td>
+            </tr>
+            <tr>
+                <td>黄河旋风</td>
+                <td>600172</td>
+                <td>3.05</td>
+            </tr>
+            <tr>
+                <td>黄河旋风</td>
+                <td>600172</td>
+                <td>3.05</td>
+            </tr>
+            <tr>
+                <td>黄河旋风</td>
+                <td>600172</td>
+                <td>3.05</td>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 </html>

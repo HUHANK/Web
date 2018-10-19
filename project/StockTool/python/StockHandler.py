@@ -11,8 +11,8 @@ def ERROR(code, msg, ret={}):
 
 def get_stock_basics(data):
     df = ts.get_stock_basics()
-    df = df.sort_values(by=["industry","area"])
-    data["ret_data"] = df.to_json(orient='records')
+    #df = df.sort_values(by=["industry","area"])
+    data["ret_data"] = df.to_json(orient='index')
     print df
     return data
 
