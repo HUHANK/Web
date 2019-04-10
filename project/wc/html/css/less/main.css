@@ -1,0 +1,44 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+body{
+    font-family: "helvetica neue",helvetica,arial,sans-serif;
+    line-height: 1.3em;
+}
+legend{
+    margin-left: 20px;
+}
+fieldset{
+    border-right: none;
+    border-left: none;
+    border-bottom: none;
+}
+
+#top-menu{
+    background-color: #000000;
+    color: #9DA2A6;
+    height: 1.8em;
+    padding: 7px 20px 2px 25px;
+    font-size: 0.9em;
+    ul{
+        list-style-type: none;
+        text-align: left;
+        li{
+            display: inline-block;
+            float: left;
+            margin-right: 13px;
+            cursor: pointer;
+            &:hover{
+                color: #FFFFFF;
+            }
+        }
+    }
+}
+
+#main{
+    margin: 5px 5px ;
+    /*height: 20px;*/
+    border: 1px solid red;
+    font-size: 0.9em;
+}
