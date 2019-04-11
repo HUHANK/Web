@@ -15,6 +15,7 @@ fieldset{
     border-bottom: none;
 }
 
+
 #top-menu{
     background-color: #000000;
     color: #9DA2A6;
@@ -33,12 +34,53 @@ fieldset{
                 color: #FFFFFF;
             }
         }
+        .selected{
+            color: #FFFFFF;
+        }
     }
 }
 
 #main{
-    margin: 5px 5px ;
+    //margin: 5px 5px ;
     /*height: 20px;*/
     border: 1px solid red;
     font-size: 0.9em;
+
+    .calendar{
+        text-align: center;
+         width: 1000px;
+        .title{
+            line-height: 2em;
+            border: 1px solid black;
+
+            .date_title{
+                display: inline-block;
+            }
+            .mode_btn{
+                display: inline-block;
+                float: right;
+            }
+        }
+        .cal_container{
+            .cal_m_contain{
+                table{
+                    width: 100%;
+
+                    td{
+                        height: 160px;
+                    }
+                }
+                .title{
+                    th{
+                        line-height: 1.4em;
+                        font-size: 0.9em;
+                        font-weight: normal;
+                        text-align: left;
+                        padding-left: 10px;
+                        color: #BCC2CD;
+                    }
+                }
+            }
+        }
+    }
 }

@@ -9,7 +9,9 @@
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
     <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
+    <script type="text/javascript" src="js/common.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+
 </head>
 <body>
     <div id="wrapper">
@@ -21,7 +23,8 @@
             </ul>
         </div>
         <div id="main">
-            <div class="week-report">
+            <!--周报统计显示-->
+            <div class="week-report" style="display: none;">
                 <div class="query-form">
                     <fieldset class="condition">
                         <legend>过滤器</legend>
@@ -32,10 +35,84 @@
                         </table>
                     </fieldset>
                 </div>
-                
+                <div class="query-result"></div>
             </div>
-            <div class="calendar">
-                
+            <!--周报日历-->
+            <div class="calendar" style="display: none;">
+                <div class="title">
+                    <div class="date_title">
+                        <span class="pre">pre</span>
+                        <span class="date">2019年4月</span>
+                        <span class="next">next</span>
+                    </div>
+                    <div class="mode_btn">
+                        <button>月</button>
+                        <button>日</button>
+                    </div>
+                </div>
+                <div class="cal_container">
+                    
+                    <div class="cal_m_contain">
+                        <table class="title">
+                            <tr>
+                                <th>星期日</th>
+                                <th>星期一</th>
+                                <th>星期二</th>
+                                <th>星期三</th>
+                                <th>星期四</th>
+                                <th>星期五</th>
+                                <th>星期六</th>
+                            </tr>
+                        </table>
+                        <table border="1" cellspacing="0" class="body">
+                            <tr class="row1">
+                                <td class="col1"></td>
+                                <td class="col2"></td>
+                                <td class="col3"></td>
+                                <td class="col4"></td>
+                                <td class="col5"></td>
+                                <td class="col6"></td>
+                                <td class="col7"></td>
+                            </tr>
+                            <tr class="row2">
+                                <td class="col1"></td>
+                                <td class="col2"></td>
+                                <td class="col3"></td>
+                                <td class="col4"></td>
+                                <td class="col5"></td>
+                                <td class="col6"></td>
+                                <td class="col7"></td>
+                            </tr>
+                            <tr class="row3">
+                                <td class="col1"></td>
+                                <td class="col2"></td>
+                                <td class="col3"></td>
+                                <td class="col4"></td>
+                                <td class="col5"></td>
+                                <td class="col6"></td>
+                                <td class="col7"></td>
+                            </tr>
+                            <tr class="row4">
+                                <td class="col1"></td>
+                                <td class="col2"></td>
+                                <td class="col3"></td>
+                                <td class="col4"></td>
+                                <td class="col5"></td>
+                                <td class="col6"></td>
+                                <td class="col7"></td>
+                            </tr>
+                            <tr class="row5" style="display: none;">
+                                <td class="col1"></td>
+                                <td class="col2"></td>
+                                <td class="col3"></td>
+                                <td class="col4"></td>
+                                <td class="col5"></td>
+                                <td class="col6"></td>
+                                <td class="col7"></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
