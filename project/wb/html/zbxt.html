@@ -23,10 +23,14 @@
 	<script type="text/javascript" src="js/addwork.js?version=2.1.6"></script>
 	<script type="text/javascript" src="js/mquery.js?version=2.1.6"></script>
 	<script type="text/javascript" src="js/support.js?version=2.1.6"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.1.6"></script>
 	<script type="text/javascript" src="js/zbxt.js?version=2.1.6"></script>
 	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.1.6">
 	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.1.6">
 	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.1.6">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.1.6">
+
+	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
 <body>
 	<!--弹出框-->
@@ -77,6 +81,7 @@
 					<li value="WZB"		>写周报	</li>
 					<li value="Query"	>查询	</li>
 					<li value="Support"	>Support包</li>
+					<li value="Calendar">日历	</li>
 					<li value="SZWH"	>设置	</li>
 				</ul>
 			</div>
@@ -659,6 +664,29 @@
 
 				<div class="show"></div>
 				
+			</div>
+		</div>
+
+		<div class="calendar">
+			<div class="sidebar-list">
+				<div class="sidebar-title">
+					<span>日历共享人员</span><!--勾选图标-->
+				</div>
+				
+				<ul class="ul-level-1">
+					<li class="li-level-1"><input type="checkbox" name=""><label>开发一部</label></li>
+					<ul class="ul-level-2">
+						<li class="li-level-2"><input type="checkbox" name=""><label>张修心</label></li>
+						<li class="li-level-2"><input type="checkbox" name=""><label>李武需</label></li>
+						<li class="li-level-2"><input type="checkbox" name=""><label>徐晶晶</label></li>
+					</ul>
+					<li class="li-level-1"><input type="checkbox" name=""><label>开发二部</label></li>
+					<ul class="ul-level-2">
+						<li class="li-level-2"><input type="checkbox" name=""><label>张修心</label></li>
+						<li class="li-level-2"><input type="checkbox" name=""><label>李武需</label></li>
+						<li class="li-level-2"><input type="checkbox" name=""><label>徐晶晶</label></li>
+					</ul>
+				</ul>
 			</div>
 		</div>
 	</div>

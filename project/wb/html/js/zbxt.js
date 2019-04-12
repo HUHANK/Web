@@ -266,13 +266,17 @@ function initNavbar(index){
 			$(".body .add-zb"	).css("display", "block");
 			add_zb();
 			break;
-		case 4:
+		case 5:
 			$(".body .sjwh"		).css("display", "block");
 			system_init();
 			break;
 		case 3:
 			$(".body .support"	).css("display", "block");
 			Support();
+			break;
+		case 4:
+			$(".body .calendar").css("display", "block");
+			CalendarMain();
 			break;
 	}
 	$(".title .navbar ul li").each(function(i, data){
@@ -309,6 +313,7 @@ function navbar() {
 			$(".body .sjwh"		).css("display", "none");
 			$(".body .add-zb"	).css("display", "none");
 			$(".body .support"	).css("display", "none");
+			$(".body .calendar"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 2);
 			query();
 		} else if (value == "WZB") {
@@ -318,6 +323,7 @@ function navbar() {
 			$(".body .query"	).css("display", "none");
 			$(".body .sjwh"		).css("display", "none");
 			$(".body .support"	).css("display", "none");
+			$(".body .calendar"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 1);
 			add_zb();
 		} else if (value == "SZWH") {
@@ -327,7 +333,8 @@ function navbar() {
 			$(".body .query"	).css("display", "none");
 			$(".body .add-zb"	).css("display", "none");
 			$(".body .support"	).css("display", "none");
-			$.cookie(NavbarIndexCookies, 4);
+			$(".body .calendar"	).css("display", "none");
+			$.cookie(NavbarIndexCookies, 5);
 			system_init();
 		} else if (value == "Support") {
 			$(".body .support"	).css("display", "block");
@@ -336,8 +343,19 @@ function navbar() {
 			$(".body .home-page").css("display", "none");
 			$(".body .query"	).css("display", "none");
 			$(".body .add-zb"	).css("display", "none");
+			$(".body .calendar"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 3);
 			Support();
+		} else if (value == "Calendar") {
+			$(".body .calendar"	).css("display", "block");
+
+			$(".body .support"	).css("display", "none");
+			$(".body .sjwh"		).css("display", "none");
+			$(".body .home-page").css("display", "none");
+			$(".body .query"	).css("display", "none");
+			$(".body .add-zb"	).css("display", "none");
+			$.cookie(NavbarIndexCookies, 4);
+			CalendarMain();
 		}
 
 	});

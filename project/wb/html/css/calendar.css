@@ -1,0 +1,29 @@
+.body .calendar{
+    font-size: 0.75em;
+
+    .sidebar-list{
+        background-color: #FAFAFA;
+        width: 150px;
+        .sidebar-title{
+            line-height: 2em;
+            span{
+                color: #737384;
+            }
+        } 
+
+        .ul-level-1{
+            margin-left: 10px;
+
+            .li-level-1{
+                line-height: 20px;
+                font-weight: bold;
+            }
+            .ul-level-2{
+                margin-left: 10px;
+                .li-level-2{
+                    color: #9A9AA3;
+                }
+            }
+        }
+    }
+}
