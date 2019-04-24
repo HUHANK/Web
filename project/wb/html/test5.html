@@ -1,56 +1,58 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<title>TEST5</title>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <style>
+        .tip {
+            position: relative;
+            background-color: deepskyblue;
+            margin: 20px auto;
+            width: 246px;
+            height: 43px;
+            line-height: 43px;
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+            font-family: sans-serif;
+        }
+        .tip:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border: 8px solid;
+        }
+        .top:after {
+            border-bottom-color: deepskyblue;
+            left: 50%;
+            bottom: 100%;
+            margin-left: -15px;
+        }
+        .right:after {
+            border-left-color: deepskyblue;
+            left: 100%;
+            top: 50%;
+            margin-top: -7px;
+        }
+        .bottom:after {
+            border-top-color: deepskyblue;
+            top: 100%;
+            left: 50%;
+            margin-left: -15px;
+        }
+        .left:after {
+            border-right-color: deepskyblue;
+            top: 50%;
+            right: 100%;
+            margin-top: -9px;
+        }
+    </style>
 </head>
 <body>
-
-
-<div style="width: 800px;">
-	<div class="table-head">
-		<table>
-			<colgroup>
-				<col style="width: 80px;" />
-				<col />
-			</colgroup>
-			<thead>
-				<tr><th>序号</th><th>内容</th></tr>
-			</thead>
-		</table>
-	</div>
-	<div class="table-body">
-		<table>
-			<colgroup>
-				<col style="width: 80px;" />
-				<col />
-			</colgroup>
-			<tbody>
-             	<tr><td>1</td><td>我只是用来测试的</td></tr>
-             	<tr><td>2</td><td>我只是用来测试的</td></tr>
-             	<tr><td>3</td><td>我只是用来测试的</td></tr>
-             	<tr><td>4</td><td>我只是用来测试的</td></tr>
-            	<tr><td>5</td><td>我只是用来测试的</td></tr>
-            	<tr><td>6</td><td>我只是用来测试的</td></tr>
-                <tr><td>7</td><td>我只是用来测试的</td></tr>
-             	<tr><td>8</td><td>我只是用来测试的</td></tr>
-             	<tr><td>9</td><td>我只是用来测试的</td></tr>
-             	<tr><td>10</td><td>我只是用来测试的</td></tr>
-             	<tr><td>11</td><td>我只是用来测试的</td></tr>
-             	<tr><td>12</td><td>我只是用来测试的</td></tr>
-             	<tr><td>13</td><td>我只是用来测试的</td></tr>
-             	<tr><td>14</td><td>我只是用来测试的</td></tr>
-             	<tr><td>15</td><td>我只是用来测试的</td></tr>
-         	</tbody>
-     	</table>
-    </div>
- </div>
-
-<style type="text/css">
-	.table-head{padding-right:17px;background-color:#999;color:#000;}
- 	.table-body{width:100%; height:300px;overflow-y:scroll;}
- 	.table-head table,.table-body table{width:100%;}
- 	.table-body table tr:nth-child(2n+1){background-color:#f2f2f2;}
-</style>
+    <div class="tip top">top</div>
+    <div class="tip bottom">bottom</div>
+    <div class="tip left">left</div>
+    <div class="tip right">right</div>
 </body>
 </html>

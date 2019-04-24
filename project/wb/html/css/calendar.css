@@ -1,13 +1,32 @@
 .body .calendar{
     font-size: 0.75em;
+    height: 800px;
+    display: none;
 
+    i[class*="icono-"]{
+        transform: scale(0.5);
+        border-color: black;
+        color: black;
+    }
     .sidebar-list{
         background-color: #FAFAFA;
         width: 150px;
+        border-right: 1px solid #CCCCCE;
+        height: 100%;
+        float: left;
         .sidebar-title{
-            line-height: 2em;
+            line-height: 34px;
+            background-color: #FFFFFF;
+            border-bottom: 1px solid #CCCCCE;
+            font-size: 16px;
             span{
                 color: #737384;
+            }
+            i.icono-calendar{
+                margin-top: -0px;
+            }
+            i.icono-user{
+                margin-top: 6px;
             }
         } 
 
@@ -26,4 +45,182 @@
             }
         }
     }
+
+    .calendar-wrap{
+        float: left;
+        height: 100%;
+        width: 1400px;
+        text-align: center;
+
+        .calendar-top{
+            line-height: 24px;
+
+            button{
+                width: 50px;
+                height: 20px;
+            }
+        }
+
+        .calendar-body{
+            height: 770px;
+            
+            .calendar-m{
+                height: 100%;
+
+                table{
+                    th{
+                        line-height: 14px;
+                    }
+                    th,td{
+                        
+                    }
+                    td{
+                        height: 148px;
+                        border-bottom: 1px solid #D7D7D7;
+                        border-right: 1px solid #D7D7D7;
+                        background-color: #E9E9E9;
+                        vertical-align: top;
+                        text-align: left;
+                    }
+                    td.settle{
+                        background-color: transparent;
+                    }
+                    td.selected dl{
+                        border: 1px solid #82BFFD;
+                        position: relative;
+                        z-index: 22;
+                        box-shadow: 0px 0px 5px #82BFFD;
+                    }
+                    tr:hover{
+                        background-color: transparent;
+                    }
+
+                    td dl{
+                        width: 200px;
+                        height: 100%;
+                        //overflow: hidden;
+                        dt{
+                            overflow: hidden;
+                        }
+                        dd{
+                            padding-left: 5px;
+                            overflow: hidden;
+                            white-space:nowrap;
+                            &:hover{
+                                background-color:#CEEAFB;
+                            }
+                        }
+                        span.solar-num{
+                            float: right;
+                            margin-left: 10px;
+                            margin-right: 10px;
+                        }
+                        span.today{
+                            margin-left: 3px;
+                            margin-right: 3px;
+                            background-color: #FD7B24;
+                            color: white;
+                            border-radius: 3px;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
+
+
+.wrap1 .calendar-add-schedule{
+    width: 340px;
+    border: 1px solid #DADBDC;
+    box-shadow: 0 0 5px #B6B7B7;
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1001;
+    background-color: white;
+
+    .head{
+        background-color: #D1EDFF;
+        overflow: hidden;
+        line-height: 28px;
+        padding-right: 5px;
+        padding-left: 5px;
+        .exitbtn{
+            float: right;
+            transform: scale(0.7);
+            border: 1px solid transparent;
+
+            i[class*="icono-"]{
+                //transform: rotate(45deg) scale(0.5);
+                border-color: black;
+                color: black;
+            }
+        }
+        .exitbtn:hover{
+            border: 1px solid #80C1C7;
+        }
+    }
+
+    .body{
+        padding: 5px;
+        table{
+            width: 100%;
+
+            textarea{
+                width: 100%;
+            }
+        }
+    }
+
+    .foot{
+        background-color: #F7F5F5;
+        padding:5px;
+        overflow: hidden;
+        .save{
+            float: right;
+            width: 60px;
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

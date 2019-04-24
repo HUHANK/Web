@@ -1,6 +1,6 @@
 /*后台访问地址url设定*/
-var HostUrl = "http://10.10.14.36:5000";
-//var HostUrl = "http://127.0.0.1:5000";
+//var HostUrl = "http://10.10.14.36:5000";
+var HostUrl = "http://127.0.0.1:5000";
 
 function draw_table(obj, headers, datas) {
 	
@@ -409,8 +409,28 @@ function isLeapYear(year) {
 }
 
 
+// 获取指定月份有多少天, month不需要减1
 function getMonthDays(year, month) {
-    return [31, null, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month] || (isLeapYear(year) ? 29 : 28);
+    return new Date(year, month, 0).getDate();
+}
+function getCurrentDay() {
+    var dt = new Date();
+    return dt.getDate();
+}
+function getCurrentMonth() {
+    var dt = new Date();
+    return (dt.getMonth()+1);
+}
+function getCurrentYear() {
+    var dt = new Date();
+    return dt.getFullYear();
+}
+//获取日期是那个星期的第几天
+CWEEK_DAY_NAME=["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+function getWeekDay(year, month, day) {
+    month = month - 1;
+    var dt = new Date(year, month, day);
+    return dt.getDay();
 }
 
 function getWeekNumber(y, m, d) {
@@ -631,4 +651,11 @@ function arraySortByPinyin(arr){
 		}
 	}
 	return new_arr;
+}
+
+function MySQLSpecialFieldProcess(field) {
+	var tmp = field.toUpperCase();
+	var specialf = ['GROUP', 'FROM', 'BY'];
+	if ( specialf.indexOf(tmp) != -1 ) return "`"+field+"`";
+	else return field;
 }

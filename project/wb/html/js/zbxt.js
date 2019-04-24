@@ -254,36 +254,37 @@ function initNavbar(index){
 	index = parseInt(index)
 	switch(index)
 	{
-		// case 1:
-		// 	$(".body .home-page").css("display", "block");
-		// 	home_page();
-		// 	break;
 		case 2:
 			$(".body .query"	).css("display", "block");
+			$(".title .navbar ul li[value='Query']").addClass('clicked');
 			query();
 			break;
 		case 1:
 			$(".body .add-zb"	).css("display", "block");
+			$(".title .navbar ul li[value='WZB']").addClass('clicked');
 			add_zb();
 			break;
 		case 5:
 			$(".body .sjwh"		).css("display", "block");
+			$(".title .navbar ul li[value='SZWH']").addClass('clicked');
 			system_init();
 			break;
 		case 3:
 			$(".body .support"	).css("display", "block");
+			$(".title .navbar ul li[value='Support']").addClass('clicked');
 			Support();
 			break;
 		case 4:
 			$(".body .calendar").css("display", "block");
+			$(".title .navbar ul li[value='Calendar']").addClass('clicked');
 			CalendarMain();
 			break;
+		case 6:
+			$(".body .week-report").css("display", "block");
+			$(".title .navbar ul li[value='week-report']").addClass('clicked');
+			WeekReportMain();
+			break;
 	}
-	$(".title .navbar ul li").each(function(i, data){
-		if (i+1 == index) {
-			$(data).addClass("clicked");
-		}
-	});
 }
 
 function navbar() {
@@ -314,6 +315,7 @@ function navbar() {
 			$(".body .add-zb"	).css("display", "none");
 			$(".body .support"	).css("display", "none");
 			$(".body .calendar"	).css("display", "none");
+			$(".body .week-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 2);
 			query();
 		} else if (value == "WZB") {
@@ -324,6 +326,7 @@ function navbar() {
 			$(".body .sjwh"		).css("display", "none");
 			$(".body .support"	).css("display", "none");
 			$(".body .calendar"	).css("display", "none");
+			$(".body .week-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 1);
 			add_zb();
 		} else if (value == "SZWH") {
@@ -334,6 +337,7 @@ function navbar() {
 			$(".body .add-zb"	).css("display", "none");
 			$(".body .support"	).css("display", "none");
 			$(".body .calendar"	).css("display", "none");
+			$(".body .week-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 5);
 			system_init();
 		} else if (value == "Support") {
@@ -344,6 +348,7 @@ function navbar() {
 			$(".body .query"	).css("display", "none");
 			$(".body .add-zb"	).css("display", "none");
 			$(".body .calendar"	).css("display", "none");
+			$(".body .week-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 3);
 			Support();
 		} else if (value == "Calendar") {
@@ -354,8 +359,21 @@ function navbar() {
 			$(".body .home-page").css("display", "none");
 			$(".body .query"	).css("display", "none");
 			$(".body .add-zb"	).css("display", "none");
+			$(".body .week-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 4);
 			CalendarMain();
+		} else if(value == "week-report") {
+			$(".body .week-report"	).css("display", "block");
+
+			$(".body .calendar"	).css("display", "none");
+			$(".body .support"	).css("display", "none");
+			$(".body .sjwh"		).css("display", "none");
+			$(".body .home-page").css("display", "none");
+			$(".body .query"	).css("display", "none");
+			$(".body .add-zb"	).css("display", "none");
+			$.cookie(NavbarIndexCookies, 6);
+			WeekReportMain();
+
 		}
 
 	});
