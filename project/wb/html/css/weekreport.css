@@ -1,5 +1,6 @@
 .body .week-report{
     font-size: 0.9em;
+    display: none;
 
     .query-form{
 
@@ -8,7 +9,7 @@
             border-left:    none;
             border-bottom:  none;
             border-top: 1px solid #E4E4E4;
-
+ 
             legend{
                 margin-left: 20px;
                 &:hover{

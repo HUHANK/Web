@@ -1604,6 +1604,28 @@ def SystemSettings(data):
     return SuccessDeal(ret)
 
 
+@route("/exec_native_sql/")
+def ExecNativeSQL(data):
+    data = json.loads(data)
+    db = Options['mysql']
 
+    ret = {}
+    sql = data.get("SQL", "")
 
+    if len(sql) < 1:
+        return SuccessDeal(ret)
+
+    method = data.get('method', '')
+    if len(method) < 1:
+        return ErrorDeal(ret, "无效的method!")
+
+    if method == "SELECT":
+        ret['data'] = db.select3(sql)
+        if ret['data'] is None:
+            return ErrorDeal(ret, "查询失败!")
+    elif method == "INSERT" or method == "UPDATE":
+        if db.update(sql) is False:
+            return ErrorDeal(ret, "数据库更新失败!")
+
+    return SuccessDeal(ret)
 

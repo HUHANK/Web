@@ -57,7 +57,7 @@ class ThreadedHTTPServer(ThreadingMixIn, BaseHTTPServer.HTTPServer):
 
 
 def start_server(port):
-    print "Now Start HttpServer: PORT="+str(port) + "..."
+    print ("Now Start HttpServer: PORT="+str(port) + "...")
     http_server = ThreadedHTTPServer(('', int(port)), RequestHandler)
     #http_server = BaseHTTPServer.HTTPServer(('',int(port)), RequestHandler)
     http_server.serve_forever()

@@ -17,21 +17,21 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.1.7"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.1.7"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.1.7"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.1.7"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.1.7"></script>
-	<script type="text/javascript" src="js/support.js?version=2.1.7"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.1.7"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.1.7"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.1.7"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.1.7">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.1.7">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.1.7">
+	<script type="text/javascript" src="js/ginit.js?version=2.1.9"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.1.9"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.1.9"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.1.9"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.1.9"></script>
+	<script type="text/javascript" src="js/support.js?version=2.1.9"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.1.9"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.1.9"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.1.9"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.1.9">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.1.9">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.1.9">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.1.7">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.1.7">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.1.9">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.1.9">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -69,7 +69,7 @@
 	<!--++++++++++++++++++++++++++++++HEADER+++++++++++++++++++++++++++++-->
 	<div class="wrapper-top">
 		<div class="header">
-			<h2>周报管理系统</h2>
+			<h2> 周 报 管 理 系 统 </h2>
 			<div class="subhead">
 				<span class="logout">退出登录</span>
 				<span class="yhxs"></span>
@@ -704,9 +704,9 @@
 			
 			<div class="calendar-wrap">
 				<div class="calendar-top">
-					<button>上月</button>
-					<span>2019年4月</span>
-					<button>下月</button>
+					<button class="prev">上月</button>
+					<span class="calm">2019年4月</span>
+					<button class="next">下月</button>
 				</div>
 				<div class="calendar-body">
 					<div class="calendar-m">
@@ -765,6 +765,15 @@
 								<td class="w45"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
 								<td class="w46"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
 							</tr>
+							<tr class="w5">
+								<td class="w50"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
+								<td class="w51"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
+								<td class="w52"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
+								<td class="w53"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
+								<td class="w54"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
+								<td class="w55"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
+								<td class="w56"><dl><dt><span class="day-info"></span><span class="solar-num"></span></dt></dl></td>
+							</tr>
 						</table>
 					</div>
 				</div>
@@ -779,7 +788,7 @@
 			</div>
 			<!--#######################################################-->
 			<div class="query-opt">
-				<button class="query">查询</button>
+				<button class="queryi">查询</button>
 				<button class="add">添加</button>
 				<button class="update">更新</button>
 				<button class="delete">删除</button>
@@ -835,7 +844,7 @@
 		</div>
 
 		<div class="calendar-add-schedule">
-			<div class="head"><span>添加日程</span><span class="exitbtn"><i class="icono-cross"></i></span></div>
+			<div class="head"><span class="title">添加日程</span><span class="exitbtn"><i class="icono-cross"></i></span></div>
 			<div class="body">
 				<table>
 					<tr>
@@ -858,6 +867,8 @@
 			</div>
 			<div class="foot">
 				<button class="save">保存</button>
+				<button class="delete">删除</button>
+				<button class="update">更新</button>
 			</div>
 		</div>
 

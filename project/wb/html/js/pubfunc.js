@@ -457,8 +457,29 @@ function getWeekNumber(y, m, d) {
     return week;
 }
 
-
-
+function getMonthByMonth(year, month, mode) {
+	var ret = [];
+	var y = year;
+	var m = 0;
+	if (mode > 0) {
+		month += mode;
+		m = month;
+		if (month > 12) {
+			y = year+1;
+			m = month - 12;
+		}
+	} else if (mode < 0) {
+		month += mode;
+		m = month;
+		if (month < 1) {
+			y = year -1;
+			m = month + 12;
+		}
+	}
+	ret.push(y);
+	ret.push(m);
+	return ret;
+}
 
 function Cleanup() {
         window.clearInterval(idTmr);

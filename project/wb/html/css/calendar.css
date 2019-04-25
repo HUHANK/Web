@@ -1,6 +1,6 @@
 .body .calendar{
-    font-size: 0.75em;
-    height: 800px;
+    font-size: 12px;
+    height: 880px;
     display: none;
 
     i[class*="icono-"]{
@@ -62,25 +62,24 @@
         }
 
         .calendar-body{
-            height: 770px;
+            height: 920px;
             
             .calendar-m{
                 height: 100%;
 
                 table{
                     th{
-                        line-height: 14px;
-                    }
-                    th,td{
-                        
+                        /*line-height: 14px;*/
+                        padding: 2px;
                     }
                     td{
-                        height: 148px;
+                        height: 138px;
                         border-bottom: 1px solid #D7D7D7;
                         border-right: 1px solid #D7D7D7;
                         background-color: #E9E9E9;
                         vertical-align: top;
                         text-align: left;
+                        font-size: 12px;
                     }
                     td.settle{
                         background-color: transparent;
@@ -111,6 +110,8 @@
                             }
                         }
                         span.solar-num{
+                            font-family: georgia;
+                            font-size: 14px;
                             float: right;
                             margin-left: 10px;
                             margin-right: 10px;
@@ -178,7 +179,7 @@
         background-color: #F7F5F5;
         padding:5px;
         overflow: hidden;
-        .save{
+        button{
             float: right;
             width: 60px;
         }

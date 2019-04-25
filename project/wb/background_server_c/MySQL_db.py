@@ -93,6 +93,22 @@ class MySQLOption:
         out_map["data"] = datas
         return out_map
 
+    def select3(self, sql):
+        self.connect()
+        if sql is None:
+            print 'The param sql is None!'
+            return None
+
+        cursor = self.conn.cursor()
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        ret = []
+
+        for row in result:
+            ret.append(list(row))
+
+        return ret
+
 
     def update(self, sql):
         self.connect()

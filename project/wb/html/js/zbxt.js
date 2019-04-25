@@ -209,6 +209,9 @@ function GUpdateBaseinfo(){
 			g_ALL_TYPE = d.Type;
 			g_ALL_PROPERTY = d.Property;
 
+			console.info(g_ALL_GROUP);
+			console.info(g_ALL_DEPART);
+			console.info(g_ALL_USER);
 			for( i  in g_ALL_GROUP ){
 				for (ii in g_ALL_USER){
 					if (g_ALL_USER[ii].id == g_ALL_GROUP[i].manager){

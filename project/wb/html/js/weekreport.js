@@ -2,6 +2,8 @@
 var WEEK_REPORT_EVENT_INIT=false;
 var WEEK_REPORT_PAGE_SIZE=10;
 var WEEK_REPORT_PAGE_NUM = 0;
+var WEEK_REPORT_TOTAL_PAGE_NUM = 0;
+var WEEK_REPORT_QUERY_TOTAL_COUNT = 0;
 
 /*Main函数*/
 function WeekReportMain() {
@@ -139,6 +141,10 @@ function WeekReportEvent() {
         });
     });
 
+    $(".body .week-report .query-opt button.queryi").click(function(event) {
+
+    });
+
     $(".wrap1 .week-report-table .head .exitbtn").click(function(event) {
         $("body").children(".hyl-bokeh").removeClass('hyl-show');
         $(".wrap1 .week-report-table").hide();
@@ -194,12 +200,16 @@ function WeekReportEvent() {
         $(this).siblings('.selected').removeClass('selected');
         $(this).addClass('selected');
         WEEK_REPORT_PAGE_SIZE = parseInt($(this).text());
+        WEEK_REPORT_PAGE_NUM = 0;
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
 
     $(".week-report .query-foot button").click(function(event) {
         var cls = $(this).attr("class");
         if (cls == "prev") {
+            if (WEEK_REPORT_PAGE_NUM == WEEK_REPORT_TOTAL_PAGE_NUM) {
+                $(".week-report .query-foot button.next").attr("disabled",false);
+            }
             WEEK_REPORT_PAGE_NUM--;
         } else if (cls == "next") {
             if (WEEK_REPORT_PAGE_NUM == 0) {
@@ -209,6 +219,9 @@ function WeekReportEvent() {
         }
         if (WEEK_REPORT_PAGE_NUM ==0) {
             $(".week-report .query-foot button.prev").attr("disabled",true);
+        }
+        if (WEEK_REPORT_PAGE_NUM == WEEK_REPORT_TOTAL_PAGE_NUM) {
+            $(".week-report .query-foot button.next").attr("disabled",true);
         }
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
@@ -249,6 +262,28 @@ function WeekReportQueryTable(offset, rows) {
             });
             tbody.append(tr);
         }
+    });
+
+    /*------------------------------------------*/
+    WeekReportQueryGetTotalCount();
+    WEEK_REPORT_TOTAL_PAGE_NUM = parseInt(WEEK_REPORT_QUERY_TOTAL_COUNT/WEEK_REPORT_PAGE_SIZE)+0;
+    var ps = WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE;
+    var txt = "("+(ps+1)+"-"+(ps+WEEK_REPORT_PAGE_SIZE)+"/"+(WEEK_REPORT_QUERY_TOTAL_COUNT)+")"
+    $(".week-report .query-foot .page-info").text(txt);
+}
+
+function WeekReportQueryGetTotalCount() {
+    var sql = "SELECT COUNT(1) FROM week_report ";
+
+    var param = {};
+    param['method'] = "SELECT";
+    param['SQL'] = sql;
+    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+        if (d.ErrCode != 0) {
+            alter(d.msg);
+            return;
+        }
+        WEEK_REPORT_QUERY_TOTAL_COUNT = parseInt(d.data[0][0]);
     });
 }
 
