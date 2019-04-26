@@ -9,10 +9,11 @@ function CalendarMain() {
 
 function CalendarInit() {
     /*初始化月日历*/
-    year = getCurrentYear();
-    month = getCurrentMonth();
-    nowDay = getCurrentDay();
+    var year = getCurrentYear();
+    var month = getCurrentMonth();
+    var nowDay = getCurrentDay();
 
+    CalendarInitSidebar();
     CalendarInitMonthTable( year, month );
     CalendarAddEvent( );
 }
@@ -178,6 +179,10 @@ function CalendarAddEvent() {
         $(this).parent().next().slideToggle(400);
     });
 
+    $(".body .calendar .sidebar-list .li-level-1,.li-level-2 label").click(function(event) {
+        $(this).parent().next().slideToggle(400);
+    });
+
     $(".body .calendar .sidebar-list .sidebar-title").click(function(event) {
         $(this).next().slideToggle(400);
     });
@@ -301,4 +306,53 @@ function CalendarAddEvent() {
         $(".body .calendar .calendar-wrap .calendar-top .calm").text(year+"年"+month+"月");
         CalendarInitMonthTable(year, month);
     });
+}
+
+
+function CalendarInitSidebar() {
+
+    var sp = $(".body .calendar .sidebar-list .sidebar-container.share-person");
+    var i=0;
+    var j=0;
+    var k=0;
+
+    var ul1 = $("<ul></ul>").addClass('ul-level-1');
+    for(i=0; i<g_ALL_DEPART.length; i++) {
+        var depart_id = g_ALL_DEPART[i].id;
+        var li1 = $("<li></li>").addClass('li-level-1').append('<input type="checkbox" name="">').append($("<label></label>").text(g_ALL_DEPART[i].name));
+        li1.children("input[type='checkbox']").click(function(event) {
+            if ($(this)[0].checked ==true) {
+                $(this).parent().next().find("input[type='checkbox']").attr("checked", true);
+            } else {
+                $(this).parent().next().find("input[type='checkbox']").attr("checked", false);
+            }
+        });
+        var ul2 = $("<ul></ul>").addClass('ul-level-2');
+        for(j=0; j<g_ALL_GROUP.length; j++) {
+            var group_id = g_ALL_GROUP[j].id;
+            if (depart_id == g_ALL_GROUP[j].depart_id) {
+                var li2 = $("<li></li>").addClass('li-level-2').append('<input type="checkbox" name="">').append($("<label></label>").text(g_ALL_GROUP[j].name));
+                li2.children("input[type='checkbox']").click(function(event) {
+                    if ($(this)[0].checked ==true) {
+                        $(this).parent().next().find("input[type='checkbox']").attr("checked", true);
+                    } else {
+                        $(this).parent().next().find("input[type='checkbox']").attr("checked", false);
+                    }
+                });
+                var ul3 = $("<ul></ul>").addClass('ul-level-3');
+                for(k=0; k<g_ALL_USER.length; k++) {
+                    if (group_id == g_ALL_USER[k].group_id) {
+                        var li3 =  $("<li></li>").addClass('li-level-3').append('<input type="checkbox" name="">').append($("<label></label>").text(g_ALL_USER[k].cname))
+                        ul3.append(li3);
+                    }
+                }
+                ul2.append(li2);
+                ul2.append(ul3);
+            }
+        }
+        ul1.append(li1);
+        ul1.append(ul2);
+    }
+    sp.html("");
+    sp.append(ul1);
 }

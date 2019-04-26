@@ -23,8 +23,8 @@ TABLE_CONF.columns = [
     {name: '项目类别',            field: 'ITEM_TYPE',                   width: '100', align: 'center'},
     {name: '项目',                field: 'ITEM',                      width: '100', align: 'center'},
     {name: '项目进度',            field: 'ITEM_PROGRESS',               width: '60', align: 'center'},
-    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',            width: '140', align: 'center'},
-    {name: '本周完成工作',        field: 'THIS_WEEK_WORK',            width: '140', align: 'center'},
+    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',            width: '180', align: 'center'},
+    {name: '本周完成工作',        field: 'THIS_WEEK_WORK',            width: '180', align: 'center'},
     {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',     width: '100', align: 'center'},
     {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',    width: '60', align: 'center'},
     {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',          width: '100', align: 'center'},
@@ -54,7 +54,6 @@ function WeekReportInit() {
     $(".week-report .query-result table thead").html(tr);
 
     WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
-    $(".week-report .query-foot button.prev").attr("disabled",true);
 }
 
 function WeekReportGetValue(cls) {
@@ -142,7 +141,26 @@ function WeekReportEvent() {
     });
 
     $(".body .week-report .query-opt button.queryi").click(function(event) {
+        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+    });
 
+    $(".body .week-report .query-opt button.export").click(function(event) {
+        sql = "SELECT ID,SUPPLIER,PRIORITY,SYSTEM,ITEM_TYPE,ITEM,ITEM_PROGRESS,LAST_WEEK_WORK, \
+            THIS_WEEK_WORK,SUPPLIER_FOLLOWUP_WORK,PROVIDE_ITEM_WEEK_REPORT,SUPPLIER_FEEDBACK,\
+            SUPPLIER_ITEM_CHARGE,START_DATE,END_DATE,RISK_POINT,ITEM_CHARGE,WORKLOAD,\
+            `GROUP`,NEED_TRACK,DETAIL_DESIGN_DOC,DESIGN_REVIEW_DATE,BUSINESS_DEPART,\
+            DESIGN_REVIEW_STATUS,NOTE FROM week_report ";
+
+        var param = {};
+        param['method'] = "SELECT";
+        param['SQL'] = sql;
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            
+        });
     });
 
     $(".wrap1 .week-report-table .head .exitbtn").click(function(event) {
@@ -181,6 +199,7 @@ function WeekReportEvent() {
             }
             sql = sql.substr(0, sql.length - 2) + " WHERE ID="+id;
         }
+
         var param = {};
         param['method'] = "INSERT";
         param['SQL'] = sql;
@@ -217,12 +236,12 @@ function WeekReportEvent() {
             }
             WEEK_REPORT_PAGE_NUM++;
         }
-        if (WEEK_REPORT_PAGE_NUM ==0) {
-            $(".week-report .query-foot button.prev").attr("disabled",true);
-        }
-        if (WEEK_REPORT_PAGE_NUM == WEEK_REPORT_TOTAL_PAGE_NUM) {
-            $(".week-report .query-foot button.next").attr("disabled",true);
-        }
+        // if (WEEK_REPORT_PAGE_NUM ==0) {
+        //     $(".week-report .query-foot button.prev").attr("disabled",true);
+        // }
+        // if (WEEK_REPORT_PAGE_NUM == WEEK_REPORT_TOTAL_PAGE_NUM) {
+        //     $(".week-report .query-foot button.next").attr("disabled",true);
+        // }
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
 }
@@ -253,7 +272,8 @@ function WeekReportQueryTable(offset, rows) {
             var row = data[i];
             var tr = $("<tr></tr>").attr("row-id", row[0]+"");
             for (j=0; j<row.length; j++) {
-                var td = $("<td></td>").text(row[j]);
+                var pre = $("<pre></pre>").text(row[j]);
+                var td = $("<td></td>").append(pre);
                 tr.append(td);
             }
             tr.click(function(event) {
@@ -268,8 +288,15 @@ function WeekReportQueryTable(offset, rows) {
     WeekReportQueryGetTotalCount();
     WEEK_REPORT_TOTAL_PAGE_NUM = parseInt(WEEK_REPORT_QUERY_TOTAL_COUNT/WEEK_REPORT_PAGE_SIZE)+0;
     var ps = WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE;
-    var txt = "("+(ps+1)+"-"+(ps+WEEK_REPORT_PAGE_SIZE)+"/"+(WEEK_REPORT_QUERY_TOTAL_COUNT)+")"
+    var txt = "("+(ps+1)+"-"+((ps+WEEK_REPORT_PAGE_SIZE)>WEEK_REPORT_QUERY_TOTAL_COUNT ? WEEK_REPORT_QUERY_TOTAL_COUNT : (ps+WEEK_REPORT_PAGE_SIZE))+"/"+(WEEK_REPORT_QUERY_TOTAL_COUNT)+")"
     $(".week-report .query-foot .page-info").text(txt);
+
+    if (WEEK_REPORT_PAGE_NUM == 0) {
+        $(".week-report .query-foot button.prev").attr("disabled",true);
+    }
+    if (((WEEK_REPORT_PAGE_NUM+1)*WEEK_REPORT_PAGE_SIZE)> WEEK_REPORT_QUERY_TOTAL_COUNT) {
+        $(".week-report .query-foot button.next").attr("disabled",true);
+    }
 }
 
 function WeekReportQueryGetTotalCount() {

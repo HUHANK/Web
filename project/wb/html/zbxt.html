@@ -17,21 +17,21 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.1.9"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.1.9"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.1.9"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.1.9"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.1.9"></script>
-	<script type="text/javascript" src="js/support.js?version=2.1.9"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.1.9"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.1.9"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.1.9"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.1.9">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.1.9">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.1.9">
+	<script type="text/javascript" src="js/ginit.js?version=2.2.2"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.2.2"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.2.2"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.2.2"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.2.2"></script>
+	<script type="text/javascript" src="js/support.js?version=2.2.2"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.2.2"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.2.2"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.2.2"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.2.2">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.2.2">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.2.2">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.1.9">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.1.9">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.2.2">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.2.2">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -684,7 +684,7 @@
 					<span><i class="icono-user"></i>共享人员</span><!--勾选图标-->
 				</div>
 				
-				<div class="sidebar-container">
+				<div class="sidebar-container share-person">
 					<ul class="ul-level-1">
 						<li class="li-level-1"><input type="checkbox" name=""><label>开发一部</label></li>
 						<ul class="ul-level-2">
@@ -803,7 +803,7 @@
 				</table>
 			</div>
 			<div class="query-foot">
-				<button class="prev" disabled><<上一页</button>
+				<button class="prev"><<上一页</button>
 				<button class="next">下一页>></button>
 				<span class="page-info">(1-50/178)</span><span> 每页显示： </span>
 				 <span class="page-size selected">10</span> , <span class="page-size">25</span> , <span class="page-size">50</span> , <span class="page-size">100</span>
@@ -912,7 +912,7 @@
 						<td><label>供应商后续工作</label></td><td colspan="3"><textarea class="field_SUPPLIER_FOLLOWUP_WORK" ></textarea></td>
 					</tr>
 					<tr>
-						<td><label>纳入跟踪</label></td><td><select class="field_NEED_TRACK" ><option>是</option><option>否</option></select></td>
+						<td><label>纳入跟踪</label></td><td><input class="field_NEED_TRACK" type="text" name=""></td>
 						<td><label>设计文档</label></td><td><input class="field_DETAIL_DESIGN_DOC" type="text" name=""></td>
 						<td><label>设计评审时间</label></td><td><input class="field_DESIGN_REVIEW_DATE" type="date" name=""></td>
 						<td><label>业务主管部门</label></td><td><input class="field_BUSINESS_DEPART" type="text" name=""></td>

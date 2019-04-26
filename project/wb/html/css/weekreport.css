@@ -27,11 +27,16 @@
     .query-result{
         overflow: auto;
         display: block;
+        font-family: "微软雅黑";
 
         table{
-            min-width: 100%;
+            min-width: 3000px;
 
+            th{
+                padding: 1px;
+            }
             tbody{
+                font-size: 12px;
                 tr{
                     &:hover{
                         background-color: #FEFFE5;
