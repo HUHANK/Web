@@ -159,7 +159,52 @@ function WeekReportEvent() {
                 alter(d.msg);
                 return;
             }
-            
+            var data = d.data;
+            var shead = "";
+            var sbody = "";
+
+            shead += "<th>#</th>";
+            shead += "<th>供应商</th>";
+            shead += "<th>优先级</th>";
+            shead += "<th>系统</th>";
+            shead += "<th>项目类别</th>";
+            shead += "<th>项目</th>";
+            shead += "<th>项目进度</th>";
+            shead += "<th>上周完成工作</th>";
+            shead += "<th>本周完成工作</th>";
+            shead += "<th>供应商后续工作</th>";
+            shead += "<th>是否提供项目周报</th>";
+            shead += "<th>供应商反馈</th>";
+            shead += "<th>供应商项目负责人</th>";
+            shead += "<th>开始时间</th>";
+            shead += "<th>结束时间</th>";
+            shead += "<th>风险点</th>";
+            shead += "<th>负责人</th>";
+            shead += "<th>工作量（人/周）</th>";
+            shead += "<th>小组</th>";
+            shead += "<th>纳入跟踪</th>";
+            shead += "<th>设计文档</th>";
+            shead += "<th>设计评审时间</th>";
+            shead += "<th>业务主管部门</th>";
+            shead += "<th>设计评审时间和状态</th>";
+            shead += "<th>备注</th>";
+            shead = "<tr>" + shead + "</tr>";
+            var i=0;
+            var j=0;
+            for (i=0; i<data.length; i++) {
+                var row = data[i];
+                var trow = "";
+                for(j=0; j<row.length; j++) {
+                    trow += "<td>" + row[j] + "</td>";
+                }
+                sbody += "<tr>" + trow + "</tr>";
+            }
+            var html = "<table>" + shead + sbody + "</table>";
+            if(getExplorer()=='ie') {
+                alert("不支持IE导出！");
+            } else {
+                tableToExcel(html);
+            }
         });
     });
 
