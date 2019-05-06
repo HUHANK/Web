@@ -63,6 +63,14 @@ function main() {
 		query_get_result(g_CURRENT_QPAGE);
 	}
 	init_window();
+
+	$(document).scroll(function(event) {
+    	OnScroll(event);
+    });
+}
+
+function OnScroll( event ) {
+	WeekReportScroll();
 }
 
 function init_window() {

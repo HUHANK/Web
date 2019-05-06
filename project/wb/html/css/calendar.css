@@ -57,12 +57,29 @@
         text-align: center;
 
         .calendar-top{
-            line-height: 24px;
-
-            button{
-                width: 50px;
-                height: 20px;
+            overflow: hidden;
+            span{
+                position: relative;
+                top: 0;
+                display: inline-block;
+                font-size: 16px;
             }
+            button{
+                width: 30px;
+                height: 20px;
+                display: inline-block;
+                position: relative;
+                top: 2px;
+                border: 1px solid transparent;
+                background-color: transparent;
+                border-radius: 3px;
+
+                &:hover{
+                    border: 1px solid #707070;
+                    background-color: #EDEDED;
+                }
+            }
+            padding-bottom: 2px;
         }
 
         .calendar-body{

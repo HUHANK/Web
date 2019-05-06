@@ -17,21 +17,22 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.2.3"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.2.3"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.2.3"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.2.3"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.2.3"></script>
-	<script type="text/javascript" src="js/support.js?version=2.2.3"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.2.3"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.2.3"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.2.3"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.2.3">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.2.3">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.2.3">
+	<script type="text/javascript" src="js/ginit.js?version=2.2.5"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.2.5"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.2.5"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.2.5"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.2.5"></script>
+	<script type="text/javascript" src="js/support.js?version=2.2.5"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.2.5"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.2.5"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.2.5"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.2.5">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.2.5">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.2.5">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.2.3">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.2.3">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.2.5">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.2.5">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.2.5">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -704,9 +705,9 @@
 			
 			<div class="calendar-wrap">
 				<div class="calendar-top">
-					<button class="prev">上月</button>
+					<button class="prev"><i class="icony-55 icony16"></i></button>
 					<span class="calm">2019年4月</span>
-					<button class="next">下月</button>
+					<button class="next"><i class="icony-55 icony12"></i></button>
 				</div>
 				<div class="calendar-body">
 					<div class="calendar-m">
@@ -783,14 +784,25 @@
 		<div class="week-report">
 			<div class="query-form">
 				<fieldset class="condition">
-                	<legend>过滤器</legend>
+                	<legend><i class="icony-55 icony02"></i><span>过滤器</span></legend>
+                	<div class="container" style="display: none">
+                		<span class="cell"><span class="label">供应商</span><span class="input"><input class="SUPPLIER" type="text" name=""></span></span>
+                		<span class="cell"><span class="label">优先级</span><span class="input"><input class="PRIORITY" type="text" name=""></span></span>
+                		<span class="cell"><span class="label">系统</span><span class="input"><input class="SYSTEM" type="text" name=""></span></span>
+                		<span class="cell"><span class="label">项目类别</span><span class="input"><input class="ITEM_TYPE" type="text" name=""></span></span>
+                		<span class="cell"><span class="label">项目</span><span class="input"><input class="ITEM" type="text" name=""></span></span>
+                		<span class="cell"><span class="label">项目进度</span><span class="input"><input class="ITEM_PROGRESS" type="text" name=""></span></span>
+                		<span class="cell"><span class="label">小组</span><span class="input"><input class="GROUP" type="text" name=""></span></span>
+                		<span class="cell"><span class="label">负责人</span><span class="input"><input class="ITEM_CHARGE" type="text" name=""></span></span>
+                		<span class="cell"><span class="label">标签</span><span class="input"><input class="NEED_TRACK" type="text" name=""></span></span>
+                	</div>
                 </fieldset>
 			</div>
 			<!--#######################################################-->
 			<div class="query-opt">
 				<button class="queryi">查询</button>
 				<button class="add">添加</button>
-				<button class="update">更新</button>
+				<button class="update">修改</button>
 				<button class="delete">删除</button>
 				<button class="export">导出</button>
 			</div>
@@ -912,7 +924,7 @@
 						<td><label>供应商后续工作</label></td><td colspan="3"><textarea class="field_SUPPLIER_FOLLOWUP_WORK" ></textarea></td>
 					</tr>
 					<tr>
-						<td><label>纳入跟踪</label></td><td><input class="field_NEED_TRACK" type="text" name=""></td>
+						<td><label>标签</label></td><td><input class="field_NEED_TRACK" type="text" name=""></td>
 						<td><label>设计文档</label></td><td><input class="field_DETAIL_DESIGN_DOC" type="text" name=""></td>
 						<td><label>设计评审时间</label></td><td><input class="field_DESIGN_REVIEW_DATE" type="date" name=""></td>
 						<td><label>业务主管部门</label></td><td><input class="field_BUSINESS_DEPART" type="text" name=""></td>

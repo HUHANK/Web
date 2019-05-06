@@ -100,6 +100,7 @@ function CalendarMonthTableInitDBData() {
                     if (nDate>=START_DATE && nDate <= END_DATE) {
                         var dd = $("<dd></dd>").attr("cal-id", ID).text(DETAIL);
                         dd.click(function(event) {
+                            event.stopPropagation();//阻止事件冒泡即可
                             $(".wrap1 .calendar-add-schedule .foot .delete,.update").css("display", "inline-block");
                             $(".wrap1 .calendar-add-schedule .foot .save").css("display", "none");
                             $(".wrap1 .calendar-add-schedule .head .title").text("编辑日程");
