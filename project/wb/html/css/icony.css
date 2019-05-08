@@ -30,6 +30,14 @@
     display: inline-block;
 }
 
+.icony-red {
+    background: url(../images/ui-icons_cc0000_256x240.png);
+    width: 16px;
+    line-height: 16px;
+    height: 16px;
+    display: inline-block;
+}
+
 .icony00{
     background-position: 0px 0px;
 }
@@ -56,3 +64,20 @@
 .icony16{
     background-position: -97px -17px;
 }
+
+.icony0709{
+    background-position: -97px -129px;
+}
+
+.icony0510{
+    background-position: -65px -145px;
+}
+
+.icony0513{
+    background-position: -65px -193px;
+}
+
+.icony0713{
+    background-position: -97px -193px;
+}
+

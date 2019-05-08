@@ -10,8 +10,8 @@ var WEEK_REPORT_QUERY_CONDITION='';
 
 /*Main函数*/
 function WeekReportMain() {
-    WeekReportInit();
     if (!WEEK_REPORT_EVENT_INIT) {
+        WeekReportInit();
         WeekReportEvent();
         WEEK_REPORT_EVENT_INIT = true;
     }
@@ -394,12 +394,87 @@ function WeekReportEvent() {
     });
 
     $(".body .week-report .query-opt button.export").click(function(event) {
-        sql = "SELECT ID,SUPPLIER,PRIORITY,SYSTEM,ITEM_TYPE,ITEM,ITEM_PROGRESS,LAST_WEEK_WORK, \
-            THIS_WEEK_WORK,SUPPLIER_FOLLOWUP_WORK,PROVIDE_ITEM_WEEK_REPORT,SUPPLIER_FEEDBACK,\
-            SUPPLIER_ITEM_CHARGE,START_DATE,END_DATE,RISK_POINT,ITEM_CHARGE,WORKLOAD,\
-            `GROUP`,NEED_TRACK,DETAIL_DESIGN_DOC,DESIGN_REVIEW_DATE,BUSINESS_DEPART,\
-            DESIGN_REVIEW_STATUS,NOTE FROM week_report ";
+        //$("body").children(".hyl-bokeh").addClass("hyl-show");
+        var cols = TABLE_CONF.columns;
+        var i = 0;
+        var table = $(".wrap1 .week-report-export table tbody");
+        table.html("");
+        for(i=0; i<cols.length; i++) {
+            var tr = $("<tr></tr>");
+            tr.click(function(event) {
+                event.stopPropagation();//阻止事件冒泡即可
+                if ($(this).attr("selected")) return;
+                $(this).parent().children("tr[selected='selected']").attr("selected", false);
+                $(this).attr("selected", true);
+            });
+            tr.attr("export", "yes");
+            tr.addClass(cols[i].field);
+            tr.append($("<td></td>").text(cols[i].name));
+            var tmp = $("<td></td>").append($("<i class='icony-44 icony0510'></i>"));
+            tmp.css("text-align", "center");
+            tmp.css("line-height", "20px");
+            tmp.click(function(event) {
+                //event.stopPropagation();//阻止事件冒泡即可
+                if ($(this).parent().attr("export") == "yes") {
+                    $(this).parent().attr("export", "no");
+                    $(this).children('i').removeClass();
+                    $(this).children('i').addClass('icony-red');
+                    $(this).children('i').addClass('icony0709');
+                } else {
+                    $(this).parent().attr("export", "yes");
+                    $(this).children('i').removeClass();
+                    $(this).children('i').addClass('icony-44');
+                    $(this).children('i').addClass('icony0510');
+                }
+            });
+            tr.append(tmp);
+            tmp = $("<td></td>");
+            tmp.css("text-align", "center");
+            tmp.append($("<i class='icony-44 icony0713'></i>").css("cursor", "pointer").click(function(event) {
+                //console.info($(this).parent().parent().prev().length);
+                var prev = $(this).parent().parent().prev();
+                if (prev.length < 1) return;
+                $(this).parent().parent().after(prev);
+            }));
+            tmp.append($("<i class='icony-44 icony0513'></i>").css("cursor", "pointer").click(function(event) {
+                //console.info($(this).parent().parent().next());
+                var next = $(this).parent().parent().next();
+                if (next.length < 1) return;
+                $(this).parent().parent().before(next);
+            }));
+            tr.append(tmp);
+            table.append(tr);
+        }
 
+        $("body").children(".hyl-bokeh").addClass("hyl-show");
+        $(".wrap1 .week-report-export").show();
+    });
+
+    $(".wrap1 .week-report-table .head .exitbtn").click(function(event) {
+        $("body").children(".hyl-bokeh").removeClass('hyl-show');
+        $(".wrap1 .week-report-table").hide();
+    });
+
+    $(".wrap1 .week-report-export .head .exit").click(function(event) {
+        $("body").children(".hyl-bokeh").removeClass('hyl-show');
+        $(".wrap1 .week-report-export").hide();
+    });
+
+    $(".wrap1 .week-report-export .export").click(function(event) {
+        var trs = $(".wrap1 .week-report-export tbody tr[export='yes']");
+        var i=0;
+        var colums = "";
+        var shead = ""; 
+        for(i=0; i<trs.length; i++) {
+            var cls = $(trs[i]).attr("class");
+            var cname = $($(trs[i]).children()[0]).text();
+            shead += "<th>"+cname+"</th>";
+            colums += MySQLSpecialFieldProcess(cls)+",";
+        }
+        shead = "<tr>" + shead + "</tr>";
+        colums = colums.substring(0, colums.length-1);
+
+        var sql = "SELECT " + colums + " FROM week_report "+WEEK_REPORT_QUERY_CONDITION;
         var param = {};
         param['method'] = "SELECT";
         param['SQL'] = sql;
@@ -409,42 +484,15 @@ function WeekReportEvent() {
                 return;
             }
             var data = d.data;
-            var shead = "";
             var sbody = "";
-
-            shead += "<th>#</th>";
-            shead += "<th>供应商</th>";
-            shead += "<th>优先级</th>";
-            shead += "<th>系统</th>";
-            shead += "<th>项目类别</th>";
-            shead += "<th>项目</th>";
-            shead += "<th>项目进度</th>";
-            shead += "<th>上周完成工作</th>";
-            shead += "<th>本周完成工作</th>";
-            shead += "<th>供应商后续工作</th>";
-            shead += "<th>是否提供项目周报</th>";
-            shead += "<th>供应商反馈</th>";
-            shead += "<th>供应商项目负责人</th>";
-            shead += "<th>开始时间</th>";
-            shead += "<th>结束时间</th>";
-            shead += "<th>风险点</th>";
-            shead += "<th>负责人</th>";
-            shead += "<th>工作量（人/周）</th>";
-            shead += "<th>小组</th>";
-            shead += "<th>标签</th>";
-            shead += "<th>设计文档</th>";
-            shead += "<th>设计评审时间</th>";
-            shead += "<th>业务主管部门</th>";
-            shead += "<th>设计评审时间和状态</th>";
-            shead += "<th>备注</th>";
-            shead = "<tr>" + shead + "</tr>";
             var i=0;
             var j=0;
+
             for (i=0; i<data.length; i++) {
                 var row = data[i];
                 var trow = "";
                 for(j=0; j<row.length; j++) {
-                    trow += "<td>" + row[j] + "</td>";
+                    trow += "<td>" + (row[j]+"").replace(/\n/g, "<br style='mso-data-placement:same-cell;'/>") + "</td>";
                 }
                 sbody += "<tr>" + trow + "</tr>";
             }
@@ -455,11 +503,6 @@ function WeekReportEvent() {
                 tableToExcel(html);
             }
         });
-    });
-
-    $(".wrap1 .week-report-table .head .exitbtn").click(function(event) {
-        $("body").children(".hyl-bokeh").removeClass('hyl-show');
-        $(".wrap1 .week-report-table").hide();
     });
 
     $(".wrap1 .week-report-table .foot .commit").click(function(event) {
