@@ -13,6 +13,7 @@ function CalendarInit() {
     var month = getCurrentMonth();
     var nowDay = getCurrentDay();
 
+    $(".calendar .calendar-wrap .calendar-top .calm").text(year+"年"+month+"月");
     CalendarInitSidebar();
     CalendarInitMonthTable( year, month );
     CalendarAddEvent( );

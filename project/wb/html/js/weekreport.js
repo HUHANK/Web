@@ -46,6 +46,10 @@ TABLE_CONF.columns = [
     {name: '备注',                field: 'NOTE',                      width: '100', align: 'center'}
 ];
 function WeekReportInit() {
+    if (g_CURRENT_USER_IS_ADMIN == 0) {
+        $(".week-report .query-opt button.add").css("display", "none");
+        $(".week-report .query-opt button.delete").css("display", "none");
+    }
     /*初始化表头*/
     var tr = $("<tr></tr>");
     var i=0; 
