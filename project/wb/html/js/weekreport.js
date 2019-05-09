@@ -36,7 +36,7 @@ TABLE_CONF.columns = [
     {name: '结束时间',            field: 'END_DATE',                 sel_field: "END_DATE",               width: '70', align: 'center'},
     {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '100', align: 'center'},
     {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
-    {name: '工作量（人/周）',     field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'},
+    {name: '工作量(人/周)',     field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'},
     {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
     {name: '标签',                field: 'NEED_TRACK',               sel_field: "NEED_TRACK",             width: '60', align: 'center'},
     {name: '设计文档',            field: 'DETAIL_DESIGN_DOC',        sel_field: "DETAIL_DESIGN_DOC",      width: '100', align: 'center'},

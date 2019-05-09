@@ -14,7 +14,7 @@ function main() {
 	GInit();
 	var index = $.cookie(NavbarIndexCookies);
 	if (index == 'null' || typeof(index) == 'undefined') 
-		index = 1;
+		index = 6;
 	initNavbar(index);
 	navbar();
 
