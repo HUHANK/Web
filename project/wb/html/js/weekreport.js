@@ -19,37 +19,49 @@ function WeekReportMain() {
 
 var TABLE_CONF = {};
 TABLE_CONF.columns = [
-    {name: '#',                  field: 'ID',                        width: '40', align: 'center'},
-    {name: '供应商',              field: 'SUPPLIER',                   width: '100', align: 'center'},
-    {name: '优先级',              field: 'PRIORITY',                   width: '40', align: 'center'},
-    {name: '系统',                field: 'SYSTEM',                    width: '100', align: 'center'},
-    {name: '项目类别',            field: 'ITEM_TYPE',                   width: '100', align: 'center'},
-    {name: '项目',                field: 'ITEM',                      width: '100', align: 'center'},
-    {name: '项目进度',            field: 'ITEM_PROGRESS',               width: '60', align: 'center'},
-    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',            width: '180', align: 'center'},
-    {name: '本周完成工作',        field: 'THIS_WEEK_WORK',            width: '180', align: 'center'},
-    {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',     width: '100', align: 'center'},
-    {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',    width: '60', align: 'center'},
-    {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',          width: '100', align: 'center'},
-    {name: '供应商项目负责人',    field: 'SUPPLIER_ITEM_CHARGE',        width: '60', align: 'center'},
-    {name: '开始时间',            field: 'START_DATE',                  width: '70', align: 'center'},
-    {name: '结束时间',            field: 'END_DATE',                    width: '70', align: 'center'},
-    {name: '风险点',              field: 'RISK_POINT',                 width: '100', align: 'center'},
-    {name: '负责人',              field: 'ITEM_CHARGE',                width: '50', align: 'center'},
-    {name: '工作量（人/周）',     field: 'WORKLOAD',                   width: '60', align: 'center'},
-    {name: '小组',                field: 'GROUP',                     width: '60', align: 'center'},
-    {name: '标签',                field: 'NEED_TRACK',                  width: '60', align: 'center'},
-    {name: '设计文档',            field: 'DETAIL_DESIGN_DOC',           width: '100', align: 'center'},
-    {name: '设计评审时间',        field: 'DESIGN_REVIEW_DATE',          width: '80', align: 'center'},
-    {name: '业务主管部门',        field: 'BUSINESS_DEPART',             width: '80', align: 'center'},
-    {name: '设计评审时间和状态',   field: 'DESIGN_REVIEW_STATUS',       width: '100', align: 'center'},
-    {name: '备注',                field: 'NOTE',                      width: '100', align: 'center'}
+    {name: '#',                  field: 'ID',                       sel_field: "ID",                     width: '40', align: 'center'},
+    {name: '供应商',              field: 'SUPPLIER',                 sel_field: "SUPPLIER",              width: '100', align: 'center'},
+    {name: '优先级',              field: 'PRIORITY',                 sel_field: "PRIORITY",              width: '40', align: 'center'},
+    {name: '系统',                field: 'SYSTEM',                  sel_field: "SYSTEM",                 width: '100', align: 'center'},
+    {name: '项目类别',            field: 'ITEM_TYPE',                sel_field: "ITEM_TYPE",             width: '100', align: 'center'},
+    {name: '项目',                field: 'ITEM',                    sel_field: "ITEM",                   width: '100', align: 'center'},
+    {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '60', align: 'center'},
+    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '180', align: 'center'},
+    {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '180', align: 'center'},
+    {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',   sel_field: "SUPPLIER_FOLLOWUP_WORK", width: '100', align: 'center'},
+    {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',  sel_field: "PROVIDE_ITEM_WEEK_REPORT",width: '60', align: 'center'},
+    {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',        sel_field: "SUPPLIER_FEEDBACK",       width: '100', align: 'center'},
+    {name: '供应商项目负责人',    field: 'SUPPLIER_ITEM_CHARGE',      sel_field: "SUPPLIER_ITEM_CHARGE",   width: '60', align: 'center'},
+    {name: '开始时间',            field: 'START_DATE',               sel_field: "START_DATE",             width: '70', align: 'center'},
+    {name: '结束时间',            field: 'END_DATE',                 sel_field: "END_DATE",               width: '70', align: 'center'},
+    {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '100', align: 'center'},
+    {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
+    {name: '工作量（人/周）',     field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'},
+    {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
+    {name: '标签',                field: 'NEED_TRACK',               sel_field: "NEED_TRACK",             width: '60', align: 'center'},
+    {name: '设计文档',            field: 'DETAIL_DESIGN_DOC',        sel_field: "DETAIL_DESIGN_DOC",      width: '100', align: 'center'},
+    {name: '设计评审时间',        field: 'DESIGN_REVIEW_DATE',       sel_field: "DESIGN_REVIEW_DATE",      width: '80', align: 'center'},
+    {name: '业务主管部门',        field: 'BUSINESS_DEPART',          sel_field: "BUSINESS_DEPART",         width: '80', align: 'center'},
+    {name: '设计评审时间和状态',   field: 'DESIGN_REVIEW_STATUS',     sel_field: "DESIGN_REVIEW_STATUS",    width: '100', align: 'center'},
+    {name: '更新日期',     field: 'UPT_DATE', sel_field: "date_format(UPT_DATE, '%Y-%m-%d')",               width: '70', align: 'center'},
+    {name: '备注',                field: 'NOTE',                     sel_field: "NOTE",                    width: '100', align: 'center'}
 ];
-function WeekReportInit() {
-    if (g_CURRENT_USER_IS_ADMIN == 0) {
-        $(".week-report .query-opt button.add").css("display", "none");
-        $(".week-report .query-opt button.delete").css("display", "none");
+
+function getTableConfObjectByField(field) {
+    var i=0;
+    for(i=0; i<TABLE_CONF.columns.length; i++) {
+        if (field == TABLE_CONF.columns[i].field) {
+            return TABLE_CONF.columns[i];
+        }
     }
+    return '';
+}
+
+function WeekReportInit() {
+    // if (g_CURRENT_USER_IS_ADMIN == 0) {
+    //     $(".week-report .query-opt button.add").css("display", "none");
+    //     $(".week-report .query-opt button.delete").css("display", "none");
+    // }
     /*初始化表头*/
     var tr = $("<tr></tr>");
     var i=0; 
@@ -72,12 +84,58 @@ function WeekReportInit() {
     parent.find(".NEED_TRACK").val('');
     WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') ";
     WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+
+    $(".wrap1 .week-report-table .body .field_START_DATE").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
+    $(".wrap1 .week-report-table .body .field_END_DATE").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
+    $(".wrap1 .week-report-table .body .field_DESIGN_REVIEW_DATE").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
+    // $(".wrap1 .week-report-table .body .field_PRIORITY").selectmenu();
+
+    var j=0;
+    $(".wrap1 .week-report-table .body .field_GROUP").html("");
+    $(".wrap1 .week-report-table .body .field_ITEM_CHARGE").html("");
+    for(i=0; i<g_ALL_GROUP.length; i++) {
+        if (g_ALL_GROUP[i].depart_id != 1) continue;
+        var opt = $("<option></option>").text(g_ALL_GROUP[i].name);
+        $(".wrap1 .week-report-table .body .field_GROUP").append(opt);
+        var optgroup = $("<optgroup></optgroup>").attr("label", g_ALL_GROUP[i].name);
+        for(j=0; j<g_ALL_USER.length; j++) {
+            if (g_ALL_USER[j].group_id == g_ALL_GROUP[i].id) {
+                optgroup.append($("<option></option>").text(g_ALL_USER[j].cname));
+            }
+        }
+        $(".wrap1 .week-report-table .body .field_ITEM_CHARGE").append(optgroup);
+    }
 }
 
 function WeekReportGetValue(cls) {
     var clas = ".week-report-table .body .field_"+cls;
     var tagName = $(clas)[0].tagName;
     if (tagName == "INPUT" || tagName == "TEXTAREA" || tagName == 'SELECT') {
+        if ($(clas).val() == null) return '';
         return ($(clas).val());
     } else {
         return '';
@@ -91,6 +149,8 @@ function WeekReportScroll() {
 }
 
 function WeekReportEvent() {
+    
+
     $(".body .week-report .query-form").click(function(event) {
         if (WEEK_REPORT_DROP_BOX_CLASS_ID.length > 0) {
             $("#"+WEEK_REPORT_DROP_BOX_CLASS_ID).remove();
@@ -233,11 +293,13 @@ function WeekReportEvent() {
         $(".wrap1 .week-report-table .body .foot button.commit").attr("value", "update");
         $(".wrap1 .week-report-table .body .foot button.commit").attr("row-id", id);
 
-        var sql = "SELECT ID,SUPPLIER,PRIORITY,SYSTEM,ITEM_TYPE,ITEM,ITEM_PROGRESS,LAST_WEEK_WORK, \
-                    THIS_WEEK_WORK,SUPPLIER_FOLLOWUP_WORK,PROVIDE_ITEM_WEEK_REPORT,SUPPLIER_FEEDBACK,\
-                    SUPPLIER_ITEM_CHARGE,START_DATE,END_DATE,RISK_POINT,ITEM_CHARGE,WORKLOAD,\
-                    `GROUP`,NEED_TRACK,DETAIL_DESIGN_DOC,DESIGN_REVIEW_DATE,BUSINESS_DEPART,\
-                    DESIGN_REVIEW_STATUS,NOTE FROM week_report WHERE ID="+id;
+        var i=0;
+        var columns = TABLE_CONF.columns;
+        var sql = "SELECT ";
+        for(i=0; i<columns.length; i++) {
+            sql += columns[i].sel_field+",";
+        }
+        sql = sql.substring(0, sql.length-1)+" FROM week_report WHERE ID=" + id;
         var param = {};
         param['method'] = "SELECT";
         param["SQL"] = sql;
@@ -252,6 +314,7 @@ function WeekReportEvent() {
             var i=0;
             var etable = $(".wrap1 .week-report-table .body table");
             for (i=1; i<cols.length; i++) {
+                if ("UPT_DATE".indexOf(cols[i].field) != -1 ) continue;
                 var cls = ".field_"+cols[i].field;
                 etable.find(cls).val("");
                 etable.find(cls).val(row[i]);
@@ -473,7 +536,7 @@ function WeekReportEvent() {
             var cls = $(trs[i]).attr("class");
             var cname = $($(trs[i]).children()[0]).text();
             shead += "<th>"+cname+"</th>";
-            colums += MySQLSpecialFieldProcess(cls)+",";
+            colums += getTableConfObjectByField(cls).sel_field+",";
         }
         shead = "<tr>" + shead + "</tr>";
         colums = colums.substring(0, colums.length-1);
@@ -520,7 +583,7 @@ function WeekReportEvent() {
         if (mode == 'add') {
             for(i=0; i<columns.length; i++) {
                 var field = columns[i].field;
-                if (field == 'ID') continue;
+                if ("UPT_DATE,ID".indexOf(field) != -1) continue;
                 sql_fields += MySQLSpecialFieldProcess(field)+","
                 sql_values += "'"+WeekReportGetValue(field)+"',";
             }
@@ -536,11 +599,13 @@ function WeekReportEvent() {
             sql = "UPDATE week_report SET ";
             for(i=1; i<columns.length; i++) {
                 var field = columns[i].field;
+                if ("UPT_DATE,ID".indexOf(field) != -1) continue;
                 sql = sql + MySQLSpecialFieldProcess(field) + "='"+WeekReportGetValue(field)+"', ";
             }
-            sql = sql.substr(0, sql.length - 2) + " WHERE ID="+id;
+            sql += "UPT_USER='"+g_CURRENT_USER+"',UPT_DATE= CURRENT_TIMESTAMP ";
+            sql = sql + " WHERE ID="+id;
         }
-
+        
         var param = {};
         param['method'] = "INSERT";
         param['SQL'] = sql;
@@ -588,11 +653,18 @@ function WeekReportEvent() {
 }
 
 function WeekReportQueryTable(offset, rows) {
-    sql = "SELECT ID,SUPPLIER,PRIORITY,SYSTEM,ITEM_TYPE,ITEM,ITEM_PROGRESS,LAST_WEEK_WORK, \
-            THIS_WEEK_WORK,SUPPLIER_FOLLOWUP_WORK,PROVIDE_ITEM_WEEK_REPORT,SUPPLIER_FEEDBACK,\
-            SUPPLIER_ITEM_CHARGE,START_DATE,END_DATE,RISK_POINT,ITEM_CHARGE,WORKLOAD,\
-            `GROUP`,NEED_TRACK,DETAIL_DESIGN_DOC,DESIGN_REVIEW_DATE,BUSINESS_DEPART,\
-            DESIGN_REVIEW_STATUS,NOTE FROM week_report ";
+    var i=0;
+    var columns = TABLE_CONF.columns;
+    var sql = "SELECT ";
+    for(i=0; i<columns.length; i++) {
+        sql += columns[i].sel_field+",";
+    }
+    sql = sql.substring(0, sql.length-1)+" FROM week_report "
+    // sql = "SELECT ID,SUPPLIER,PRIORITY,SYSTEM,ITEM_TYPE,ITEM,ITEM_PROGRESS,LAST_WEEK_WORK, \
+    //         THIS_WEEK_WORK,SUPPLIER_FOLLOWUP_WORK,PROVIDE_ITEM_WEEK_REPORT,SUPPLIER_FEEDBACK,\
+    //         SUPPLIER_ITEM_CHARGE,START_DATE,END_DATE,RISK_POINT,ITEM_CHARGE,WORKLOAD,\
+    //         `GROUP`,NEED_TRACK,DETAIL_DESIGN_DOC,DESIGN_REVIEW_DATE,BUSINESS_DEPART,\
+    //         DESIGN_REVIEW_STATUS,NOTE FROM week_report ";
 
     sql = sql + WEEK_REPORT_QUERY_CONDITION;
     sql = sql + " limit "+offset+", "+rows;

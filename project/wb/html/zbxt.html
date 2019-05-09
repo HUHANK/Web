@@ -10,29 +10,31 @@
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />	
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="js/jquery.base64.js"></script>
 	<script type="text/javascript" src="js/jquery.charfirst.pinyin.js"></script>
 	<script type="text/javascript" src="plug-in/jedate/jedate.min.js"></script>
 	<script type="text/javascript" src="plug-in/jeui/js/modules/jeui.js"></script>
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.2.6"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.2.6"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.2.6"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.2.6"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.2.6"></script>
-	<script type="text/javascript" src="js/support.js?version=2.2.6"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.2.6"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.2.6"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.2.6"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.2.6">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.2.6">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.2.6">
+	<script type="text/javascript" src="js/ginit.js?version=2.3.1"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.3.1"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.3.1"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.3.1"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.3.1"></script>
+	<script type="text/javascript" src="js/support.js?version=2.3.1"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.3.1"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.3.1"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.3.1"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.3.1">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.3.1">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.3.1">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.2.6">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.2.6">
-	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.2.6">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.3.1">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.3.1">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.3.1">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -82,10 +84,10 @@
 			<div class="navbar">
 				<ul>
 					<!--<li value="HomePage">首页</li>-->
-					<li value="WZB"		>写周报	</li>
+					<!--<li value="WZB"		>写周报	</li>
 					<li value="Query"	>查询	</li>
-					<li value="Support"	>Support包</li>
-					<li value="week-report">项目周报</li>
+					<li value="Support"	>Support包</li>-->
+					<li value="week-report">周报</li>
 					<li value="Calendar">日历	</li>
 					<li value="SZWH"	>设置	</li>
 				</ul>
@@ -886,7 +888,7 @@
 
 		<div class="week-report-table">
 			<div class="head">
-				<label>项目周报编辑</label>
+				<label>周报编辑</label>
 				<span class="exitbtn"><i class="icono-cross"></i></span>
 			</div>
 			<div class="body">
@@ -898,17 +900,18 @@
 						<td><label>项目类别</label></td><td><input class="field_ITEM_TYPE" type="text" name=""></td>
 					</tr>
 					<tr>
-						<td><label>优先级</label></td><td><input class="field_PRIORITY" type="text" name=""></td>
+						<!--<td><label>优先级</label></td><td><input class="field_PRIORITY" type="text" name=""></td>-->
+						<td><label>优先级</label></td><td><select class="field_PRIORITY"><option>高</option><option selected="selected">中</option><option>低</option></select></td>
 					</tr>
 					<tr>
-						<td><label>小组</label></td><td><input class="field_GROUP" type="text" name=""></td>
-						<td><label>负责人</label></td><td><input class="field_ITEM_CHARGE" type="text" name=""></td>
-						<td><label>开始时间</label></td><td><input class="field_START_DATE" type="date" name=""></td>
-						<td><label>结束时间</label></td><td><input class="field_END_DATE" type="date" name=""></td>
+						<td><label>小组</label></td><td><select class="field_GROUP"></select></td>
+						<td><label>负责人</label></td><td><select class="field_ITEM_CHARGE"></select></td>
+						<td><label>开始时间</label></td><td><input class="field_START_DATE" type="text" name="" readonly></td>
+						<td><label>结束时间</label></td><td><input class="field_END_DATE" type="text" name="" readonly></td>
 					</tr>
 					<tr>
 						<td><label>项目进度</label></td><td><input class="field_ITEM_PROGRESS" type="number" name=""></td>
-						<td><label>工作量</label></td><td><input class="field_WORKLOAD" type="text" name=""></td>
+						<td><label>工作量</label></td><td><input class="field_WORKLOAD" type="text" name="" title="周工作人日"></td>
 						<td><label>风险点</label></td><td colspan="3"><textarea class="field_RISK_POINT" ></textarea></td>
 					</tr>
 					<tr>
@@ -917,7 +920,7 @@
 					</tr>
 					<tr>
 						<td><label>供应商项目负责人</label></td><td><input class="field_SUPPLIER_ITEM_CHARGE" type="text" name=""></td>
-						<td><label>是否提供项目周报</label></td><td><input class="field_PROVIDE_ITEM_WEEK_REPORT" type="text" name=""></td>
+						<td><label>是否提供项目周报</label></td><td><select class="field_PROVIDE_ITEM_WEEK_REPORT"><option>是</option><option>否</option></select></td>
 						<td><label>供应商反馈</label></td><td colspan="3"><textarea class="field_SUPPLIER_FEEDBACK" ></textarea></td>
 					</tr>
 					<tr>
@@ -926,7 +929,7 @@
 					<tr>
 						<td><label>标签</label></td><td><input class="field_NEED_TRACK" type="text" name=""></td>
 						<td><label>设计文档</label></td><td><input class="field_DETAIL_DESIGN_DOC" type="text" name=""></td>
-						<td><label>设计评审时间</label></td><td><input class="field_DESIGN_REVIEW_DATE" type="date" name=""></td>
+						<td><label>设计评审时间</label></td><td><input class="field_DESIGN_REVIEW_DATE" type="text" name="" readonly></td>
 						<td><label>业务主管部门</label></td><td><input class="field_BUSINESS_DEPART" type="text" name=""></td>
 					</tr>
 					<tr>

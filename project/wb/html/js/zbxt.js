@@ -67,6 +67,8 @@ function main() {
 	$(document).scroll(function(event) {
     	OnScroll(event);
     });
+
+    $( document ).tooltip();
 }
 
 function OnScroll( event ) {

@@ -137,7 +137,7 @@
     left: 50%;
     margin: -350px 0 0 -500px;
     font-size: 0.9em;
-    z-index: 1001;
+    z-index: 31;
     display: none;
 
     .head{
@@ -179,6 +179,25 @@
             }
 
             input{
+                background:none;  
+                outline:none;  
+                border:none;
+
+                border: 1px solid #D9D9D9;
+                width: 100%;
+                height: 30px;
+                border-radius: 4px;
+                padding-left: 1px;
+
+                &:focus{
+                    border: 1px solid #4BB2FD;
+                    box-shadow: 0 0 3px #4BB2FD;
+                    background-color: #FFFCD5;
+                    transition: all 0.3s;
+                }
+            }
+
+            select{
                 background:none;  
                 outline:none;  
                 border:none;
