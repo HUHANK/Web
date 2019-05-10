@@ -112,8 +112,6 @@ function WeekReportInit() {
         dateFormat: "yy-mm-dd"
     });
 
-    // $(".wrap1 .week-report-table .body .field_PRIORITY").selectmenu();
-
     var j=0;
     $(".wrap1 .week-report-table .body .field_GROUP").html("");
     $(".wrap1 .week-report-table .body .field_ITEM_CHARGE").html("");
@@ -145,17 +143,19 @@ function WeekReportGetValue(cls) {
 function WeekReportScroll() {
     if (WEEK_REPORT_DROP_BOX_CLASS_ID.length > 0) {
         $("#"+WEEK_REPORT_DROP_BOX_CLASS_ID).remove();
+        WEEK_REPORT_DROP_BOX_CLASS_ID = '';
     }
 }
 
 function WeekReportEvent() {
-    
-
-    $(".body .week-report .query-form").click(function(event) {
+    /*周报页面被点击时事件*/
+    $(".body .week-report").click(function(event) {
         if (WEEK_REPORT_DROP_BOX_CLASS_ID.length > 0) {
             $("#"+WEEK_REPORT_DROP_BOX_CLASS_ID).remove();
+            WEEK_REPORT_DROP_BOX_CLASS_ID = '';
         }
-    });
+    });    
+
     $(".body .week-report .query-form fieldset .container .cell .input input").click(function(event) {
         event.stopPropagation();//阻止事件冒泡即可
         if ($(this).attr("selected")) return;
@@ -163,6 +163,7 @@ function WeekReportEvent() {
         $(this).attr('selected',true);
         if (WEEK_REPORT_DROP_BOX_CLASS_ID.length > 0) {
             $("#"+WEEK_REPORT_DROP_BOX_CLASS_ID).remove();
+            WEEK_REPORT_DROP_BOX_CLASS_ID='';
         }
         var y = $(this).offset().top;
         var x = $(this).offset().left;

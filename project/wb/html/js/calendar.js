@@ -17,6 +17,15 @@ function CalendarInit() {
     CalendarInitSidebar();
     CalendarInitMonthTable( year, month );
     CalendarAddEvent( );
+
+    $(".wrap1 .calendar-add-schedule .body .start-date,.end-date").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
 }
 
 function CalendarClearMonthTable() {
@@ -199,7 +208,8 @@ function CalendarAddEvent() {
 
         var dd = $("<dd></dd>").addClass('temp').text("新建日程 ...").click(function(event) {
             $(".wrap1 .calendar-add-schedule .head .title").text("添加日程");
-            $(".wrap1 .calendar-add-schedule .foot .delete,.update").css("display", "none");
+            $(".wrap1 .calendar-add-schedule .foot .delete").css("display", "none");
+            $(".wrap1 .calendar-add-schedule .foot .update").css("display", "none");
             $(".wrap1 .calendar-add-schedule .foot .save").css("display", "inline-block");
             var sy = $(this).parent().offset().top;
             var sx = $(this).parent().offset().left;
