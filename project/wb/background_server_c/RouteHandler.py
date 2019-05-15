@@ -1623,7 +1623,7 @@ def ExecNativeSQL(data):
         ret['data'] = db.select3(sql)
         if ret['data'] is None:
             return ErrorDeal(ret, "查询失败!")
-    elif method == "INSERT" or method == "UPDATE":
+    elif method == "INSERT" or method == "UPDATE" or method == "DELETE":
         if db.update(sql) is False:
             return ErrorDeal(ret, "数据库更新失败!")
 
