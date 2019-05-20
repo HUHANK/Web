@@ -5,7 +5,6 @@ var WEEK_REPORT_PAGE_NUM = 0;
 var WEEK_REPORT_TOTAL_PAGE_NUM = 0;
 var WEEK_REPORT_QUERY_TOTAL_COUNT = 0;
 
-var WEEK_REPORT_DROP_BOX_CLASS_ID='';
 var WEEK_REPORT_QUERY_CONDITION='';
 
 /*Main函数*/
@@ -15,28 +14,31 @@ function WeekReportMain() {
         WeekReportEvent();
         WEEK_REPORT_EVENT_INIT = true;
     }
+    WeekReportWinResize();
 }
 
 var TABLE_CONF = {};
 TABLE_CONF.columns = [
-    {name: '#',                  field: 'ID',                       sel_field: "ID",                     width: '40', align: 'center'},
-    {name: '供应商',              field: 'SUPPLIER',                 sel_field: "SUPPLIER",              width: '100', align: 'center'},
+    {name: '#',                  field: 'ID',                       sel_field: "ID",                     width: '30', align: 'center'},
+    {name: '供应商',              field: 'SUPPLIER',                 sel_field: "SUPPLIER",              width: '50', align: 'center'},
     {name: '优先级',              field: 'PRIORITY',                 sel_field: "PRIORITY",              width: '40', align: 'center'},
-    {name: '系统',                field: 'SYSTEM',                  sel_field: "SYSTEM",                 width: '100', align: 'center'},
-    {name: '项目类别',            field: 'ITEM_TYPE',                sel_field: "ITEM_TYPE",             width: '100', align: 'center'},
-    {name: '项目',                field: 'ITEM',                    sel_field: "ITEM",                   width: '100', align: 'center'},
-    {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '60', align: 'center'},
-    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '180', align: 'center'},
-    {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '180', align: 'center'},
+    {name: '系统',                field: 'SYSTEM',                  sel_field: "SYSTEM",                 width: '80', align: 'center'},
+    {name: '项目类别',            field: 'ITEM_TYPE',                sel_field: "ITEM_TYPE",             width: '50', align: 'center'},
+    {name: '项目',                field: 'ITEM',                    sel_field: "ITEM",                   width: '80', align: 'center'},
+    {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '50', align: 'center'},
+    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '220', align: 'center'},
+    {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '220', align: 'center'},
+    {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '180', align: 'center'},
+    {name: '例会反馈',            field: 'MEET_FEEDBACK',            sel_field: "MEET_FEEDBACK",          width: '100', align: 'center'},
+    {name: 'JIRA号',             field: 'JIRA_NOS',                 sel_field: "JIRA_NOS",               width: '100', align: 'center'},
     {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',   sel_field: "SUPPLIER_FOLLOWUP_WORK", width: '100', align: 'center'},
     {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',  sel_field: "PROVIDE_ITEM_WEEK_REPORT",width: '60', align: 'center'},
     {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',        sel_field: "SUPPLIER_FEEDBACK",       width: '100', align: 'center'},
     {name: '供应商项目负责人',    field: 'SUPPLIER_ITEM_CHARGE',      sel_field: "SUPPLIER_ITEM_CHARGE",   width: '60', align: 'center'},
     {name: '开始时间',            field: 'START_DATE',               sel_field: "START_DATE",             width: '70', align: 'center'},
     {name: '结束时间',            field: 'END_DATE',                 sel_field: "END_DATE",               width: '70', align: 'center'},
-    {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '100', align: 'center'},
     {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
-    {name: '工作量(人/周)',     field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'},
+    {name: '工作量(人/周)',       field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'},
     {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
     {name: '标签',                field: 'NEED_TRACK',               sel_field: "NEED_TRACK",             width: '60', align: 'center'},
     {name: '设计文档',            field: 'DETAIL_DESIGN_DOC',        sel_field: "DETAIL_DESIGN_DOC",      width: '100', align: 'center'},
@@ -57,6 +59,23 @@ function getTableConfObjectByField(field) {
     return '';
 }
 
+function WeekReportWinResize() {
+    wheight = $(window).height();
+    var h = wheight - $("body .wrapper-top").height() - 
+        $(".body .week-report .query-form").height() - $(".body .week-report .query-opt").height() - 
+        $(".body .week-report .query-foot").height()-$(".body .week-report .query-result thead").height()-
+        getScrollWidth()-6;
+    // console.info(wheight);
+    // console.info($("body .wrapper-top").height());
+    // console.info($(".body .week-report .query-form").height());
+    // console.info($(".body .week-report .query-opt").height());
+    // console.info($(".body .week-report .query-foot").height());
+    // console.info($(".body .week-report .query-result thead").height());
+    // console.info(getScrollWidth());
+    // console.info(h);
+    $(".body .week-report .query-result tbody").css("max-height", h+"px");
+}
+
 function WeekReportInit() {
     // if (g_CURRENT_USER_IS_ADMIN == 0) {
     //     $(".week-report .query-opt button.add").css("display", "none");
@@ -67,7 +86,7 @@ function WeekReportInit() {
     var i=0; 
     for(i=0; i<TABLE_CONF.columns.length; i++){
         var th = $("<th></th>").text(TABLE_CONF.columns[i].name);
-        th.css("min-width", TABLE_CONF.columns[i].width+"px");
+        th.css("width", TABLE_CONF.columns[i].width+"px");
         tr.append(th);
     }
     $(".week-report .query-result table thead").html(tr);
@@ -141,58 +160,48 @@ function WeekReportGetValue(cls) {
 }
 
 function WeekReportScroll() {
-    if (WEEK_REPORT_DROP_BOX_CLASS_ID.length > 0) {
-        $("#"+WEEK_REPORT_DROP_BOX_CLASS_ID).remove();
-        WEEK_REPORT_DROP_BOX_CLASS_ID = '';
-    }
+    
 }
 
 function WeekReportEvent() {
     /*周报页面被点击时事件*/
-    $(".body .week-report").click(function(event) {
-        if (WEEK_REPORT_DROP_BOX_CLASS_ID.length > 0) {
-            $("#"+WEEK_REPORT_DROP_BOX_CLASS_ID).remove();
-            WEEK_REPORT_DROP_BOX_CLASS_ID = '';
-        }
-    });    
 
-    $(".body .week-report .query-form fieldset .container .cell .input input").click(function(event) {
+    $(".body .week-report .query-form fieldset .container .cell .mult").click(function(event) {
+        var sel = $(this).prev().children();
+        if (typeof sel.attr("multiple") == 'undefined') {
+            sel.attr("multiple", true);
+            sel.css("height", "100px");
+        } else if (sel.attr("multiple") == 'multiple'){
+            sel.attr("multiple", false);
+            sel.css("height", "24px");
+        }
+    });
+
+    $(".body .week-report .query-form fieldset legend span").click(function(event) {
         event.stopPropagation();//阻止事件冒泡即可
-        if ($(this).attr("selected")) return;
-        $(".body .week-report .query-form fieldset .container .cell .input input").attr('selected',false);
-        $(this).attr('selected',true);
-        if (WEEK_REPORT_DROP_BOX_CLASS_ID.length > 0) {
-            $("#"+WEEK_REPORT_DROP_BOX_CLASS_ID).remove();
-            WEEK_REPORT_DROP_BOX_CLASS_ID='';
+        var icon = $(this).prev("i");
+        var bSelectData = false;
+        if (icon.hasClass('icony02')) {
+            icon.removeClass('icony02');
+            icon.addClass('icony04');
+            bSelectData = true;
+        } else {
+            icon.removeClass('icony04');
+            icon.addClass('icony02');
+            bSelectData = false;
         }
-        var y = $(this).offset().top;
-        var x = $(this).offset().left;
-        var height = $(this).height();
-        var width = $(this).width();
-        WEEK_REPORT_DROP_BOX_CLASS_ID = UUID(10);
+        $(this).parent().next().slideToggle(400);
 
-        var div = $("<div></div>").attr("id", WEEK_REPORT_DROP_BOX_CLASS_ID);
-        div.css({
-            'width': (width+3)+'px',
-            'max-height': '180px',
-            'background-color': 'white',
-            'position': 'absolute',
-            'border-radius': '4px',
-            'z-index': '1001',
-            'top': (y+height+3)+'px',
-            'left': x+'px',
-            'display': 'none',
-            'overflow': 'auto',
-            'font-size': '12px',
-            'border': '1px solid #4BB2FD',
-            'box-shadow': '0 0 6px #4BB2FD',
-            'cursor': 'pointer'
+        if (bSelectData == false) return;
+
+        var sql = "";
+        $(".body .week-report .query-form fieldset .container .cell .input select").each(function(index, el) {
+            var sel = $(this);
+            var field = $(this).attr("class");
+            sql += " SELECT '"+field+"'," + MySQLSpecialFieldProcess(field) + " FROM week_report GROUP BY "+MySQLSpecialFieldProcess(field);
+            sql += " UNION ALL"
         });
-        $("body").append(div);
-
-        var field = $(this).attr("class");
-        var sql = "SELECT DISTINCT "+MySQLSpecialFieldProcess(field)+" FROM week_report";
-
+        sql = sql.substring(0, sql.length-9);
         var param = {};
         param['method'] = "SELECT";
         param["SQL"] = sql;
@@ -203,69 +212,26 @@ function WeekReportEvent() {
             }
             var data = d.data;
             if (data.length < 1) return;
-            var i=0;
-            var sel = $(".body .week-report .query-form fieldset .container .cell .input input[selected='selected']");
-            var value = sel.val();
-            for(i=0; i<data.length; i++) {
-                var fd = $.trim(data[i]);
-                if (fd.length < 1) continue;
-                var dd = $("<div></div>").text(fd);
-                dd.attr("title", fd);
-                dd.css({
-                    'height': '20px',
-                    'line-height': '20px',
-                    'overflow': 'hidden',
-                    'padding-left': '5px',
-                    'margin-bottom': '1px'
-                });
-                if (value.indexOf((fd+","))!=-1) {
-                    dd.addClass('selected');
-                    dd.css("background-color","#0074E8");
-                    dd.css("color", "white");
-                }
-                // dd.hover(function() {
-                //     /* Stuff to do when the mouse enters the element */
-                //     $(this).css("background-color","#E4FFE6");
-                // }, function() {
-                //     /* Stuff to do when the mouse leaves the element */
-                //     $(this).css("background-color","transparent");
-                // });
-                div.append(dd);
-                dd.click(function(event) {
-                    /* Act on the event */
-                    var sel = $(".body .week-report .query-form fieldset .container .cell .input input[selected='selected']");
-                    var value = sel.val();
-                    var value1 = $(this).text()+",";
-                    if ($(this).hasClass('selected')) {
-                        $(this).removeClass('selected');
-                        $(this).css("background-color","transparent");
-                        $(this).css("color", "black");
-                        value = value.replace(value1, '');
-                    } else {
-                        $(this).addClass('selected');
-                        $(this).css("background-color","#0074E8");
-                        $(this).css("color", "white");
-                        value += value1;
-                    }
-                    sel.val(value);
-                });
-            }
 
-            div.show(100);
+            $(".body .week-report .query-form fieldset .container .cell .input select").each(function(index, el) {
+                var field = $(this).attr("class");
+                var i=0;
+                $(this).html("");
+                $(this).append($("<option></option>"));
+                for(i=0; i<data.length; i++) {
+                    if (field == data[i][0]) {
+                        var fd = $.trim(data[i][1]);
+                        if (fd.length < 1) continue;
+                        $(this).append($("<option></option>").text(fd));
+                    }
+                }
+            });
         });
     });
 
-    $(".body .week-report .query-form fieldset legend span").click(function(event) {
-        var icon = $(this).prev("i");
-        if (icon.hasClass('icony02')) {
-            icon.removeClass('icony02');
-            icon.addClass('icony04');
-        } else {
-            icon.removeClass('icony04');
-            icon.addClass('icony02');
-        }
-        $(this).parent().next().slideToggle(400);
-    });
+    // $(".body .week-report .query-form fieldset legend span").click(function(event) {
+        
+    // });
 
     $(".body .week-report .query-opt button.add").click(function(event) {
         $("body").children(".hyl-bokeh").addClass("hyl-show");
@@ -345,118 +311,171 @@ function WeekReportEvent() {
 
     $(".body .week-report .query-opt button.queryi").click(function(event) {
         var parent = $(".week-report .query-form .condition .container");
-        var SUPPLIER = parent.find(".SUPPLIER").val();
-        var PRIORITY = parent.find(".PRIORITY").val();
-        var SYSTEM = parent.find(".SYSTEM").val();
-        var ITEM_TYPE = parent.find(".ITEM_TYPE").val();
-        var ITEM = parent.find(".ITEM").val();
-        var ITEM_PROGRESS = parent.find(".ITEM_PROGRESS").val();
-        var GROUP = parent.find(".GROUP").val();
-        var ITEM_CHARGE = parent.find(".ITEM_CHARGE").val();
-        var NEED_TRACK = parent.find(".NEED_TRACK").val();
+        var SUPPLIER = parent.find(".SUPPLIER option:selected");
+        var PRIORITY = parent.find(".PRIORITY option:selected");
+        var SYSTEM = parent.find(".SYSTEM option:selected");
+        var ITEM_TYPE = parent.find(".ITEM_TYPE option:selected");
+        var ITEM = parent.find(".ITEM option:selected");
+        var ITEM_PROGRESS = parent.find(".ITEM_PROGRESS option:selected");
+        var GROUP = parent.find(".GROUP option:selected");
+        var ITEM_CHARGE = parent.find(".ITEM_CHARGE option:selected");
+        var NEED_TRACK = parent.find(".NEED_TRACK option:selected");
         var scondition = "";
 
         var s = SUPPLIER;
         var field = "SUPPLIER";
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
 
         s = PRIORITY;
         field = "PRIORITY";
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
+
         s = SYSTEM;
         field = "SYSTEM";
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
+
         s = ITEM_TYPE;
         field = "ITEM_TYPE";
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
+
         s = ITEM;
         field = "ITEM";
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
+
         s = ITEM_PROGRESS;
         field = "ITEM_PROGRESS";
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
+
         s = GROUP;
         field = "GROUP";
         field = MySQLSpecialFieldProcess(field);
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
+
         s = ITEM_CHARGE;
         field = "ITEM_CHARGE";
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
+
         s = NEED_TRACK;
         field = "NEED_TRACK";
         if (s.length > 0) {
-            if (s[s.length-1] == ',') s = s.substring(0, s.length-1);
-            s = "'"+s.replace(/,/g, "','")+"'";
-            if (scondition.length < 1) {
-                scondition += " WHERE "+field+" IN ("+s+") ";
-            }else {
-                scondition += " AND " + field+" IN ("+s+") ";
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
             }
         }
+
         WEEK_REPORT_QUERY_CONDITION = scondition;
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
@@ -533,8 +552,10 @@ function WeekReportEvent() {
         var i=0;
         var colums = "";
         var shead = ""; 
+        var COLS = [];
         for(i=0; i<trs.length; i++) {
             var cls = $(trs[i]).attr("class");
+            COLS.push(cls);
             var cname = $($(trs[i]).children()[0]).text();
             shead += "<th>"+cname+"</th>";
             colums += getTableConfObjectByField(cls).sel_field+",";
@@ -560,7 +581,11 @@ function WeekReportEvent() {
                 var row = data[i];
                 var trow = "";
                 for(j=0; j<row.length; j++) {
-                    trow += "<td>" + (row[j]+"").replace(/\n/g, "<br style='mso-data-placement:same-cell;'/>") + "</td>";
+                    if ("RISK_POINT,MEET_FEEDBACK".indexOf(COLS[j]) != -1) {
+                        trow += "<td style='color:red;'>" + (row[j]+"").replace(/\n/g, "<br style='mso-data-placement:same-cell;'/>") + "</td>";
+                    } else {
+                        trow += "<td style='color:black;'>" + (row[j]+"").replace(/\n/g, "<br style='mso-data-placement:same-cell;'/>") + "</td>";
+                    }
                 }
                 sbody += "<tr>" + trow + "</tr>";
             }
@@ -661,11 +686,6 @@ function WeekReportQueryTable(offset, rows) {
         sql += columns[i].sel_field+",";
     }
     sql = sql.substring(0, sql.length-1)+" FROM week_report "
-    // sql = "SELECT ID,SUPPLIER,PRIORITY,SYSTEM,ITEM_TYPE,ITEM,ITEM_PROGRESS,LAST_WEEK_WORK, \
-    //         THIS_WEEK_WORK,SUPPLIER_FOLLOWUP_WORK,PROVIDE_ITEM_WEEK_REPORT,SUPPLIER_FEEDBACK,\
-    //         SUPPLIER_ITEM_CHARGE,START_DATE,END_DATE,RISK_POINT,ITEM_CHARGE,WORKLOAD,\
-    //         `GROUP`,NEED_TRACK,DETAIL_DESIGN_DOC,DESIGN_REVIEW_DATE,BUSINESS_DEPART,\
-    //         DESIGN_REVIEW_STATUS,NOTE FROM week_report ";
 
     sql = sql + WEEK_REPORT_QUERY_CONDITION;
     sql = sql + " limit "+offset+", "+rows;
@@ -688,8 +708,13 @@ function WeekReportQueryTable(offset, rows) {
             var row = data[i];
             var tr = $("<tr></tr>").attr("row-id", row[0]+"");
             for (j=0; j<row.length; j++) {
+                var feild1 = columns[j].field;
                 var pre = $("<pre></pre>").text(row[j]);
                 var td = $("<td></td>").append(pre);
+                if ("RISK_POINT,MEET_FEEDBACK".indexOf(feild1) != -1) {
+                    td.css("color", "red");
+                }
+                td.css("width", columns[j].width+"px");
                 tr.append(td);
             }
             tr.click(function(event) {

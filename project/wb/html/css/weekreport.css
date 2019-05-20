@@ -38,28 +38,24 @@
                 .cell{
                     padding: 2px;
                     display: inline-block;
-                    margin-right: 10px;
-                    .label{
+                    margin-right: 80px;
+                    span{
                         display: inline-block;
-                        width: 80px;
                     }
-                    input{
+                    .label{
+                        //display: inline-block;
+                        width: 60px;
+                    }
+                    .input select{
                         background:none;  
                         outline:none;  
                         border:none;
 
                         border: 1px solid #D9D9D9;
-                        width: 100%;
-                        height: 30px;
+                        width: 160px;
+                        height: 24px;
                         border-radius: 4px;
                         padding-left: 1px;
-
-                        &[selected='selected']{
-                            border: 1px solid #4BB2FD;
-                            box-shadow: 0 0 3px #4BB2FD;
-                            background-color: #FFFCD5;
-                            transition: all 0.3s;
-                        }
                     }
                 }
             }
@@ -84,12 +80,24 @@
         table{
             min-width: 3000px;
 
-            th{
-                padding: 1px;
+            thead{
+                display: table;
+                width: 100%;
+                table-layout: fixed;
+                /*width: calc(100% - 1.131em);*/
+                width: calc(100% - 1em);
+                th{
+                    padding: 1px;
+                }
             }
             tbody{
+                display: block;
+                overflow-y: scroll;
                 font-size: 12px;
                 tr{
+                    display: table;
+                    width: 100%;
+                    table-layout: fixed;
                     &:hover{
                         background-color: #FEFFE5;
                     }
@@ -106,7 +114,6 @@
 
     .query-foot{
         line-height: 34px;
-        margin-bottom: 20px;
 
         .page-size{
             color: #0E8BC9;
