@@ -19,24 +19,24 @@ function WeekReportMain() {
 
 var TABLE_CONF = {};
 TABLE_CONF.columns = [
-    {name: '#',                  field: 'ID',                       sel_field: "ID",                     width: '30', align: 'center'},
+    {name: '#',                  field: 'ID',                       sel_field: "ID",                     width: '28', align: 'center'},
     {name: '供应商',              field: 'SUPPLIER',                 sel_field: "SUPPLIER",              width: '50', align: 'center'},
     {name: '优先级',              field: 'PRIORITY',                 sel_field: "PRIORITY",              width: '40', align: 'center'},
     {name: '系统',                field: 'SYSTEM',                  sel_field: "SYSTEM",                 width: '80', align: 'center'},
     {name: '项目类别',            field: 'ITEM_TYPE',                sel_field: "ITEM_TYPE",             width: '50', align: 'center'},
     {name: '项目',                field: 'ITEM',                    sel_field: "ITEM",                   width: '80', align: 'center'},
     {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '50', align: 'center'},
-    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '220', align: 'center'},
-    {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '220', align: 'center'},
-    {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '180', align: 'center'},
-    {name: '例会反馈',            field: 'MEET_FEEDBACK',            sel_field: "MEET_FEEDBACK",          width: '100', align: 'center'},
+    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '320', align: 'left'},
+    {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '320', align: 'left'},
+    {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '280', align: 'left'},
+    {name: '例会反馈',            field: 'MEET_FEEDBACK',            sel_field: "MEET_FEEDBACK",          width: '120', align: 'left'},
     {name: 'JIRA号',             field: 'JIRA_NOS',                 sel_field: "JIRA_NOS",               width: '100', align: 'center'},
-    {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',   sel_field: "SUPPLIER_FOLLOWUP_WORK", width: '100', align: 'center'},
+    {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',   sel_field: "SUPPLIER_FOLLOWUP_WORK", width: '220', align: 'left'},
     {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',  sel_field: "PROVIDE_ITEM_WEEK_REPORT",width: '60', align: 'center'},
-    {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',        sel_field: "SUPPLIER_FEEDBACK",       width: '100', align: 'center'},
+    {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',        sel_field: "SUPPLIER_FEEDBACK",       width: '180', align: 'center'},
     {name: '供应商项目负责人',    field: 'SUPPLIER_ITEM_CHARGE',      sel_field: "SUPPLIER_ITEM_CHARGE",   width: '60', align: 'center'},
-    {name: '开始时间',            field: 'START_DATE',               sel_field: "START_DATE",             width: '70', align: 'center'},
-    {name: '结束时间',            field: 'END_DATE',                 sel_field: "END_DATE",               width: '70', align: 'center'},
+    {name: '开始时间',            field: 'START_DATE',               sel_field: "START_DATE",             width: '80', align: 'center'},
+    {name: '结束时间',            field: 'END_DATE',                 sel_field: "END_DATE",               width: '80', align: 'center'},
     {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
     {name: '工作量(人/周)',       field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'},
     {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
@@ -45,8 +45,8 @@ TABLE_CONF.columns = [
     {name: '设计评审时间',        field: 'DESIGN_REVIEW_DATE',       sel_field: "DESIGN_REVIEW_DATE",      width: '80', align: 'center'},
     {name: '业务主管部门',        field: 'BUSINESS_DEPART',          sel_field: "BUSINESS_DEPART",         width: '80', align: 'center'},
     {name: '设计评审时间和状态',   field: 'DESIGN_REVIEW_STATUS',     sel_field: "DESIGN_REVIEW_STATUS",    width: '100', align: 'center'},
-    {name: '更新日期',     field: 'UPT_DATE', sel_field: "date_format(UPT_DATE, '%Y-%m-%d')",               width: '70', align: 'center'},
-    {name: '备注',                field: 'NOTE',                     sel_field: "NOTE",                    width: '100', align: 'center'}
+    {name: '更新日期',     field: 'UPT_DATE', sel_field: "date_format(UPT_DATE, '%Y-%m-%d')",               width: '80', align: 'center'},
+    {name: '备注',                field: 'NOTE',                     sel_field: "NOTE",                    width: '200', align: 'center'}
 ];
 
 function getTableConfObjectByField(field) {
@@ -86,10 +86,11 @@ function WeekReportInit() {
     var i=0; 
     for(i=0; i<TABLE_CONF.columns.length; i++){
         var th = $("<th></th>").text(TABLE_CONF.columns[i].name);
-        th.css("width", TABLE_CONF.columns[i].width+"px");
+        th.css("width", (TABLE_CONF.columns[i].width)+"px");
         tr.append(th);
     }
     $(".week-report .query-result table thead").html(tr);
+    $(".week-report .query-result table thead").css("width", "calc(100% - "+getScrollWidth()+"px)");
 
     var parent = $(".week-report .query-form .condition .container");
     parent.find(".SUPPLIER").val('');
@@ -710,6 +711,7 @@ function WeekReportQueryTable(offset, rows) {
             for (j=0; j<row.length; j++) {
                 var feild1 = columns[j].field;
                 var pre = $("<pre></pre>").text(row[j]);
+                pre.css("text-align", columns[j].align);
                 var td = $("<td></td>").append(pre);
                 if ("RISK_POINT,MEET_FEEDBACK".indexOf(feild1) != -1) {
                     td.css("color", "red");

@@ -12,7 +12,7 @@ def crontabProcess():
     COUNT = 0
     while True:
         #print "Child thread!",COUNT
-        if COUNT % (3) == 0:
+        if COUNT % (10) == 0:
             TimeedTask1()
         if COUNT % (15) == 0:
             dbConnectionKeepAlive()
@@ -34,20 +34,27 @@ def dbConnectionKeepAlive():
 def TimeedTask1():
     db = Options['mysql']
 
-    sql = "delete FROM calendar where WID > 0"
-    db.update(sql)
+    # sql = "delete FROM calendar where WID > 0"
+    # db.update(sql)
 
     sql = "SELECT ID, ITEM, ITEM_PROGRESS, RISK_POINT, END_DATE FROM week_report WHERE END_DATE != ''"
     data = db.select3(sql)
     for row in data:
-        id = row[0]
+        id = str(row[0])
+        sql = "SELECT COUNT(1) FROM calendar WHERE WID="+id
+        d1 = db.select3(sql)
+        print d1[0][0]
+
         risk = ''
         if len(row[3]) == 0:
-            risk = "ÎÞ·çÏÕ"
+            risk = u"æ— é£Žé™©"
         else:
-            risk = "ÓÐ·çÏÕ"
+            risk = u"æœ‰é£Žé™©"
         detail = row[1]+"["+risk+"]["+row[2]+"%]"
-        sql = "INSERT INTO calendar(WID, DETAIL, START_DATE, END_DATE, TYPE) VALUES("
-        sql += str(id) + ",'" + detail+"','"+row[4]+ "','" + row[4] +"','¸öÈËÈÕÀú')"
-        #print sql
+        if d1[0][0] > 0:
+            sql = "UPDATE calendar SET DETAIL='"+detail+"', START_DATE='" + row[4] + "', END_DATE='" + row[4] + "' WHERE WID="+id;
+        elif d1[0][0] == 0:
+            sql = "INSERT INTO calendar(WID, DETAIL, START_DATE, END_DATE, TYPE) VALUES("
+            sql += str(id) + ",'" + detail + "','" + row[4] + "','" + row[4] + "','ä¸ªäººæ—¥åŽ†')"
+        print sql
         db.update(sql)

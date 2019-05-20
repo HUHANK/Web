@@ -643,15 +643,15 @@ function hyl_alert2(type, msg, callBack, delay){
  *
  * @return    Integer     竖向滚动条宽度
  */
-function getScrollWidth() {
-  var noScroll, scroll, oDiv = document.createElement("DIV");
-  oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
-  noScroll = document.body.appendChild(oDiv).clientWidth;
-  oDiv.style.overflowY = "scroll";
-  scroll = oDiv.clientWidth;
-  document.body.removeChild(oDiv);
-  return noScroll-scroll;
-}
+function getScrollWidth() {  
+  var noScroll, scroll, oDiv = document.createElement("DIV");  
+  oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";  
+  noScroll = document.body.appendChild(oDiv).clientWidth;  
+  oDiv.style.overflowY = "scroll";  
+  scroll = oDiv.clientWidth;  
+  document.body.removeChild(oDiv);  
+  return noScroll-scroll;  
+}  
 
 function arraySortByPinyin(arr){
 	if (!arr || arr.length < 1) return [];
