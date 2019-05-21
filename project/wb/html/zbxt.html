@@ -19,24 +19,24 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/support.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.4.4"></script>
-	<script type="text/javascript" src="js/monthreport.js?version=2.4.4"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.4.4">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.4.4">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.4.4">
+	<script type="text/javascript" src="js/ginit.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/support.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.4.6"></script>
+	<script type="text/javascript" src="js/monthreport.js?version=2.4.6"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.4.6">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.4.6">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.4.6">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.4.4">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.4.4">
-	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.4.4">
-	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.4.4">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.4.6">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.4.6">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.4.6">
+	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.4.6">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -875,32 +875,38 @@
 					<div class="col-edit-query">
 						<div class="query1">
 							<div class="title">查看选项</div>
-							<div>
-								<span>日期：</span>
-								<select>
-									<option>2019</option><option>2020</option>
+							<div class="date">
+								<span class="label">日期：</span>
+								<select class="year">
+									<option>2019</option><option>2020</option><option>2021</option>
 								</select>
 								<span>年</span>
-								<select>
+								<select class="month">
 									<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
 								</select>
 								<span>月</span>
-								<select>
+								<select class="day">
 									<option>1</option><option>2</option><option>3</option>
 								</select>
 								<span>日</span>
 							</div>
-							<div>
-								<span>小组：</span>
+							<div class="group">
+								<span class="label">小组：</span>
 								<select><option>结算组</option></select>
 							</div>
-							<div>
-								<span>人员：</span>
+							<div class="user">
+								<span class="label">人员：</span>
 								<select><option>李武需</option></select>
 							</div>
 						</div>
+
 						<div class="edit1">
-							
+							<div class="title">编辑选项</div>
+							<div class="opt">
+								<button class="add">添加</button>
+								<button class="upt">更新</button>
+								<button class="del">删除</button>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -974,6 +980,7 @@
 				<button class="save">保存</button>
 				<button class="delete">删除</button>
 				<button class="update">更新</button>
+				<!--<button>查看详情</button>-->
 			</div>
 		</div>
 
@@ -991,7 +998,6 @@
 						<td><label>项目类别</label></td><td><input class="field_ITEM_TYPE" type="text" name=""></td>
 					</tr>
 					<tr>
-						<!--<td><label>优先级</label></td><td><input class="field_PRIORITY" type="text" name=""></td>-->
 						<td><label>优先级</label></td><td><select class="field_PRIORITY"><option>高</option><option selected="selected">中</option><option>低</option></select></td>
 					</tr>
 					<tr>
@@ -1008,6 +1014,9 @@
 					<tr>
 						<td><label>上周完成工作</label></td><td colspan="3"><textarea class="field_LAST_WEEK_WORK" ></textarea></td>
 						<td><label>本周完成工作</label></td><td colspan="3"><textarea class="field_THIS_WEEK_WORK" ></textarea></td>
+					</tr>
+					<tr>
+						<td><label>下周工作计划</label></td><td colspan="3"><textarea class="field_NEXT_WEEK_WORK" ></textarea></td>
 					</tr>
 					<tr>
 						<td><label>例会反馈</label></td><td colspan="3"><textarea class="field_MEET_FEEDBACK"></textarea></td>
@@ -1076,10 +1085,6 @@
 			<div style="text-align: center;">
 				<button class="export">导出</button>
 			</div>
-		</div>
-
-		<div>
-			
 		</div>
 	</div>
 </body>

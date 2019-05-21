@@ -91,6 +91,7 @@
                 display: block;
                 overflow-y: scroll;
                 font-size: 12px;
+                font-family: SimHei;
                 tr{
                     display: table;
                     width: 100%;

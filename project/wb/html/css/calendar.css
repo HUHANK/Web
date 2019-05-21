@@ -1,6 +1,5 @@
 .body .calendar{
     font-size: 12px;
-    height: 880px;
     display: none;
 
     i[class*="icono-"]{
@@ -86,7 +85,7 @@
         }
 
         .calendar-body{
-            height: 920px;
+            //height: 920px;
             
             .calendar-m{
                 height: 100%;
@@ -261,7 +260,7 @@
         overflow: hidden;
         button{
             float: right;
-            width: 60px;
+            width: 80px;
         }
     }
 }

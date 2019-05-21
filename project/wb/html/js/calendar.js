@@ -60,13 +60,19 @@ function CalendarMonthTableGetDBData(ID, dd) {
             return;
         }
         data = data[0];
-        var sy = $(dd).parent().offset().top;
+        var sy = $(dd).offset().top;
         var sx = $(dd).parent().offset().left;
-        var col= $(dd).parent().parent().attr("class").split(" ")[0][2];
+        var col = $(dd).parent().parent().attr("class").split(" ")[0][2];
+        var row = $(dd).parent().parent().attr("class").split(" ")[0][1];
 
         var add_schedule = $(".wrap1 .calendar-add-schedule");
         add_schedule.show();
-        add_schedule.css("top", sy+"px");
+        if (row < "4") {
+            add_schedule.css("top", sy+"px");
+        } else {
+            add_schedule.css("top", (sy-add_schedule.height()+$(dd).height())+"px");
+        }
+        
         if (col>"4") {
             add_schedule.css("left", (sx-add_schedule.width()-2)+"px");
         } else {
@@ -214,10 +220,16 @@ function CalendarAddEvent() {
             var sy = $(this).parent().offset().top;
             var sx = $(this).parent().offset().left;
             var col = $(this).parent().parent().attr("class").split(" ")[0][2];
+            var row = $(this).parent().parent().attr("class").split(" ")[0][1];
 
             var add_schedule = $(".wrap1 .calendar-add-schedule");
             add_schedule.show();
-            add_schedule.css("top", sy+"px");
+            if (row < 5) {
+                add_schedule.css("top", sy+"px");
+            } else {
+                add_schedule.css("top", (sy-add_schedule.height())+"px");
+            }
+            
             if (col>"4") {
                 add_schedule.css("left", (sx-add_schedule.width()-2)+"px");
             } else {
