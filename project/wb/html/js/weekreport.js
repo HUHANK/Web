@@ -151,6 +151,7 @@ function WeekReportInit() {
 }
 
 function WeekReportGetValue(cls) {
+
     var clas = ".week-report-table .body .field_"+cls;
     var tagName = $(clas)[0].tagName;
     if (tagName == "INPUT" || tagName == "TEXTAREA" || tagName == 'SELECT') {
@@ -167,6 +168,46 @@ function WeekReportScroll() {
 
 function WeekReportEvent() {
     /*周报页面被点击时事件*/
+    $("#week-report-dialog-01").dialog({
+        autoOpen: false,
+        width: 400,
+        buttons: [
+            {
+                text: "Ok",
+                click: function() {
+                    var id = $(".week-report .query-result tbody .selected").attr("row-id");
+                    var sql = "DELETE FROM week_report WHERE ID="+id;
+                    var param = {};
+                    param['method'] = "UPDATE";
+                    param["SQL"] = sql;
+                    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+                        if (d.ErrCode != 0) {
+                            alter(d.msg);
+                            return;
+                        }
+                        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+                    });
+                    $( this ).dialog( "close" );
+                }
+            },
+            {
+                text: "Cancel",
+                click: function() {
+                    $( this ).dialog( "close" );
+                }
+            }
+        ]
+    });
+
+    $( ".body .week-report .query-opt button.delete" ).click(function( event ) {
+        var id = $(".week-report .query-result tbody .selected").attr("row-id");
+        if (typeof id == 'undefined') {
+            alert("请选取需要更新的行！");
+            return ;
+        }
+        $( "#week-report-dialog-01" ).dialog( "open" );
+        event.preventDefault();
+    });
 
     $(".body .week-report .query-form fieldset .container .cell .mult").click(function(event) {
         var sel = $(this).prev().children();
@@ -247,6 +288,7 @@ function WeekReportEvent() {
             var cls = ".wrap1 .week-report-table .body table .field_"+cols[i].field;
             $(cls).val("");
         }
+        $(".wrap1 .week-report-table .body table .field_ITEM_CHARGE").val(g_CURRENT_USER);
     });
 
     $(".body .week-report .query-opt button.update").click(function(event) {
@@ -291,6 +333,7 @@ function WeekReportEvent() {
         });
     });
 
+    /*
     $(".body .week-report .query-opt button.delete").click(function(event) {
         var id = $(".week-report .query-result tbody .selected").attr("row-id");
         if (typeof id == 'undefined') {
@@ -309,7 +352,7 @@ function WeekReportEvent() {
             }
             WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
         });
-    });
+    });*/
 
     $(".body .week-report .query-opt button.queryi").click(function(event) {
         var parent = $(".week-report .query-form .condition .container");

@@ -19,24 +19,24 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/support.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.4.6"></script>
-	<script type="text/javascript" src="js/monthreport.js?version=2.4.6"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.4.6">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.4.6">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.4.6">
+	<script type="text/javascript" src="js/ginit.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/support.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.5.2"></script>
+	<script type="text/javascript" src="js/monthreport.js?version=2.5.2"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.5.2">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.5.2">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.5.2">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.4.6">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.4.6">
-	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.4.6">
-	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.4.6">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.5.2">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.5.2">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.5.2">
+	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.5.2">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -862,14 +862,17 @@
 						<table>
 							<thead>
 								<tr>
-									<th>日期</th>
-									<th>姓名</th>
-									<th>开始时间</th>
-									<th>结束时间</th>
-									<th>时长(h)</th>
-									<th>加班原因</th>
+									<th style="width: 80px;">日期</th>
+									<th style="width: 80px;">姓名</th>
+									<th style="width: 80px;">开始时间</th>
+									<th style="width: 80px;">结束时间</th>
+									<th style="width: 80px;">时长(h)</th>
+									<th style="width: 80px;">加班原因</th>
 								</tr>
 							</thead>
+							<tbody>
+								
+							</tbody>
 						</table>
 					</div>
 					<div class="col-edit-query">
@@ -892,11 +895,11 @@
 							</div>
 							<div class="group">
 								<span class="label">小组：</span>
-								<select><option>结算组</option></select>
+								<select></select>
 							</div>
 							<div class="user">
 								<span class="label">人员：</span>
-								<select><option>李武需</option></select>
+								<select></select>
 							</div>
 						</div>
 
@@ -906,6 +909,29 @@
 								<button class="add">添加</button>
 								<button class="upt">更新</button>
 								<button class="del">删除</button>
+							</div>
+							<div class="edit-box" style="display: none;">
+								<div class="row">
+									<span class="label">加班日期：</span><span class="option"><input class="date" type="text" name=""></span>
+								</div>
+								<div class="row">
+									<span class="label">加班人员：</span><span class="option"><input type="text" name="" readonly></span>
+								</div>
+								<div class="row">
+									<span class="label">开始时间：</span><span class="option"><input type="text" name="" required placeholder="时间格式(18:00)"></span>
+								</div>
+								<div class="row">
+									<span class="label">结束时间：</span><span class="option"><input type="text" name="" required placeholder="时间格式(18:00)"></span>
+								</div>
+								<div class="row">
+									<span class="label">加班时长：</span><span class="option"><input type="number" name="" required></span>
+								</div>
+								<div class="row">
+									<span class="label">加班原因：</span><span class="option"><textarea></textarea></span>
+								</div>
+								<div class="foot">
+									<button class="comfirm">确认</button><button class="cancle">取消</button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -987,7 +1013,7 @@
 		<div class="week-report-table">
 			<div class="head">
 				<label>周报编辑</label>
-				<span class="exitbtn"><i class="icono-cross"></i></span>
+				<span class="exitbtn"><i class="ui-icon ui-icon-closethick"></i></span>
 			</div>
 			<div class="body">
 				<table>
@@ -999,6 +1025,7 @@
 					</tr>
 					<tr>
 						<td><label>优先级</label></td><td><select class="field_PRIORITY"><option>高</option><option selected="selected">中</option><option>低</option></select></td>
+						<td><label>标签</label></td><td><select class="field_NEED_TRACK"><option>个人周报</option><option>项目周报</option></select></td>
 					</tr>
 					<tr>
 						<td><label>小组</label></td><td><select class="field_GROUP"></select></td>
@@ -1009,7 +1036,6 @@
 					<tr>
 						<td><label>项目进度</label></td><td><input class="field_ITEM_PROGRESS" type="number" name=""></td>
 						<td><label>工作量</label></td><td><input class="field_WORKLOAD" type="text" name="" title="总工作量(人/周)"></td>
-						<td><label>风险点</label></td><td colspan="3"><textarea class="field_RISK_POINT" ></textarea></td>
 					</tr>
 					<tr>
 						<td><label>上周完成工作</label></td><td colspan="3"><textarea class="field_LAST_WEEK_WORK" ></textarea></td>
@@ -1017,6 +1043,7 @@
 					</tr>
 					<tr>
 						<td><label>下周工作计划</label></td><td colspan="3"><textarea class="field_NEXT_WEEK_WORK" ></textarea></td>
+						<td><label>风险点</label></td><td colspan="3"><textarea class="field_RISK_POINT" ></textarea></td>
 					</tr>
 					<tr>
 						<td><label>例会反馈</label></td><td colspan="3"><textarea class="field_MEET_FEEDBACK"></textarea></td>
@@ -1031,7 +1058,6 @@
 						<td><label>供应商后续工作</label></td><td colspan="3"><textarea class="field_SUPPLIER_FOLLOWUP_WORK" ></textarea></td>
 					</tr>
 					<tr>
-						<td><label>标签</label></td><td><input class="field_NEED_TRACK" type="text" name=""></td>
 						<td><label>设计文档</label></td><td><input class="field_DETAIL_DESIGN_DOC" type="text" name=""></td>
 						<td><label>设计评审时间</label></td><td><input class="field_DESIGN_REVIEW_DATE" type="text" name="" readonly></td>
 						<td><label>业务主管部门</label></td><td><input class="field_BUSINESS_DEPART" type="text" name=""></td>
@@ -1085,6 +1111,10 @@
 			<div style="text-align: center;">
 				<button class="export">导出</button>
 			</div>
+		</div>
+
+		<div id="week-report-dialog-01" style="display: none;">
+			<p>请确认删除</p>
 		</div>
 	</div>
 </body>
