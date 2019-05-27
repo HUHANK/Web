@@ -15,7 +15,7 @@
         }
         tbody{
             display: block;
-            overflow-y: auto;
+            overflow-y: scroll;
             tr{
                 display: table;
                 table-layout: fixed;
@@ -104,7 +104,6 @@
     }
 
     .container{
-        //border: 1px solid blue;
         height: 100%;
         width: 1478px;
         float: right;
@@ -126,17 +125,28 @@
                 padding: 0;
             }
             .col-result{
-                border: 1px solid black;
+                //border: 1px solid black;
                 width: 940px;
                 height: 100%;
                 float: left;
 
+                table{
+                    tbody{
+                        td{
+                            border: 1px solid #D7D7D7;
+                        }
+                        tr:hover{
+                            background-color: #FBFDE3;
+                        }
+                        tr.selected{
+                            background-color: #FAFFB7;
+                        }
+                    }
+                }
 
             }
             .col-edit-query{
                 width: 500px;
-                //height: 400px;
-                border: 1px solid red;
                 float: right;
                 padding: 10px;
 
@@ -183,6 +193,7 @@
                         }
                     }
                     .edit-box{
+                        padding: 15px;
                         .row{
                             margin-top: 10px;
                             margin-bottom: 10px;

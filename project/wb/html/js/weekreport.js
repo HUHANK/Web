@@ -6,6 +6,7 @@ var WEEK_REPORT_TOTAL_PAGE_NUM = 0;
 var WEEK_REPORT_QUERY_TOTAL_COUNT = 0;
 
 var WEEK_REPORT_QUERY_CONDITION='';
+var WEEK_REPORT_CURRENT_USER_GROUP = '';
 
 /*Main函数*/
 function WeekReportMain() {
@@ -26,6 +27,8 @@ TABLE_CONF.columns = [
     {name: '项目类别',            field: 'ITEM_TYPE',                sel_field: "ITEM_TYPE",             width: '50', align: 'center'},
     {name: '项目',                field: 'ITEM',                    sel_field: "ITEM",                   width: '80', align: 'center'},
     {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '50', align: 'center'},
+    {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
+    {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
     {name: '上周完成工作',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '320', align: 'left'},
     {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '320', align: 'left'},
     {name: '下周工作计划',        field: 'NEXT_WEEK_WORK',           sel_field: "NEXT_WEEK_WORK",         width: '320', align: 'left'},
@@ -37,10 +40,8 @@ TABLE_CONF.columns = [
     {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',        sel_field: "SUPPLIER_FEEDBACK",       width: '180', align: 'center'},
     {name: '供应商项目负责人',    field: 'SUPPLIER_ITEM_CHARGE',      sel_field: "SUPPLIER_ITEM_CHARGE",   width: '60', align: 'center'},
     {name: '开始时间',            field: 'START_DATE',               sel_field: "START_DATE",             width: '80', align: 'center'},
-    {name: '结束时间',            field: 'END_DATE',                 sel_field: "END_DATE",               width: '80', align: 'center'},
-    {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
+    {name: '结束时间',            field: 'END_DATE',                 sel_field: "END_DATE",               width: '80', align: 'center'}, 
     {name: '工作量(人/周)',       field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'},
-    {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
     {name: '标签',                field: 'NEED_TRACK',               sel_field: "NEED_TRACK",             width: '60', align: 'center'},
     {name: '设计文档',            field: 'DETAIL_DESIGN_DOC',        sel_field: "DETAIL_DESIGN_DOC",      width: '100', align: 'center'},
     {name: '设计评审时间',        field: 'DESIGN_REVIEW_DATE',       sel_field: "DESIGN_REVIEW_DATE",      width: '80', align: 'center'},
@@ -144,6 +145,9 @@ function WeekReportInit() {
         for(j=0; j<g_ALL_USER.length; j++) {
             if (g_ALL_USER[j].group_id == g_ALL_GROUP[i].id) {
                 optgroup.append($("<option></option>").text(g_ALL_USER[j].cname));
+                if (g_ALL_USER[j].cname == g_CURRENT_USER) {
+                    WEEK_REPORT_CURRENT_USER_GROUP = g_ALL_GROUP[i].name;
+                }
             }
         }
         $(".wrap1 .week-report-table .body .field_ITEM_CHARGE").append(optgroup);
@@ -289,6 +293,14 @@ function WeekReportEvent() {
             $(cls).val("");
         }
         $(".wrap1 .week-report-table .body table .field_ITEM_CHARGE").val(g_CURRENT_USER);
+        $(".wrap1 .week-report-table .body table .field_NEED_TRACK").val("项目周报");
+        $(".wrap1 .week-report-table .body table .field_PRIORITY").val("低");
+        $(".wrap1 .week-report-table .body table .field_START_DATE").val(GetNowDate2());
+        $(".wrap1 .week-report-table .body table .field_END_DATE").val(GetNowDate2());
+        $(".wrap1 .week-report-table .body table .field_ITEM_PROGRESS").val(0);
+        $(".wrap1 .week-report-table .body table .field_WORKLOAD").val(0);
+        $(".wrap1 .week-report-table .body table .field_GROUP").val(WEEK_REPORT_CURRENT_USER_GROUP);
+
     });
 
     $(".body .week-report .query-opt button.update").click(function(event) {
@@ -332,27 +344,6 @@ function WeekReportEvent() {
             }
         });
     });
-
-    /*
-    $(".body .week-report .query-opt button.delete").click(function(event) {
-        var id = $(".week-report .query-result tbody .selected").attr("row-id");
-        if (typeof id == 'undefined') {
-            alert("请选取需要更新的行！");
-            return ;
-        }
-
-        var sql = "DELETE FROM week_report WHERE ID="+id;
-        var param = {};
-        param['method'] = "UPDATE";
-        param["SQL"] = sql;
-        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
-            if (d.ErrCode != 0) {
-                alter(d.msg);
-                return;
-            }
-            WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
-        });
-    });*/
 
     $(".body .week-report .query-opt button.queryi").click(function(event) {
         var parent = $(".week-report .query-form .condition .container");

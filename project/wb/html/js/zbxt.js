@@ -95,6 +95,7 @@ function init_window() {
 	$(iframe_body).find('.wrap .wrap1').width(wwrap1);
 	SuportRepaint();
 	WeekReportWinResize();
+	MonthReportWinResize();
 }
 
 function InitHeader() {
