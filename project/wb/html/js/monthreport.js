@@ -132,7 +132,7 @@ function MonthReportOverTimeConditionChg() {
 
 function MonthReportTableQuery() {
     MonthReportOverTimeConditionChg();
-    var sql = "SELECT ID,OCCUR_DATE,NAME,START_TIME,END_TIME,HOURS,REASON FROM overtime_report " + MONTH_REPORT_OVER_TIME_QUERY_CONDITION;
+    var sql = "SELECT ID,OCCUR_DATE,NAME,START_TIME,END_TIME,HOURS,ADDR,REASON FROM overtime_report " + MONTH_REPORT_OVER_TIME_QUERY_CONDITION;
     console.info(sql);
     var param = {};
     param["method"] = "SELECT";
@@ -153,14 +153,16 @@ function MonthReportTableQuery() {
             var startT = data[i][3];
             var endT = data[i][4];
             var hours = data[i][5];
-            var reason = data[i][6];
+            var addr = data[i][6];
+            var reason = data[i][7];
             var tr = $("<tr></tr>");
             tr.append($("<td></td>").text(date).css("width",   "100px").css("text-align", "center"));
-            tr.append($("<td></td>").text(user).css("width",   "100px").css("text-align", "center"));
-            tr.append($("<td></td>").text(startT).css("width", "100px").css("text-align", "center"));
-            tr.append($("<td></td>").text(endT).css("width",   "100px").css("text-align", "center"));
-            tr.append($("<td></td>").text(hours).css("width",  "100px").css("text-align", "center"));
-            tr.append($("<td></td>").text(reason).css("width", (435-getScrollWidth())+"px").css("text-align", "center"));
+            tr.append($("<td></td>").text(user).css("width",   "70px").css("text-align", "center"));
+            tr.append($("<td></td>").text(startT).css("width", "90px").css("text-align", "center"));
+            tr.append($("<td></td>").text(endT).css("width",   "90px").css("text-align", "center"));
+            tr.append($("<td></td>").text(hours).css("width",  "70px").css("text-align", "center"));
+            tr.append($("<td></td>").text(addr).css("width",  "130px").css("text-align", "center"));
+            tr.append($("<td></td>").text(reason).css("width", (385-getScrollWidth())+"px").css("text-align", "center"));
             tr.attr("row-id", id);
             tr.click(function(event) {
                 if ($(this).hasClass('selected')) return;
@@ -173,7 +175,8 @@ function MonthReportTableQuery() {
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .startT").val($(tds[2]).text());
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .endT").val($(tds[3]).text());
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .hours").val($(tds[4]).text());
-                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val($(tds[5]).text());
+                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .addr").val($(tds[5]).text());
+                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val($(tds[6]).text());
             });
             tbody.append(tr);
         }
@@ -219,6 +222,7 @@ function MonthReportEventInit() {
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .endT").val("17:00");
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .hours").val("8");
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val("");
+            $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .addr").val("");
         } else {
             var tr = $(".body .monthly-report .container .overtime .col-result tbody tr.selected");
             if (tr.length < 1) {
@@ -232,7 +236,8 @@ function MonthReportEventInit() {
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .startT").val($(tds[2]).text());
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .endT").val($(tds[3]).text());
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .hours").val($(tds[4]).text());
-            $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val($(tds[5]).text());
+            $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .addr").val($(tds[5]).text());
+            $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val($(tds[6]).text());
         }
 
         $(this).parent().next().show();
@@ -246,19 +251,20 @@ function MonthReportEventInit() {
             var startT = $(ebox).find(".startT").val();
             var endT = $(ebox).find(".endT").val();
             var hours = $(ebox).find(".hours").val();
+            var addr =  $(ebox).find(".addr").val();
             var reason = $(ebox).find(".reason").val();
             var sql = "";
             var param = {};
 
             console.info(MONTH_REPORT_OVER_TIME_OPT);
             if (MONTH_REPORT_OVER_TIME_OPT == 'add') {
-                sql = "INSERT INTO overtime_report(OCCUR_DATE,NAME,START_TIME,END_TIME,HOURS,REASON) VALUES('"+
-                    date1+"','"+user+"','"+startT+"','"+endT+"',"+hours+",'"+reason+"')";
+                sql = "INSERT INTO overtime_report(OCCUR_DATE,NAME,START_TIME,END_TIME,HOURS,ADDR,REASON) VALUES('"+
+                    date1+"','"+user+"','"+startT+"','"+endT+"',"+hours+",'"+addr+"','"+reason+"')";
                 param["method"] = "INSERT";
             } else if (MONTH_REPORT_OVER_TIME_OPT == 'upt') {
                 var id = $(".body .monthly-report .container .overtime .col-result tbody tr.selected").attr("row-id");
                 sql = "UPDATE overtime_report SET OCCUR_DATE='"+date1+"', NAME='"+user+"', START_TIME='"+startT+"', END_TIME='" +
-                    endT+"', HOURS="+hours+", REASON='"+reason+"' WHERE ID="+id;
+                    endT+"', HOURS="+hours+", REASON='"+reason+"', ADDR='"+addr+"' WHERE ID="+id;
                 param["method"] = "INSERT";
             } else if (MONTH_REPORT_OVER_TIME_OPT == 'del') {
                 var id = $(".body .monthly-report .container .overtime .col-result tbody tr.selected").attr("row-id");
