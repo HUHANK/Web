@@ -6,6 +6,7 @@ function MonthReportMain() {
     if (MONTH_REPORT_ALL_INIT) return;
     MonthReportInit();
     MonthReportEventInit();
+    MONTH_REPORT_ALL_INIT = true;
 }
 
 function MonthReportChangeDaySelect() {
