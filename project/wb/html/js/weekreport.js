@@ -276,10 +276,6 @@ function WeekReportEvent() {
         });
     });
 
-    // $(".body .week-report .query-form fieldset legend span").click(function(event) {
-        
-    // });
-
     $(".body .week-report .query-opt button.add").click(function(event) {
         $("body").children(".hyl-bokeh").addClass("hyl-show");
         $(".wrap1 .week-report-table").show();
