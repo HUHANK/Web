@@ -134,7 +134,7 @@ function MonthReportOverTimeConditionChg() {
 function MonthReportTableQuery() {
     MonthReportOverTimeConditionChg();
     var sql = "SELECT ID,OCCUR_DATE,NAME,START_TIME,END_TIME,HOURS,ADDR,REASON FROM overtime_report " + MONTH_REPORT_OVER_TIME_QUERY_CONDITION;
-    console.info(sql);
+    sql += " ORDER BY NAME, OCCUR_DATE";
     var param = {};
     param["method"] = "SELECT";
     param['SQL'] = sql;
@@ -215,6 +215,7 @@ function MonthReportEventInit() {
         if ($(this).hasClass('add')) MONTH_REPORT_OVER_TIME_OPT = 'add';
         else if ($(this).hasClass('upt')) MONTH_REPORT_OVER_TIME_OPT = 'upt';
         else if ($(this).hasClass('del')) MONTH_REPORT_OVER_TIME_OPT = 'del';
+        else if ($(this).hasClass('exp')) MONTH_REPORT_OVER_TIME_OPT = 'exp';
 
         if (MONTH_REPORT_OVER_TIME_OPT == 'add') {
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .date").val(GetNowDate2());
@@ -224,6 +225,50 @@ function MonthReportEventInit() {
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .hours").val("8");
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val("");
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .addr").val("");
+        } else if (MONTH_REPORT_OVER_TIME_OPT == 'exp') {
+            var sql = "SELECT OCCUR_DATE,NAME,START_TIME,END_TIME,HOURS,ADDR,REASON FROM overtime_report " + MONTH_REPORT_OVER_TIME_QUERY_CONDITION;
+            sql += " ORDER BY NAME, OCCUR_DATE";
+            var param = {};
+            param["method"] = "SELECT";
+            param['SQL'] = sql;
+            sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+                if (d.ErrCode != 0) {
+                    alter(d.msg);
+                    return;
+                }
+                var data = d.data;
+                var table = "";
+                var thead = "";
+                var tbody = "<tbody>";
+                var tr = "<tr>";
+                $(".body .monthly-report .container .overtime .col-result thead tr th").each(function(index, el) {
+                    var th = "<th>"+$(el).text()+"</th>";
+                    tr+= th;
+                });
+                tr += "</tr>";
+                thead = "<thead>" + tr + "</thead>";
+
+                var i, j;
+                for( i=0; i<data.length; i++) {
+                    var row = data[i];
+                    tr = "<tr>";
+                    for(j=0; j<row.length; j++) {
+                        var td = "<td>" + row[j] + "</td>"; 
+                        tr += td;
+                    }
+                    tr += "</tr>";
+                    tbody += tr;
+                }
+                tbody += "</tbody>";
+                table = "<table>" + thead + tbody + "</table>";
+                if(getExplorer()=='ie') {
+                    alert("不支持IE导出！");
+                } else {
+                    tableToExcel(table);
+                }
+            });
+            $(this).removeClass('selected');
+            return;
         } else {
             var tr = $(".body .monthly-report .container .overtime .col-result tbody tr.selected");
             if (tr.length < 1) {
@@ -257,7 +302,6 @@ function MonthReportEventInit() {
             var sql = "";
             var param = {};
 
-            console.info(MONTH_REPORT_OVER_TIME_OPT);
             if (MONTH_REPORT_OVER_TIME_OPT == 'add') {
                 sql = "INSERT INTO overtime_report(OCCUR_DATE,NAME,START_TIME,END_TIME,HOURS,ADDR,REASON) VALUES('"+
                     date1+"','"+user+"','"+startT+"','"+endT+"',"+hours+",'"+addr+"','"+reason+"')";
