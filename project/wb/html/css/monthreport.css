@@ -2,7 +2,7 @@
     display: none;
     //border: 1px solid black;
     height: 800px;
-    width: 1600px;
+    width: 1690px;
     font-size: 12px;
 
     table{
@@ -105,7 +105,7 @@
 
     .container{
         height: 100%;
-        width: 1478px;
+        width: 1568px;
         float: right;
         background-color: #F0F0F8;
         padding-left: 10px;
@@ -126,7 +126,7 @@
             }
             .col-result{
                 //border: 1px solid black;
-                width: 940px;
+                width: 1030px;
                 height: 100%;
                 float: left;
 
@@ -171,7 +171,7 @@
                 }
 
                 .edit1 {
-                    margin-top: 200px;
+                    margin-top: 100px;
                     .opt{
                         button{
                             background:none;  
@@ -179,7 +179,8 @@
                             border:0px;
                             width: 80px;
                             border: 1px solid #265476;
-                            margin: 4px;
+                            margin-bottom: 4px;
+                            margin-top: 4px;
                             border-radius: 3px;
 
                             &:hover{
@@ -210,6 +211,10 @@
                                 textarea{
                                     width: 180px;
                                     height: 50px;
+                                }
+                                select{
+                                    width: 180px;
+                                    height: 24px;
                                 }
                             }
                         }

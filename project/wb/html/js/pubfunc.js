@@ -425,6 +425,17 @@ function getCurrentYear() {
     var dt = new Date();
     return dt.getFullYear();
 }
+
+// getNextDate('2018-02-28', 1)
+// getNextDate('2018-03-01', -1)
+function getNextDate(date,day) {  
+	var dd = new Date(date);
+	dd.setDate(dd.getDate() + day);
+	var y = dd.getFullYear();
+	var m = dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1;
+	var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
+	return y + "-" + m + "-" + d;
+};
 //获取日期是那个星期的第几天
 CWEEK_DAY_NAME=["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
 function getWeekDay(year, month, day) {
