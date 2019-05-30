@@ -308,6 +308,7 @@ function MonthReportEventInit() {
             var hours = $(ebox).find(".hours").val();
             var addr =  $(ebox).find(".addr").val();
             var type = $(ebox).find(".type").val();
+            if (type == null) type = '';
             var reason = $(ebox).find(".reason").val();
             var sql = "";
             var param = {};
