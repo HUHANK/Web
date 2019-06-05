@@ -29,11 +29,11 @@ TABLE_CONF.columns = [
     {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '50', align: 'center'},
     {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
     {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
-    {name: '上周完成工作',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '320', align: 'left'},
+    {name: '本周工作计划',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '320', align: 'left'},
     {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '320', align: 'left'},
     {name: '下周工作计划',        field: 'NEXT_WEEK_WORK',           sel_field: "NEXT_WEEK_WORK",         width: '320', align: 'left'},
+    {name: '匹配度低说明',        field: 'MEET_FEEDBACK',            sel_field: "MEET_FEEDBACK",          width: '120', align: 'left'},
     {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '280', align: 'left'},
-    {name: '例会反馈',            field: 'MEET_FEEDBACK',            sel_field: "MEET_FEEDBACK",          width: '120', align: 'left'},
     {name: 'JIRA号',             field: 'JIRA_NOS',                 sel_field: "JIRA_NOS",               width: '100', align: 'center'},
     {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',   sel_field: "SUPPLIER_FOLLOWUP_WORK", width: '220', align: 'left'},
     {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',  sel_field: "PROVIDE_ITEM_WEEK_REPORT",width: '60', align: 'center'},
@@ -596,6 +596,7 @@ function WeekReportEvent() {
         colums = colums.substring(0, colums.length-1);
 
         var sql = "SELECT " + colums + " FROM week_report "+WEEK_REPORT_QUERY_CONDITION;
+        sql += " ORDER BY `GROUP`,ITEM_CHARGE ";
         var param = {};
         param['method'] = "SELECT";
         param['SQL'] = sql;
