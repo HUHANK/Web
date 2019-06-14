@@ -721,7 +721,7 @@ function WeekReportQueryTable(offset, rows) {
     sql = sql.substring(0, sql.length-1)+" FROM week_report "
 
     sql = sql + WEEK_REPORT_QUERY_CONDITION;
-    sql += " ORDER BY ITEM_CHARGE ";
+    sql += " ORDER BY UPT_DATE, ITEM_CHARGE  ";
     sql = sql + " limit "+offset+", "+rows;
 
     var param = {};
