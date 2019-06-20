@@ -19,24 +19,24 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/support.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.6.6"></script>
-	<script type="text/javascript" src="js/monthreport.js?version=2.6.6"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.6.6">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.6.6">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.6.6">
+	<script type="text/javascript" src="js/ginit.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/support.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.6.9"></script>
+	<script type="text/javascript" src="js/monthreport.js?version=2.6.9"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.6.9">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.6.9">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.6.9">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.6.6">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.6.6">
-	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.6.6">
-	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.6.6">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.6.9">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.6.9">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.6.9">
+	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.6.9">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -845,7 +845,7 @@
 				<button class="prev"><<上一页</button>
 				<button class="next">下一页>></button>
 				<span class="page-info">(1-50/178)</span><span> 每页显示： </span>
-				 <span class="page-size selected">10</span> , <span class="page-size">25</span> , <span class="page-size">50</span> , <span class="page-size">100</span>
+				 <span class="page-size">10</span> , <span class="page-size selected">25</span> , <span class="page-size">50</span> , <span class="page-size">100</span>
 			</div>
 		</div>
 
@@ -1039,6 +1039,7 @@
 					<tr>
 						<td><label>优先级</label></td><td><select class="field_PRIORITY"><option>高</option><option>中</option><option>低</option></select></td>
 						<td><label>标签</label></td><td><select class="field_NEED_TRACK"><option>个人周报</option><option>项目周报</option></select></td>
+						<td><label>项目所处阶段</label><td><select class="field_ITEM_STAGE"><option>策划阶段</option><option>开发阶段</option><option>测试阶段</option><option>投产阶段</option></select></td></td>
 					</tr>
 					<tr>
 						<td><label>小组</label></td><td><select class="field_GROUP"></select></td>
@@ -1077,6 +1078,14 @@
 					</tr>
 					<tr>
 						<td><label>设计评审状态</label></td><td><input class="field_DESIGN_REVIEW_STATUS" type="text" name=""></td>
+					</tr>
+					<tr>
+						<td><label>当前里程碑任务</label></td><td colspan="3"><textarea class="field_MILESTONE1" ></textarea></td>
+						<td><label>截止时间</label></td><td><input class="field_MILESTONE1_END_TIME" type="text" name="" readonly></td>
+					</tr>
+					<tr>
+						<td><label>下一里程碑任务</label></td><td colspan="3"><textarea class="field_MILESTONE2" ></textarea></td>
+						<td><label>截止时间</label></td><td><input class="field_MILESTONE2_END_TIME" type="text" name="" readonly></td>
 					</tr>
 					<tr>
 						<td><label>备注</label></td><td colspan="5"><textarea class="field_NOTE" ></textarea></td>
@@ -1128,6 +1137,9 @@
 
 		<div id="week-report-dialog-01" style="display: none;">
 			<p>请确认删除</p>
+		</div>
+		<div id="week-report-dialog-02" style="display: none;">
+			<p></p>
 		</div>
 	</div>
 </body>

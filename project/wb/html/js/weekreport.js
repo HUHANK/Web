@@ -1,6 +1,6 @@
 /*全局变量*/
 var WEEK_REPORT_EVENT_INIT=false;
-var WEEK_REPORT_PAGE_SIZE=10;
+var WEEK_REPORT_PAGE_SIZE=25;
 var WEEK_REPORT_PAGE_NUM = 0;
 var WEEK_REPORT_TOTAL_PAGE_NUM = 0;
 var WEEK_REPORT_QUERY_TOTAL_COUNT = 0;
@@ -26,6 +26,7 @@ TABLE_CONF.columns = [
     {name: '系统',                field: 'SYSTEM',                  sel_field: "SYSTEM",                 width: '80', align: 'center'},
     {name: '项目类别',            field: 'ITEM_TYPE',                sel_field: "ITEM_TYPE",             width: '50', align: 'center'},
     {name: '项目',                field: 'ITEM',                    sel_field: "ITEM",                   width: '80', align: 'center'},
+    {name: '项目所处阶段',        field: 'ITEM_STAGE',                sel_field: "ITEM_STAGE",            width: '80', align: 'center'},
     {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '50', align: 'center'},
     {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
     {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
@@ -35,6 +36,10 @@ TABLE_CONF.columns = [
     {name: '匹配度低说明',        field: 'MEET_FEEDBACK',            sel_field: "MEET_FEEDBACK",          width: '120', align: 'left'},
     {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '280', align: 'left'},
     {name: 'JIRA号',             field: 'JIRA_NOS',                 sel_field: "JIRA_NOS",               width: '100', align: 'center'},
+    {name: '当前里程碑任务',      field: 'MILESTONE1',               sel_field: "MILESTONE1",             width: '280', align: 'left'},
+    {name: '截止时间',            field: 'MILESTONE1_END_TIME',      sel_field: "MILESTONE1_END_TIME",    width: '80', align: 'center'},
+    {name: '下一里程碑任务',      field: 'MILESTONE2',               sel_field: "MILESTONE2",             width: '280', align: 'left'},
+    {name: '截止时间',            field: 'MILESTONE2_END_TIME',      sel_field: "MILESTONE2_END_TIME",    width: '80', align: 'center'},
     {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',   sel_field: "SUPPLIER_FOLLOWUP_WORK", width: '220', align: 'left'},
     {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',  sel_field: "PROVIDE_ITEM_WEEK_REPORT",width: '60', align: 'center'},
     {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',        sel_field: "SUPPLIER_FEEDBACK",       width: '180', align: 'center'},
@@ -134,6 +139,24 @@ function WeekReportInit() {
         dateFormat: "yy-mm-dd"
     });
 
+    $(".wrap1 .week-report-table .body .field_MILESTONE1_END_TIME").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
+    $(".wrap1 .week-report-table .body .field_MILESTONE2_END_TIME").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
     var j=0;
     $(".wrap1 .week-report-table .body .field_GROUP").html("");
     $(".wrap1 .week-report-table .body .field_ITEM_CHARGE").html("");
@@ -175,6 +198,7 @@ function WeekReportEvent() {
     $("#week-report-dialog-01").dialog({
         autoOpen: false,
         width: 400,
+        modal: true,
         buttons: [
             {
                 text: "Ok",
@@ -201,6 +225,12 @@ function WeekReportEvent() {
                 }
             }
         ]
+    });
+
+    $("#week-report-dialog-02").dialog({
+        autoOpen: false,
+        width: 400,
+        modal: true
     });
 
     $( ".body .week-report .query-opt button.delete" ).click(function( event ) {
@@ -639,6 +669,7 @@ function WeekReportEvent() {
         var sql_values = '';
         var sql = '';
 
+        if (WeekReportCheckFieldValueRightful() == false) return ;
         if (mode == 'add') {
             for(i=0; i<columns.length; i++) {
                 var field = columns[i].field;
@@ -709,6 +740,50 @@ function WeekReportEvent() {
         // }
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
+}
+
+function WeekReportCheckFieldValueRightful()
+{
+    var NEED_TRACK = WeekReportGetValue("NEED_TRACK");
+    var ITEM_PROGRESS = WeekReportGetValue("ITEM_PROGRESS");
+    var THIS_WEEK_WORK = WeekReportGetValue("THIS_WEEK_WORK");
+    if (THIS_WEEK_WORK.length < 1) {
+        WeekReportDialog02TiShi("请填写本周完成的工作!");
+        return false;
+    }
+    if (NEED_TRACK == "项目周报") {
+        var MILESTONE1 = WeekReportGetValue("MILESTONE1");
+        var MILESTONE2 = WeekReportGetValue("MILESTONE2");
+        var MILESTONE1_END_TIME = WeekReportGetValue("MILESTONE1_END_TIME");
+        var MILESTONE2_END_TIME = WeekReportGetValue("MILESTONE2_END_TIME");
+        var ITEM_STAGE = WeekReportGetValue("ITEM_STAGE");
+
+        if (ITEM_PROGRESS.length < 1) {
+            WeekReportDialog02TiShi("请填写正确的项目进度!");
+            return false;
+        }
+        if (MILESTONE1.length < 1) {
+            WeekReportDialog02TiShi("请填写当前里程碑任务!");
+            return false;
+        }
+        if (MILESTONE2.length < 1) {
+            WeekReportDialog02TiShi("请填写下一里程碑任务!");
+            return false;
+        }
+        if (MILESTONE1_END_TIME.length < 1) {
+            WeekReportDialog02TiShi("里程碑任务截止日期不能为空!");
+            return false;
+        }
+        if (MILESTONE2_END_TIME.length < 1) {
+            WeekReportDialog02TiShi("里程碑任务截止日期不能为空!");
+            return false;
+        }
+        if (ITEM_STAGE.length < 1) {
+            WeekReportDialog02TiShi("请选择项目所处阶段!");
+            return false;
+        }
+    }
+    return true;
 }
 
 function WeekReportQueryTable(offset, rows) {
@@ -792,6 +867,10 @@ function WeekReportQueryGetTotalCount() {
     });
 }
 
+function WeekReportDialog02TiShi(msg) {
+    $( "#week-report-dialog-02 p" ).text(msg);
+    $( "#week-report-dialog-02" ).dialog( "open" );
+}
 
 
 
