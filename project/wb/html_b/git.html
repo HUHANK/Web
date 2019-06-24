@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Git</title>
+
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/git.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/git.css">
+</head>
+<body>
+
+  <div id="level1"></div>
+  <div id="level2">
+      <div class="head"><span class="left"></span><span class="right"></span></div>
+      <div class="wrap1">
+        <div class="left">
+          <div class="row">
+            <span><label>Git版本分支: </label><select class="sbranch" style="width: 400px;"></select></span>
+            <span><button class="upt-branch">更新分支信息</button></span>
+          </div>
+          <div class="row">
+            <div class="cmlog">
+              <div class="table-head">
+                <table border="1">
+                  <colgroup>
+                    <col style="width: 71px;" />
+                    <col style="width: 141px;" />
+                    <col />
+                  </colgroup>
+                  <thead>
+                    <tr>
+                      <th>作者</th>
+                      <th>日期</th>
+                      <th>信息</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="table-body">
+                <table border="1">
+                  <colgroup>
+                    <col style="width: 71px;" />
+                    <col style="width: 141px;" />
+                    <col />
+                  </colgroup>
+                  <tbody>
+                    <tr><td align="center">HYL</td><td align="center">2018/06/20 15:23:00</td><td>TestTestTestTestTest</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <pre class="cmdtl"></pre>
+          </div>
+
+          <div class="row">
+            <button class="kssj">开始升级</button><button class="exit">清空缓存</button>
+          </div>
+        </div>
+        <div class="right">
+          <div class="result">
+            
+          </div>
+        </div>
+      </div>
+  </div>
+
+</body>
+</html>
