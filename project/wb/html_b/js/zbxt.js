@@ -96,6 +96,7 @@ function init_window() {
 	SuportRepaint();
 	WeekReportWinResize();
 	MonthReportWinResize();
+	CalendarWinResize();
 }
 
 function InitHeader() {
@@ -138,74 +139,6 @@ function GInit(){
 	Options.QueryCondition.PageSize = 25;
 	GUpdateBaseinfo();
 
-	jeui.use(["jeSelect"], function(){
-		$(".sjwh .wrap .xzgl .xzcysz .zcy").jeSelect({
-			sosList:true
-		});
-
-		$("#je-popup-box-wrap select").jeSelect({
-			sosList:true
-		});
-		
-		$(".sjwh .wrap .zdwh fieldset select").jeSelect({
-            sosList:true,
-            itemfun:function(elem, index, val){
-            	//console.info(elem, index, val);
-            	
-            	if (elem.attr("class") == "root") {
-            		//console.info(elem.attr("class"));
-            		var id = elem.children('option[selected="selected"]').attr("name");
-            		var param = new Object();
-            		param.SessionID = Options.SessionID;
-					param.method = "GET";
-					param.condi = {};
-					param.condi.parent = id;
-					sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
-						//console.info("result",d);
-						if (d.ErrCode == 0) {
-							var data = d.data;
-							var shtml = "<option name='-1'></option>";
-							for(var i=0; i<data.length; i++) {
-								shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
-							}
-							//console.info(shtml);
-							var yj = $(".sjwh .wrap .zdwh fieldset .first");
-							yj.html("");
-							yj.val("");
-							yj.html(shtml);
-						}
-					});
-
-            	}else if (elem.attr("class") == "first") {
-            		var id = elem.children('option[selected="selected"]').attr("name");
-            		var param = new Object();
-            		param.SessionID = Options.SessionID;
-					param.method = "GET";
-					param.condi = {};
-					param.condi.parent = id;
-					sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
-						//console.info("result",d);
-						if (d.ErrCode == 0) {
-							var data = d.data;
-							var shtml = "<option name='-1'> </option>";
-							for(var i=0; i<data.length; i++) {
-								shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
-							}
-							//console.info(shtml);
-							var yj = $(".sjwh .wrap .zdwh fieldset .second");
-							yj.html("");
-							yj.val("");
-							yj.html(shtml);
-						}
-					});
-            	}
-
-            }
-        });
-	});
-
-	add_zb_ginit();
-	query_sidebar_init();
 	InitSupport();
 }
 
@@ -497,9 +430,7 @@ function data_protect(){
 			return;
 		}
 		if (xmm1.val() != xmm2.val()) {
-			jeui.use(["jquery", "jeBox"], function(){
-				pop_box("ERROR", 200, 120, "确认密码不能与新密码不一致!");
-			})
+			pop_box("ERROR", 200, 120, "确认密码不能与新密码不一致!");
 		}
 
 		var param = new Object();
@@ -530,11 +461,6 @@ function data_protect(){
 				}
 				$("#je-popup-box-wrap .manager").html(shtml);
 
-				// jeui.use(["jeSelect"], function(){
-				// 	$("#je-popup-box-wrap .bmgl .manager").jeSelect({
-				// 		sosList:true
-				// 	});
-				// });
 				$("#je-popup-box-wrap .submit").click(function() {
 					var depart = $("#je-popup-box-wrap .depart");
 					var manager = $("#je-popup-box-wrap .manager");
@@ -582,12 +508,6 @@ function data_protect(){
 					shtml += "<option>"+g_ALL_DEPART[i].name+"</option>";
 				}
 				$("#je-popup-box-wrap .depart").html(shtml);
-
-				// jeui.use(["jeSelect"], function(){
-				// 	$("#je-popup-box-wrap .xzgl select").jeSelect({
-				// 		sosList:true
-				// 	});
-				// });
 
 				$("#je-popup-box-wrap .submit").click(function() {
 					var depart = $("#je-popup-box-wrap .depart");
@@ -735,12 +655,6 @@ function data_protect(){
 				d = $.parseJSON(d);
 				if (d.ErrCode == 0) {
 					
-					// jeui.use(["jeSelect"], function(){
-					// 	$("#je-popup-box-wrap .zdwh select").jeSelect({
-					// 		sosList:true
-					// 	});
-					// });
-					
 					var rot = $("#je-popup-box-wrap .zdwh .root");
 					var shtml = "";
 					rot.html(shtml);
@@ -805,310 +719,19 @@ function data_protect(){
 }
 
 function sjwh_bmgl_update() {
-	var param = new Object();
-	param.SessionID = Options.SessionID;
-	param.method = "GET";
 
-	sync_post_data("/sjwh_bmgl/", JSON.stringify(param), function(d){
-		if (d.ErrCode == 0) {
-			je_table($(".sjwh .wrap .bmgl .table"),{
-				width:"453",
-				isPage: false,
-				datas:d.data,
-				columnSort:[],
-				columns:[
-					{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
-						field:"id", 
-						width: "50", 
-						align: "center",
-						renderer:function(obj, rowidex) {
-        					return '<input type="checkbox" name="checkbox" jename="chunk">';
-        				}
-					},
-					{name: "ID", field: "id", width: "40", align:"center"},
-					{name: "部门名称", field: "name", width: "140", align:"center"},
-					{name: "部门负责人", field: "manager", width: "120", align:"center"},
-					{name:"操作", field:'id', width:"100", align:"center", 
-						renderer:function(obj, rowidex) {
-							//console.log(obj);
-                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
-    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button>';
-                    	}
-                	}
-				],
-				itemfun:function(elem,data){
-
-				},
-				success:function(elCell, tbody) {
-					elCell.jeCheck({
-		                jename:"chunk",
-		                checkCls:"je-check",
-		                itemfun: function(elem,bool) {
-		                    //alert(elem.attr("jename")
-		                },
-		                success:function(elem){
-		                    jeui.chunkSelect(elem,".sjwh .wrap .bmgl .table .gocheck",'on')
-		                }
-		            });
-
-					$(".sjwh .wrap .bmgl .table button").click(function(){
-						var param = new Object();
-						param.SessionID  = Options.SessionID;
-						if ($(this).attr("type") == "delete") {
-							param.method = "DELETE";
-							param.id = $(this).attr("name");
-							sync_post_data("/sjwh_bmgl/", JSON.stringify(param), function(d){
-								if (d.ErrCode == 0) {
-									sjwh_bmgl_update();
-									GUpdateBaseinfo();
-								} else {
-									pop_box("ERROR", 200, 120, d.msg);
-								}
-							});
-						}
-						else if ($(this).attr("type") == "edit") {
-
-						}
-					});
-				}	
-			});
-		}else {
-			pop_box("ERROR", 200, 120, d.msg);
-		}
-	});
 }
 
 function sjwh_xzgl_show() {
 
-	var param = new Object();
-	param.SessionID  = Options.SessionID;
-	param.method = "GET_GROUP_USER";
-	param.id = $(".sjwh .wrap .xzgl .clicked").find("button").attr("name");
-
-	sync_post_data("/sjwh_xzgl/", JSON.stringify(param), function(d){
-		if(d.ErrCode == 0){
-			var data = d.data;
-			for(var i=0; i<data.length; i++) {
-				for(var j=0; j<g_ALL_GROUP.length; j++) {
-					if (data[i].group_id == g_ALL_GROUP[j].id) {
-						data[i].group_id = g_ALL_GROUP[j].name;
-						break;
-					}
-				}
-			}
-			
-			je_table($(".sjwh .wrap .xzgl .table2"),{
-				width:"573",
-				isPage: false,
-				datas: data,
-				columnSort:[],
-				columns:[
-					{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
-						field:"id", 
-						width: "50", 
-						align: "center",
-						renderer:function(obj, rowidex) {
-        					return '<input type="checkbox" name="checkbox" jename="chunk">';
-        				}
-					},
-					{name: "ID", field: "id", width: "40", align:"center"},
-					{name: "成员名称", field: "user_name", width: "140", align:"center"},
-					{name: "所属组", field: "group_id", width: "120", align: "center"},
-					{name:"操作", field:'id', width:"100", align:"center", 
-						renderer:function(obj, rowidex) {
-							//console.log(obj);
-                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
-    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button>';
-                    	}
-                	}
-				],
-				itemfun:function(elem,data){},
-				success:function(elCell, tbody) {
-					elCell.jeCheck({
-		                jename:"chunk",
-		                checkCls:"je-check",
-		                itemfun: function(elem,bool) {
-		                    //alert(elem.attr("jename")
-		                },
-		                success:function(elem){
-		                    jeui.chunkSelect(elem,".sjwh .wrap .xzgl .table2 .gocheck",'on')
-		                }
-		            });
-
-					$(".sjwh .wrap .xzgl .table2 button").click(function(){
-						var param = new Object();
-						param.SessionID  = Options.SessionID;
-						//console.info($(this).attr("name"));
-						if ($(this).attr("type") == "delete") {
-							param.method = "DELETE_USER_GROUP";
-							param.id = $(this).attr("name");
-							sync_post_data("/sjwh_xzgl/", JSON.stringify(param), function(d){
-								if (d.ErrCode == 0) {
-									sjwh_xzgl_show();
-								} else {
-									pop_box("ERROR", 200, 120, d.msg);
-								}
-							});
-						}
-						else if ($(this).attr("type") == "edit") {
-
-						}
-					});
-				}
-			});
-		}
-	});
 }
 
 function sjwh_xzgl_update() {
-	var param = new Object();
-	param.SessionID = Options.SessionID;
-	param.method = "GET";
-
-	sync_post_data("/sjwh_xzgl/", JSON.stringify(param), function(d){
-		//console.log(d);
-		if (d.ErrCode == 0){
-			je_table($(".sjwh .wrap .xzgl .table"),{
-				width:"573",
-				isPage: false,
-				datas:d.data,
-				columnSort:[],
-				columns:[
-					{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
-						field:"id", 
-						width: "50", 
-						align: "center",
-						renderer:function(obj, rowidex) {
-        					return '<input type="checkbox" name="checkbox" jename="chunk">';
-        				}
-					},
-					{name: "ID", field: "id", width: "40", align:"center"},
-					{name: "小组名称", field: "name", width: "140", align:"center"},
-					{name: "小组负责人", field: "manager", width: "120", align: "center"},
-					{name: "所属部门", field: "depart", width: "120", align: "center"},
-					{name:"操作", field:'id', width:"100", align:"center", 
-						renderer:function(obj, rowidex) {
-							//console.log(obj);
-                    		return '<button name="'+obj.id+'" type="edit" class="je-btn je-bg-blue je-btn-small"><i class="je-icon">&#xe63f;</i></button> \
-    							<button  name="'+obj.id+'" type="delete" class="je-btn je-bg-red je-btn-small"><i class="je-icon">&#xe63e;</i></button>';
-                    	}
-                	}
-				],
-				itemfun:function(elem,data){
-					$(elem).click(function(){
-						$(".sjwh .wrap .xzgl .clicked").removeClass("clicked");
-						$(this).addClass('clicked');
-						sjwh_xzgl_show();
-					});
-				},
-				success:function(elCell, tbody) {
-					elCell.jeCheck({
-		                jename:"chunk",
-		                checkCls:"je-check",
-		                itemfun: function(elem,bool) {
-		                    //alert(elem.attr("jename")
-		                },
-		                success:function(elem){
-		                    jeui.chunkSelect(elem,".sjwh .wrap .xzgl .table .gocheck",'on')
-		                }
-		            });
-
-					$(".sjwh .wrap .xzgl .table button").click(function(){
-						var param = new Object();
-						param.SessionID  = Options.SessionID;
-						if ($(this).attr("type") == "delete") {
-							param.method = "DELETE";
-							param.id = $(this).attr("name");
-							sync_post_data("/sjwh_xzgl/", JSON.stringify(param), function(d){
-								if (d.ErrCode == 0) {
-									sjwh_xzgl_update();
-									GUpdateBaseinfo();
-								} else {
-									pop_box("ERROR", 200, 120, d.msg);
-								}
-							});
-						}
-						else if ($(this).attr("type") == "edit") {
-
-						}
-					});
-				}	
-			});
-		}
-	});
-
-	//console.info(g_ALL_USER);
-	var shtml = "";
-	var zcy = $(".sjwh .wrap .xzgl .xzcysz .zcy");
-	zcy.html("");
-	shtml += "<option name='-1'><option>";
-	for(var i = 0; i<g_ALL_USER.length; i++) {
-		shtml += "<option name='"+g_ALL_USER[i].id+"'>"+ g_ALL_USER[i].cname+"</option>";
-	}
-	zcy.html(shtml);
-
-	$(".sjwh .wrap .xzgl .xzcysz .add").click(function(){
-		//console.info($(zcy).find("option[selected='selected']").attr("name"));
-
-		var param = new Object();
-		param.SessionID  = Options.SessionID;
-		param.method = "UPDATE_USER_GROUP";
-		param.uid = $(zcy).find("option[selected='selected']").attr("name");
-		param.gid = $(".sjwh .wrap .xzgl .clicked").find("button").attr("name");
-		//console.info(param);
-		sync_post_data("/sjwh_xzgl/", JSON.stringify(param), function(d){
-			if(d.ErrCode == 0) {
-				sjwh_xzgl_show();
-			}
-		});
-	});
 
 }
 
 function sjwh_zdwh_update_result_table(d) {
-	$(".sjwh .wrap .zdwh .result").html("");
-	je_table($(".sjwh .wrap .zdwh .result"),{
-		height:"500",
-		isPage: false,
-		datas:d,
-		columnSort:[],
-		columns:[
-			{	name:["选择",function(){return '<input type="checkbox" name="checkbox" class="gocheck" jename="chunk">';}], 
-				field:"id", 
-				width: "100", 
-				align: "center",
-				renderer:function(obj, rowidex) {
-					return '<input type="checkbox" name="checkbox" jename="chunk">';
-				}
-			},
-			{name: "ID", field: "id", width: "80", align:"center"},
-			{name: "字典名称", field: "name", width: "200", align:"center"},
-			{name: "父节点名称", field: "parent", width: "200", align: "center"},
-			{name: "是否是根节点", field: "isRoot", width: "120", align: "center",
-				renderer:function(obj, rowidex) {
-					if (obj.isRoot == 0) {
-						return "否";
-					} else {
-						return "是";
-					}
-				}}
-		],
-		itemfun:function(elem,data){
-
-		},
-		success:function(elCell, tbody) {
-			elCell.jeCheck({
-                jename:"chunk",
-                checkCls:"je-check",
-                itemfun: function(elem,bool) {
-                    //alert(elem.attr("jename")
-                },
-                success:function(elem){
-                    jeui.chunkSelect(elem,".sjwh .wrap .zdwh .result .gocheck",'on')
-                }
-            });
-		}	
-	});
+	
 }
 
 function sjwh_zdwh_update() {
@@ -1193,184 +816,7 @@ function update_sjwh_dict(){
 
 
 function home_page() {
-	var param = new Object();
-	param.SessionID = Options.SessionID;
-	post_data("/home/", JSON.stringify(param), function(d) {
-		d = $.parseJSON(d);
-		//console.info(d);
-		if (d.ErrCode == 0) {
-			//console.info(d.data);
-			var NowDate = parseInt(GetNowDate());
-			for(var i=0; i<d.data.length; i++) {
-				var row = d.data[i];
-				var tmp = row.EditDate;
-				var eDate = row.EditDate;
-				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				tmp = row.ExpireDate;
-				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				/**==================================================*/
-				if (row.ProgressRate < 100) {
-					if (parseInt(tmp) < NowDate) {
-						row.ExpireDays = DateDiffNow('d', tmp);
-					} else {
-						row.ExpireDays = 0;
-					}
-				} else {
-					//row.ExpireDays = DateDiff('d', eDate, tmp );
-					row.ExpireDays = 0;
-				}
-				/**==================================================*/
-			}
-			for(var i=0; i<d.cxzgz.length; i++) {
-				var row = d.cxzgz[i];
-				var tmp = row.EditDate;
-				var eDate = row.EditDate;
-				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				tmp = row.ExpireDate;
-				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				/**==================================================*/
-				if (row.ProgressRate < 100) {
-					if (parseInt(tmp) < NowDate) {
-						row.ExpireDays = DateDiffNow('d', tmp);
-					} else {
-						row.ExpireDays = 0;
-					}
-				} else {
-					//row.ExpireDays = DateDiff('d', eDate, tmp );
-					row.ExpireDays = 0;
-				}
-				/**==================================================*/
-			}
-			for(var i=0; i<d.cbzgz.length; i++) {
-				var row = d.cbzgz[i];
-				var tmp = row.EditDate;
-				var eDate = row.EditDate;
-				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				tmp = row.ExpireDate;
-				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				/**==================================================*/
-				if (row.ProgressRate < 100) {
-					if (parseInt(tmp) < NowDate) {
-						row.ExpireDays = DateDiffNow('d', tmp);
-					} else {
-						row.ExpireDays = 0;
-					}
-				} else {
-					//row.ExpireDays = DateDiff('d', eDate, tmp );
-					row.ExpireDays = 0;
-				}
-				/**==================================================*/
-			}
-
-			je_table($(".home-page .wdbzgz"),{
-				width: "1143",
-				isPage: false,
-				datas: d.data,
-				columnSort: [],
-				columns: [
-					{name: "系统", 		field: "System", 	width: "70", align:"center"},
-					{name: "模块", 		field: "Module", 	width: "60", align:"center"},
-					{name: "类型", 		field: "Type", 		width: "70", align:"center"},
-					{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center",
-						renderer:function(obj, rowidex) {
-							return GenTraceNoAhref(obj.TraceNo);
-						}
-					},
-					{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
-						renderer:function(obj, rowidex) {
-							return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
-						}
-					},
-					{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-					{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
-						renderer:function(obj, rowidex) {
-							return GenProgressBarHtml(70, 14, obj.ProgressRate);
-						}},
-					{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-					{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
-					{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-					{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
-					{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"}
-				],
-				itemfun:function(elem,data){},
-				success:function(elCell, tbody){}
-			});
-
-			if (d.isManager > 0) {
-				$(".home-page .child").css("display", "block");
-				je_table($(".home-page .child .zcybzgz"),{
-					width: "1223",
-					isPage: false,
-					datas: d.cbzgz,
-					columnSort: [],
-					columns: [
-						{name: "成员", field: "User", width: "80", align:"center"},
-						{name: "系统", 		field: "System", 	width: "70", align:"center"},
-						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
-						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
-						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center",
-							renderer:function(obj, rowidex) {
-								return GenTraceNoAhref(obj.TraceNo);
-							}
-						},
-						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
-							renderer:function(obj, rowidex) {
-								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
-							}
-						},
-						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
-							renderer:function(obj, rowidex) {
-								return GenProgressBarHtml(70, 14, obj.ProgressRate);
-							}},
-						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
-						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
-						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"}
-					],
-					itemfun:function(elem,data){},
-					success:function(elCell, tbody){}
-				});
-				je_table($(".home-page .child .zcyxzgz"),{
-					width: "1223",
-					isPage: false,
-					datas: d.cxzgz,
-					columnSort: [],
-					columns: [
-						{name: "成员", field: "User", width: "80", align:"center"},
-						{name: "系统", 		field: "System", 	width: "70", align:"center"},
-						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
-						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
-						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center",
-							renderer:function(obj, rowidex) {
-								return GenTraceNoAhref(obj.TraceNo);
-							}
-						},
-						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
-							renderer:function(obj, rowidex) {
-								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
-							}
-						},
-						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
-							renderer:function(obj, rowidex) {
-								return GenProgressBarHtml(70, 14, obj.ProgressRate);
-							}},
-						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
-						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
-						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"},
-					],
-					itemfun:function(elem,data){},
-					success:function(elCell, tbody){}
-				});
-			}
-		} else {
-			alert(d.msg);
-		}
-	});
+	
 }
 
 

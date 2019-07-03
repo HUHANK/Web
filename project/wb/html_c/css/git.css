@@ -1,0 +1,143 @@
+*{
+    margin: 0;
+    padding: 0;
+    cursor: default;
+}
+
+#level1{
+    display: none;
+    background-color: #FBF1B4;
+}
+
+#level1 .unit{
+    display: inline-block;
+    margin: 15px;
+    width: 80px;
+    height: 80px;
+}
+#level1 .unbusy{
+    background-color: #86FC8D;
+}
+#level1 .busy{
+    background-color: #FE7B7B;
+}
+#level1 .unit .id{
+    font-size: 12px;
+}
+#level1 .unit .title{
+    margin-top: 10px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/*---------------------------------------------------------------------*/
+#level2{
+    display: none;
+}
+#level2 .head{
+    width: 100%;
+    height: 26px;
+    background-color: black;
+    color: white;
+}
+#level2 .head .right{
+    float: right;
+}
+
+#level2 .wrap1{
+    width: 100%;
+}
+
+#level2 .wrap1 .left{
+    float: left;
+    width: 51%;
+    height: 100%;
+    border: 1px solid black;
+}
+
+#level2 .wrap1 .right{
+    float: right;
+    width: 48.7%;
+    height: 100%;
+    border: 1px solid red;
+}
+
+#level2 .wrap1 .left .cmlog{
+    width: 100%; 
+    border-bottom: 1px solid #828790;
+} 
+#level2 .wrap1 .left .cmlog .table-head{
+    padding-right: 17px;
+    background-color: #EEEEEE;
+    color: #2996CC;
+    font-size: 14px;
+}
+
+#level2 .wrap1 .left .cmlog .table-body{
+    width: 100%;
+    height: 300px;
+    overflow-y: scroll;
+    font-size: 13px;
+    color: #666666;
+}
+
+#level2 .wrap1 .left .cmlog table td > div{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#level2 .wrap1 .left .cmlog table th, table td{
+    border-left: 1px solid #D5D5D5;
+    border-top: 1px solid #D5D5D5;
+}
+#level2 .wrap1 .left .cmlog .table-head table, .table-body table{
+    width: 100%;
+    border-collapse: collapse;
+    border-right: 1px solid #D5D5D5;
+    border-bottom: 1px solid #D5D5D5;
+}
+#level2 .wrap1 .left .cmlog .table-body table tr:nth-child(2n+1){
+    background-color: #F6F7F8;
+}
+#level2 .wrap1 .left .cmlog .table-body table tr:hover{
+    background-color: #CFDBFD;
+}
+#level2 .wrap1 .left .cmlog .table-body table tr.selected{
+    background-color: #FFFE8F;
+}
+
+#level2 .wrap1 .left .sbranch option.local{
+    color: green;
+}
+#level2 .wrap1 .left .sbranch option.remote{
+    color: red;
+}
+
+#level2 .wrap1 .left .cmdtl{
+    height: 200px;
+    width: 100%;
+
+    border: 1px solid #828790;
+    background-color: white;
+
+    font-size: 13px;
+    overflow-y: scroll;
+}
+
+#level2 .wrap1 .right{
+    margin: 0;
+    border: none;
+    padding: 0;
+}
+
+#level2 .wrap1 .right .result{
+    //background-color: black;
+    height: 100%;
+    width: 100%;
+}
+
+
+
+

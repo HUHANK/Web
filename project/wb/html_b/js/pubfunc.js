@@ -75,24 +75,7 @@ function array_1d22d(arr) {
 }
 
 
-function pop_box1(stitle, w, h, html, succfunc, endfunc) {
-	jeui.use(["jquery", "jeBox"], function(){
-		jeBox.open({
-			title: stitle,
-			closeBtn:true,
-			maskClose:true,
-			boxSize:[w+"px", h+"px"],
-			content: html,
-			zIndex: 2,
-			boxStyle:{
-						border:"1px solid #81BA25",
-						"border-radius":"4px"
-					},
-			success:succfunc,
-			endfun: endfunc
-		});
-	});
-}
+
 
 function pop_box(stitle, w, h, html, succfunc, endfunc) {
 	// jeui.use(["jquery", "jeBox"], function(){
@@ -142,12 +125,6 @@ function pop_box(stitle, w, h, html, succfunc, endfunc) {
 		
 	});
 	succfunc();
-}
-
-function je_table(obj, opts) {
-	jeui.use(["jeTable", "jeCheck"], function() {
-	        	$(obj).jeTable(opts);
-	});        		
 }
 
 /*获取浏览器的类型*/

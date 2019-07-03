@@ -1,0 +1,309 @@
+.body .monthly-report{
+    display: none;
+    height: 800px;
+    width: 1690px;
+    font-size: 12px;
+
+    table{
+        thead{
+            display: table;
+            table-layout: fixed;
+            th{
+                padding: 1px;
+            }
+        }
+        tbody{
+            display: block;
+            overflow-y: scroll;
+            tr{
+                display: table;
+                table-layout: fixed;
+            }
+            td{
+                border: 1px solid #D7D7D7;
+            }
+            tr:hover{
+                background-color: #FBFDE3;
+            }
+            tr.selected{
+                background-color: #FAFFB7;
+            }
+        }
+    }
+
+    input{
+        background:none;  
+        outline:none;  
+        border:none;
+
+        border: 1px solid #D9D9D9;
+        /*width: 100%;*/
+        border-radius: 4px;
+        padding-left: 1px;
+
+        &:focus{
+            border: 1px solid #4BB2FD;
+            box-shadow: 0 0 3px #4BB2FD;
+            background-color: #FFFCD5;
+            transition: all 0.3s;
+        }
+    }
+
+    textarea{
+        background:none;  
+        outline:none;  
+        border:none;
+
+        border: 1px solid #D9D9D9;
+        border-radius: 4px;
+        padding: 1px;
+
+        &:focus{
+            border: 1px solid #4BB2FD;
+            box-shadow: 0 0 3px #4BB2FD;
+            background-color: #FFFCD5;
+            transition: all 0.3s;
+        }
+    }
+
+    select{
+        background:none;  
+        outline:none;  
+        border:none;
+
+        border: 1px solid #D9D9D9;
+        width: 70px;
+        height: 24px;
+        border-radius: 3px;
+        padding-left: 1px;
+
+        &:focus{
+            border: 1px solid #4BB2FD;
+            box-shadow: 0 0 3px #4BB2FD;
+            background-color: #FFFCD5;
+            transition: all 0.3s;
+        }
+    }
+    .sidebar{
+        width: 120px;
+        height: 100%;
+        //border: 1px solid red;
+        font-size: 14px;
+        color: #082A4E;
+        font-weight: bold;
+        background-color: #DFE1E3;
+        float: left;
+
+        .unit{
+            text-align: center;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #C3D2E1;
+            }
+        }
+        .sel{
+            color: white;
+            background-color: #6A7E93;
+            &:hover {
+                background-color: #6A7E93;
+            }
+        }
+    }
+
+    .container{
+        height: 100%;
+        width: 1568px;
+        float: right;
+        background-color: #F0F0F8;
+        padding-left: 10px;
+        padding-top: 10px;
+        padding-right: 10px;
+        overflow: auto;
+
+        .title{
+            color: #008080;
+            font-size: 16px;
+            border-bottom: 1px solid #008080;
+            padding-bottom: 5px;
+        }
+        th{
+            padding: 0;
+        }
+
+        .overtime{
+            display: none;
+            
+            .col-result{
+                width: 1030px;
+                height: 100%;
+                float: left;
+
+            }
+            .col-edit-query{
+                width: 500px;
+                float: right;
+                padding: 10px;
+
+                .query1>div{
+                    margin-bottom: 10px;
+                }
+                .query1{
+                    .date{
+                        select{
+                            width: 70px;
+                            height: 24px;
+                        }
+                    }
+                    select{
+                        width: 140px;
+                        height: 24px;
+                    }
+                    .label{
+                        font-weight: bold;
+                        font-size: 13px;
+                    }
+                }
+
+                .edit1 {
+                    margin-top: 100px;
+                    .opt{
+                        button{
+                            background:none;  
+                            outline:none;  
+                            border:0px;
+                            width: 80px;
+                            border: 1px solid #265476;
+                            margin-bottom: 4px;
+                            margin-top: 4px;
+                            border-radius: 3px;
+
+                            &:hover{
+                                box-shadow: 0 0 3px #33A2F6;
+                            }
+                        }
+                        button.selected{
+                            font-weight: bold;
+                            color: white;
+                            background-color: #33A2F6;
+                        }
+                    }
+                    .edit-box{
+                        padding: 15px;
+                        .row{
+                            margin-top: 10px;
+                            margin-bottom: 10px;
+
+                            .label{
+                                font-size: 13px;
+                                font-weight: bold;
+                            }
+                            .option{
+                                input{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                                textarea{
+                                    width: 180px;
+                                    height: 50px;
+                                }
+                                select{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                            }
+                        }
+
+                        .foot{
+                            text-align: center;
+                            button{
+                                width: 100px;
+                                margin-left: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .inner-meeting{
+            display: none;
+            .col-result{
+                overflow: hidden;
+            }
+        }
+
+        .train{
+            display: none;
+            .col-result{
+                float: left;
+                width: 1125px;
+                
+            }
+            .col-edit-query{
+                float: right;
+                width: 400px;
+
+                .query1{
+                    .date{
+                        margin-top: 10px;
+                        margin-bottom: 10px;
+                    }
+                    .label{
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
+                }
+
+                .edit1{
+                    margin-top: 40px;
+                    button{
+                        background:none;  
+                        outline:none;  
+                        border:0px;
+                        width: 80px;
+                        border: 1px solid #265476;
+                        margin-bottom: 4px;
+                        margin-top: 4px;
+                        border-radius: 3px;
+
+                        &:hover{
+                            box-shadow: 0 0 3px #33A2F6;
+                        }
+                    }
+                    .edit-box{
+                        display: none;
+                        .row{
+                            margin-top: 8px;
+
+                            .label{
+                                font-size: 14px;
+                                font-weight: bold;
+                                display: inline-block;
+                                width: 74px;
+                            }
+                            .option{
+                                input{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                                textarea{
+                                    width: 280px;
+                                    height: 50px;
+                                }
+                                select{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .sel{
+            display: block;
+        }
+    }
+}

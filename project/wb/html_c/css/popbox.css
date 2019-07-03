@@ -1,0 +1,244 @@
+/*------------------------------------------------------------------------*/
+.hyl-popup-box {
+	margin: 0;
+	padding: 0;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	z-index: 2000;
+	//visibility: hidden;
+	display: none;
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-ms-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.hyl-show {
+	display: block;
+}
+
+.hyl-content {
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	position: relative;
+	border-radius: 5px;
+}
+
+.hyl-effect-1 .hyl-content {
+	-webkit-transform: scale(0.1);
+	-moz-transform: scale(0.1);
+	-ms-transform: scale(0.1);
+	transform: scale(0.1);
+	opacity: 0;
+	-webkit-transition: all 0.5s;
+	-moz-transition: all 0.5s;
+	transition: all 0.5s;
+}
+
+.hyl-show.hyl-effect-1 .hyl-content {
+	-webkit-transform: scale(1);
+	-moz-transform: scale(1);
+	-ms-transform: scale(1);
+	transform: scale(1);
+	opacity: 1;
+}
+
+.hyl-popup-box .hyl-head {
+	width: 100%;
+	overflow: hidden;
+	background-color: #E8E8E8;
+	padding: 4px;
+	margin-bottom: 10px;
+}
+
+.hyl-popup-box .hyl-head button {
+	float: right;
+}
+
+.hyl-bokeh {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity: 0;
+	//visibility: hidden;
+	display: none;
+	z-index: 5;
+	transition: all 0.2s;
+}
+
+.hyl-bokeh.hyl-show {
+	opacity: 0.5;
+	//visibility: visible;
+	display: block;
+}
+
+/*------------------------------------------------------------------------*/
+.hyl-input {
+	background: none;
+	outline: none;
+	border: 0px;
+	width: 100px;
+	border: 1px solid #D9D9D9;
+	border-radius: 3px;
+	padding: 2px;
+}
+
+.hyl-input:focus {
+	border: 1px solid #3BB4F2;
+	box-shadow: 0px 0px 3px #3BB4F2;
+	transition: all 0.3s;
+}
+
+/*--------------------------------------------------------------------*/
+.hyl-grid-thead * {
+	margin: 0;
+	padding: 0;
+}
+
+.hyl-grid-tbody * {
+	margin: 0;
+	padding: 0;
+}
+
+.hyl-grid-tbody td {
+	border: 1px solid #D7D7D7;
+}
+
+/*------------------------------毛玻璃效果--------------------------------------*/
+.hyl-blur {
+
+	/*filter: url(blur.svg#blur);*/ /* FireFox, Chrome, Opera */
+
+	-webkit-filter: blur(40px); /* Chrome, Opera */
+	-moz-filter: blur(40px);
+	-ms-filter: blur(40px);
+	filter: blur(40px);
+	filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius=10, MakeShadow=false); /* IE6~IE9 */
+}
+
+/*------------------------------等待效果--------------------------------------*/
+body .wrap1 {
+}
+
+.wrap1 .wait.unshow {
+	display: none;
+}
+
+.wrap1 .wait .bkg {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity: 0.7;
+	z-index: 100;
+}
+
+.wrap1 .wait .spinner {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	margin: -17.5px 0 0 -75px;	/*margin: 100px auto 0;*/
+	width: 150px;
+	text-align: center;
+	z-index: 1000;
+}
+
+.wrap1 .wait .spinner > div {
+	width: 30px;
+	height: 30px;
+	background-color: #2EE6FD;
+	border-radius: 100%;
+	display: inline-block;
+	-webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+	animation: bouncedelay 1.4s infinite ease-in-out;	/* Prevent first frame from flickering when animation starts */
+	-webkit-animation-fill-mode: both;
+	animation-fill-mode: both;
+}
+
+.wrap1 .wait .spinner .bounce1 {
+	-webkit-animation-delay: -0.32s;
+	animation-delay: -0.32s;
+}
+
+.wrap1 .wait .spinner .bounce2 {
+	-webkit-animation-delay: -0.16s;
+	animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+	0%, 80%, 100% {
+		-webkit-transform: scale(0.0)
+	}
+
+	40% {
+		-webkit-transform: scale(1.0)
+	}
+
+}
+
+@keyframes bouncedelay {
+	0%, 80%, 100% {
+		transform: scale(0.0);
+		-webkit-transform: scale(0.0);
+	}
+
+	40% {
+		transform: scale(1.0);
+		-webkit-transform: scale(1.0);
+	}
+
+}
+
+/*------------------------------周报同步信息界面--------------------------------------*/
+.wrap1 .redmine-sync {
+	background-color: #C5F6EA;
+	font-size: 14px;
+	display: none;
+	z-index: 1001;
+	width: 600px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	border-radius: 3px;
+}
+
+.wrap1 .redmine-sync .head {
+	background-color: #C3C5C5;
+	padding: 3px;
+	font-size: 15px;
+	font-weight: bold;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.wrap1 .redmine-sync .head .exit {
+	float: right;
+}
+
+.wrap1 .redmine-sync .res {
+	max-height: 100px;
+	overflow: auto;
+	color: #666666;
+	font-style: italic;
+}
+
+.wrap1 .redmine-sync .res span {
+	font-style: normal;
+	font-weight: bold;
+	color: #505050;
+}
+
+.wrap1 .redmine-sync .m0, .m1, .m2, .m3 {
+	display: none;
+	margin: 4px;
+}
+
+.wrap1 .redmine-sync h3 {
+	font-weight: bold;
+	color: #082A4E;
+}
