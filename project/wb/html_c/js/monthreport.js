@@ -205,7 +205,8 @@ function MonthReportTableQuery() {
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .endT").val($(tds[3]).text());
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .hours").val($(tds[4]).text());
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .addr").val($(tds[5]).text());
-                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val($(tds[6]).text());
+                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .type").val($(tds[6]).text());
+                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val($(tds[7]).text());
             });
             tbody.append(tr);
         }
