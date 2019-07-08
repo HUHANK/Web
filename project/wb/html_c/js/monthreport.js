@@ -2,6 +2,7 @@ var MONTH_REPORT_ALL_INIT=false;
 var MONTH_REPORT_OVER_TIME_OPT='';
 var MONTH_REPORT_OVER_TIME_QUERY_CONDITION='';
 var MONTH_REPORT_TRAIN_EXP_DATA = '';
+var MONTH_REPORT_UPGRADE_EXP_DATA = '';
 
 function MonthReportMain() {
     if (MONTH_REPORT_ALL_INIT) return;
@@ -73,6 +74,15 @@ function MonthReportInit() {
     });
 
     $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box .date").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box .sxrq").datepicker({
         showButtonPanel: true,
         changeMonth: true,
         changeYear: true,
@@ -227,7 +237,6 @@ function MonthReportTableQuery2() {
         }
         var data = d.data;
         MONTH_REPORT_TRAIN_EXP_DATA = data;
-        console.info(data);
         var tbody = $(".body .monthly-report .container .train .col-result tbody");
         tbody.html('');
         var i = 0;
@@ -265,6 +274,64 @@ function MonthReportTableQuery2() {
     });
 }
 
+function MonthReportTableQuery3() {
+    var sql = "SELECT ID,TCBM,XTMC,SXRQ,SXGN,SXYY,TXRY,BBH,ZDSXGN FROM upgrade_info";
+    var year = $(".body .monthly-report .container .upgrade .col-edit-query .query1 .date .year").val();
+    var month = $(".body .monthly-report .container .upgrade .col-edit-query .query1 .date .month").val();
+    var condition = " WHERE SXRQ LIKE '";
+    if (month.length < 1) {
+        condition += year+"%'";
+    }else if (month.length == 1) {
+        condition += year + "-0" + month + "%'";
+    }else {
+        condition += year + "-" + month + "%'";
+    }
+    sql += condition;
+
+    var param = {};
+    param["method"] = "SELECT";
+    param['SQL'] = sql;
+    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+        if (d.ErrCode != 0) {
+            alter(d.msg);
+            return;
+        }
+        var data = d.data;
+        MONTH_REPORT_UPGRADE_EXP_DATA = data;
+        var tbody = $(".body .monthly-report .container .upgrade .col-result tbody");
+        tbody.html("");
+        var i = 0;
+        for( i=0; i<data.length; i++) {
+            var row = data[i];
+            var id = row[0];
+            var tcbm = row[1];
+            var xtmc = row[2];
+            var sxrq = row[3];
+            var sxgn = row[4];
+            var sxyy = row[5];
+            var txry = row[6];
+            var bbh = row[7];
+            var zxsxgn = row[8];
+
+            var tr = $("<tr></tr>").attr("row-id", id);
+            tr.append($("<td></td>").text(tcbm).css(  {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(xtmc).css(  {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(sxrq).css(  {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(sxgn).css(  {'width': '250px',  'text-align': 'left' }));
+            tr.append($("<td></td>").text(sxyy).css(  {'width': '250px',  'text-align': 'left' }));
+            tr.append($("<td></td>").text(txry).css(  {'width': '70px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(bbh).css(  {'width': '160px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(zxsxgn).css(  {'width': (80-getScrollWidth())+'px',  'text-align': 'center' }));
+            tr.click(function(event) {
+                if ($(this).hasClass('selected')) return;
+                $(this).siblings('.selected').removeClass('selected');
+                $(this).addClass('selected');
+            });
+            tbody.append(tr);
+        }
+    });
+}
+
 function MonthReportEventInit() {
     $(".body .monthly-report .container .overtime .col-edit-query .query1 select").change(function(event) {
         MonthReportTableQuery();
@@ -280,6 +347,8 @@ function MonthReportEventInit() {
         $(".body .monthly-report .container").find("."+cls).addClass('sel');
         if (cls == "train") {
             MonthReportTableQuery2();
+        }else if (cls == "upgrade") {
+            MonthReportTableQuery3();
         }
     });
 
@@ -488,7 +557,76 @@ function MonthReportEventInit() {
         }
         tbody += "</tbody>";
         var table = "<table>"+thead+tbody+"</table>";
-        console.info(table);
+        if(getExplorer()=='ie') {
+            alert("不支持IE导出！");
+        } else {
+            tableToExcel(table);
+        }
+    });
+
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .opt button.add").click(function(event) {
+        $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").show();
+        var ebox   = $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box");
+        ebox.find(".tcbm").val("");
+        ebox.find(".xtmc").val("");
+        ebox.find(".sxrq").val(GetNowDate2());
+        ebox.find(".sxgn").val("");
+        ebox.find(".sxyy").val("");
+        ebox.find(".txry").val(g_CURRENT_USER);
+        ebox.find(".bbh").val("");
+    });
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .opt button.del").click(function(event) {
+        $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
+        var tr = $(".body .monthly-report .container .upgrade .col-result tbody tr.selected");
+        if (tr.length < 1) {
+            alert("请先选取一行数据进行操作！");
+            return ;
+        }
+
+        var sql = "DELETE FROM upgrade_info WHERE ID="+tr.attr("row-id");
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'UPDATE';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            MonthReportTableQuery3();
+        });
+    });
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .opt button.exp").click(function(event) {
+        $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
+
+        var thead = $(".body .monthly-report .container .upgrade .col-result thead").html();
+        thead = "<thead>" + thead + "</thead>";
+        // console.info(thead);
+        var i=0;
+        var tbody = "<tbody>";
+        for(i=0; i<MONTH_REPORT_UPGRADE_EXP_DATA.length; i++) {
+            var row = MONTH_REPORT_UPGRADE_EXP_DATA[i];
+            var tcbm = row[1];
+            var xtmc = row[2];
+            var sxrq = row[3];
+            var sxgn = row[4];
+            var sxyy = row[5];
+            var txry = row[6];
+            var bbh = row[7];
+            var zxsxgn = row[8];
+
+            tbody += "<tr>"+
+                    "<th>" + tcbm +"</th>" +
+                    "<th>" + xtmc +"</th>" +
+                    "<th>" + sxrq +"</th>" +
+                    "<th>" + sxgn +"</th>" +
+                    "<th>" + sxyy +"</th>" +
+                    "<th>" + txry +"</th>" +
+                    "<th>" + bbh +"</th>" +
+                    "<th>" + zxsxgn +"</th>" +
+                +"</tr>";
+        }
+        tbody += "</tbody>";
+        var table = "<table>"+thead+tbody+"</table>";
         if(getExplorer()=='ie') {
             alert("不支持IE导出！");
         } else {
@@ -498,6 +636,9 @@ function MonthReportEventInit() {
 
     $(".body .monthly-report .container .train .col-edit-query .query1 select").change(function(event) {
         MonthReportTableQuery2();
+    });
+    $(".body .monthly-report .container .upgrade .col-edit-query .query1 select").change(function(event) {
+        MonthReportTableQuery3();
     });
 
     $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box button").click(function(event) {
@@ -521,7 +662,6 @@ function MonthReportEventInit() {
         var param = {};
         param['SQL'] = sql;
         param['method'] = 'INSERT';
-        console.info(sql);
         sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
             if (d.ErrCode != 0) {
                 alter(d.msg);
@@ -531,5 +671,36 @@ function MonthReportEventInit() {
             MonthReportTableQuery2();
         });
         
+    });
+
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box button").click(function(event) {
+        if ($(this).hasClass('cancle')) {
+            $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
+            return;
+        }
+
+        var ebox   = $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box");
+        var tcbm = ebox.find(".tcbm").val();
+        var xtmc = ebox.find(".xtmc").val();
+        var sxrq = ebox.find(".sxrq").val();
+        var sxgn = ebox.find(".sxgn").val();
+        var sxyy = ebox.find(".sxyy").val();
+        var txry = ebox.find(".txry").val();
+        var bbh  = ebox.find(".bbh").val();
+        var zdsxgn = ebox.find(".zdsxgn").val();
+
+        var sql = "INSERT INTO upgrade_info(TCBM,XTMC,SXRQ,SXGN,SXYY,TXRY,BBH,ZDSXGN) VALUES(";
+        sql += "'" +tcbm+ "'," + "'" +xtmc+ "'," + "'" +sxrq+ "'," + "'" +sxgn+ "'," + "'" +sxyy+ "'," + "'" +txry+ "'," + "'" +bbh+ "'," + "'" +zdsxgn+ "')"; 
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'INSERT';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
+            MonthReportTableQuery3();
+        });
     });
 }

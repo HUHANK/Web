@@ -302,6 +302,63 @@
             }
         }
 
+        .upgrade{
+            display: none;
+            .col-result{
+                float: left;
+                width: 1125px;
+                
+            }
+            .col-edit-query{
+                float: right;
+                width: 400px;
+
+                .edit1{
+                    margin-top: 40px;
+                    button{
+                        background:none;  
+                        outline:none;  
+                        border:0px;
+                        width: 80px;
+                        border: 1px solid #265476;
+                        margin-bottom: 4px;
+                        margin-top: 4px;
+                        border-radius: 3px;
+
+                        &:hover{
+                            box-shadow: 0 0 3px #33A2F6;
+                        }
+                    }
+                    .edit-box{
+                        display: none;
+                        .row{
+                            margin-top: 8px;
+
+                            .label{
+                                font-size: 14px;
+                                font-weight: bold;
+                                display: inline-block;
+                                width: 74px;
+                            }
+                            .option{
+                                input{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                                textarea{
+                                    width: 280px;
+                                    height: 50px;
+                                }
+                                select{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         .sel{
             display: block;
         }
