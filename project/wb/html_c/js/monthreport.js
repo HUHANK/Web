@@ -3,6 +3,7 @@ var MONTH_REPORT_OVER_TIME_OPT='';
 var MONTH_REPORT_OVER_TIME_QUERY_CONDITION='';
 var MONTH_REPORT_TRAIN_EXP_DATA = '';
 var MONTH_REPORT_UPGRADE_EXP_DATA = '';
+var MONTH_REPORT_MEETING_EXP_DATA = '';
 
 function MonthReportMain() {
     if (MONTH_REPORT_ALL_INIT) return;
@@ -333,6 +334,56 @@ function MonthReportTableQuery3() {
     });
 }
 
+function MonthReportTableQuery4() {
+    var sql = "SELECT ID,DEPART,MDATE,MTOPIC,PMEMBERS,ADD_USER FROM out_meeting_info ";
+    var year = $(".body .monthly-report .container .inner-meeting .col-edit-query .query1 .date .year").val();
+    var month = $(".body .monthly-report .container .inner-meeting .col-edit-query .query1 .date .month").val();
+    var condition = " WHERE MDATE LIKE '";
+    if (month.length < 1) {
+        condition += year+"%'";
+    }else if (month.length == 1) {
+        condition += year + "-0" + month + "%'";
+    }else {
+        condition += year + "-" + month + "%'";
+    }
+    sql += condition;
+
+    var param = {};
+    param["method"] = "SELECT";
+    param['SQL'] = sql;
+    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+        if (d.ErrCode != 0) {
+            alter(d.msg);
+            return;
+        }
+        var data = d.data;
+        MONTH_REPORT_MEETING_EXP_DATA = data;
+        var tbody = $(".body .monthly-report .container .inner-meeting .col-result tbody");
+        tbody.html("");
+        var i = 0;
+        for (i=0; i<data.length; i++) {
+            var row = data[i];
+            var id = row[0];
+            var depart = row[1];
+            var mdate = row[2];
+            var mtopic = row[3];
+            var pmembers = row[4];
+
+            var tr = $("<tr></tr>").attr("row-id", id);
+            tr.append($("<td></td>").text(depart).css(      {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(mdate).css(       {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(mtopic).css(      {'width': '300px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(pmembers).css(    {'width': (600-getScrollWidth())+'px',  'text-align': 'center' }));
+            tr.click(function(event) {
+                if ($(this).hasClass('selected')) return;
+                $(this).siblings('.selected').removeClass('selected');
+                $(this).addClass('selected');
+            });
+            tbody.append(tr);
+        }
+    });
+}
+
 function MonthReportEventInit() {
     $(".body .monthly-report .container .overtime .col-edit-query .query1 select").change(function(event) {
         MonthReportTableQuery();
@@ -350,6 +401,8 @@ function MonthReportEventInit() {
             MonthReportTableQuery2();
         }else if (cls == "upgrade") {
             MonthReportTableQuery3();
+        }else if (cls == "inner-meeting") {
+            MonthReportTableQuery4();
         }
     });
 
@@ -702,6 +755,94 @@ function MonthReportEventInit() {
             }
             $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
             MonthReportTableQuery3();
+        });
+    });
+
+    /*外部会议*/
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .opt button.add").click(function(event) {
+        $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").show();
+        var ebox   = $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box");
+        ebox.find(".depart").val("");
+        ebox.find(".mdate").val(GetNowDate2());
+        ebox.find(".mtopic").val("");
+        ebox.find(".pmembers").val("");
+    });
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .opt button.del").click(function(event) {
+        $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").hide();
+        var tr = $(".body .monthly-report .container .inner-meeting .col-result tbody tr.selected");
+        if (tr.length < 1) {
+            alert("请先选取一行数据进行操作！");
+            return ;
+        }
+
+        var sql = "DELETE FROM out_meeting_info WHERE ID="+tr.attr("row-id");
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'UPDATE';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            MonthReportTableQuery4();
+        });
+    });
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .opt button.exp").click(function(event) {
+        $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").hide();
+        var thead = $(".body .monthly-report .container .inner-meeting .col-result thead").html();
+        thead = "<thead>" + thead + "</thead>";
+        //console.info(thead);
+        var i=0;
+        var tbody = "<tbody>";
+        for (i=0; i<MONTH_REPORT_MEETING_EXP_DATA.length; i++) {
+            var row = MONTH_REPORT_MEETING_EXP_DATA[i];
+            var id = row[0];
+            var depart = row[1];
+            var mdate = row[2];
+            var mtopic = row[3];
+            var pmembers = row[4];
+
+            tbody += "<tr>"+
+                    "<th>" + depart +"</th>" +
+                    "<th>" + mdate +"</th>" +
+                    "<th>" + mtopic +"</th>" +
+                    "<th>" + pmembers +"</th>" +
+                +"</tr>";
+        }
+        tbody += "</tbody>";
+        var table = "<table>"+thead+tbody+"</table>";
+        if(getExplorer()=='ie') {
+            alert("不支持IE导出！");
+        } else {
+            tableToExcel(table);
+        }
+    });
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .query1 select").change(function(event) {
+        MonthReportTableQuery4();
+    });
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box button").click(function(event) {
+        if ($(this).hasClass('cancle')) {
+            $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").hide();
+            return;
+        }
+        var ebox   = $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box");
+        var depart = ebox.find(".depart").val();
+        var mdate = ebox.find(".mdate").val();
+        var mtopic = ebox.find(".mtopic").val();
+        var pmembers = ebox.find(".pmembers").val();
+
+        var sql = "INSERT INTO out_meeting_info(DEPART,MDATE,MTOPIC,PMEMBERS,ADD_USER) VALUES(";
+        sql += "'" +depart+ "'," +"'" +mdate+ "'," +"'" +mtopic+ "'," +"'" +pmembers+ "'," +"'" +g_CURRENT_USER+ "')";
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'INSERT';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").hide();
+            MonthReportTableQuery4();
         });
     });
 }
