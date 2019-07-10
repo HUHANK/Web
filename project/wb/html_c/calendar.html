@@ -13,7 +13,7 @@
     <script type="text/javascript" src="plug-in/fullcalendar/packages/list/main.min.js"></script>
 
     <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="js/pubfunc.js?version=2.7.1"></script>
+    <script type="text/javascript" src="js/pubfunc.js?version=2.7.5"></script>
     <style type="text/css">
         body{
             overflow: hidden;
@@ -31,6 +31,7 @@
     </style>
     <script>
       var EVENTS = [];
+      var EXPORT_DATA = "";
 
       function getEvents() {
         var sql = "SELECT ID, DETAIL, START_DATE, END_DATE, TYPE, ADD_USER, DATE_FORMAT(ADD_TIME,'%Y-%m-%d') FROM calendar";
@@ -45,7 +46,7 @@
           
           EVENTS = [];
           var data = d.data;
-          //console.info(data);
+          EXPORT_DATA = data;
           var i = 0;
           for(i=0; i<data.length; i++) {
             var op = {};
@@ -54,7 +55,6 @@
             op['end'] = data[i][3];
             EVENTS.push(op);
           }
-          //console.info(EVENTS);
         });
       }
       document.addEventListener('DOMContentLoaded', function() {
@@ -66,7 +66,25 @@
                   myCustomButton1: {
                       text: '导出',
                       click: function() {
-                          console.info("导出！");
+                          var thead = "<thead><tr><th>日历内容</th><th>开始日期</th><th>结束日期</th></tr></thead>";
+                          var tbody = "<tbody>";
+                          var i=0;
+                          for(i=0; i<EXPORT_DATA.length; i++) {
+                            var row = EXPORT_DATA[i];
+                            var detail = row[1];
+                            var start = row[2];
+                            var endT = row[3];
+
+                            tbody += "<tr><td>"+detail+"</td>" + "<td>"+start+"</td>" + "<td>"+endT+"</td></tr>";
+                          }
+                          tbody += "</tbody>";
+                          var table = "<table>" + thead + tbody + "</table>";
+
+                          if(getExplorer()=='ie') {
+                            alert("不支持IE导出！");
+                        } else {
+                            tableToExcel(table);
+                        }
                       }
                   }
               },
@@ -81,8 +99,6 @@
                   day: 'numeric'
               },
               buttonText: {
-                  // prev: '上月',
-                  // next: '下月',
                   today: '今天',
                   month: '月',
                   week:  '周',

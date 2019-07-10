@@ -72,22 +72,10 @@ function WeekReportWinResize() {
         $(".body .week-report .query-form").height() - $(".body .week-report .query-opt").height() - 
         $(".body .week-report .query-foot").height()-$(".body .week-report .query-result thead").height()-
         getScrollWidth()-6;
-    // console.info(wheight);
-    // console.info($("body .wrapper-top").height());
-    // console.info($(".body .week-report .query-form").height());
-    // console.info($(".body .week-report .query-opt").height());
-    // console.info($(".body .week-report .query-foot").height());
-    // console.info($(".body .week-report .query-result thead").height());
-    // console.info(getScrollWidth());
-    // console.info(h);
     $(".body .week-report .query-result tbody").css("max-height", h+"px");
 }
 
 function WeekReportInit() {
-    // if (g_CURRENT_USER_IS_ADMIN == 0) {
-    //     $(".week-report .query-opt button.add").css("display", "none");
-    //     $(".week-report .query-opt button.delete").css("display", "none");
-    // }
     /*初始化表头*/
     var tr = $("<tr></tr>");
     var i=0; 
