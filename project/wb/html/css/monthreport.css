@@ -1,6 +1,5 @@
 .body .monthly-report{
     display: none;
-    //border: 1px solid black;
     height: 800px;
     width: 1690px;
     font-size: 12px;
@@ -19,6 +18,15 @@
             tr{
                 display: table;
                 table-layout: fixed;
+            }
+            td{
+                border: 1px solid #D7D7D7;
+            }
+            tr:hover{
+                background-color: #FBFDE3;
+            }
+            tr.selected{
+                background-color: #FAFFB7;
             }
         }
     }
@@ -119,31 +127,17 @@
             border-bottom: 1px solid #008080;
             padding-bottom: 5px;
         }
+        th{
+            padding: 0;
+        }
 
         .overtime{
             display: none;
-            th{
-                padding: 0;
-            }
+            
             .col-result{
-                //border: 1px solid black;
                 width: 1030px;
                 height: 100%;
                 float: left;
-
-                table{
-                    tbody{
-                        td{
-                            border: 1px solid #D7D7D7;
-                        }
-                        tr:hover{
-                            background-color: #FBFDE3;
-                        }
-                        tr.selected{
-                            background-color: #FAFFB7;
-                        }
-                    }
-                }
 
             }
             .col-edit-query{
@@ -234,12 +228,197 @@
 
         .inner-meeting{
             display: none;
+            .col-result{
+                float: left;
+                width: 1130px;
+            }
+            .col-edit-query{
+                float: left;
+                width: 400px;
+
+                .query1{
+                    .date{
+                        margin-top: 10px;
+                        margin-bottom: 10px;
+                    }
+                    .label{
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
+                }
+                .edit1{
+                    margin-top: 40px;
+                    button{
+                        background:none;  
+                        outline:none;  
+                        border:0px;
+                        width: 80px;
+                        border: 1px solid #265476;
+                        margin-bottom: 4px;
+                        margin-top: 4px;
+                        border-radius: 3px;
+
+                        &:hover{
+                            box-shadow: 0 0 3px #33A2F6;
+                        }
+                    }
+                    .edit-box{
+                        display: none;
+                        .row{
+                            margin-top: 8px;
+
+                            .label{
+                                font-size: 14px;
+                                font-weight: bold;
+                                display: inline-block;
+                                width: 74px;
+                            }
+                            .option{
+                                input{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                                textarea{
+                                    width: 280px;
+                                    height: 50px;
+                                }
+                                select{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         .train{
             display: none;
+            .col-result{
+                float: left;
+                width: 1125px;
+                
+            }
+            .col-edit-query{
+                float: right;
+                width: 400px;
+
+                .query1{
+                    .date{
+                        margin-top: 10px;
+                        margin-bottom: 10px;
+                    }
+                    .label{
+                        font-size: 14px;
+                        font-weight: bold;
+                    }
+                }
+
+                .edit1{
+                    margin-top: 40px;
+                    button{
+                        background:none;  
+                        outline:none;  
+                        border:0px;
+                        width: 80px;
+                        border: 1px solid #265476;
+                        margin-bottom: 4px;
+                        margin-top: 4px;
+                        border-radius: 3px;
+
+                        &:hover{
+                            box-shadow: 0 0 3px #33A2F6;
+                        }
+                    }
+                    .edit-box{
+                        display: none;
+                        .row{
+                            margin-top: 8px;
+
+                            .label{
+                                font-size: 14px;
+                                font-weight: bold;
+                                display: inline-block;
+                                width: 74px;
+                            }
+                            .option{
+                                input{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                                textarea{
+                                    width: 280px;
+                                    height: 50px;
+                                }
+                                select{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
+        .upgrade{
+            display: none;
+            .col-result{
+                float: left;
+                width: 1125px;
+                
+            }
+            .col-edit-query{
+                float: right;
+                width: 400px;
+
+                .edit1{
+                    margin-top: 40px;
+                    button{
+                        background:none;  
+                        outline:none;  
+                        border:0px;
+                        width: 80px;
+                        border: 1px solid #265476;
+                        margin-bottom: 4px;
+                        margin-top: 4px;
+                        border-radius: 3px;
+
+                        &:hover{
+                            box-shadow: 0 0 3px #33A2F6;
+                        }
+                    }
+                    .edit-box{
+                        display: none;
+                        .row{
+                            margin-top: 8px;
+
+                            .label{
+                                font-size: 14px;
+                                font-weight: bold;
+                                display: inline-block;
+                                width: 74px;
+                            }
+                            .option{
+                                input{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                                textarea{
+                                    width: 280px;
+                                    height: 50px;
+                                }
+                                select{
+                                    width: 180px;
+                                    height: 24px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         .sel{
             display: block;
         }

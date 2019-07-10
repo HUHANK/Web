@@ -1,6 +1,9 @@
 var MONTH_REPORT_ALL_INIT=false;
 var MONTH_REPORT_OVER_TIME_OPT='';
 var MONTH_REPORT_OVER_TIME_QUERY_CONDITION='';
+var MONTH_REPORT_TRAIN_EXP_DATA = '';
+var MONTH_REPORT_UPGRADE_EXP_DATA = '';
+var MONTH_REPORT_MEETING_EXP_DATA = '';
 
 function MonthReportMain() {
     if (MONTH_REPORT_ALL_INIT) return;
@@ -30,6 +33,7 @@ function MonthReportWinResize() {
     var h1 = h - $(".body .monthly-report .container .overtime .title").height() - 15 -
         $(".body .monthly-report .container .overtime .col-result thead").height() - 32 - getScrollWidth();
     $(".body .monthly-report .container .overtime .col-result tbody").css("max-height", h1+"px");
+    $(".body .monthly-report .container .train .col-result tbody").css("max-height", h1+"px");
 }
 
 function MonthReportInit() {
@@ -62,6 +66,24 @@ function MonthReportInit() {
     $(".body .monthly-report .container .overtime .col-edit-query .query1 .group select").val(gr);
 
     $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .date").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
+    $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box .date").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box .sxrq").datepicker({
         showButtonPanel: true,
         changeMonth: true,
         changeYear: true,
@@ -184,12 +206,182 @@ function MonthReportTableQuery() {
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .endT").val($(tds[3]).text());
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .hours").val($(tds[4]).text());
                 $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .addr").val($(tds[5]).text());
-                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val($(tds[6]).text());
+                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .type").val($(tds[6]).text());
+                $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val($(tds[7]).text());
             });
             tbody.append(tr);
         }
     });
 
+}
+
+function MonthReportTableQuery2() {
+    var sql = "SELECT ID,TRAIN_DATE,TRAIN_TIME,TRAIN_HOURS,TRAIN_ADDR,DEPARTMENT,TRAIN_DETAIL,TRAIN_PERSON,TRAINER_NUM,NOTE FROM train_detail ";
+    var year = $(".body .monthly-report .container .train .col-edit-query .query1 .date .year").val();
+    var month = $(".body .monthly-report .container .train .col-edit-query .query1 .date .month").val();
+    var condition = " WHERE TRAIN_DATE LIKE '";
+    if (month.length < 1) {
+        condition += year+"%'";
+    }else if (month.length == 1) {
+        condition += year + "-0" + month + "%'";
+    }else {
+        condition += year + "-" + month + "%'";
+    }
+    sql += condition;
+
+    var param = {};
+    param["method"] = "SELECT";
+    param['SQL'] = sql;
+    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+        if (d.ErrCode != 0) {
+            alter(d.msg);
+            return;
+        }
+        var data = d.data;
+        MONTH_REPORT_TRAIN_EXP_DATA = data;
+        var tbody = $(".body .monthly-report .container .train .col-result tbody");
+        tbody.html('');
+        var i = 0;
+        for( i=0; i<data.length; i++) {
+            var row = data[i];
+            var id = row[0];
+            var date = row[1];
+            var time = row[2];
+            var hours = row[3];
+            var addr = row[4];
+            var depart = row[5];
+            var detail = row[6];
+            var person = row[7];
+            var num = row[8];
+            var note = row[9];
+
+            var tr = $("<tr></tr>");
+            tr.append($("<td></td>").text(date).css(  {'width': '90px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(time).css(  {'width': '60px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(hours).css( {'width': '50px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(addr).css(  {'width': '100px', 'text-align': 'center' }));
+            tr.append($("<td></td>").text(depart).css({'width': '100px', 'text-align': 'center' }));
+            tr.append($("<td></td>").text(detail).css({'width': '300px', 'text-align': 'center' }));
+            tr.append($("<td></td>").text(person).css({'width': '100px', 'text-align': 'center' }));
+            tr.append($("<td></td>").text(num).css(   {'width': '70px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(note).css(  {'width': (250-getScrollWidth())+'px', 'text-align': 'center' }));
+            tr.attr("row-id", id);
+            tr.click(function(event) {
+                if ($(this).hasClass('selected')) return;
+                $(this).siblings('.selected').removeClass('selected');
+                $(this).addClass('selected');
+            });
+            tbody.append(tr);
+        }
+    });
+}
+
+function MonthReportTableQuery3() {
+    var sql = "SELECT ID,TCBM,XTMC,SXRQ,SXGN,SXYY,TXRY,BBH,ZDSXGN FROM upgrade_info";
+    var year = $(".body .monthly-report .container .upgrade .col-edit-query .query1 .date .year").val();
+    var month = $(".body .monthly-report .container .upgrade .col-edit-query .query1 .date .month").val();
+    var condition = " WHERE SXRQ LIKE '";
+    if (month.length < 1) {
+        condition += year+"%'";
+    }else if (month.length == 1) {
+        condition += year + "-0" + month + "%'";
+    }else {
+        condition += year + "-" + month + "%'";
+    }
+    sql += condition;
+
+    var param = {};
+    param["method"] = "SELECT";
+    param['SQL'] = sql;
+    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+        if (d.ErrCode != 0) {
+            alter(d.msg);
+            return;
+        }
+        var data = d.data;
+        MONTH_REPORT_UPGRADE_EXP_DATA = data;
+        var tbody = $(".body .monthly-report .container .upgrade .col-result tbody");
+        tbody.html("");
+        var i = 0;
+        for( i=0; i<data.length; i++) {
+            var row = data[i];
+            var id = row[0];
+            var tcbm = row[1];
+            var xtmc = row[2];
+            var sxrq = row[3];
+            var sxgn = row[4];
+            var sxyy = row[5];
+            var txry = row[6];
+            var bbh = row[7];
+            var zxsxgn = row[8];
+
+            var tr = $("<tr></tr>").attr("row-id", id);
+            tr.append($("<td></td>").text(tcbm).css(  {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(xtmc).css(  {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(sxrq).css(  {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(sxgn).css(  {'width': '250px',  'text-align': 'left' }));
+            tr.append($("<td></td>").text(sxyy).css(  {'width': '250px',  'text-align': 'left' }));
+            tr.append($("<td></td>").text(txry).css(  {'width': '70px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(bbh).css(  {'width': '160px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(zxsxgn).css(  {'width': (80-getScrollWidth())+'px',  'text-align': 'center' }));
+            tr.click(function(event) {
+                if ($(this).hasClass('selected')) return;
+                $(this).siblings('.selected').removeClass('selected');
+                $(this).addClass('selected');
+            });
+            tbody.append(tr);
+        }
+    });
+}
+
+function MonthReportTableQuery4() {
+    var sql = "SELECT ID,DEPART,MDATE,MTOPIC,PMEMBERS,ADD_USER FROM out_meeting_info ";
+    var year = $(".body .monthly-report .container .inner-meeting .col-edit-query .query1 .date .year").val();
+    var month = $(".body .monthly-report .container .inner-meeting .col-edit-query .query1 .date .month").val();
+    var condition = " WHERE MDATE LIKE '";
+    if (month.length < 1) {
+        condition += year+"%'";
+    }else if (month.length == 1) {
+        condition += year + "-0" + month + "%'";
+    }else {
+        condition += year + "-" + month + "%'";
+    }
+    sql += condition;
+
+    var param = {};
+    param["method"] = "SELECT";
+    param['SQL'] = sql;
+    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+        if (d.ErrCode != 0) {
+            alter(d.msg);
+            return;
+        }
+        var data = d.data;
+        MONTH_REPORT_MEETING_EXP_DATA = data;
+        var tbody = $(".body .monthly-report .container .inner-meeting .col-result tbody");
+        tbody.html("");
+        var i = 0;
+        for (i=0; i<data.length; i++) {
+            var row = data[i];
+            var id = row[0];
+            var depart = row[1];
+            var mdate = row[2];
+            var mtopic = row[3];
+            var pmembers = row[4];
+
+            var tr = $("<tr></tr>").attr("row-id", id);
+            tr.append($("<td></td>").text(depart).css(      {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(mdate).css(       {'width': '100px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(mtopic).css(      {'width': '300px',  'text-align': 'center' }));
+            tr.append($("<td></td>").text(pmembers).css(    {'width': (600-getScrollWidth())+'px',  'text-align': 'center' }));
+            tr.click(function(event) {
+                if ($(this).hasClass('selected')) return;
+                $(this).siblings('.selected').removeClass('selected');
+                $(this).addClass('selected');
+            });
+            tbody.append(tr);
+        }
+    });
 }
 
 function MonthReportEventInit() {
@@ -205,6 +397,13 @@ function MonthReportEventInit() {
         var cls = $(this).attr("name");
         $(".body .monthly-report .container .sel").removeClass('sel');
         $(".body .monthly-report .container").find("."+cls).addClass('sel');
+        if (cls == "train") {
+            MonthReportTableQuery2();
+        }else if (cls == "upgrade") {
+            MonthReportTableQuery3();
+        }else if (cls == "inner-meeting") {
+            MonthReportTableQuery4();
+        }
     });
 
     $(".body .monthly-report .container .overtime .col-edit-query .query1 .date .year").change(function(event) {
@@ -343,5 +542,307 @@ function MonthReportEventInit() {
         }
         $(this).parent().parent().hide();
         $(".body .monthly-report .container .overtime .col-edit-query .edit1 .opt button.selected").removeClass('selected');
+    });
+
+    $(".body .monthly-report .container .train .col-edit-query .edit1 .opt button.add").click(function(event) {
+        $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box").toggle();
+        var ebox   = $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box");
+        ebox.find(".date").val(GetNowDate2());
+        ebox.find(".time").val("12:00");
+        ebox.find(".hours").val(1);
+        ebox.find(".addr").val("");
+        ebox.find(".depart").val("");
+        ebox.find(".detail").val("");
+        ebox.find(".trainer").val("");
+        ebox.find(".ntrainers").val(0);
+        ebox.find(".note").val("");
+    });
+    $(".body .monthly-report .container .train .col-edit-query .edit1 .opt button.del").click(function(event) {
+        $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box").hide();
+        var tr = $(".body .monthly-report .container .train .col-result tbody tr.selected");
+        if (tr.length < 1) {
+            alert("请先选取一行数据进行操作！");
+            return ;
+        }
+
+        var sql = "DELETE FROM train_detail WHERE ID="+tr.attr("row-id");
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'UPDATE';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            MonthReportTableQuery2();
+        });
+    });
+    $(".body .monthly-report .container .train .col-edit-query .edit1 .opt button.exp").click(function(event) {
+        $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box").hide();
+
+        var thead = $(".body .monthly-report .container .train .col-result thead").html();
+        thead = "<thead>" + thead + "</thead>";
+        //console.info(thead);
+        var i=0;
+        var tbody = "<tbody>";
+        for(i=0; i<MONTH_REPORT_TRAIN_EXP_DATA.length; i++) {
+            var row = MONTH_REPORT_TRAIN_EXP_DATA[i];
+            var date = row[1];
+            var time = row[2];
+            var hours = row[3];
+            var addr = row[4];
+            var depart = row[5];
+            var detail = row[6];
+            var person = row[7];
+            var num = row[8];
+            var note = row[9];
+
+            tbody += "<tr>"+
+                    "<th>" + date +"</th>" +
+                    "<th>" + time +"</th>" +
+                    "<th>" + hours +"</th>" +
+                    "<th>" + addr +"</th>" +
+                    "<th>" + depart +"</th>" +
+                    "<th>" + detail +"</th>" +
+                    "<th>" + person +"</th>" +
+                    "<th>" + num +"</th>" +
+                    "<th>" + note +"</th>" +
+                +"</tr>";
+        }
+        tbody += "</tbody>";
+        var table = "<table>"+thead+tbody+"</table>";
+        if(getExplorer()=='ie') {
+            alert("不支持IE导出！");
+        } else {
+            tableToExcel(table);
+        }
+    });
+
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .opt button.add").click(function(event) {
+        $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").show();
+        var ebox   = $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box");
+        ebox.find(".tcbm").val("");
+        ebox.find(".xtmc").val("");
+        ebox.find(".sxrq").val(GetNowDate2());
+        ebox.find(".sxgn").val("");
+        ebox.find(".sxyy").val("");
+        ebox.find(".txry").val(g_CURRENT_USER);
+        ebox.find(".bbh").val("");
+    });
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .opt button.del").click(function(event) {
+        $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
+        var tr = $(".body .monthly-report .container .upgrade .col-result tbody tr.selected");
+        if (tr.length < 1) {
+            alert("请先选取一行数据进行操作！");
+            return ;
+        }
+
+        var sql = "DELETE FROM upgrade_info WHERE ID="+tr.attr("row-id");
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'UPDATE';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            MonthReportTableQuery3();
+        });
+    });
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .opt button.exp").click(function(event) {
+        $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
+
+        var thead = $(".body .monthly-report .container .upgrade .col-result thead").html();
+        thead = "<thead>" + thead + "</thead>";
+        // console.info(thead);
+        var i=0;
+        var tbody = "<tbody>";
+        for(i=0; i<MONTH_REPORT_UPGRADE_EXP_DATA.length; i++) {
+            var row = MONTH_REPORT_UPGRADE_EXP_DATA[i];
+            var tcbm = row[1];
+            var xtmc = row[2];
+            var sxrq = row[3];
+            var sxgn = row[4];
+            var sxyy = row[5];
+            var txry = row[6];
+            var bbh = row[7];
+            var zxsxgn = row[8];
+
+            tbody += "<tr>"+
+                    "<th>" + tcbm +"</th>" +
+                    "<th>" + xtmc +"</th>" +
+                    "<th>" + sxrq +"</th>" +
+                    "<th>" + sxgn +"</th>" +
+                    "<th>" + sxyy +"</th>" +
+                    "<th>" + txry +"</th>" +
+                    "<th>" + bbh +"</th>" +
+                    "<th>" + zxsxgn +"</th>" +
+                +"</tr>";
+        }
+        tbody += "</tbody>";
+        var table = "<table>"+thead+tbody+"</table>";
+        if(getExplorer()=='ie') {
+            alert("不支持IE导出！");
+        } else {
+            tableToExcel(table);
+        }
+    });
+
+    $(".body .monthly-report .container .train .col-edit-query .query1 select").change(function(event) {
+        MonthReportTableQuery2();
+    });
+    $(".body .monthly-report .container .upgrade .col-edit-query .query1 select").change(function(event) {
+        MonthReportTableQuery3();
+    });
+
+    $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box button").click(function(event) {
+        if ($(this).hasClass('cancle')) {
+            $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box").hide();
+            return;
+        }
+        var ebox   = $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box");
+        var date   = ebox.find('.date').val();
+        var time   = ebox.find('.time').val();
+        var hours  = ebox.find(".hours").val();
+        var addr   = ebox.find(".addr").val();
+        var depart = ebox.find(".depart").val();
+        var detail = ebox.find(".detail").val();
+        var trainer = ebox.find(".trainer").val();
+        var ntrainers = ebox.find(".ntrainers").val();
+        var note  = ebox.find(".note").val();
+
+        var sql = "INSERT INTO train_detail(TRAIN_DATE,TRAIN_TIME,TRAIN_HOURS,TRAIN_ADDR,DEPARTMENT,TRAIN_DETAIL,TRAIN_PERSON,TRAINER_NUM,NOTE,ADD_USER) VALUES(";
+        sql += "'"+date+"',"+"'"+time+"',"+hours+","+"'"+addr+"',"+"'"+depart+"',"+"'"+detail+"',"+"'"+trainer+"',"+ntrainers+",'"+note+"','"+g_CURRENT_USER+"')";
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'INSERT';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            $(".body .monthly-report .container .train .col-edit-query .edit1 .edit-box").hide();
+            MonthReportTableQuery2();
+        });
+        
+    });
+
+    $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box button").click(function(event) {
+        if ($(this).hasClass('cancle')) {
+            $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
+            return;
+        }
+
+        var ebox   = $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box");
+        var tcbm = ebox.find(".tcbm").val();
+        var xtmc = ebox.find(".xtmc").val();
+        var sxrq = ebox.find(".sxrq").val();
+        var sxgn = ebox.find(".sxgn").val();
+        var sxyy = ebox.find(".sxyy").val();
+        var txry = ebox.find(".txry").val();
+        var bbh  = ebox.find(".bbh").val();
+        var zdsxgn = ebox.find(".zdsxgn").val();
+
+        var sql = "INSERT INTO upgrade_info(TCBM,XTMC,SXRQ,SXGN,SXYY,TXRY,BBH,ZDSXGN) VALUES(";
+        sql += "'" +tcbm+ "'," + "'" +xtmc+ "'," + "'" +sxrq+ "'," + "'" +sxgn+ "'," + "'" +sxyy+ "'," + "'" +txry+ "'," + "'" +bbh+ "'," + "'" +zdsxgn+ "')"; 
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'INSERT';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            $(".body .monthly-report .container .upgrade .col-edit-query .edit1 .edit-box").hide();
+            MonthReportTableQuery3();
+        });
+    });
+
+    /*外部会议*/
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .opt button.add").click(function(event) {
+        $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").show();
+        var ebox   = $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box");
+        ebox.find(".depart").val("");
+        ebox.find(".mdate").val(GetNowDate2());
+        ebox.find(".mtopic").val("");
+        ebox.find(".pmembers").val("");
+    });
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .opt button.del").click(function(event) {
+        $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").hide();
+        var tr = $(".body .monthly-report .container .inner-meeting .col-result tbody tr.selected");
+        if (tr.length < 1) {
+            alert("请先选取一行数据进行操作！");
+            return ;
+        }
+
+        var sql = "DELETE FROM out_meeting_info WHERE ID="+tr.attr("row-id");
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'UPDATE';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            MonthReportTableQuery4();
+        });
+    });
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .opt button.exp").click(function(event) {
+        $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").hide();
+        var thead = $(".body .monthly-report .container .inner-meeting .col-result thead").html();
+        thead = "<thead>" + thead + "</thead>";
+        //console.info(thead);
+        var i=0;
+        var tbody = "<tbody>";
+        for (i=0; i<MONTH_REPORT_MEETING_EXP_DATA.length; i++) {
+            var row = MONTH_REPORT_MEETING_EXP_DATA[i];
+            var id = row[0];
+            var depart = row[1];
+            var mdate = row[2];
+            var mtopic = row[3];
+            var pmembers = row[4];
+
+            tbody += "<tr>"+
+                    "<th>" + depart +"</th>" +
+                    "<th>" + mdate +"</th>" +
+                    "<th>" + mtopic +"</th>" +
+                    "<th>" + pmembers +"</th>" +
+                +"</tr>";
+        }
+        tbody += "</tbody>";
+        var table = "<table>"+thead+tbody+"</table>";
+        if(getExplorer()=='ie') {
+            alert("不支持IE导出！");
+        } else {
+            tableToExcel(table);
+        }
+    });
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .query1 select").change(function(event) {
+        MonthReportTableQuery4();
+    });
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box button").click(function(event) {
+        if ($(this).hasClass('cancle')) {
+            $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").hide();
+            return;
+        }
+        var ebox   = $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box");
+        var depart = ebox.find(".depart").val();
+        var mdate = ebox.find(".mdate").val();
+        var mtopic = ebox.find(".mtopic").val();
+        var pmembers = ebox.find(".pmembers").val();
+
+        var sql = "INSERT INTO out_meeting_info(DEPART,MDATE,MTOPIC,PMEMBERS,ADD_USER) VALUES(";
+        sql += "'" +depart+ "'," +"'" +mdate+ "'," +"'" +mtopic+ "'," +"'" +pmembers+ "'," +"'" +g_CURRENT_USER+ "')";
+        var param = {};
+        param['SQL'] = sql;
+        param['method'] = 'INSERT';
+        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+            if (d.ErrCode != 0) {
+                alter(d.msg);
+                return;
+            }
+            $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box").hide();
+            MonthReportTableQuery4();
+        });
     });
 }
