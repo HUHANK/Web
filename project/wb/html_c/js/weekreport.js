@@ -26,10 +26,13 @@ TABLE_CONF.columns = [
     {name: '系统',                field: 'SYSTEM',                  sel_field: "SYSTEM",                 width: '80', align: 'center'},
     {name: '项目类别',            field: 'ITEM_TYPE',                sel_field: "ITEM_TYPE",             width: '50', align: 'center'},
     {name: '项目',                field: 'ITEM',                    sel_field: "ITEM",                   width: '80', align: 'center'},
+    {name: '项目开始时间',         field: 'START_DATE',               sel_field: "START_DATE",             width: '80', align: 'center'},
+    {name: '项目结束时间',         field: 'END_DATE',                 sel_field: "END_DATE",               width: '80', align: 'center'}, 
     {name: '项目所处阶段',        field: 'ITEM_STAGE',                sel_field: "ITEM_STAGE",            width: '80', align: 'center'},
     {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '50', align: 'center'},
     {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
     {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
+    {name: '标签',                field: 'NEED_TRACK',               sel_field: "NEED_TRACK",             width: '60', align: 'center'},
     {name: '本周工作计划',        field: 'LAST_WEEK_WORK',           sel_field: "LAST_WEEK_WORK",         width: '320', align: 'left'},
     {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '320', align: 'left'},
     {name: '下周工作计划',        field: 'NEXT_WEEK_WORK',           sel_field: "NEXT_WEEK_WORK",         width: '320', align: 'left'},
@@ -44,10 +47,7 @@ TABLE_CONF.columns = [
     {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',  sel_field: "PROVIDE_ITEM_WEEK_REPORT",width: '60', align: 'center'},
     {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',        sel_field: "SUPPLIER_FEEDBACK",       width: '180', align: 'center'},
     {name: '供应商项目负责人',    field: 'SUPPLIER_ITEM_CHARGE',      sel_field: "SUPPLIER_ITEM_CHARGE",   width: '60', align: 'center'},
-    {name: '开始时间',            field: 'START_DATE',               sel_field: "START_DATE",             width: '80', align: 'center'},
-    {name: '结束时间',            field: 'END_DATE',                 sel_field: "END_DATE",               width: '80', align: 'center'}, 
-    {name: '工作量(人/周)',       field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'},
-    {name: '标签',                field: 'NEED_TRACK',               sel_field: "NEED_TRACK",             width: '60', align: 'center'},
+    {name: '工作量(人/周)',       field: 'WORKLOAD',                  sel_field: "WORKLOAD",               width: '60', align: 'center'}, 
     {name: '设计文档',            field: 'DETAIL_DESIGN_DOC',        sel_field: "DETAIL_DESIGN_DOC",      width: '100', align: 'center'},
     {name: '设计评审时间',        field: 'DESIGN_REVIEW_DATE',       sel_field: "DESIGN_REVIEW_DATE",      width: '80', align: 'center'},
     {name: '业务主管部门',        field: 'BUSINESS_DEPART',          sel_field: "BUSINESS_DEPART",         width: '80', align: 'center'},
@@ -825,6 +825,7 @@ function WeekReportQueryTable(offset, rows) {
                     td.css("color", "red");
                 }
                 td.css("width", columns[j].width+"px");
+                td.addClass('c'+feild1);
                 tr.append(td);
             }
             tr.click(function(event) {
