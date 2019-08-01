@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Expires" content="0">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Cache-Control" content="max-age=0">
+	<title>Week Report System</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />	
+	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
+	<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="js/jquery.base64.js"></script>
+	<script type="text/javascript" src="js/jquery.charfirst.pinyin.js"></script>
+	<script type="text/javascript" src="plug-in/jedate/jedate.min.js"></script>
+	<script type="text/javascript" src="plug-in/jeui/js/modules/jeui.js"></script>
+	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/jeui.css">
+	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
+
+	<script type="text/javascript" src="js/ginit.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/support.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.7.7"></script>
+	<script type="text/javascript" src="js/monthreport.js?version=2.7.7"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.7.7">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.7.7">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.7.7">
+	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.7.7">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.7.7">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.7.7">
+	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.7.7">
+
+	<script type="text/javascript" src="js/less.min.js"></script>
+</head>
+<body>
+	<!--弹出框-->
+	<div class="hyl-popup-box hyl-effect-1" id="hyl-popup-box-wrap">
+		<div class="hyl-content">
+			<div class="hyl-head je-f14">
+				<span class="title"></span>
+				<button class="je-btn je-btn-mini je-bg-red"><i class="je-icon">&#xe636;</i></button>
+				
+			</div>
+			<div class="hyl-main"></div>
+		</div>
+	</div>
+	<!--背景虚化-->
+	<div class="hyl-bokeh"></div>
+
+	<!--操作信息提示框-->
+	<div class="czxxts">
+		<div class="icon">
+			<div class="right">
+               <div class="short"></div>
+               <div class="long"></div>
+           	</div>
+           	<div class="wrong">
+           		<div class="line1"></div>
+               	<div class="line2"></div>
+           	</div>
+		</div>
+		<div class="msg">操作成功</div>
+	</div>
+	<!--鼠标右键弹出框-->
+	<div class="mouse-right-down"></div>
+	<!--++++++++++++++++++++++++++++++HEADER+++++++++++++++++++++++++++++-->
+	<div class="wrapper-top">
+		<div class="header">
+			<h2> 周 报 管 理 系 统 </h2>
+			<div class="subhead">
+				<span class="logout">退出登录</span>
+				<span class="yhxs"></span>
+				<span class="rqxs"></span>
+			</div>
+		</div>
+
+		<div class="title">
+			<div class="navbar">
+				<ul>
+					<!--<li value="HomePage">首页</li>-->
+					<!--<li value="WZB"		>写周报	</li>
+					<li value="Query"	>查询	</li>
+					<li value="Support"	>Support包</li>-->
+					<li value="week-report">周报</li>
+					<li value="Calendar">日历	</li>
+					<li value="monthly-report">月报信息</li>
+					<li value="SZWH"	>设置	</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="body">
+		<div class="home-page">
+			<h3>我的本周工作详情</h3>
+			<div class="wdbzgz">
+				
+			</div>
+			<div class="child">
+				<h3>组成员的本周工作详情</h3>
+				<div class="zcybzgz"></div>
+				<h3>组成员的下周工作详情</h3>
+				<div class="zcyxzgz"></div>
+			</div>
+		</div>
+
+		<div class="query">
+			<div class="sidebar">
+				<ul>
+					<li class="kfbm layer1"><span>开发部门</span>
+						
+					</li>
+					<li class="xt layer1"><span>系统</span>
+
+					</li>
+					<li class="lx layer1"><span>类型</span>
+
+					</li>
+					<li class="xz layer1"><span>性质</span>
+
+					</li>
+
+					<li class="week layer1"><span>周期</span>
+						<div class="content">
+							年份：<input class="year hyl-input" type="number" name="">
+							</br>
+							<input class="start hyl-input" type="number" name="">至
+							<input class="end hyl-input" type="number" name="">
+						</div>
+					</li>
+						
+					<li class="sort layer1"><span>排序</span>
+						<div class="content">
+							<button class="je-btn je-btn-mini je-bg-native asce">升序</button>
+							<button class="je-btn je-btn-mini je-bg-native desc">降序</button>
+						</div>
+					</li>
+
+					<li class="schedule layer1"><span>进度</span>
+						<div class="content">
+							<button class="je-btn je-btn-mini je-bg-native all">全部</button>
+							<button class="je-btn je-btn-mini je-bg-native wwc">未完成</button>
+							<button class="je-btn je-btn-mini je-bg-native ywc">已完成</button>
+						</div>
+					</li>
+					<li class="delay layer1"><span>延误</span>
+						<div class="content">
+							<button class="je-btn je-btn-mini je-bg-native all">全部</button>
+							<button class="je-btn je-btn-mini je-bg-native wyw">未延误</button>
+							<button class="je-btn je-btn-mini je-bg-native yyw">已延误</button>
+						</div>
+					</li>
+					<li class="export layer1"><span>导出</span>
+						<div class="content">
+							<button class="je-btn je-btn-mini je-bg-native dc">导出</button>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="result">
+				<div class="box">
+					
+				</div>
+				<div class="ztl">
+					<span class="ssp">共<span class="totalPage">0</span>页</span>
+					<span class="ssp">共<span class="totalCount">0</span>条记录</span>
+					<span class="ssp">第<span class="pageIndex">1</span>页</span>
+					<button value="pre">上一页</button>
+					<button value="next">下一页</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="add-zb">
+			<div class="head-wrap" style="overflow: hidden;width: 100%;">
+				<div>
+					<div class="" style="display: inline-block;font-weight: bold; font-size: 14px;">本周工作</div>
+					<div class="reminder" style="display: inline-block; font-size: 13px;color: #6E6E6E;">
+						<span>
+							&nbsp;(
+							<span class="ts-unit">本周任务总共数量:&nbsp;<span class="total-wn">0</span>,&nbsp;&nbsp;</span> 
+							<span class="ts-unit">完成数量:&nbsp;<span class="finish-wn">0</span>,&nbsp;&nbsp;</span> 
+							<span class="ts-unit">未完成数量:&nbsp;<span class="unfinish-wn">0</span>,&nbsp;&nbsp;</span> 
+							<span class="ts-unit">已延迟数量:&nbsp;<span class="delay-wn">0</span>,&nbsp;&nbsp;</span> 
+							<span class="ts-unit">未及时跟新数量:&nbsp;<span class="unupdate-wn">0</span>,&nbsp;&nbsp;</span> 
+							
+						</span>
+						<span class="redmine">
+							
+							Redmine本周同步添加:本人[<span class="self-add">0</span>]/全部[<span class="all-add">0</span>],&nbsp;&nbsp;
+							Redmine本周同步更新:本人[<span class="self-upt">0</span>]/全部[<span class="all-upt">0</span>]
+							)&nbsp;
+						</span>
+					</div>
+				</div>
+				<div class="options">
+					<button class="add">写周报</button>
+					<button class="sync-redmine">同步Redmine</button>
+				</div>
+				
+			</div>
+			
+			<div class="bzgz"></div>
+
+			<div style="font-weight: bold; font-size: 14px;margin-top: 10px;">下周工作</div>
+			<div class="xzgz"></div>
+			
+
+			<!--<h3>编辑周报</h3>-->
+			<div class="edit-wrap">
+				<div class="head">
+					<span class="title">添加周报</span>
+					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
+				</div>
+				<div class="edit">
+					<fieldset class="je-field je-p10" style="width: 900px;">
+				        <legend class="je-f16">编辑</legend>
+				        <div class="form">
+				        	
+				            <div class="je-form-item">
+				                <div class="je-w33 je-dib">
+				                    <label class="je-label je-f14">系统</label>
+				                    <div class="je-inputbox">
+				                    <select class="fsys">
+				                    </select>
+				                    </div>
+				                </div>
+				                <div class="je-w33 je-dib">
+				                    <label class="je-label je-f14">模块</label>
+				                    <div class="je-inputbox">
+				                    <select class="fmod">
+				                    </select>
+				                    </div>
+				                </div>
+				            </div>
+
+				            <div class="je-form-item">
+				                <div class="je-w33 je-dib">
+				                    <label class="je-label je-f14">类型</label>
+				                    <div class="je-inputbox">
+				                    <select class="ftype">
+				                    </select>
+				                    </div>
+				                </div>
+				                <div class="je-w33 je-dib">
+				                    <label class="je-label je-f14">性质</label>
+				                    <div class="je-inputbox">
+				                    <select class="fprop">
+				                    </select>
+				                    </div>
+				                </div>
+				                <div class="je-w33 je-dib">
+				                    <label class="je-label je-f14">进度</label>
+				                    <div class="je-inputbox">
+				                    <select class="fjd">
+				                    </select>
+				                    </div>
+				                </div>
+				            </div>
+				            
+				            <div class="je-form-item">
+				                <label class="je-label je-f14">跟踪号</label>
+				                <div class="je-inputbox je-w33">
+				                    <input type="text" name="" autocomplete="off" placeholder="(需求|任务|BUG|问题单|功能点) #XXXX" class="je-input fgzh">
+				                </div>
+				            </div>
+
+				            <div class="je-form-item">
+				                <label class="je-label je-f14">工作内容</label>
+				                <div class="je-inputbox">
+				                    <textarea placeholder="请输入工作内容(最长1024个字节)" class="je-textarea fgznr"></textarea>
+				                </div>
+				            </div>
+
+				            <div class="je-form-item">
+				                <div class="je-w33 je-dib">
+				                    <label class="je-label je-f14 ksrq-lab">开始日期</label>
+				                    <div class="je-inputbox">
+				                        <input class="je-input ksrq" type="text" placeholder="YYYY年MM月DD日" readonly>
+				                    </div>
+				                </div>
+				                <div class="je-w33 je-dib">
+				                    <label class="je-label je-f14">后续人日</label>
+				                    <div class="je-inputbox">
+				                        <input type="number" name="" autocomplete="off" placeholder="请输入(非负整数)" class="je-input fhxrr">
+				                    </div>
+				                </div>
+				                <div class="je-w33 je-dib">
+				                    <label class="je-label je-f14">完成日期</label>
+				                    <div class="je-inputbox">
+				                        <input type="text" name="" autocomplete="off" placeholder="" class="je-input fwcrq" readonly disabled>
+				                    </div>
+				                </div>
+				            </div>
+
+				            <div class="je-form-item">
+				                <label class="je-label je-f14">备注说明</label>
+				                <div class="je-inputbox">
+				                    <textarea placeholder="请输入内容(最长1024个字节)" class="je-textarea fbz"></textarea>
+				                </div>
+				            </div>
+
+				            <div class="je-form-item">
+				                <div class="je-inputbox">
+				                <button class="je-btn add" type="button">添加</button>
+				                <button class="je-btn update" disabled>更新</button>
+				                <button class="je-btn cancle" disabled>取消</button>
+				                </div>
+				            </div>
+				        </div>    
+				    </fieldset>
+				</div>
+			</div>
+		</div>
+
+		<div class="sjwh">
+    		<iframe src="system.html"
+    		frameborder='0'
+    		onload = ''
+    		scrolling='no'
+    		width="100%" ></iframe>
+		</div>
+
+		<div class="support" style="display: none">
+			<div class="add-record">
+				<div class="head">
+					<span class="title">添加Support包记录</span>
+					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
+				</div>
+				<div class="body">
+					<table>
+						<tr class='row'>
+							<td class='lab'>系统</td>			<td class='content system'></td>
+							<td class='lab'>模块</td>			<td class='content module'></td>
+							<td class='lab'>包类型</td>			<td class='content type'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>Support包名称</td>	<td class='content sname' colspan='5'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>FTP地址</td>		<td class='content ftp' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>发布内容</td>		<td class='content detail' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>基础版本</td>		<td class='content bversion' colspan='2'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>发布流程号</td>		<td class='content pulno' colspan='2'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>发布日期</td>		<td class='content pdate'>
+								<input type="date" name="">
+							</td>
+							<td class='lab'>更新次数</td>		<td class='content uptno'>
+								<input type="number" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>补充说明</td>		<td class='content remark' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class="row">
+							<td class='lab'>负责人员</td>		<td class='content charger'>
+								<input type="text" name="">
+							</td>
+							<td class="lab">问题个数</td>		<td class="content pronum">
+								<input type="number" name="" value="0">
+							</td>
+						</tr>
+						<tr class="row">
+							<td class="lab">Redmine</td>
+							<td class="content redmine" colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>开发人员</td>		<td class='content developer'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>协作号</td>			<td class='content collaboration'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>状态</td>			<td class='content status'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>计划版本</td>		<td class='content pversion'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>Git分支</td>		<td class='content gitb'>
+								<input type="text" name="">
+							</td>
+							<td class='lab'>升级版本</td>		<td class='content uversion'>
+								<input type="text" name="">
+							</td>
+						</tr>
+						<tr class='row'>
+							<td class='lab'>备注</td>			<td class='content note' colspan='5'>
+								<textarea></textarea>
+							</td>
+						</tr>
+						<tr class="row">
+							<td style="text-align: center" colspan="6">
+								<button class="confirm">确定</button>
+								<button class="cancle">取消</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="batch-wrap">
+				<div class="head">
+					<span class="title"></span>
+					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
+				</div>
+				<div class="upt">
+					<div class="unit">
+						<div class="label">包类型:</div>
+						<div class="content"><select class="type"></select></div>
+					</div>
+					<div class="unit">
+						<div class="label">状态:</div>
+						<div class="content"><select class="status"></select></div>
+					</div>
+					<div class="unit">
+						<div class="label">负责人:</div>
+						<div class="content"><select class="charger"></select></div>
+					</div>
+					<div class="unit">
+						<div class="label">计划版本:</div>
+						<div class="content"><input type="text" name="" class="pversion"></div>
+					</div>
+					<div class="unit">
+						<div class="label">Git分支:</div>
+						<div class="content"><input type="text" name="" class="gitbranch"></div>
+					</div>
+					<div class="unit">
+						<div class="label">升级版本:</div>
+						<div class="content"><input type="text" name="" class="uversion"></div>
+					</div>
+				</div>
+				<div class="foot">
+					<button class="confirm">确定</button>
+				</div>
+			</div>
+
+			<div class="exp-sel">
+				<div class="head">
+					<span class="title">导出配置</span>
+					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
+				</div>
+				<div class="body">
+					<div class="table-head">
+						<table>
+							<colgroup>
+								<col style="width: 100px;" />
+								<col style="width: 100px;" />
+								<col style="width: 100px;"/>
+							</colgroup>
+							<thead>
+								<tr>
+									<th class="col1">字段名</th>
+									<th class="col2">导出</th>
+									<th class="col3">排序</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+					<div class="table-body">
+						<table>
+							<colgroup>
+								<col style="width: 100px;" />
+								<col style="width: 100px;" />
+								<col style="width: 83px;" />
+							</colgroup>
+							<tbody>
+								<tr><td class="ID 				col1"><div>ID 		    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="TYPE				col1"><div>包类型 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="SYSTEM			col1"><div>系统 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="MODULE 			col1"><div>模块 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="PACKAGE_NAME		col1"><div>包名称       </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="FTP_ADDR			col1"><div>FTP地址      </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="CONTENT			col1"><div>发布内容     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="BASE_VERSION		col1"><div>基础版本     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="PUBLISH_SERIAL	col1"><div>发布流程号   </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="REMARK			col1"><div>备注 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPT_NUM			col1"><div>更新次数     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="PUBLISH_DATE		col1"><div>发布日期     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="STATUS			col1"><div>状态 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="DEVELOPER		col1"><div>开发员 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="CHARGER			col1"><div>负责人 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="PLAN_VERSION		col1"><div>计划版本     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="GIT_BRANCH		col1"><div>Git分支      </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPGRADE_VERSION	col1"><div>升级版本     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="COLLABORATION	col1"><div>协作号 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="CRT_USER			col1"><div>创建者 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="CRT_TIME			col1"><div>创建时间     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPT_USER			col1"><div>更新者 	    </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+								<tr><td class="UPT_TIME			col1"><div>更新时间     </div></td> <td class="col2"><div><i class="je-icon">&#xe65c;</i></div></td> <td class="col3"><div></div></td> </tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div style="width: 100%;text-align: center;padding: 8px;">
+					<button class="exp">导出</button>
+				</div>
+			</div>
+
+			<div class="task-show">
+				<div class="head">
+					<span class="title"></span>
+					<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
+				</div>
+				<div class="content">
+					<div class="subject">
+						<div class="title"></div>
+					</div>
+					<p class="author">由
+						<span class="cuser"></span>
+						在
+						<span class="cdate"></span>
+						之前添加. 
+						<span class="uuser"></span>
+						更新于
+						<span class="udate"></span>
+						之前.
+					</p>
+					<div class="attributes">
+						<div class="splitcontentleft">
+							<div class="status attribute">
+								<div class="label">状态:</div>
+								<div class="value"></div>
+							</div>
+							<div class="crtuser attribute">
+								<div class="label">创建人员:</div>
+								<div class="value"></div>
+							</div>
+							<div class="uptuser attribute">
+								<div class="label">更新人员:</div>
+								<div class="value"></div>
+							</div>
+							<div class="publishserial attribute">
+								<div class="label">发布流程号:</div>
+								<div class="value"></div>
+							</div>
+							<div class="system attribute">
+								<div class="label">系统:</div>
+								<div class="value"></div>
+							</div>
+							<div class="baseversion attribute">
+								<div class="label">基础版本:</div>
+								<div class="value"></div>
+							</div>
+						</div>
+						<div class="splitcontentleft">
+							<div class="type attribute">
+								<div class="label">包类型:</div>
+								<div class="value"></div>
+							</div>
+							<div class="crtdate attribute">
+								<div class="label">创建日期:</div>
+								<div class="value"></div>
+							</div>
+							<div class="uptdate attribute">
+								<div class="label">更新日期:</div>
+								<div class="value"></div>
+							</div>
+							<div class="publishdate attribute">
+								<div class="label">发布日期:</div>
+								<div class="value"></div>
+							</div>
+							<div class="module attribute">
+								<div class="label">模块:</div>
+								<div class="value"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="ftp">
+						<div class="label">FTP地址</div>
+						<pre class="value"></pre>
+					</div>
+					<div class="pcontent">
+						<div class="label">发布内容</div>
+						<pre class="value"></pre>
+					</div>
+					<div class="remark">
+						<div class="label">补充说明</div>
+						<pre class="value"></pre>
+					</div>
+					<div class="attributes">
+						<div class="splitcontentleft">
+							<div class="charger attribute">
+								<div class="label">负责人员:</div>
+								<div class="value"></div>
+							</div>
+							<div class="developer attribute">
+								<div class="label">开发人员:</div>
+								<div class="value"></div>
+							</div>
+							<div class="collaboration attribute">
+								<div class="label">协作号:</div>
+								<div class="value"></div>
+							</div>
+							<div class="gitbranch attribute">
+								<div class="label">Git分支:</div>
+								<div class="value"></div>
+							</div>
+						</div>
+						<div class="splitcontentleft">
+							<div class="uptnum attribute">
+								<div class="label">更新次数:</div>
+								<div class="value"></div>
+							</div>
+							<div class="problemnum attribute">
+								<div class="label">问题个数:</div>
+								<div class="value"></div>
+							</div>
+							<div class="planversion attribute">
+								<div class="label">计划版本:</div>
+								<div class="value"></div>
+							</div>
+							<div class="upgradeversion attribute">
+								<div class="label">升级版本:</div>
+								<div class="value"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="redmines">
+						<div class="label">Redmine</div>
+						<pre class="value"></pre>
+					</div>
+					<div class="note">
+						<div class="label">备注</div>
+						<pre class="value"></pre>
+					</div>
+				</div>
+			</div>
+
+			<div class="wrap">
+
+				<div class="option">
+					<button class="add">添加</button>
+					<button class="upt" style="display: none">更新</button>
+					<button class="del" style="display: none">删除</button>
+					<button class="exp">导出</button>
+					<button class="filter">筛选</button>
+				</div>
+
+				<div class="show"></div>
+				
+			</div>
+		</div>
+
+		<div class="calendar">
+			<iframe src="calendar.html?version=2.7.7" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
+		</div>
+
+		<div class="week-report">
+			<div class="query-form">
+				<fieldset class="condition">
+                	<legend><i class="icony-55 icony02"></i><span>过滤器</span></legend>
+                	<div class="container" style="display: none">
+                		<span class="cell">
+                			<span class="label">供应商</span>
+                			<span class="input"><select class="SUPPLIER"></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                		<span class="cell">
+                			<span class="label">优先级</span>
+                			<span class="input"><select class="PRIORITY"></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                		<span class="cell">
+                			<span class="label">系统</span>
+                			<span class="input"><select class="SYSTEM"></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                		<span class="cell">
+                			<span class="label">项目类别</span>
+                			<span class="input"><select class="ITEM_TYPE" ></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                		<span class="cell">
+                			<span class="label">项目</span>
+                			<span class="input"><select class="ITEM" ></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                		<span class="cell">
+                			<span class="label">项目进度</span>
+                			<span class="input"><select class="ITEM_PROGRESS" ></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                		<span class="cell">
+                			<span class="label">小组</span>
+                			<span class="input"><select class="GROUP"></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                		<span class="cell">
+                			<span class="label">负责人</span>
+                			<span class="input"><select class="ITEM_CHARGE"></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                		<span class="cell">
+                			<span class="label">标签</span>
+                			<span class="input"><select class="NEED_TRACK"></select></span>
+                			<span class="mult ui-icon ui-icon-plus"></span>
+                		</span>
+                	</div>
+                </fieldset>
+			</div>
+			<!--#######################################################-->
+			<div class="query-opt">
+				<button class="queryi">查询</button>
+				<button class="add">添加</button>
+				<button class="update">修改</button>
+				<button class="delete">删除</button>
+				<button class="export">导出</button>
+			</div>
+			<div class="query-result">
+				<table>
+					<thead>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			<div class="query-foot">
+				<button class="prev"><<上一页</button>
+				<button class="next">下一页>></button>
+				<span class="page-info">(1-50/178)</span><span> 每页显示： </span>
+				 <span class="page-size">10</span> , <span class="page-size selected">25</span> , <span class="page-size">50</span> , <span class="page-size">100</span>
+			</div>
+		</div>
+
+		<div class="monthly-report">
+			<div class="sidebar">
+				<div class="unit" name="overtime">加班时间</div>
+				<div class="unit" name="inner-meeting">外部例会</div>
+				<div class="unit" name="upgrade">重点升级</div>
+				<div class="unit" name="train">培训</div>
+			</div>
+			<div class="container">
+				<div class="overtime">
+					<div class="title">>>加班时间登记信息</div>
+					<div class="col-result">
+						<table>
+							<thead>
+								<tr>
+									<th style="width: 100px;">日期</th>
+									<th style="width: 70px;">姓名</th>
+									<th style="width: 90px;">开始时间</th>
+									<th style="width: 90px;">结束时间</th>
+									<th style="width: 70px;">时长(h)</th>
+									<th style="width: 130px;">加班地点</th>
+									<th style="width: 90px;">加班类型</th>
+									<th style="width: 385px;">加班原因</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+					<div class="col-edit-query">
+						<div class="query1">
+							<div class="title">查看选项</div>
+							<div class="date">
+								<span class="label">日期：</span>
+								<select class="year">
+									<option>2019</option><option>2020</option><option>2021</option>
+								</select>
+								<span>年</span>
+								<select class="month">
+									<option></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+								</select>
+								<span>月</span>
+								<select class="day">
+									<option></option>
+								</select>
+								<span>日</span>
+							</div>
+							<div class="type">
+								<span class="label">加班类型：</span>
+								<select><option></option><option>工作日</option><option>节假日</option></select>
+							</div>
+							<div class="group">
+								<span class="label">小组：</span>
+								<select></select>
+							</div>
+							<div class="user">
+								<span class="label">人员：</span>
+								<select></select>
+							</div>
+						</div>
+
+						<div class="edit1">
+							<div class="title">编辑选项</div>
+							<div class="opt">
+								<button class="add">添加</button>
+								<button class="con-add">连续添加</button>
+								<button class="upt">更新</button>
+								<button class="del">删除</button>
+								<button class="exp">导出</button>
+							</div>
+							<div class="edit-box" style="display: none;">
+								<div class="row">
+									<span class="label">加班日期：</span><span class="option"><input class="date" type="text" name=""></span>
+								</div>
+								<div class="row">
+									<span class="label">加班人员：</span><span class="option"><input class="user" type="text" name="" readonly></span>
+								</div>
+								<div class="row">
+									<span class="label">开始时间：</span><span class="option"><input class="startT" type="text" name="" required placeholder="时间格式(18:00)"></span>
+								</div>
+								<div class="row">
+									<span class="label">结束时间：</span><span class="option"><input class="endT" type="text" name="" required placeholder="时间格式(18:00)"></span>
+								</div>
+								<div class="row">
+									<span class="label">加班时长：</span><span class="option"><input class="hours" type="number" name="" required></span>
+								</div>
+								<div class="row">
+									<span class="label">加班地点：</span><span class="option"><input class="addr" type="text" name="" required></span>
+								</div>
+								<div class="row">
+									<span class="label">加班类型：</span><span class="option"><select class="type"><option selected="selected">工作日</option><option>节假日</option></select></span>
+								</div>
+								<div class="row">
+									<span class="label">加班原因：</span><span class="option"><textarea class="reason"></textarea></span>
+								</div>
+								<div class="foot">
+									<button class="comfirm">确认</button><button class="cancle">取消</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="inner-meeting">
+					<div class="title"> >> 外部例会</div>
+					<div class="col-result">
+						<table><thead><tr>
+							<th style="width: 100px; ">部门</th>
+							<th style="width: 100px; ">日期</th>
+							<th style="width: 300px; ">会议主题</th>
+							<th style="width: 600px; ">出席人员</th>
+						</tr></thead><tbody></tbody></table>
+					</div>	
+					<div class="col-edit-query">
+						<div class="query1">
+							<div class="title">查看选项</div>
+							<div class="date">
+								<span class="label">日期：</span>
+								<select class="year"><option>2019</option><option>2020</option><option>2021</option></select>
+								<span>年</span>
+								<select class="month">
+									<option></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+								</select>
+								<span>月</span>
+							</div>
+						</div>
+						<div class="edit1">
+							<div class="title">编辑选项</div>
+							<div class="opt">
+								<button class="add">添加</button>
+								<button class="del">删除</button>
+								<button class="exp">导出</button>
+							</div>
+							<div class="edit-box">
+								<div class="row">
+									<span class="label">部 门：</span><span class="option"><input class="depart" type="text" name="" ></span>
+								</div>
+								<div class="row">
+									<span class="label">日 期：</span><span class="option"><input class="mdate" type="text" name="" readonly></span>
+								</div>
+								<div class="row">
+									<span class="label">会议主题：</span><span class="option"><textarea class="mtopic"></textarea></span>
+								</div>
+								<div class="row">
+									<span class="label">出席人员：</span><span class="option"><textarea class="pmembers"></textarea></span>
+								</div>
+								<div class="row" style="text-align: center;">
+									<button class="comfirm">确认</button><button class="cancle" style="margin-left: 10px;">取消</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="train">
+					<div class="title"> >> 培训 </div>
+					<div class="col-result">
+						<table>
+							<thead>
+								<tr>
+									<th style="width: 90px; ">日期</th>
+									<th style="width: 60px; ">开始时间</th>
+									<th style="width: 50px; ">时长</th>
+									<th style="width: 100px;">会议室</th>
+									<th style="width: 100px;">部门</th>
+									<th style="width: 300px;">培训内容</th>
+									<th style="width: 100px;">培训人</th>
+									<th style="width: 70px; ">培训人数</th>
+									<th style="width: 250px;">备注(涉及二级部门)</th>
+								</tr>
+							</thead>
+							<tbody></tbody>
+						</table>
+					</div>
+					<div class="col-edit-query">
+						<div class="query1">
+							<div class="title">查看选项</div>
+							<div class="date">
+								<span class="label">日期：</span>
+								<select class="year"><option>2019</option><option>2020</option><option>2021</option></select>
+								<span>年</span>
+								<select class="month">
+									<option></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+								</select>
+								<span>月</span>
+							</div>
+						</div>
+						<div class="edit1">
+							<div class="title">编辑选项</div>
+							<div class="opt">
+								<button class="add">添加</button>
+								<button class="del">删除</button>
+								<button class="exp">导出</button>
+							</div>
+							<div class="edit-box">
+								<div class="row">
+									<span class="label">培训日期：</span><span class="option"><input class="date" type="text" name="" readonly></span>
+								</div>
+								<div class="row">
+									<span class="label">开始时间：</span><span class="option"><input class="time" type="text" name=""></span>
+								</div>
+								<div class="row">
+									<span class="label">培训时长：</span><span class="option"><input class="hours" type="number" name="" placeholder="单位(小时)"></span>
+								</div>
+								<div class="row">
+									<span class="label">会议室：</span><span class="option"><input class="addr" type="text" name=""></span>
+								</div>
+								<div class="row">
+									<span class="label">部门：</span><span class="option"><input class="depart" type="text" name=""></span>
+								</div>
+								<div class="row">
+									<span class="label">培训内容：</span><span class="option"><textarea class="detail"></textarea></span>
+								</div>
+								<div class="row">
+									<span class="label">培训人员：</span><span class="option"><input class="trainer" type="text" name=""></span>
+								</div>
+								<div class="row">
+									<span class="label">培训人数：</span><span class="option"><input class="ntrainers" type="number" name=""></span>
+								</div>
+								<div class="row">
+									<span class="label">备注：</span><span class="option"><textarea class="note"></textarea></span>
+								</div>
+								<div class="row" style="text-align: center;">
+									<button class="comfirm">确认</button><button class="cancle" style="margin-left: 10px;">取消</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="upgrade">
+					<div class="title"> >> 重点升级</div>
+					<div class="col-result">
+						<table><thead><tr>
+							<th style="width: 100px; ">投产部门</th>
+							<th style="width: 100px; ">系统名称</th>
+							<th style="width: 100px; ">上线日期</th>
+							<th style="width: 250px; ">上线功能</th>
+							<th style="width: 250px; ">上线意义</th>
+							<th style="width: 70px; ">填写人员</th>
+							<th style="width: 160px; ">版本号(必填)</th>
+							<th style="width: 80px; ">是否为重点上线功能</th>
+						</tr></thead><tbody></tbody></table>
+					</div>
+
+					<div class="col-edit-query">
+						<div class="query1">
+							<div class="title">查看选项</div>
+							<div class="date">
+								<span class="label">日期：</span>
+								<select class="year"><option>2019</option><option>2020</option><option>2021</option></select>
+								<span>年</span>
+								<select class="month">
+									<option></option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+								</select>
+								<span>月</span>
+							</div>
+						</div>
+						<div class="edit1">
+							<div class="title">编辑选项</div>
+							<div class="opt">
+								<button class="add">添加</button>
+								<button class="del">删除</button>
+								<button class="exp">导出</button>
+							</div>
+							<div class="edit-box">
+								<div class="row"><span class="label">投产部门：</span><span class="option"><input class="tcbm" type="text" name="" ></span></div>
+								<div class="row"><span class="label">系统名称：</span><span class="option"><input class="xtmc" type="text" name="" ></span></div>
+								<div class="row"><span class="label">上线日期：</span><span class="option"><input class="sxrq" type="text" name="" readonly></span></div>
+								<div class="row"><span class="label">上线功能：</span><span class="option"><textarea class="sxgn"></textarea></span></div>
+								<div class="row"><span class="label">上线意义：</span><span class="option"><textarea class="sxyy"></textarea></span></div>
+								<div class="row"><span class="label">填写人员：</span><span class="option"><input class="txry" type="text" name="" readonly></span></div>
+								<div class="row"><span class="label">版本号：</span><span class="option"><input class="bbh" type="text" name="" ></span></div>
+								<div class="row"><span class="label">是否重点上线功能：</span><span class="option"><select class="zdsxgn"><option>是</option><option>否</option></select></span></div>
+								<div class="row" style="text-align: center;margin-top: 20px;">
+									<button class="comfirm">确认</button><button class="cancle" style="margin-left: 10px;">取消</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+	<!--一些特殊的效果-->
+	<div class="wrap1">
+		<div class="wait unshow">
+			<div class="bkg hyl-blur"></div>
+			<div class="spinner">
+			  <div class="bounce1"></div>
+			  <div class="bounce2"></div>
+			  <div class="bounce3"></div>
+			</div>
+		</div>
+		<div class="redmine-sync">
+			<div class="head">
+				<label class="title">同步结果</label>
+				<button class="je-btn je-btn-mini je-bg-red exit"><i class="je-icon">&#xe636;</i></button>
+			</div>
+			<div class="m0">
+				<h3>未找到Redmine本周跟新信息</h3>
+			</div>
+			<div class="m1">
+				<h3>本周Redmine录入或者非本人更新问题(未同步到本周周报记录)</h3>
+				<div class="res"></div>
+			</div>
+			<div class="m2">
+				<h3>从Redmine同步问题</h3>
+				<div class="res"></div>
+			</div>
+			<div class="m3">
+				<h3>从Redmine更新问题</h3>
+				<div class="res"></div>
+			</div>
+		</div>
+
+		<div class="week-report-table">
+			<div class="head">
+				<label>周报编辑</label>
+				<span class="exitbtn"><i class="ui-icon ui-icon-closethick"></i></span>
+			</div>
+			<div class="body">
+				<table>
+					<tr>
+						<td><label>项目</label></td><td><input class="field_ITEM" type="text" name=""></td>
+						<td><label>供应商</label></td><td><input class="field_SUPPLIER" type="text" name=""></td>
+						<td><label>系统</label></td><td><input class="field_SYSTEM" type="text" name=""></td>
+						<td><label>项目类别</label></td><td><input class="field_ITEM_TYPE" type="text" name=""></td>
+					</tr>
+					<tr>
+						<td><label>优先级</label></td><td><select class="field_PRIORITY"><option>高</option><option>中</option><option>低</option></select></td>
+						<td><label>标签</label></td><td><select class="field_NEED_TRACK"><option>个人周报</option><option>项目周报</option></select></td>
+						<td><label>项目所处阶段</label><td><select class="field_ITEM_STAGE"><option>策划阶段</option><option>开发阶段</option><option>测试阶段</option><option>投产阶段</option></select></td></td>
+					</tr>
+					<tr>
+						<td><label>小组</label></td><td><select class="field_GROUP"></select></td>
+						<td><label>负责人</label></td><td><select class="field_ITEM_CHARGE"></select></td>
+						<td><label>项目开始时间</label></td><td><input class="field_START_DATE" type="text" name="" readonly></td>
+						<td><label>项目结束时间</label></td><td><input class="field_END_DATE" type="text" name="" readonly></td>
+					</tr>
+					<tr>
+						<td><label>项目进度</label></td><td><input class="field_ITEM_PROGRESS" type="number" name=""></td>
+						<td><label>工作量</label></td><td><input class="field_WORKLOAD" type="text" name="" title="总工作量(人/周)"></td>
+					</tr>
+					<tr>
+						<td><label>本周工作计划</label></td><td colspan="3"><textarea class="field_LAST_WEEK_WORK wrequired" ></textarea></td>
+						<td><label>本周完成工作</label></td><td colspan="3"><textarea class="field_THIS_WEEK_WORK wrequired" ></textarea></td>
+					</tr>
+					<tr>
+						<td><label>下周工作计划</label></td><td colspan="3"><textarea class="field_NEXT_WEEK_WORK wrequired" ></textarea></td>
+						<td><label>匹配度低说明</label></td><td colspan="3"><textarea class="field_MEET_FEEDBACK"></textarea></td>
+					</tr>
+					<tr>
+						<td><label>风险点</label></td><td colspan="3"><textarea class="field_RISK_POINT wrequired" ></textarea></td>
+						<td><label>JIRA号</label></td><td colspan="3"><textarea class="field_JIRA_NOS"></textarea></td>
+					</tr>
+					<tr>
+						<td><label>当前里程碑任务</label></td><td colspan="3"><textarea class="field_MILESTONE1 wrequired" ></textarea></td>
+						<td><label>截止时间</label></td><td><input class="field_MILESTONE1_END_TIME" type="text" name="" readonly></td>
+					</tr>
+					<tr>
+						<td><label>下一里程碑任务</label></td><td colspan="3"><textarea class="field_MILESTONE2 wrequired" ></textarea></td>
+						<td><label>截止时间</label></td><td><input class="field_MILESTONE2_END_TIME" type="text" name="" readonly></td>
+					</tr>
+					<tr>
+						<td><label>供应商项目负责人</label></td><td><input class="field_SUPPLIER_ITEM_CHARGE" type="text" name=""></td>
+						<td><label>是否提供项目周报</label></td><td><select class="field_PROVIDE_ITEM_WEEK_REPORT"><option>是</option><option>否</option></select></td>
+						<td><label>供应商反馈</label></td><td colspan="3"><textarea class="field_SUPPLIER_FEEDBACK" ></textarea></td>
+					</tr>
+					<tr>
+						<td><label>供应商后续工作</label></td><td colspan="3"><textarea class="field_SUPPLIER_FOLLOWUP_WORK" ></textarea></td>
+					</tr>
+					<tr>
+						<td><label>设计文档</label></td><td><input class="field_DETAIL_DESIGN_DOC" type="text" name=""></td>
+						<td><label>设计评审时间</label></td><td><input class="field_DESIGN_REVIEW_DATE" type="text" name="" readonly></td>
+						<td><label>业务主管部门</label></td><td><input class="field_BUSINESS_DEPART" type="text" name=""></td>
+					</tr>
+					<tr>
+						<td><label>设计评审状态</label></td><td><input class="field_DESIGN_REVIEW_STATUS" type="text" name=""></td>
+					</tr>
+					<tr>
+						<td><label>备注</label></td><td colspan="5"><textarea class="field_NOTE" ></textarea></td>
+					</tr>
+				</table>
+				<div class="foot">
+					<button class="commit">添加</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="week-report-export">
+			<div class="head">
+				<span>导出配置</span>
+				<button class="exit">X</button>
+			</div>
+			<div style="margin-top: 2px;">
+				<table>
+					<colgroup>
+						<col style="width: 120px;">
+						<col style="width: 50px;">
+						<col style="width: 125px;">
+					</colgroup>
+					<thead>
+						<tr>
+							<th>字段名</th>
+							<th>导出</th>
+							<th>移动</th>
+						</tr>
+					</thead>
+				</table>
+				<div class="tbody">
+					<table>
+						<colgroup>
+							<col style="width: 120px;">
+							<col style="width: 50px;">
+							<col style="width: 108px;">
+						</colgroup>
+						<tbody>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div style="text-align: center;">
+				<button class="export">导出</button>
+			</div>
+		</div>
+
+		<div id="week-report-dialog-01" style="display: none;">
+			<p>请确认删除</p>
+		</div>
+		<div id="week-report-dialog-02" style="display: none;">
+			<p></p>
+		</div>
+	</div>
+</body>
+</html>
