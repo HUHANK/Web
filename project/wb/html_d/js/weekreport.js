@@ -8,6 +8,22 @@ var WEEK_REPORT_QUERY_TOTAL_COUNT = 0;
 var WEEK_REPORT_QUERY_CONDITION='';
 var WEEK_REPORT_CURRENT_USER_GROUP = '';
 
+var WEEK_REPORT_REQUIRED_FIELDS='';
+var WEEK_REPORT_REQUIRED_FIELDA=[   ".wrap1 .week-report-table .body .field_LAST_WEEK_WORK", 
+                                    ".wrap1 .week-report-table .body .field_THIS_WEEK_WORK",
+                                    ".wrap1 .week-report-table .body .field_NEXT_WEEK_WORK", 
+                                    ".wrap1 .week-report-table .body .field_RISK_POINT", 
+                                    ".wrap1 .week-report-table .body .field_MILESTONE1",
+                                    ".wrap1 .week-report-table .body .field_MILESTONE2",
+                                    ".wrap1 .week-report-table .body .field_ITEM_PROGRESS",
+                                    ".wrap1 .week-report-table .body .field_MILESTONE1_END_TIME",
+                                    ".wrap1 .week-report-table .body .field_MILESTONE2_END_TIME",
+                                    ".wrap1 .week-report-table .body .field_ITEM_STAGE"
+                                ];
+var WEEK_REPORT_REQUIRED_FIELDB=[
+                                    ".wrap1 .week-report-table .body .field_THIS_WEEK_WORK"
+];
+
 /*Main函数*/
 function WeekReportMain() {
     if (!WEEK_REPORT_EVENT_INIT) {
@@ -163,6 +179,7 @@ function WeekReportInit() {
         }
         $(".wrap1 .week-report-table .body .field_ITEM_CHARGE").append(optgroup);
     }
+
 }
 
 function WeekReportGetValue(cls) {
@@ -221,12 +238,7 @@ function WeekReportEvent() {
         modal: true
     });
 
-    WeekReportRequiredFocusEvent($(".wrap1 .week-report-table .body .field_LAST_WEEK_WORK"));
-    WeekReportRequiredFocusEvent($(".wrap1 .week-report-table .body .field_THIS_WEEK_WORK"));
-    WeekReportRequiredFocusEvent($(".wrap1 .week-report-table .body .field_NEXT_WEEK_WORK"));
-    WeekReportRequiredFocusEvent($(".wrap1 .week-report-table .body .field_RISK_POINT"));
-    WeekReportRequiredFocusEvent($(".wrap1 .week-report-table .body .field_MILESTONE1"));
-    WeekReportRequiredFocusEvent($(".wrap1 .week-report-table .body .field_MILESTONE2"));
+    WeekReportRequiredFocusEvent();
 
     $( ".body .week-report .query-opt button.delete" ).click(function( event ) {
         var id = $(".week-report .query-result tbody .selected").attr("row-id");
@@ -321,7 +333,7 @@ function WeekReportEvent() {
         $(".wrap1 .week-report-table .body table .field_ITEM_PROGRESS").val(0);
         $(".wrap1 .week-report-table .body table .field_WORKLOAD").val(0);
         $(".wrap1 .week-report-table .body table .field_GROUP").val(WEEK_REPORT_CURRENT_USER_GROUP);
-        $(".wrap1 .week-report-table .body table .field_ITEM_STAGE").val("策划阶段");
+        //$(".wrap1 .week-report-table .body table .field_ITEM_STAGE").val("策划阶段");
         WeekReportInitRequired();
 
     });
@@ -738,6 +750,15 @@ function WeekReportEvent() {
         // }
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
+
+    $(".wrap1 .week-report-table .body .field_NEED_TRACK").change(function(event) {
+        if ($(this).val() == "项目周报") {
+            WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDA;
+        } else {
+            WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDB;
+        }
+        WeekReportInitRequired();
+    });
 }
 
 function WeekReportCheckFieldValueRightful()
@@ -871,35 +892,47 @@ function WeekReportDialog02TiShi(msg) {
     $( "#week-report-dialog-02" ).dialog( "open" );
 }
 
-function WeekReportRequiredFocusEvent(obj) {
-    $(obj).blur(function(event) {
-        if ($(this).hasClass('wrequired')) {
-            if ($(this).val().length > 0) $(this).removeClass('wrequired');
-        }else {
-            if ($(this).val().length < 1) $(this).addClass('wrequired');
-        }
-            
-    });
+function WeekReportRequiredFocusEvent() {
+    var arr = WEEK_REPORT_REQUIRED_FIELDA;
+    var i = 0;
+    for(i=0; i<arr.length; i++) {
+        var o = arr[i];
+        //$(o).addClass('wrequired');
+        $(o).blur(function(event) {
+            if ($(this).hasClass('wrequired')) {
+                if ($(this).hasClass('wrequired-red')) {
+                    if ($(this).val().length > 0) $(this).removeClass('wrequired-red');
+                } else {
+                    if ($(this).val().length < 1) $(this).addClass('wrequired-red');
+                }
+            }
+        });
+    }
 }
 
 function WeekReportInitRequired() {
-    var arr = [$(".wrap1 .week-report-table .body .field_LAST_WEEK_WORK"), 
-                $(".wrap1 .week-report-table .body .field_THIS_WEEK_WORK"),
-                $(".wrap1 .week-report-table .body .field_NEXT_WEEK_WORK"), 
-                $(".wrap1 .week-report-table .body .field_RISK_POINT"), 
-                $(".wrap1 .week-report-table .body .field_MILESTONE1"),
-                $(".wrap1 .week-report-table .body .field_MILESTONE2")];
+    if ($(".wrap1 .week-report-table .body .field_NEED_TRACK").val() == "项目周报" ) WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDA;
+    else WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDB;
+
+    console.info(WEEK_REPORT_REQUIRED_FIELDS);
+    var arr = WEEK_REPORT_REQUIRED_FIELDS;
+    
+    if ($(".wrap1 .week-report-table .body .wrequired").length > 0)
+        $(".wrap1 .week-report-table .body .wrequired").removeClass('wrequired').removeClass('wrequired-red');
 
     var i= 0;
     for(i=0; i<arr.length; i++) {
+
         var o = $(arr[i]);
+        console.info(o);
+        o.addClass('wrequired');
         if (o.val().length > 0 ) {
-            if (o.hasClass('wrequired')) {
-                o.removeClass('wrequired');
+            if (o.hasClass('wrequired-red')) {
+                o.removeClass('wrequired-red');
             }
         }else {
-            if (!o.hasClass('wrequired')) {
-                o.addClass('wrequired');
+            if (!o.hasClass('wrequired-red')) {
+                o.addClass('wrequired-red');
             }
         }
     }
