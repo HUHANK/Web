@@ -6,7 +6,7 @@
 	<meta http-equiv="Expires" content="0">
 	<meta http-equiv="Cache-Control" content="no-cache">
 	<meta http-equiv="Cache-Control" content="max-age=0">
-	<title>Week Report System</title>
+	<title>Weekly Report System</title>
 	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />	
 	<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery.cookie.js"></script>
@@ -19,24 +19,24 @@
 	<link rel="stylesheet" type="text/css" href="plug-in/jeui/css/skin/jebox.css">
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/addwork.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/mquery.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/support.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.7.8"></script>
-	<script type="text/javascript" src="js/monthreport.js?version=2.7.8"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.7.8">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.7.8">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.7.8">
+	<script type="text/javascript" src="js/ginit.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/addwork.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/mquery.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/support.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.7.9"></script>
+	<script type="text/javascript" src="js/monthreport.js?version=2.7.9"></script>
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.7.9">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.7.9">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.7.9">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.7.8">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.7.8">
-	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.7.8">
-	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.7.8">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.7.9">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.7.9">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.7.9">
+	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.7.9">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -678,7 +678,7 @@
 		</div>
 
 		<div class="calendar">
-			<iframe src="calendar.html?version=2.7.8" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
+			<iframe src="calendar.html?version=2.7.9" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
 		</div>
 
 		<div class="week-report">
@@ -1101,6 +1101,7 @@
 					<tr>
 						<td><label>项目进度</label></td><td><input class="field_ITEM_PROGRESS" type="number" name=""></td>
 						<td><label>工作量</label></td><td><input class="field_WORKLOAD" type="text" name="" title="总工作量(人/周)"></td>
+						<td><label>业务主管部门</label></td><td><input class="field_BUSINESS_DEPART" type="text" name=""></td>
 					</tr>
 					<tr>
 						<td><label>本周工作计划</label></td><td colspan="3"><textarea class="field_LAST_WEEK_WORK wrequired" ></textarea></td>
@@ -1112,7 +1113,7 @@
 					</tr>
 					<tr>
 						<td><label>风险点</label></td><td colspan="3"><textarea class="field_RISK_POINT wrequired" ></textarea></td>
-						<td><label>JIRA号</label></td><td colspan="3"><textarea class="field_JIRA_NOS"></textarea></td>
+						<!--<td><label>JIRA号</label></td><td colspan="3"><textarea class="field_JIRA_NOS"></textarea></td>-->
 					</tr>
 					<tr>
 						<td><label>当前里程碑任务</label></td><td colspan="3"><textarea class="field_MILESTONE1 wrequired" ></textarea></td>
@@ -1133,9 +1134,6 @@
 					<tr>
 						<td><label>设计文档</label></td><td><input class="field_DETAIL_DESIGN_DOC" type="text" name=""></td>
 						<td><label>设计评审时间</label></td><td><input class="field_DESIGN_REVIEW_DATE" type="text" name="" readonly></td>
-						<td><label>业务主管部门</label></td><td><input class="field_BUSINESS_DEPART" type="text" name=""></td>
-					</tr>
-					<tr>
 						<td><label>设计评审状态</label></td><td><input class="field_DESIGN_REVIEW_STATUS" type="text" name=""></td>
 					</tr>
 					<tr>
