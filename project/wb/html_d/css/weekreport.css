@@ -106,8 +106,17 @@
                     &:hover{
                         background-color: #FEFFE5;
                     }
+                    &.ts1:hover{
+                        background-color: #FEFFE5;
+                    }
                 }
                 tr.selected{
+                    background-color: #FCFEAE;
+                }
+                tr.ts1{
+                    background-color: #FDEEEE;
+                }
+                tr.ts1.selected{
                     background-color: #FCFEAE;
                 }
                 .cITEM{

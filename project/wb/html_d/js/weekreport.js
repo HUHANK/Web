@@ -867,6 +867,18 @@ function WeekReportQueryTable(offset, rows) {
         }
     });
 
+    $(".week-report .query-result table tbody .cUPT_DATE").each(function(index, el) {
+        var date = new Date();
+        if ( (date.getDay() || 7) >= 4 ) {
+            var wfirstday = getFirstDayOfWeek(date);
+            if ($(this).children('pre').text() < wfirstday ) 
+            {
+                $(this).parent().addClass('ts1');
+                $(this).parent().attr("title", "请及时更新本周周报！");
+            }
+        }
+    });
+
     /*------------------------------------------*/
     WeekReportQueryGetTotalCount();
     WEEK_REPORT_TOTAL_PAGE_NUM = parseInt(WEEK_REPORT_QUERY_TOTAL_COUNT/WEEK_REPORT_PAGE_SIZE)+0;

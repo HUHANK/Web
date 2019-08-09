@@ -468,6 +468,18 @@ function getWeekNumber(y, m, d) {
     return week;
 }
 
+function getFirstDayOfWeek(date) {
+	//获取星期几,getDay()返回值是 0（周日） 到 6（周六） 之间的一个整数。0||7为7，即weekday的值为1-7
+	var weekday = date.getDay() || 7;
+	//往前算（weekday-1）天，年份、月份会自动变化
+	date.setDate(date.getDate()-weekday+1);
+	var y = date.getFullYear();
+	var m = date.getMonth() + 1 < 10 ? ("0" + (date.getMonth() + 1)) : (date.getMonth() + 1);
+	var d = date.getDate() < 10 ? ("0" + date.getDate()) : (date.getDate());
+	return y + "-" + m + "-" + d;
+}
+
+
 function getMonthByMonth(year, month, mode) {
 	var ret = [];
 	var y = year;
