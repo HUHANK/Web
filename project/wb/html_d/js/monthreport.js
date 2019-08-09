@@ -92,6 +92,16 @@ function MonthReportInit() {
         dateFormat: "yy-mm-dd"
     });
 
+    console.info();
+    $(".body .monthly-report .container .inner-meeting .col-edit-query .edit1 .edit-box .mdate").datepicker({
+        showButtonPanel: true,
+        changeMonth: true,
+        changeYear: true,
+        showWeek: true,
+        firstDay: 1,
+        dateFormat: "yy-mm-dd"
+    });
+
     //$(".body .monthly-report .container .overtime .col-result thead").css("width", "calc(100% - "+getScrollWidth()+"px)");
     MonthReportTableQuery();
 

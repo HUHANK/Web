@@ -138,6 +138,12 @@
                     color: #2B2B2B;
                     font-size: 13px;
                 }
+                .cITEM_INNER_RISKS{
+                    color: red;
+                }
+                .cITEM_OUTER_RISKS{
+                    color: red;
+                }
             }
             th{
                 border: none;

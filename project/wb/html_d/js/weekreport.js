@@ -12,13 +12,15 @@ var WEEK_REPORT_REQUIRED_FIELDS='';
 var WEEK_REPORT_REQUIRED_FIELDA=[   ".wrap1 .week-report-table .body .field_LAST_WEEK_WORK", 
                                     ".wrap1 .week-report-table .body .field_THIS_WEEK_WORK",
                                     ".wrap1 .week-report-table .body .field_NEXT_WEEK_WORK", 
-                                    ".wrap1 .week-report-table .body .field_RISK_POINT", 
+                                    //".wrap1 .week-report-table .body .field_RISK_POINT", 
                                     ".wrap1 .week-report-table .body .field_MILESTONE1",
                                     ".wrap1 .week-report-table .body .field_MILESTONE2",
                                     ".wrap1 .week-report-table .body .field_ITEM_PROGRESS",
                                     ".wrap1 .week-report-table .body .field_MILESTONE1_END_TIME",
                                     ".wrap1 .week-report-table .body .field_MILESTONE2_END_TIME",
+                                    ".wrap1 .week-report-table .body .field_SUPPLIER_INPUT_INFO",
                                     ".wrap1 .week-report-table .body .field_ITEM_STAGE"
+
                                 ];
 var WEEK_REPORT_REQUIRED_FIELDB=[
                                     ".wrap1 .week-report-table .body .field_THIS_WEEK_WORK"
@@ -53,12 +55,15 @@ TABLE_CONF.columns = [
     {name: '本周完成工作',        field: 'THIS_WEEK_WORK',           sel_field: "THIS_WEEK_WORK",         width: '320', align: 'left'},
     {name: '下周工作计划',        field: 'NEXT_WEEK_WORK',           sel_field: "NEXT_WEEK_WORK",         width: '320', align: 'left'},
     {name: '匹配度低说明',        field: 'MEET_FEEDBACK',            sel_field: "MEET_FEEDBACK",          width: '120', align: 'left'},
-    {name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '280', align: 'left'},
+    //{name: '风险点',              field: 'RISK_POINT',               sel_field: "RISK_POINT",             width: '280', align: 'left'},
+    {name: '项目组内风险',        field: 'ITEM_INNER_RISKS',         sel_field: "ITEM_INNER_RISKS",        width: '280', align: 'left'},
+    {name: '项目组外风险',        field: 'ITEM_OUTER_RISKS',         sel_field: "ITEM_OUTER_RISKS",        width: '280', align: 'left'},
     //{name: 'JIRA号',             field: 'JIRA_NOS',                 sel_field: "JIRA_NOS",               width: '100', align: 'center'},
     {name: '当前里程碑任务',      field: 'MILESTONE1',               sel_field: "MILESTONE1",             width: '280', align: 'left'},
     {name: '截止时间',            field: 'MILESTONE1_END_TIME',      sel_field: "MILESTONE1_END_TIME",    width: '80', align: 'center'},
     {name: '下一里程碑任务',      field: 'MILESTONE2',               sel_field: "MILESTONE2",             width: '280', align: 'left'},
     {name: '截止时间',            field: 'MILESTONE2_END_TIME',      sel_field: "MILESTONE2_END_TIME",    width: '80', align: 'center'},
+    {name: '供应商投入问题',      field: 'SUPPLIER_INPUT_INFO',      sel_field: "SUPPLIER_INPUT_INFO",    width: '280', align: 'left'},
     {name: '供应商后续工作',      field: 'SUPPLIER_FOLLOWUP_WORK',   sel_field: "SUPPLIER_FOLLOWUP_WORK", width: '220', align: 'left'},
     {name: '是否提供项目周报',    field: 'PROVIDE_ITEM_WEEK_REPORT',  sel_field: "PROVIDE_ITEM_WEEK_REPORT",width: '60', align: 'center'},
     {name: '供应商反馈',          field: 'SUPPLIER_FEEDBACK',        sel_field: "SUPPLIER_FEEDBACK",       width: '180', align: 'center'},
@@ -185,7 +190,9 @@ function WeekReportInit() {
 function WeekReportGetValue(cls) {
 
     var clas = ".week-report-table .body .field_"+cls;
+    console.info($(clas));
     var tagName = $(clas)[0].tagName;
+    console.info(clas);
     if (tagName == "INPUT" || tagName == "TEXTAREA" || tagName == 'SELECT') {
         if ($(clas).val() == null) return '';
         return ($(clas).val());
@@ -763,19 +770,20 @@ function WeekReportEvent() {
 
 function WeekReportCheckFieldValueRightful()
 {
-    var NEED_TRACK = WeekReportGetValue("NEED_TRACK");
-    var ITEM_PROGRESS = WeekReportGetValue("ITEM_PROGRESS");
-    var THIS_WEEK_WORK = WeekReportGetValue("THIS_WEEK_WORK");
+    var NEED_TRACK = $.trim(WeekReportGetValue("NEED_TRACK"));
+    var ITEM_PROGRESS = $.trim(WeekReportGetValue("ITEM_PROGRESS"));
+    var THIS_WEEK_WORK = $.trim(WeekReportGetValue("THIS_WEEK_WORK"));
     if (THIS_WEEK_WORK.length < 1) {
         WeekReportDialog02TiShi("请填写本周完成的工作!");
         return false;
     }
     if (NEED_TRACK == "项目周报") {
-        var MILESTONE1 = WeekReportGetValue("MILESTONE1");
-        var MILESTONE2 = WeekReportGetValue("MILESTONE2");
-        var MILESTONE1_END_TIME = WeekReportGetValue("MILESTONE1_END_TIME");
-        var MILESTONE2_END_TIME = WeekReportGetValue("MILESTONE2_END_TIME");
-        var ITEM_STAGE = WeekReportGetValue("ITEM_STAGE");
+        var MILESTONE1 = $.trim(WeekReportGetValue("MILESTONE1"));
+        var MILESTONE2 = $.trim(WeekReportGetValue("MILESTONE2"));
+        var MILESTONE1_END_TIME = $.trim(WeekReportGetValue("MILESTONE1_END_TIME"));
+        var MILESTONE2_END_TIME = $.trim(WeekReportGetValue("MILESTONE2_END_TIME"));
+        var ITEM_STAGE = $.trim(WeekReportGetValue("ITEM_STAGE"));
+        var SUPPLIER_INPUT_INFO = $.trim(WeekReportGetValue("SUPPLIER_INPUT_INFO"));
 
         if (ITEM_PROGRESS.length < 1) {
             WeekReportDialog02TiShi("请填写正确的项目进度!");
@@ -799,6 +807,10 @@ function WeekReportCheckFieldValueRightful()
         }
         if (ITEM_STAGE.length < 1) {
             WeekReportDialog02TiShi("请选择项目所处阶段!");
+            return false;
+        }
+        if (SUPPLIER_INPUT_INFO.length < 1) {
+            WeekReportDialog02TiShi("请输入供应商投入问题!");
             return false;
         }
     }
@@ -901,9 +913,9 @@ function WeekReportRequiredFocusEvent() {
         $(o).blur(function(event) {
             if ($(this).hasClass('wrequired')) {
                 if ($(this).hasClass('wrequired-red')) {
-                    if ($(this).val().length > 0) $(this).removeClass('wrequired-red');
+                    if ($(this).val() != null && $(this).val().length > 0) $(this).removeClass('wrequired-red');
                 } else {
-                    if ($(this).val().length < 1) $(this).addClass('wrequired-red');
+                    if ($(this).val() == null || $(this).val().length < 1) $(this).addClass('wrequired-red');
                 }
             }
         });
@@ -914,7 +926,7 @@ function WeekReportInitRequired() {
     if ($(".wrap1 .week-report-table .body .field_NEED_TRACK").val() == "项目周报" ) WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDA;
     else WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDB;
 
-    console.info(WEEK_REPORT_REQUIRED_FIELDS);
+    //console.info(WEEK_REPORT_REQUIRED_FIELDS);
     var arr = WEEK_REPORT_REQUIRED_FIELDS;
     
     if ($(".wrap1 .week-report-table .body .wrequired").length > 0)
@@ -924,9 +936,9 @@ function WeekReportInitRequired() {
     for(i=0; i<arr.length; i++) {
 
         var o = $(arr[i]);
-        console.info(o);
+        //console.info(o);
         o.addClass('wrequired');
-        if (o.val().length > 0 ) {
+        if (o.val() != null && o.val().length > 0 ) {
             if (o.hasClass('wrequired-red')) {
                 o.removeClass('wrequired-red');
             }
