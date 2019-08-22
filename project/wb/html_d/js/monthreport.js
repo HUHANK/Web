@@ -437,8 +437,8 @@ function MonthReportEventInit() {
         if (MONTH_REPORT_OVER_TIME_OPT == 'add' || 'con-add' == MONTH_REPORT_OVER_TIME_OPT) {
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .date").val(GetNowDate2());
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .user").val(g_CURRENT_USER);
-            $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .startT").val("09:00");
-            $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .endT").val("17:00");
+            $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .startT").val("17:00");
+            $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .endT").val("20:00");
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .hours").val("8");
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .reason").val("");
             $(".body .monthly-report .container .overtime .col-edit-query .edit1 .edit-box .addr").val("");

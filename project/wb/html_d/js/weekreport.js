@@ -38,7 +38,7 @@ function WeekReportMain() {
 
 var TABLE_CONF = {};
 TABLE_CONF.columns = [
-    {name: '#',                  field: 'ID',                       sel_field: "ID",                     width: '28', align: 'center'},
+    {name: '#',                  field: 'ID',                       sel_field: "ID",                     width: '40', align: 'center'},
     {name: '供应商',              field: 'SUPPLIER',                 sel_field: "SUPPLIER",              width: '50', align: 'center'},
     {name: '优先级',              field: 'PRIORITY',                 sel_field: "PRIORITY",              width: '40', align: 'center'},
     {name: '系统',                field: 'SYSTEM',                  sel_field: "SYSTEM",                 width: '80', align: 'center'},
@@ -48,6 +48,7 @@ TABLE_CONF.columns = [
     {name: '项目结束时间',         field: 'END_DATE',                 sel_field: "END_DATE",               width: '80', align: 'center'}, 
     {name: '项目所处阶段',        field: 'ITEM_STAGE',                sel_field: "ITEM_STAGE",            width: '80', align: 'center'},
     {name: '项目进度(%)',         field: 'ITEM_PROGRESS',            sel_field: "ITEM_PROGRESS",         width: '50', align: 'center'},
+    {name: '项目状态',            field: 'ITEM_STATUS',            sel_field: "ITEM_STATUS",              width: '50', align: 'center'},
     {name: '小组',                field: 'GROUP',                   sel_field: "`GROUP`",                 width: '60', align: 'center'},
     {name: '负责人',              field: 'ITEM_CHARGE',              sel_field: "ITEM_CHARGE",            width: '50', align: 'center'},
     {name: '标签',                field: 'NEED_TRACK',               sel_field: "NEED_TRACK",             width: '60', align: 'center'},
@@ -118,7 +119,7 @@ function WeekReportInit() {
     parent.find(".GROUP").val('');
     parent.find(".ITEM_CHARGE").val('');
     parent.find(".NEED_TRACK").val('');
-    WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') ";
+    WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND ITEM_STATUS IN ('未完成','') ";
     WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
 
     $(".wrap1 .week-report-table .body .field_START_DATE").datepicker({
@@ -318,6 +319,10 @@ function WeekReportEvent() {
                 }
             });
         });
+
+        /*特殊修改*/
+        $(".body .week-report .query-form fieldset .container .cell .input select.ITEM_STATUS").html(
+            "<option selected>未完成</option><option>已完成</option><option>暂停</option><option selected></option>");
     });
 
     $(".body .week-report .query-opt button.add").click(function(event) {
@@ -340,6 +345,7 @@ function WeekReportEvent() {
         $(".wrap1 .week-report-table .body table .field_ITEM_PROGRESS").val(0);
         $(".wrap1 .week-report-table .body table .field_WORKLOAD").val(0);
         $(".wrap1 .week-report-table .body table .field_GROUP").val(WEEK_REPORT_CURRENT_USER_GROUP);
+        $(".wrap1 .week-report-table .body table .field_ITEM_STATUS").val("未完成");
         //$(".wrap1 .week-report-table .body table .field_ITEM_STAGE").val("策划阶段");
         WeekReportInitRequired();
 
@@ -387,7 +393,15 @@ function WeekReportEvent() {
             WeekReportInitRequired();
         });
     });
+    $(".body .week-report .query-opt button.query-all").click(function(event) {
+        WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') ";
+        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+    });
 
+    $(".body .week-report .query-opt button.query-active").click(function(event) {
+        WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND ITEM_STATUS IN ('未完成','') ";
+        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+    });
     $(".body .week-report .query-opt button.queryi").click(function(event) {
         var parent = $(".week-report .query-form .condition .container");
         var SUPPLIER = parent.find(".SUPPLIER option:selected");
@@ -399,6 +413,7 @@ function WeekReportEvent() {
         var GROUP = parent.find(".GROUP option:selected");
         var ITEM_CHARGE = parent.find(".ITEM_CHARGE option:selected");
         var NEED_TRACK = parent.find(".NEED_TRACK option:selected");
+        var ITEM_STATUS = parent.find(".ITEM_STATUS option:selected");
         var scondition = "";
 
         var s = SUPPLIER;
@@ -540,6 +555,23 @@ function WeekReportEvent() {
 
         s = NEED_TRACK;
         field = "NEED_TRACK";
+        if (s.length > 0) {
+            var sf = "";
+            s.each(function(index, el) {
+                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+            });
+            if (sf.length > 1) {
+                sf = sf.substring(0, sf.length-1)
+                if (scondition.length < 1) {
+                    scondition += " WHERE "+field+" IN ("+sf+") ";
+                }else {
+                    scondition += " AND " + field+" IN ("+sf+") ";
+                }
+            }
+        }
+
+        s = ITEM_STATUS;
+        field = "ITEM_STATUS";
         if (s.length > 0) {
             var sf = "";
             s.each(function(index, el) {
@@ -761,10 +793,25 @@ function WeekReportEvent() {
     $(".wrap1 .week-report-table .body .field_NEED_TRACK").change(function(event) {
         if ($(this).val() == "项目周报") {
             WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDA;
+            $(".wrap1 .week-report-table .body table .field_ITEM_STATUS").val("未完成");
         } else {
             WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDB;
+            $(".wrap1 .week-report-table .body table .field_ITEM_STATUS").val("");
+            $(".wrap1 .week-report-table .body .field_ITEM_PROGRESS").val(0);
         }
         WeekReportInitRequired();
+    });
+
+    $(".wrap1 .week-report-table .body .field_ITEM_PROGRESS").change(function(event) {
+        if ($(this).val() == 100){
+            $(".wrap1 .week-report-table .body table .field_ITEM_STATUS").val("已完成");
+        }
+    });
+
+    $(".wrap1 .week-report-table .body .field_ITEM_STATUS").change(function(event) {
+        if ($(this).val() == "已完成"){
+            $(".wrap1 .week-report-table .body .field_ITEM_PROGRESS").val(100);
+        }
     });
 }
 
