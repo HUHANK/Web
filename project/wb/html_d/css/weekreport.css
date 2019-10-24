@@ -169,6 +169,13 @@
                 .cITEM_OUTER_RISKS{
                     color: red;
                 }
+                .cEND_DATE div{
+                    border: 1px solid transparent;
+
+                    &:hover{
+                        border: 1px solid #5F6D79;
+                    }
+                }
             }
             th{
                 border: none;
@@ -320,6 +327,10 @@
                     transition: all 0.3s;
                 }
             }
+        }
+
+        .MOD_HIDE{
+            display: none;
         }
     }
 
