@@ -60,7 +60,7 @@ function main() {
 
 	window.onresize = function() {
 		init_window();
-		query_get_result(g_CURRENT_QPAGE);
+		//query_get_result(g_CURRENT_QPAGE);
 	}
 	init_window();
 

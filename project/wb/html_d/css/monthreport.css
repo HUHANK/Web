@@ -1,7 +1,7 @@
 .body .monthly-report{
     display: none;
     height: 800px;
-    width: 1690px;
+    width: 1660px;
     font-size: 12px;
 
     table{
@@ -85,7 +85,7 @@
         }
     }
     .sidebar{
-        width: 120px;
+        width: 90px;
         height: 100%;
         //border: 1px solid red;
         font-size: 14px;

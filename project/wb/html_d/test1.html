@@ -1,94 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>TEST1</title>
-  <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <meta charset="utf-8">
+    <title>表格控件HTable</title>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/widget/htable.js"></script>
 </head>
 <body>
-  <table>
-    <thead><tr>
-      <th>系统</th>
-      <th>项目名称</th>
-      <th>项目类别</th>
-      <th>优先级</th>
-      <th>供应商</th>
-      <th>项目所处阶段</th>
-      <th>项目进度</th>
-      <th>项目负责人</th>
-      <th>详情</th>
-    </tr></thead>
-    <tbody>
-      <tr>
-        <td>集中交易系统</td>
-        <td>7*24小时银证转账</td>
-        <td>业务需求</td>
-        <td>高</td>
-        <td>金仕达</td>
-        <td>筹划阶段</td>
-        <td>10</td>
-        <td>张华伟</td>
-        <td><button class="b1">∨</button></td>
-      </tr>
-      <tr>
-        <td class="b1-child" colspan="9" style="display: none; text-align: center;">
-          <table>
-            <thead><tr>
-              <th>子功能名称</th>
-              <th>负责人</th>
-              <th>进度</th>
-              <th>本周工作计划</th>
-              <th>本周完成工作</th>
-              <th>下周工作计划</th>、
-              <th>风险点</th>
-            </tr></thead>
-            <tbody>
-              <tr>
-                <td>1111</td>
-                <td>22222</td>
-                <td>333333</td>
-                <td>44444</td>
-                <td>55555</td>
-                <td>6666</td>
-                <td>77777</td>
-              </tr>
-            </tbody>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>信用交易系统</td>
-        <td>性能优化</td>
-        <td>系统优化</td>
-        <td>低</td>
-        <td>金仕达</td>
-        <td>开发阶段</td>
-        <td>30</td>
-        <td>张华伟</td>
-        <td><button>∨</button></td>
-      </tr>
-    </tbody>
-  </table>
+    <div id="table1"></div>
 </body>
 
-<script type="text/javascript">
-  $("table .b1").click(function(event) {
-    $(".b1-child").toggle();
-  });
-</script>
-
-<style type="text/css">
-*{
-  font-size: 14px;
-}
-table{
-  border-collapse: collapse;
-  border: 1px solid #D7D7D7;
-}
-table th, td{
-  border-right: 1px solid #D7D7D7;
-  border-bottom: 1px solid #D7D7D7;
-  padding: 6px;
-}
+<style>
+    #table1{
+        //background-color: #F2F2F2;
+        width: 600px;
+        height: 400px;
+        //overflow: auto;
+        //border: 1px solid #95FD82;
+    }
 </style>
+<script type="text/javascript" >
+    window.onload = function() {
+        var TABLE_CONF = {};
+        TABLE_CONF.body_height = 800;
+        TABLE_CONF.columns = [
+            {name: "ID",  field: "ID",  width: 50,  align: "center"},
+            {name: "姓名",  field: "NAME",  width: 100,  align: "center"},
+            {name: "地址",  field: "ADDR",  width: 160,  align: "left"},
+            {name: "项目",  field: "ITEM",  width: 180,  align: "center"},
+            {name: "系统",  field: "SYSTEM",  width: 180,  align: "center"},
+        ];
+        TABLE_CONF.data = [
+            [1, 'Hank', 'jfk jdsk ajf ks dj fk', "周报系统添加月报统计信息", "周报系统"],
+            [2, 'Hank', 'jfk jdsk ajf ks dj fk', "周报系统添加月报统计信息", "周报系统"],
+            [3, 'Hank', 'jfk jdsk ajf\n ks dj fk', "周报系统添加月报统计信息", "周报系统"],
+            [4, 'Hank', 'jfk jdsk ajf ks dj fk', "周报系统添加月报统计信息", "周报系统"],
+            [5, 'Hank', '你好，我是海通证券交易员 sdfsdfsa fsdf ', "周报系统添加月报统计信息", "周报系统"],
+            [6, 'Hank', 'jfk jdsk ajf ks dj fk', "周报系统添加月报统计信息", "周报系统"],
+            [7, 'Hank', '你好，我是海通证券交易员 sdfsdfsa fsdf ', "周报系统添加月报统计信息", "周报系统"],
+            [8, 'Hank', 'jfk jdsk ajf ks dj fk', "周报系统添加月报统计信息", "周报系统"],
+            [9, 'Hank', '你好，我是海通证券交易员 sdfsdfsa fsdf ', "周报系统添加月报统计信息", "周报系统"],
+            [10, 'Hank', 'jfk jdsk ajf ks dj fk', "周报系统添加月报统计信息", "周报系统"],
+            [11, 'Hank', '你好，我是海通证券交易员 sdfsdfsa fsdf ', "周报系统添加月报统计信息", "周报系统"],
+        ];
+        var t = new HTable($("#table1"), TABLE_CONF);
+        //console.info(TABLE_CONF.columns[0].td_reflex)
+        //console.info($("#table1").html());
+    }
+    
+</script>
 </html>
