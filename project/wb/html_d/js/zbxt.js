@@ -1,4 +1,9 @@
+
 window.onload = main;
+
+// jQuery(document).ready(function($) {
+//     main(); 
+// });
 
 // jQuery(document).ready(function($) {
 // 	main();
@@ -58,17 +63,18 @@ function main() {
 		}
 	});
 
-	window.onresize = function() {
-		init_window();
-		//query_get_result(g_CURRENT_QPAGE);
-	}
-	init_window();
-
 	$(document).scroll(function(event) {
     	OnScroll(event);
     });
 
-    $( document ).tooltip();
+	$( document ).tooltip();
+	
+	window.onresize = function() {
+		init_window();
+		//query_get_result(g_CURRENT_QPAGE);
+		WeekReportWinResize();
+	}
+	init_window();
 }
 
 function OnScroll( event ) {
@@ -93,8 +99,6 @@ function init_window() {
 	$(iframe_body).children('.wrap').height(hsjwh);
 	$(iframe_body).find('.wrap .wrap1').height(hsjwh);
 	$(iframe_body).find('.wrap .wrap1').width(wwrap1);
-	SuportRepaint();
-	WeekReportWinResize();
 	MonthReportWinResize();
 }
 
@@ -138,75 +142,75 @@ function GInit(){
 	Options.QueryCondition.PageSize = 25;
 	GUpdateBaseinfo();
 
-	jeui.use(["jeSelect"], function(){
-		$(".sjwh .wrap .xzgl .xzcysz .zcy").jeSelect({
-			sosList:true
-		});
+	// jeui.use(["jeSelect"], function(){
+	// 	$(".sjwh .wrap .xzgl .xzcysz .zcy").jeSelect({
+	// 		sosList:true
+	// 	});
 
-		$("#je-popup-box-wrap select").jeSelect({
-			sosList:true
-		});
+	// 	$("#je-popup-box-wrap select").jeSelect({
+	// 		sosList:true
+	// 	});
 		
-		$(".sjwh .wrap .zdwh fieldset select").jeSelect({
-            sosList:true,
-            itemfun:function(elem, index, val){
-            	//console.info(elem, index, val);
+	// 	$(".sjwh .wrap .zdwh fieldset select").jeSelect({
+    //         sosList:true,
+    //         itemfun:function(elem, index, val){
+    //         	//console.info(elem, index, val);
             	
-            	if (elem.attr("class") == "root") {
-            		//console.info(elem.attr("class"));
-            		var id = elem.children('option[selected="selected"]').attr("name");
-            		var param = new Object();
-            		param.SessionID = Options.SessionID;
-					param.method = "GET";
-					param.condi = {};
-					param.condi.parent = id;
-					sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
-						//console.info("result",d);
-						if (d.ErrCode == 0) {
-							var data = d.data;
-							var shtml = "<option name='-1'></option>";
-							for(var i=0; i<data.length; i++) {
-								shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
-							}
-							//console.info(shtml);
-							var yj = $(".sjwh .wrap .zdwh fieldset .first");
-							yj.html("");
-							yj.val("");
-							yj.html(shtml);
-						}
-					});
+    //         	if (elem.attr("class") == "root") {
+    //         		//console.info(elem.attr("class"));
+    //         		var id = elem.children('option[selected="selected"]').attr("name");
+    //         		var param = new Object();
+    //         		param.SessionID = Options.SessionID;
+	// 				param.method = "GET";
+	// 				param.condi = {};
+	// 				param.condi.parent = id;
+	// 				sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+	// 					//console.info("result",d);
+	// 					if (d.ErrCode == 0) {
+	// 						var data = d.data;
+	// 						var shtml = "<option name='-1'></option>";
+	// 						for(var i=0; i<data.length; i++) {
+	// 							shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
+	// 						}
+	// 						//console.info(shtml);
+	// 						var yj = $(".sjwh .wrap .zdwh fieldset .first");
+	// 						yj.html("");
+	// 						yj.val("");
+	// 						yj.html(shtml);
+	// 					}
+	// 				});
 
-            	}else if (elem.attr("class") == "first") {
-            		var id = elem.children('option[selected="selected"]').attr("name");
-            		var param = new Object();
-            		param.SessionID = Options.SessionID;
-					param.method = "GET";
-					param.condi = {};
-					param.condi.parent = id;
-					sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
-						//console.info("result",d);
-						if (d.ErrCode == 0) {
-							var data = d.data;
-							var shtml = "<option name='-1'> </option>";
-							for(var i=0; i<data.length; i++) {
-								shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
-							}
-							//console.info(shtml);
-							var yj = $(".sjwh .wrap .zdwh fieldset .second");
-							yj.html("");
-							yj.val("");
-							yj.html(shtml);
-						}
-					});
-            	}
+    //         	}else if (elem.attr("class") == "first") {
+    //         		var id = elem.children('option[selected="selected"]').attr("name");
+    //         		var param = new Object();
+    //         		param.SessionID = Options.SessionID;
+	// 				param.method = "GET";
+	// 				param.condi = {};
+	// 				param.condi.parent = id;
+	// 				sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
+	// 					//console.info("result",d);
+	// 					if (d.ErrCode == 0) {
+	// 						var data = d.data;
+	// 						var shtml = "<option name='-1'> </option>";
+	// 						for(var i=0; i<data.length; i++) {
+	// 							shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
+	// 						}
+	// 						//console.info(shtml);
+	// 						var yj = $(".sjwh .wrap .zdwh fieldset .second");
+	// 						yj.html("");
+	// 						yj.val("");
+	// 						yj.html(shtml);
+	// 					}
+	// 				});
+    //         	}
 
-            }
-        });
-	});
+    //         }
+    //     });
+	// });
 
-	add_zb_ginit();
-	query_sidebar_init();
-	InitSupport();
+	// add_zb_ginit();
+	// query_sidebar_init();
+	// InitSupport();
 }
 
 function GUpdateBaseinfo(){
@@ -266,26 +270,26 @@ function initNavbar(index){
 	index = parseInt(index)
 	switch(index)
 	{
-		case 2:
-			$(".body .query"	).css("display", "block");
-			$(".title .navbar ul li[value='Query']").addClass('clicked');
-			query();
-			break;
-		case 1:
-			$(".body .add-zb"	).css("display", "block");
-			$(".title .navbar ul li[value='WZB']").addClass('clicked');
-			add_zb();
-			break;
+		// case 2:
+		// 	$(".body .query"	).css("display", "block");
+		// 	$(".title .navbar ul li[value='Query']").addClass('clicked');
+		// 	query();
+		// 	break;
+		// case 1:
+		// 	$(".body .add-zb"	).css("display", "block");
+		// 	$(".title .navbar ul li[value='WZB']").addClass('clicked');
+		// 	add_zb();
+		// 	break;
 		case 5:
 			$(".body .sjwh"		).css("display", "block");
 			$(".title .navbar ul li[value='SZWH']").addClass('clicked');
 			system_init();
 			break;
-		case 3:
-			$(".body .support"	).css("display", "block");
-			$(".title .navbar ul li[value='Support']").addClass('clicked');
-			Support();
-			break;
+		// case 3:
+		// 	$(".body .support"	).css("display", "block");
+		// 	$(".title .navbar ul li[value='Support']").addClass('clicked');
+		// 	Support();
+		// 	break;
 		case 4:
 			$(".body .calendar").css("display", "block");
 			$(".title .navbar ul li[value='Calendar']").addClass('clicked');
@@ -325,29 +329,29 @@ function navbar() {
 			// $.cookie(NavbarIndexCookies, 1);
 			// home_page();
 		} else if (value == "Query"){
-			$(".body .query"	).css("display", "block");
+			// $(".body .query"	).css("display", "block");
 
-			$(".body .home-page").css("display", "none");
-			$(".body .sjwh"		).css("display", "none");
-			$(".body .add-zb"	).css("display", "none");
-			$(".body .support"	).css("display", "none");
-			$(".body .calendar"	).css("display", "none");
-			$(".body .week-report"	).css("display", "none");
-			$(".body .monthly-report"	).css("display", "none");
-			$.cookie(NavbarIndexCookies, 2);
-			query();
+			// $(".body .home-page").css("display", "none");
+			// $(".body .sjwh"		).css("display", "none");
+			// $(".body .add-zb"	).css("display", "none");
+			// $(".body .support"	).css("display", "none");
+			// $(".body .calendar"	).css("display", "none");
+			// $(".body .week-report"	).css("display", "none");
+			// $(".body .monthly-report"	).css("display", "none");
+			// $.cookie(NavbarIndexCookies, 2);
+			// query();
 		} else if (value == "WZB") {
-			$(".body .add-zb"	).css("display", "block");
+			// $(".body .add-zb"	).css("display", "block");
 
-			$(".body .home-page").css("display", "none");
-			$(".body .query"	).css("display", "none");
-			$(".body .sjwh"		).css("display", "none");
-			$(".body .support"	).css("display", "none");
-			$(".body .calendar"	).css("display", "none");
-			$(".body .week-report"	).css("display", "none");
-			$(".body .monthly-report"	).css("display", "none");
-			$.cookie(NavbarIndexCookies, 1);
-			add_zb();
+			// $(".body .home-page").css("display", "none");
+			// $(".body .query"	).css("display", "none");
+			// $(".body .sjwh"		).css("display", "none");
+			// $(".body .support"	).css("display", "none");
+			// $(".body .calendar"	).css("display", "none");
+			// $(".body .week-report"	).css("display", "none");
+			// $(".body .monthly-report"	).css("display", "none");
+			// $.cookie(NavbarIndexCookies, 1);
+			// add_zb();
 		} else if (value == "SZWH") {
 			$(".body .sjwh"		).css("display", "block");
 
@@ -361,25 +365,25 @@ function navbar() {
 			$.cookie(NavbarIndexCookies, 5);
 			system_init();
 		} else if (value == "Support") {
-			$(".body .support"	).css("display", "block");
+			// $(".body .support"	).css("display", "block");
 
-			$(".body .sjwh"		).css("display", "none");
-			$(".body .home-page").css("display", "none");
-			$(".body .query"	).css("display", "none");
-			$(".body .add-zb"	).css("display", "none");
-			$(".body .calendar"	).css("display", "none");
-			$(".body .week-report"	).css("display", "none");
-			$(".body .monthly-report"	).css("display", "none");
-			$.cookie(NavbarIndexCookies, 3);
-			Support();
+			// $(".body .sjwh"		).css("display", "none");
+			// $(".body .home-page").css("display", "none");
+			// $(".body .query"	).css("display", "none");
+			// $(".body .add-zb"	).css("display", "none");
+			// $(".body .calendar"	).css("display", "none");
+			// $(".body .week-report"	).css("display", "none");
+			// $(".body .monthly-report"	).css("display", "none");
+			// $.cookie(NavbarIndexCookies, 3);
+			// Support();
 		} else if (value == "Calendar") {
 			$(".body .calendar"	).css("display", "block");
 
-			$(".body .support"	).css("display", "none");
+			// $(".body .support"	).css("display", "none");
 			$(".body .sjwh"		).css("display", "none");
-			$(".body .home-page").css("display", "none");
-			$(".body .query"	).css("display", "none");
-			$(".body .add-zb"	).css("display", "none");
+			// $(".body .home-page").css("display", "none");
+			// $(".body .query"	).css("display", "none");
+			// $(".body .add-zb"	).css("display", "none");
 			$(".body .week-report"	).css("display", "none");
 			$(".body .monthly-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 4);
@@ -388,11 +392,11 @@ function navbar() {
 			$(".body .week-report"	).css("display", "block");
 
 			$(".body .calendar"	).css("display", "none");
-			$(".body .support"	).css("display", "none");
+			// $(".body .support"	).css("display", "none");
 			$(".body .sjwh"		).css("display", "none");
-			$(".body .home-page").css("display", "none");
-			$(".body .query"	).css("display", "none");
-			$(".body .add-zb"	).css("display", "none");
+			// $(".body .home-page").css("display", "none");
+			// $(".body .query"	).css("display", "none");
+			// $(".body .add-zb"	).css("display", "none");
 			$(".body .monthly-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 6);
 			WeekReportMain();
@@ -400,11 +404,11 @@ function navbar() {
 			$(".body .monthly-report"	).css("display", "block");
 
 			$(".body .calendar"	).css("display", "none");
-			$(".body .support"	).css("display", "none");
+			// $(".body .support"	).css("display", "none");
 			$(".body .sjwh"		).css("display", "none");
-			$(".body .home-page").css("display", "none");
-			$(".body .query"	).css("display", "none");
-			$(".body .add-zb"	).css("display", "none");
+			// $(".body .home-page").css("display", "none");
+			// $(".body .query"	).css("display", "none");
+			// $(".body .add-zb"	).css("display", "none");
 			$(".body .week-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 7);
 			MonthReportMain();
@@ -1190,188 +1194,6 @@ function update_sjwh_dict(){
 }
 
 
-
-
-function home_page() {
-	var param = new Object();
-	param.SessionID = Options.SessionID;
-	post_data("/home/", JSON.stringify(param), function(d) {
-		d = $.parseJSON(d);
-		//console.info(d);
-		if (d.ErrCode == 0) {
-			//console.info(d.data);
-			var NowDate = parseInt(GetNowDate());
-			for(var i=0; i<d.data.length; i++) {
-				var row = d.data[i];
-				var tmp = row.EditDate;
-				var eDate = row.EditDate;
-				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				tmp = row.ExpireDate;
-				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				/**==================================================*/
-				if (row.ProgressRate < 100) {
-					if (parseInt(tmp) < NowDate) {
-						row.ExpireDays = DateDiffNow('d', tmp);
-					} else {
-						row.ExpireDays = 0;
-					}
-				} else {
-					//row.ExpireDays = DateDiff('d', eDate, tmp );
-					row.ExpireDays = 0;
-				}
-				/**==================================================*/
-			}
-			for(var i=0; i<d.cxzgz.length; i++) {
-				var row = d.cxzgz[i];
-				var tmp = row.EditDate;
-				var eDate = row.EditDate;
-				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				tmp = row.ExpireDate;
-				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				/**==================================================*/
-				if (row.ProgressRate < 100) {
-					if (parseInt(tmp) < NowDate) {
-						row.ExpireDays = DateDiffNow('d', tmp);
-					} else {
-						row.ExpireDays = 0;
-					}
-				} else {
-					//row.ExpireDays = DateDiff('d', eDate, tmp );
-					row.ExpireDays = 0;
-				}
-				/**==================================================*/
-			}
-			for(var i=0; i<d.cbzgz.length; i++) {
-				var row = d.cbzgz[i];
-				var tmp = row.EditDate;
-				var eDate = row.EditDate;
-				row.EditDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				tmp = row.ExpireDate;
-				row.ExpireDate = tmp[0]+tmp[1]+tmp[2]+tmp[3]+ "-" +tmp[4]+tmp[5]+ "-" +tmp[6]+tmp[7];
-				/**==================================================*/
-				if (row.ProgressRate < 100) {
-					if (parseInt(tmp) < NowDate) {
-						row.ExpireDays = DateDiffNow('d', tmp);
-					} else {
-						row.ExpireDays = 0;
-					}
-				} else {
-					//row.ExpireDays = DateDiff('d', eDate, tmp );
-					row.ExpireDays = 0;
-				}
-				/**==================================================*/
-			}
-
-			je_table($(".home-page .wdbzgz"),{
-				width: "1143",
-				isPage: false,
-				datas: d.data,
-				columnSort: [],
-				columns: [
-					{name: "系统", 		field: "System", 	width: "70", align:"center"},
-					{name: "模块", 		field: "Module", 	width: "60", align:"center"},
-					{name: "类型", 		field: "Type", 		width: "70", align:"center"},
-					{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center",
-						renderer:function(obj, rowidex) {
-							return GenTraceNoAhref(obj.TraceNo);
-						}
-					},
-					{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
-						renderer:function(obj, rowidex) {
-							return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
-						}
-					},
-					{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-					{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
-						renderer:function(obj, rowidex) {
-							return GenProgressBarHtml(70, 14, obj.ProgressRate);
-						}},
-					{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-					{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
-					{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-					{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
-					{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"}
-				],
-				itemfun:function(elem,data){},
-				success:function(elCell, tbody){}
-			});
-
-			if (d.isManager > 0) {
-				$(".home-page .child").css("display", "block");
-				je_table($(".home-page .child .zcybzgz"),{
-					width: "1223",
-					isPage: false,
-					datas: d.cbzgz,
-					columnSort: [],
-					columns: [
-						{name: "成员", field: "User", width: "80", align:"center"},
-						{name: "系统", 		field: "System", 	width: "70", align:"center"},
-						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
-						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
-						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center",
-							renderer:function(obj, rowidex) {
-								return GenTraceNoAhref(obj.TraceNo);
-							}
-						},
-						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
-							renderer:function(obj, rowidex) {
-								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
-							}
-						},
-						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
-							renderer:function(obj, rowidex) {
-								return GenProgressBarHtml(70, 14, obj.ProgressRate);
-							}},
-						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
-						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
-						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"}
-					],
-					itemfun:function(elem,data){},
-					success:function(elCell, tbody){}
-				});
-				je_table($(".home-page .child .zcyxzgz"),{
-					width: "1223",
-					isPage: false,
-					datas: d.cxzgz,
-					columnSort: [],
-					columns: [
-						{name: "成员", field: "User", width: "80", align:"center"},
-						{name: "系统", 		field: "System", 	width: "70", align:"center"},
-						{name: "模块", 		field: "Module", 	width: "60", align:"center"},
-						{name: "类型", 		field: "Type", 		width: "70", align:"center"},
-						{name: "跟踪号", 	field: "TraceNo", 	width: "60", align:"center",
-							renderer:function(obj, rowidex) {
-								return GenTraceNoAhref(obj.TraceNo);
-							}
-						},
-						{name: "工作内容", 	field: "Detail", 	width: "290", align:"left",
-							renderer:function(obj, rowidex) {
-								return '<pre style="font-size:12px;">' + obj.Detail + "</pre>";
-							}
-						},
-						{name: "性质", 		field: "Property", 	width: "70", align:"center"},
-						{name: "进度", 		field: "ProgressRate", width: "80", align:"center",
-							renderer:function(obj, rowidex) {
-								return GenProgressBarHtml(70, 14, obj.ProgressRate);
-							}},
-						{name: "开始日期", 		field: "StartDate", width: "100", align:"center"},
-						{name: "更新日期", 		field: "EditDate", width: "100", align:"center"},
-						{name: "后续人日", 		field: "NeedDays", width: "70", align:"center"},
-						{name: "计划完成日期", 		field: "ExpireDate", width: "100", align:"center"},
-						{name: "延期天数",		field: "ExpireDays", width: "70", align:"center"},
-					],
-					itemfun:function(elem,data){},
-					success:function(elCell, tbody){}
-				});
-			}
-		} else {
-			alert(d.msg);
-		}
-	});
-}
 
 
 /*

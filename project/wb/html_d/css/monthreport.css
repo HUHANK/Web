@@ -5,11 +5,16 @@
     font-size: 12px;
 
     table{
+
         thead{
             display: table;
+            //width: 100%;
             table-layout: fixed;
+            background-color: #EEEEEE;
             th{
+                table-layout: fixed;
                 padding: 1px;
+                border: 1px solid #D7D7D7;
             }
         }
         tbody{
@@ -113,11 +118,11 @@
 
     .container{
         height: 100%;
-        width: 1568px;
+        width: 1548px;
         float: right;
         background-color: #F0F0F8;
         padding-left: 10px;
-        padding-top: 10px;
+        //padding-top: 10px;
         padding-right: 10px;
         overflow: auto;
 
@@ -135,7 +140,7 @@
             display: none;
             
             .col-result{
-                width: 1030px;
+                width: 1000px;
                 height: 100%;
                 float: left;
 

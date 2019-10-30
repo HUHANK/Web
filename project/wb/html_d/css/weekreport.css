@@ -102,19 +102,31 @@
             border: none;
             border-top: 1px solid #D7D7D7;
             border-left: 1px solid #D7D7D7;
+            table-layout: fixed;
+
             thead{
                 display: table;
                 width: 100%;
                 table-layout: fixed;
+                background-color: #EEEEEE;
                 th{
+                    table-layout: fixed;
                     padding: 1px;
+
+                    border: none;
+                    border-right: 1px solid #D7D7D7;
+                    border-bottom: 1px solid #D7D7D7;
+                    font-size: 13px;
+                    color: black;
                 }
             }
             tbody{
                 display: block;
                 overflow-y: scroll;
                 font-size: 12px;
-                font-family: SimHei;
+                color: #666666;
+                overflow-x: hidden;
+
                 tr{
                     display: table;
                     width: 100%;
@@ -124,6 +136,19 @@
                     }
                     &.ts1:hover{
                         background-color: #FEFFE5;
+                    }
+
+                    td{
+                        table-layout: fixed;
+                        padding: 1px;
+
+                        border-right: 1px solid #D7D7D7;
+                        border-bottom: 1px solid #D7D7D7;
+
+                        pre{
+                            white-space: pre-wrap;
+                            word-wrap: break-word;
+                        }
                     }
                 }
                 tr.selected{
@@ -176,18 +201,6 @@
                         border: 1px solid #5F6D79;
                     }
                 }
-            }
-            th{
-                border: none;
-                border-right: 1px solid #D7D7D7;
-                border-bottom: 1px solid #D7D7D7;
-                font-size: 13px;
-                color: black;
-            }
-            td{
-                border-right: 1px solid #D7D7D7;
-                border-bottom: 1px solid #D7D7D7;
-                padding: 2px;
             }
         }
     }
@@ -256,10 +269,9 @@
     }
     table{
         width: 97%;
+
         td{
-            //border: 1px solid #939392;
             padding-left: 5px;
-            //padding-right: 5px;
             padding-bottom: 12px;
             padding-top: 12px;
 

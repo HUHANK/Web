@@ -144,11 +144,11 @@ function pop_box(stitle, w, h, html, succfunc, endfunc) {
 	succfunc();
 }
 
-function je_table(obj, opts) {
-	jeui.use(["jeTable", "jeCheck"], function() {
-	        	$(obj).jeTable(opts);
-	});        		
-}
+// function je_table(obj, opts) {
+// 	jeui.use(["jeTable", "jeCheck"], function() {
+// 	        	$(obj).jeTable(opts);
+// 	});        		
+// }
 
 /*获取浏览器的类型*/
  function  getExplorer() {

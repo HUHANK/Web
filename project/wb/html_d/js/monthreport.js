@@ -28,7 +28,13 @@ function MonthReportChangeDaySelect() {
 
 function MonthReportWinResize() {
     wheight = $(window).height();
-    var h = wheight - $("body .wrapper-top").height() - 1;
+    var wrapper_top = $("body .wrapper-top").height();
+    var h = wheight - wrapper_top - 1;
+    console.info("@#$&**%@&*&$#(@&*$@$");
+    console.info(h);
+    if (wrapper_top == 0) {
+        window.setTimeout(MonthReportWinResize, 100);
+    }
     $(".body .monthly-report").height(h);
     var h1 = h - $(".body .monthly-report .container .overtime .title").height() - 15 -
         $(".body .monthly-report .container .overtime .col-result thead").height() - 32 - getScrollWidth();

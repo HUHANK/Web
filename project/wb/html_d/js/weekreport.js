@@ -98,15 +98,37 @@ function getTableConfObjectByField(field) {
 
 function WeekReportWinResize() {
     wheight = $(window).height();
-    var h = wheight - $("body .wrapper-top").height() - 
-        $(".body .week-report .query-form").height() - $(".body .week-report .query-opt").height() - 
-        $(".body .week-report .query-foot").height()-$(".body .week-report .query-result thead").height()-
-        getScrollWidth()-6;
+    var h = wheight -6;
+    var hh = $("body .wrapper-top").height() + 
+    $(".body .week-report .query-form").height() + $(".body .week-report .query-opt").height() + 
+    $(".body .week-report .query-foot").height()+$(".body .week-report .query-result thead").height()
+    ;
+    var hs = getScrollWidth();
+    
+    // console.info("XJFKSJLFKDFJSJFKDS----------");
+    // console.info(wheight+"||"+$("body .wrapper-top").height())
+    // console.info($(".body .week-report .query-form").height()+"||"+$(".body .week-report .query-opt").height());
+    // console.info($(".body .week-report .query-foot").height()+"||"+$(".body .week-report .query-result thead").height());
+    // console.info(getScrollWidth());
+    
+    if (h == 0 || hs == 0) {
+        window.setTimeout(WeekReportWinResize, 100);
+    }
+
+    if (hh == 0) {
+        h = wheight - 72 -17 - 23 - 34 - 37 -17 ;
+        $(".week-report .query-result table thead").css("width", "calc(100% - "+ 17 +"px)");
+    } else {
+        h = h - hh - hs;
+        $(".week-report .query-result table thead").css("width", "calc(100% - "+getScrollWidth()+"px)");
+    }
+    
     $(".body .week-report .query-result tbody").css("max-height", h+"px");
 }
 
 function WeekReportInit() {
     /*初始化表头*/
+    //$(".week-report .query-result table thead").css("width", "calc(100% - "+getScrollWidth()+"px)");
     var tr = $("<tr></tr>");
     var i=0; 
     for(i=0; i<TABLE_CONF.columns.length; i++){
@@ -115,7 +137,7 @@ function WeekReportInit() {
         tr.append(th);
     }
     $(".week-report .query-result table thead").html(tr);
-    $(".week-report .query-result table thead").css("width", "calc(100% - "+getScrollWidth()+"px)");
+    
 
     var parent = $(".week-report .query-form .condition .container");
     parent.find(".SUPPLIER").val('');
