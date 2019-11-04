@@ -7,6 +7,12 @@
 	border-radius: 4px;
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
+	outline: none;
+	background: none;
+	border: none;
+	padding-top: 0;
+	padding-bottom: 0;
+	padding-left: 2px;
 	
 }
 

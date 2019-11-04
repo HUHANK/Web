@@ -1,114 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>TEST2</title>
-    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <style>
+        #main{
+            background-color: rgb(245, 210, 167);
+            border: 1px solid rgb(90, 241, 90);
+            width: 600px;
+            min-height: 20px;
+        }
+        .unit{
+            display: inline-block;
+            
+        }
+        .unit>div{
+            display: inline-block;
+        }
+        .lab{
+            width: 50px;
+        }
+        .value{
+            width: 150px;
+        }
+
+    </style>
+    <script>
+        
+    </script>
 </head>
 <body>
-   <button >弹出</button>
-   <div class="pop">
-           <div class="right">
-               <div class="short"></div>
-               <div class="long"></div>
-           </div>
-           <div class="wrong">
-               <div class="line1"></div>
-               <div class="line2"></div>
-           </div>
-           <div class="hint">
-               i
-           </div>
-   </div>
-</body>
-<style type="text/css">
-    *{margin: 0; padding: 0;}
-    .right{
-        position: relative;
-        width: 80px;
-        height: 80px;
-        text-align: center;
-        line-height: 80px;
-        border: 4px solid #66cc33;
-        border-radius: 50px;
-        margin: 10px;
-    }
-    .right .short{
-        width: 25px;
-        height: 5px;
-        border-radius: 4px;
-        background-color: #66cc33;
-        position: absolute;
-        top: 45px;
-        left: 11px;
-        -webkit-transform:rotate(45deg);
-        transform:rotate(45deg);
-    }
-    .right .long{
-        width: 47px;
-        height: 5px;
-        border-radius: 4px;
-        background-color: #66cc33;
-        position: absolute;
-        top: 37px;
-        left: 23px;
-        -webkit-transform:rotate(315deg);
-        transform:rotate(315deg);
-    }
-    .wrong{
-        position: relative;
-        width: 80px;
-        height: 80px;
-        text-align: center;
-        line-height: 80px;
-        border: 4px solid #FA3E3E;
-        border-radius: 50px;
-        margin: 10px;
-    }
-    .wrong .line1{
-        width: 60px;
-        height: 5px;
-        border-radius: 4px;
-        background-color: #FA3E3E;
-        position: absolute;
-        top: 36px;
-        left: 10px;
-        -webkit-transform:rotate(45deg);
-        transform:rotate(45deg);
-    }
-    .wrong .line2{
-        width: 60px;
-        height: 5px;
-        border-radius: 4px;
-        background-color: #FA3E3E;
-        position: absolute;
-        top: 36px;
-        left: 10px;
-        -webkit-transform:rotate(315deg);
-        transform:rotate(315deg);
-    }
-    .hint{
-        position: relative;
-        width: 80px;
-        height: 80px;
-        text-align: center;
-        line-height: 80px;
-        background-color: #1300F1;
-        //border: 4px solid #FA3E3E;
-        border-radius: 50px;
-        margin: 10px;
-        color: white;
-        font-size: 60px;
-        font-weight: bold;
-    }
-</style>
-<script type="text/javascript">
-    window.onload = main;
-    function main() {
-        $("button").click(function(event) {
+    <div id="main">   
+        <div class="unit">
+            <span class="lab">姓名</span>
+            <div class="value"><input type="text" /></div>
+        </div>
+        <div class="unit">
+                <div class="lab">年龄</div>
+                <div class="value"><input type="text" /></div>
+        </div>
+        <div class="unit">
+                <div class="lab">籍贯</div>
+                <div class="value"><input type="text" /></div>
+        </div>
+        <div class="unit">
+                <span class="lab">毕业院校</span>
+                <div class="value"><input type="text" /></div>
+        </div>
         
-
-        });
-    }
-</script>
+    </div>
+</body>
 </html>

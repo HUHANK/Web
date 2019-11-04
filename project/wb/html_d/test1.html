@@ -64,8 +64,20 @@
         //console.info($("#table1").html());
 
         $("#btn123").click(function(event){
-            console.info("#btn123");
-            var dlg = HDialog(null);
+            var dlg = HDialog();
+            dlg.show();
+            console.info(dlg);
+          
+            // dlg.set_info_msg("提示", "请确认输入是否正确!");
+            dlg.add_row();
+            dlg.add_input("标签1", "lab1");
+            dlg.add_input("标签2", "lab2");
+            dlg.add_row();
+            dlg.add_input("标签3", "lab3");
+            dlg.add_input("标签4", "lab4");
+
+            console.info(dlg.odialog_body_table_body);
+            
         });
     }
     
