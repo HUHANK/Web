@@ -73,6 +73,7 @@ function main() {
 		init_window();
 		//query_get_result(g_CURRENT_QPAGE);
 		WeekReportWinResize();
+		ZMSJAP_resize();
 	}
 	init_window();
 }
@@ -133,84 +134,14 @@ function InitHeader() {
 
 function GInit(){
 
-	Options.QueryCondition = new Object();
-	Options.QueryCondition.User = [];
-	Options.QueryCondition.SysModule = [];
-	Options.QueryCondition.Property = [];
-	Options.QueryCondition.Type = [];
-	Options.QueryCondition.Page = 0;
-	Options.QueryCondition.PageSize = 25;
+	// Options.QueryCondition = new Object();
+	// Options.QueryCondition.User = [];
+	// Options.QueryCondition.SysModule = [];
+	// Options.QueryCondition.Property = [];
+	// Options.QueryCondition.Type = [];
+	// Options.QueryCondition.Page = 0;
+	// Options.QueryCondition.PageSize = 25;
 	GUpdateBaseinfo();
-
-	// jeui.use(["jeSelect"], function(){
-	// 	$(".sjwh .wrap .xzgl .xzcysz .zcy").jeSelect({
-	// 		sosList:true
-	// 	});
-
-	// 	$("#je-popup-box-wrap select").jeSelect({
-	// 		sosList:true
-	// 	});
-		
-	// 	$(".sjwh .wrap .zdwh fieldset select").jeSelect({
-    //         sosList:true,
-    //         itemfun:function(elem, index, val){
-    //         	//console.info(elem, index, val);
-            	
-    //         	if (elem.attr("class") == "root") {
-    //         		//console.info(elem.attr("class"));
-    //         		var id = elem.children('option[selected="selected"]').attr("name");
-    //         		var param = new Object();
-    //         		param.SessionID = Options.SessionID;
-	// 				param.method = "GET";
-	// 				param.condi = {};
-	// 				param.condi.parent = id;
-	// 				sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
-	// 					//console.info("result",d);
-	// 					if (d.ErrCode == 0) {
-	// 						var data = d.data;
-	// 						var shtml = "<option name='-1'></option>";
-	// 						for(var i=0; i<data.length; i++) {
-	// 							shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
-	// 						}
-	// 						//console.info(shtml);
-	// 						var yj = $(".sjwh .wrap .zdwh fieldset .first");
-	// 						yj.html("");
-	// 						yj.val("");
-	// 						yj.html(shtml);
-	// 					}
-	// 				});
-
-    //         	}else if (elem.attr("class") == "first") {
-    //         		var id = elem.children('option[selected="selected"]').attr("name");
-    //         		var param = new Object();
-    //         		param.SessionID = Options.SessionID;
-	// 				param.method = "GET";
-	// 				param.condi = {};
-	// 				param.condi.parent = id;
-	// 				sync_post_data("/sjwh_zdwh/", JSON.stringify(param), function(d){
-	// 					//console.info("result",d);
-	// 					if (d.ErrCode == 0) {
-	// 						var data = d.data;
-	// 						var shtml = "<option name='-1'> </option>";
-	// 						for(var i=0; i<data.length; i++) {
-	// 							shtml += "<option name='"+data[i].id+"'>" + data[i].name + "</option>";
-	// 						}
-	// 						//console.info(shtml);
-	// 						var yj = $(".sjwh .wrap .zdwh fieldset .second");
-	// 						yj.html("");
-	// 						yj.val("");
-	// 						yj.html(shtml);
-	// 					}
-	// 				});
-    //         	}
-
-    //         }
-    //     });
-	// });
-
-	// add_zb_ginit();
-	// query_sidebar_init();
-	// InitSupport();
 }
 
 function GUpdateBaseinfo(){
@@ -270,26 +201,11 @@ function initNavbar(index){
 	index = parseInt(index)
 	switch(index)
 	{
-		// case 2:
-		// 	$(".body .query"	).css("display", "block");
-		// 	$(".title .navbar ul li[value='Query']").addClass('clicked');
-		// 	query();
-		// 	break;
-		// case 1:
-		// 	$(".body .add-zb"	).css("display", "block");
-		// 	$(".title .navbar ul li[value='WZB']").addClass('clicked');
-		// 	add_zb();
-		// 	break;
 		case 5:
 			$(".body .sjwh"		).css("display", "block");
 			$(".title .navbar ul li[value='SZWH']").addClass('clicked');
 			system_init();
 			break;
-		// case 3:
-		// 	$(".body .support"	).css("display", "block");
-		// 	$(".title .navbar ul li[value='Support']").addClass('clicked');
-		// 	Support();
-		// 	break;
 		case 4:
 			$(".body .calendar").css("display", "block");
 			$(".title .navbar ul li[value='Calendar']").addClass('clicked');
@@ -304,6 +220,11 @@ function initNavbar(index){
 			$(".body .monthly-report"	).css("display", "block");
 			$(".title .navbar ul li[value='monthly-report']").addClass('clicked');
 			MonthReportMain();
+			break;
+		case 8:
+			$(".body .ZMSJAP"		).css("display", "block");
+			$(".title .navbar ul li[value='ZMSJAP']").addClass('clicked');
+			ZMSJAP_main();
 			break;
 	}
 }
@@ -320,96 +241,25 @@ function navbar() {
 		//添加clicked的class
 		$(this).addClass("clicked");
 		var value = $(this).attr("value");
-		if (value == "HomePage") {
-			// $(".body .home-page").css("display", "block");
-			
-			// $(".body .add-zb").css("display", "none");
-			// $(".body .query").css("display", "none");
-			// $(".body .sjwh").css("display", "none");
-			// $.cookie(NavbarIndexCookies, 1);
-			// home_page();
-		} else if (value == "Query"){
-			// $(".body .query"	).css("display", "block");
-
-			// $(".body .home-page").css("display", "none");
-			// $(".body .sjwh"		).css("display", "none");
-			// $(".body .add-zb"	).css("display", "none");
-			// $(".body .support"	).css("display", "none");
-			// $(".body .calendar"	).css("display", "none");
-			// $(".body .week-report"	).css("display", "none");
-			// $(".body .monthly-report"	).css("display", "none");
-			// $.cookie(NavbarIndexCookies, 2);
-			// query();
-		} else if (value == "WZB") {
-			// $(".body .add-zb"	).css("display", "block");
-
-			// $(".body .home-page").css("display", "none");
-			// $(".body .query"	).css("display", "none");
-			// $(".body .sjwh"		).css("display", "none");
-			// $(".body .support"	).css("display", "none");
-			// $(".body .calendar"	).css("display", "none");
-			// $(".body .week-report"	).css("display", "none");
-			// $(".body .monthly-report"	).css("display", "none");
-			// $.cookie(NavbarIndexCookies, 1);
-			// add_zb();
-		} else if (value == "SZWH") {
+		$(".body>div").css("display", "none");
+		if (value == "SZWH") {
 			$(".body .sjwh"		).css("display", "block");
-
-			$(".body .home-page").css("display", "none");
-			$(".body .query"	).css("display", "none");
-			$(".body .add-zb"	).css("display", "none");
-			$(".body .support"	).css("display", "none");
-			$(".body .calendar"	).css("display", "none");
-			$(".body .week-report"	).css("display", "none");
-			$(".body .monthly-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 5);
 			system_init();
-		} else if (value == "Support") {
-			// $(".body .support"	).css("display", "block");
-
-			// $(".body .sjwh"		).css("display", "none");
-			// $(".body .home-page").css("display", "none");
-			// $(".body .query"	).css("display", "none");
-			// $(".body .add-zb"	).css("display", "none");
-			// $(".body .calendar"	).css("display", "none");
-			// $(".body .week-report"	).css("display", "none");
-			// $(".body .monthly-report"	).css("display", "none");
-			// $.cookie(NavbarIndexCookies, 3);
-			// Support();
+		} else if (value == "ZMSJAP") {
+			$(".body .ZMSJAP"		).css("display", "block");
+			$.cookie(NavbarIndexCookies, 8);
+			ZMSJAP_main();
 		} else if (value == "Calendar") {
 			$(".body .calendar"	).css("display", "block");
-
-			// $(".body .support"	).css("display", "none");
-			$(".body .sjwh"		).css("display", "none");
-			// $(".body .home-page").css("display", "none");
-			// $(".body .query"	).css("display", "none");
-			// $(".body .add-zb"	).css("display", "none");
-			$(".body .week-report"	).css("display", "none");
-			$(".body .monthly-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 4);
 			CalendarMain();
 		} else if(value == "week-report") {
 			$(".body .week-report"	).css("display", "block");
-
-			$(".body .calendar"	).css("display", "none");
-			// $(".body .support"	).css("display", "none");
-			$(".body .sjwh"		).css("display", "none");
-			// $(".body .home-page").css("display", "none");
-			// $(".body .query"	).css("display", "none");
-			// $(".body .add-zb"	).css("display", "none");
-			$(".body .monthly-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 6);
 			WeekReportMain();
 		} else if( value == "monthly-report") {
 			$(".body .monthly-report"	).css("display", "block");
-
-			$(".body .calendar"	).css("display", "none");
-			// $(".body .support"	).css("display", "none");
-			$(".body .sjwh"		).css("display", "none");
-			// $(".body .home-page").css("display", "none");
-			// $(".body .query"	).css("display", "none");
-			// $(".body .add-zb"	).css("display", "none");
-			$(".body .week-report"	).css("display", "none");
 			$.cookie(NavbarIndexCookies, 7);
 			MonthReportMain();
 		}

@@ -70,11 +70,18 @@
           
             // dlg.set_info_msg("提示", "请确认输入是否正确!");
             dlg.add_row();
-            dlg.add_input("标签1", "lab1");
-            dlg.add_input("标签2", "lab2");
+            dlg.add_input("标签1", "lab1", 300, 3);
+            //dlg.add_input("标签2", "lab2");
             dlg.add_row();
             dlg.add_input("标签3", "lab3");
             dlg.add_input("标签4", "lab4");
+
+            sels = [' ', '男', '女'];
+            dlg.add_row();
+            dlg.add_select("性别", "sex", sels);
+            dlg.add_select("性别", "sex", sels);
+            dlg.add_row();
+            dlg.add_textarea("详细内容", "detail");
 
             console.info(dlg.odialog_body_table_body);
             

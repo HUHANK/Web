@@ -15,21 +15,25 @@
 	<script type="text/javascript" src="js/jquery.charfirst.pinyin.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.9.3"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.9.3"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.9.3"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.9.3"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.9.3"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.9.3"></script>
-	<script type="text/javascript" src="js/monthreport.js?version=2.9.3"></script>
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.9.3">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.9.3">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.9.3">
+	<script type="text/javascript" src="js/ginit.js?version=2.9.4"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=2.9.4"></script>
+	<script type="text/javascript" src="js/widget/htable.js"></script>
+	<script type="text/javascript" src="js/hyl.js?version=2.9.4"></script>
+	<script type="text/javascript" src="js/calendar.js?version=2.9.4"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=2.9.4"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=2.9.4"></script>
+	<script type="text/javascript" src="js/monthreport.js?version=2.9.4"></script>
+	<script type="text/javascript" src="js/zmsjap.js?version=2.9.4"></script>
+
+	<link rel="stylesheet" type="text/less" href="css/zmsjap.less?version=2.9.4">
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.9.4">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.9.4">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.9.4">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.9.3">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.9.3">
-	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.9.3">
-	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.9.3">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.9.4">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.9.4">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.9.4">
+	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.9.4">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -78,12 +82,9 @@
 		<div class="title">
 			<div class="navbar">
 				<ul>
-					<!--<li value="HomePage">首页</li>-->
-					<!--<li value="WZB"		>写周报	</li>
-					<li value="Query"	>查询	</li>
-					<li value="Support"	>Support包</li>-->
 					<li value="week-report">周报</li>
-					<li value="Calendar">日历	</li>
+					<li value="Calendar">日历</li>
+					<li value="ZMSJAP">周末升级安排</li>
 					<li value="monthly-report">月报信息</li>
 					<li value="SZWH"	>设置	</li>
 				</ul>
@@ -101,7 +102,7 @@
 		</div>
 
 		<div class="calendar">
-			<iframe src="calendar.html?version=2.9.3" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
+			<iframe src="calendar.html?version=2.9.4" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
 		</div>
 
 		<div class="week-report">
@@ -470,6 +471,14 @@
 			</div>
 		</div>
 
+		<div class="ZMSJAP">
+			<div class="opt-area">
+				<button class="qry">查询</button> <button class="add">添加</button> <button class="upt">修改</button> <button class="del">删除</button> <button class="exp">导出</button>
+			</div>
+			<div class="res-area">
+
+			</div>
+		</div>
 	</div>
 	
 	<!--一些特殊的效果-->

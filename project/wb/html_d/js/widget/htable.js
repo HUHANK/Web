@@ -1,23 +1,24 @@
 /* Table控件 */
 function HTable(obj, config) {
     /*****************|参数初始化|*********************/
-    hhis = {};
-    hhis.Parent = $(obj);
-    hhis.config = config;
-    hhis.columns = config.columns;
-    hhis.COLUMN_NUM = hhis.config.columns.length;
-    hhis.width = 0;
-    hhis.tbody_height = config.body_height;
+    htable = {};
+    htable.Parent = $(obj);
+    htable.config = config;
+    htable.columns = config.columns;
+    htable.COLUMN_NUM = htable.config.columns.length;
+    htable.width = 0;
+    htable.tbody_height = config.body_height;
+    htable.ScrollWidth = 0;
 
-    hhis.cele = function (ele) {
+    htable.cele = function (ele) {
         return $("<" + ele + "></" + ele + ">");
     }
 
-    hhis.cthead = function () {
-        var i, tr = hhis.cele("tr");
-        for (i = 0; i < hhis.COLUMN_NUM; i++) {
-            var row = hhis.config.columns[i];
-            var th = hhis.cele("th").text(row['name']);
+    htable.cthead = function () {
+        var i, tr = htable.cele("tr");
+        for (i = 0; i < htable.COLUMN_NUM; i++) {
+            var row = htable.config.columns[i];
+            var th = htable.cele("th").text(row['name']);
             th.addClass(row['field']);
             tr.append(th);
             /*设置表头每列的宽度*/
@@ -25,10 +26,10 @@ function HTable(obj, config) {
                 "width": row['width'] + 'px'
             });
         }
-        hhis.thead = hhis.cele("thead").append(tr);
+        htable.thead = htable.cele("thead").append(tr);
     }
 
-    hhis.get_scroll_width = function () {
+    htable.get_scroll_width = function () {
         var noScroll, scroll, oDiv = document.createElement("DIV");
         oDiv.style.cssText = "position:absolute; top:-1000px; width:100px; height:100px; overflow:hidden;";
         noScroll = document.body.appendChild(oDiv).clientWidth;
@@ -38,18 +39,18 @@ function HTable(obj, config) {
         return noScroll - scroll;
     }
 
-    hhis.tbody_td_reflex = function (str) {
+    htable.tbody_td_reflex = function (str) {
         return str;
     }
 
-    hhis.ctbody = function () {
-        var i, j, tbody = hhis.cele("tbody");
-        for (i = 0; i < hhis.config.data.length; i++) {
-            var row = hhis.config.data[i];
-            var tr = hhis.cele("tr").attr('row-id', (i + 1));
-            for (j = 0; j < hhis.COLUMN_NUM; j++) {
-                var column = hhis.columns[j];
-                var td = hhis.cele("td").html(column.td_reflex(row[j]));
+    htable.ctbody = function () {
+        var i, j, tbody = htable.cele("tbody");
+        for (i = 0; i < htable.config.data.length; i++) {
+            var row = htable.config.data[i];
+            var tr = htable.cele("tr").attr('row-id', (i + 1));
+            for (j = 0; j < htable.COLUMN_NUM; j++) {
+                var column = htable.columns[j];
+                var td = htable.cele("td").html(column.td_reflex(row[j]));
                 td.addClass(column.field);
                 tr.append(td);
                 td.css('text-align', column.align);
@@ -57,19 +58,20 @@ function HTable(obj, config) {
             }
             tbody.append(tr);
         }
-        hhis.tbody = tbody;
+        htable.tbody = tbody;
     }
 
-    hhis.init = function () {
+    htable.init = function () {
         var i, j;
-        for (i = 0; i < hhis.COLUMN_NUM; i++) {
-            if (hhis.columns[i].td_reflex == undefined) hhis.columns[i].td_reflex = hhis.tbody_td_reflex;
-            hhis.width = hhis.width + 1 + hhis.columns[i].width;
+        htable.width = 0;
+        for (i = 0; i < htable.COLUMN_NUM; i++) {
+            if (htable.columns[i].td_reflex == undefined) htable.columns[i].td_reflex = htable.tbody_td_reflex;
+            htable.width = htable.width + 1 + htable.columns[i].width;
         }
-        hhis.width = hhis.width + 1;
+        htable.width = htable.width + 1;
     }
 
-    hhis.css_from_style_strings = function (o, str) {
+    htable.css_from_style_strings = function (o, str) {
         var arr = str.split(";");
         var i, j, arr1;
         for (i = 0; i < arr.length; i++) {
@@ -78,102 +80,67 @@ function HTable(obj, config) {
         }
     }
 
-    hhis.css_thead_style = function () {
-        hhis.thead.find("th").css({
-            "border-bottom": "1px solid #D1D1D1",
-            "border-right": "1px solid #D1D1D1"
-        });
-        hhis.thead.css({
-            "background-color": '#E7EFFA',
-            "display": "table",
-            "width": "calc(100% - " + hhis.get_scroll_width() + "px)",
-            "font-size": "13px",
-        });
+    htable.css_thead_style = function () {
+        if (htable.ScrollWidth == 0) htable.ScrollWidth = htable.get_scroll_width();
+        htable.thead.find("th").css({"border-bottom": "1px solid #D1D1D1", "border-right": "1px solid #D1D1D1"});
+        htable.thead.css({"background-color": '#E7EFFA',"display": "table","width": "calc(100% - " + htable.ScrollWidth + "px)","font-size": "13px",});
+        htable.thead.find("tr").css({"display": "table",'table-layout': 'fixed'});
     }
 
-    hhis.css_tbody_style = function () {
-        hhis.tbody.find("td").css({
-            "word-wrap": 'break-word',
-            "word-break": "break-all",
-            "border-bottom": "1px solid #D1D1D1",
-            "border-right": "1px solid #D1D1D1",
-            "white-space": "pre-line",
-        });
-        hhis.tbody.css({
-            "display": "block",
-            "overflow-y": "scroll",
-            "max-height": hhis.tbody_height + "px",
-            "font-size": "13px",
-        });
-        hhis.tbody.find('tr').css({
-            "display": "table",
-            'table-layout': 'fixed'
-        });
+    htable.css_tbody_style = function () {
+        htable.tbody.find("td").css({"word-wrap": 'break-word',"word-break": "break-all", "border-bottom": "1px solid #D1D1D1","border-right": "1px solid #D1D1D1", "white-space": "pre-line",});
+        htable.tbody.css({"display": "block","overflow-y": "scroll","max-height": htable.tbody_height + "px","font-size": "13px",});
+        htable.tbody.find('tr').css({"display": "table",'table-layout': 'fixed'});
     }
 
-    hhis.css_table_style = function () {
-        hhis.table.attr({
-            "border": '0',
-            "cellspacing": '0',
-            "cellpadding": "0"
-        });
-        hhis.table.css({
-            "table-layout": 'fixed',
-            "border-left": "1px solid #D1D1D1",
-            "border-top": "1px solid #D1D1D1",
-            "border-bottom": "1px solid #D1D1D1",
-            "color": "#403E2F",
-            "cursor": "default",
-            "width": (hhis.width + hhis.get_scroll_width()) + "px"
-        });
-        hhis.css_thead_style();
-        hhis.css_tbody_style();
+    htable.css_table_style = function () {
+        htable.table.attr({"border": '0',"cellspacing": '0',"cellpadding": "0"});
+        htable.table.css({"table-layout": 'fixed',"border-left": "1px solid #D1D1D1","border-top": "1px solid #D1D1D1","border-bottom": "1px solid #D1D1D1","color": "#403E2F","cursor": "default","width": (htable.width + htable.ScrollWidth) + "px"});
+        htable.css_thead_style();
+        htable.css_tbody_style();
     }
 
-    hhis.get_selected_row = function () {
+    htable.get_selected_row = function () {
         var ret = [];
-        var sel = hhis.tbody.find(".selected");
-        if (sel.length < 1) return ret;
+        var sel = htable.tbody.find(".selected");
+        if (sel.length < 1) return null;
         var row_num = parseInt(sel.attr("row-id")) - 1;
-        return hhis.config.data[row_num];
+        return htable.config.data[row_num];
     }
 
-    hhis.add_event = function () {
-        hhis.tbody.find("tr").click(function (event) {
+    htable.add_event = function () {
+        htable.tbody.find("tr").click(function (event) {
             if ($(this).hasClass('selected')) return;
             /*移除已经select行*/
             var sel = $(this).parent().find(".selected");
             if (sel.length > 0) {
-                sel.css({
-                    "background-color": ''
-                });
+                sel.css({"background-color": ''});
                 sel.removeClass('selected');
             }
 
             $(this).addClass('selected');
-            $(this).css({
-                "background-color": '#90F3E4'
-            });
+            $(this).css({"background-color": '#90F3E4'});
             /*移除已经select行*/
             $(this).parent().find(".selected")
         });
     }
 
-    hhis.main = function () {
-        hhis.init();
-        hhis.cthead();
-        hhis.ctbody();
-        hhis.table = hhis.cele("table");
-        hhis.table.append(hhis.thead);
-        hhis.table.append(hhis.tbody);
-        hhis.Parent.html(hhis.table);
+    htable.refresh = function () {
+        htable.Parent.html("");
+        htable.init();
+        htable.cthead();
+        htable.ctbody();
+        htable.table = htable.cele("table");
+        htable.table.append(htable.thead);
+        htable.table.append(htable.tbody);
+        htable.Parent.html(htable.table);
 
-        hhis.css_table_style();
-        hhis.add_event();
+        htable.css_table_style();
+        htable.add_event();
     }
     /*****************|执行入口|*********************/
-    hhis.main();
-    return hhis;
+    //htable.refresh();
+    return htable;
 }
 
 
@@ -263,28 +230,106 @@ function HDialog() {
 
     /**TABLE */
     hhis.add_row = function () {
+        var cstr = "";
         if (hhis.odialog_body_table_body == undefined || hhis.odialog_body_table_body == null) {
             hhis.odialog_body.html("");
             hhis.odialog_body.append(hhis.cele("table").append(hhis.cele("tbody")));
             hhis.odialog_body_table_body = hhis.odialog_body.find("tbody");
-            var cstr = "width: 100%;";
+            cstr = "width: 100%; border-collapse: separate; border-spacing: 0px 20px;";
             hhis.css_from_style_strings(hhis.odialog_body.find("table"), cstr);
         }
         hhis.odialog_body_table_body_row = hhis.cele("tr");
         hhis.odialog_body_table_body.append(hhis.odialog_body_table_body_row);
+        cstr = "margin: 10px;";
+        hhis.css_from_style_strings(hhis.odialog_body_table_body_row, cstr);
     }
 
-    hhis.add_input = function (labs /*标签*/ , cls /*类名*/ ) {
-        var td = hhis.cele("td").append(hhis.cele("label").text(labs));
+    hhis.set_value_by_class = function(scls, value) {
+        hhis.odialog_body.find("."+scls).val(value);
+    }
+
+    hhis.get_value_by_class = function(scls) {
+        return hhis.odialog_body.find("."+scls).val();
+    }
+
+    hhis.add_input_long = function (labs, cls) {
+        hhis.add_input(labs, cls, 300, 3);
+    };
+
+    hhis.add_input = function (labs /*标签*/ , cls /*类名*/ , len = 150, colspan = 0 /*跨行数*/ ) {
+        var td = hhis.cele("td").append(hhis.cele("label").text(labs)).css({"text-align": "right", "font-size":"13px"});
         hhis.odialog_body_table_body_row.append(td);
 
-        var input = hhis.cele("input").attr("type", "text").addClass(cls);
+        var input = hhis.cele("input").attr("type", "text").addClass(cls).width(len);
         td = hhis.cele("td").append(input);
+        td.attr("colspan", colspan + "");
         hhis.odialog_body_table_body_row.append(td);
 
-        var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; width:150px; height:32px; border-radius: 4px; padding-top: 0;padding-bottom: 0;padding-left: 3px;";
+        /**CSS */
+        var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; height:32px; border-radius: 4px; padding-top: 0;padding-bottom: 0;padding-left: 3px;";
         hhis.css_from_style_strings(input, cstr);
-        
+        input.blur(function () {
+            var cstr = "outline: none; background: none; border: 1px solid #D9D9D9;box-shadow: none;";
+            hhis.css_from_style_strings($(this), cstr);
+        });
+        input.focus(function () {
+            var cstr = "border: 1px solid #4BB2FD;box-shadow: 0 0 3px #4BB2FD;background-color: #FFFCD5;transition: all 0.3s;";
+            hhis.css_from_style_strings($(this), cstr);
+        });
+    }
+
+    hhis.add_textarea = function (labs /*标签*/ , cls /*类名*/ , wide = 300 /*宽*/ , high = 80 /*高*/ ) {
+        var td = hhis.cele("td").append(hhis.cele("label").text(labs)).css({"text-align": "right", "font-size":"13px"});
+        hhis.odialog_body_table_body_row.append(td);
+
+        var textarea = hhis.cele("textarea").addClass(cls).height(high).width(wide);
+        td = hhis.cele("td").attr("colspan", "3").append(textarea);
+        hhis.odialog_body_table_body_row.append(td);
+
+        /**CSS */
+        var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 13px;";
+        hhis.css_from_style_strings(textarea, cstr);
+        textarea.blur(function () {
+            var cstr = "outline: none; background: none; border: 1px solid #D9D9D9;box-shadow: none;";
+            hhis.css_from_style_strings($(this), cstr);
+        });
+        textarea.focus(function () {
+            var cstr = "border: 1px solid #4BB2FD;box-shadow: 0 0 3px #4BB2FD;background-color: #FFFCD5;transition: all 0.3s;";
+            hhis.css_from_style_strings($(this), cstr);
+        });
+    }
+
+    hhis.add_select = function (labs /*标签*/ , cls /*类名*/ , sels /*选择项*/ ) {
+        var td = hhis.cele("td").append(hhis.cele("label").text(labs)).css({"text-align": "right", "font-size":"13px"});
+        hhis.odialog_body_table_body_row.append(td);
+
+        var select = hhis.cele("select").addClass(cls);
+        for (var i = 0; i < sels.length; i++) {
+            select.append(hhis.cele("option").text(sels[i]));
+        }
+        td = hhis.cele("td").append(select);
+        hhis.odialog_body_table_body_row.append(td);
+
+        /**CSS */
+        var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; width:155px; height:32px; border-radius: 4px; padding-top: 0;padding-bottom: 0;padding-left: 3px;";
+        hhis.css_from_style_strings(select, cstr);
+        select.blur(function () {
+            var cstr = "outline: none; background: none; border: 1px solid #D9D9D9;box-shadow: none;";
+            hhis.css_from_style_strings($(this), cstr);
+        });
+        select.focus(function () {
+            var cstr = "border: 1px solid #4BB2FD;box-shadow: 0 0 3px #4BB2FD;background-color: #FFFCD5;transition: all 0.3s;";
+            hhis.css_from_style_strings($(this), cstr);
+        });
+    }
+
+    hhis.cbokeh = function () {
+        hhis.sbokeh_id = hhis.UUID(15, 100);
+        hhis.obokeh = hhis.cele("div").addClass(hhis.sbokeh_id);
+        $("body").append(hhis.obokeh);
+
+        var cstr = "position: fixed; width: 100%; height: 100%; background-color: black; opacity: 50%; transition: all 0.2s; z-index: 66;";
+        hhis.css_from_style_strings(hhis.obokeh, cstr);
     }
 
     hhis.css_dialog = function () {
@@ -300,7 +345,7 @@ function HDialog() {
         hhis.css_from_style_strings(hhis.odialog_head, str);
         str = "float: left;";
         hhis.css_from_style_strings(hhis.odialog_head.find(".title"), str);
-        str = "float: right;";
+        str = "float: right; width: 30px; ";
         hhis.css_from_style_strings(hhis.odialog_head.find("button"), str);
 
         /**Body */
@@ -308,14 +353,14 @@ function HDialog() {
         hhis.css_from_style_strings(hhis.odialog_body, str);
 
         /**Foot */
-        str = "float: right; margin-right:10px; margin-top:10px; margin-bottom: 5px;";
+        str = "float: right; margin-right:10px; margin-top:10px; margin-bottom: 5px; width: 60px; ";
         hhis.css_from_style_strings(hhis.odialog_foot.find("button"), str);
     }
 
     hhis.set_dialog_vertical_center = function () {
         var wh = $(window).height();
         var dh = hhis.odialog.outerHeight();
-        var bl = ((wh / 2 - dh / 2) / (wh)) * 100 - 10;
+        var bl = ((wh / 2 - dh / 2) / (wh)) * 100;
         var str = "top: " + bl + "%;";
         hhis.css_from_style_strings(hhis.odialog, str);
     }
@@ -342,6 +387,7 @@ function HDialog() {
     }
 
     hhis.show = function () {
+        //hhis.cbokeh();
         hhis.cdialog();
         $("body").append(hhis.odialog);
         hhis.set_dialog_vertical_center();

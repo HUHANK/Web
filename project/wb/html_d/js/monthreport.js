@@ -30,8 +30,8 @@ function MonthReportWinResize() {
     wheight = $(window).height();
     var wrapper_top = $("body .wrapper-top").height();
     var h = wheight - wrapper_top - 1;
-    console.info("@#$&**%@&*&$#(@&*$@$");
-    console.info(h);
+    // console.info("@#$&**%@&*&$#(@&*$@$");
+    // console.info(h);
     if (wrapper_top == 0) {
         window.setTimeout(MonthReportWinResize, 100);
     }
