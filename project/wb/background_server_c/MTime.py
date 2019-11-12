@@ -17,7 +17,7 @@ def getNowYearWeek():
     return date.isocalendar()
 
 #根据指定的日期获取年份，第几周，一周的第几天
-def getWeekInfoByDate(str):
+def k(str):
     date = datetime.datetime.strptime(str, '%Y%m%d')
     return date.isocalendar()
 
