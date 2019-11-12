@@ -1,22 +1,228 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>VUE</title>
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="js/iview.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="plug-in/fullcalendar/packages/core/main.min.css">
+    <link rel="stylesheet" type="text/css" href="plug-in/fullcalendar/packages/daygrid/main.min.css">
+    <link rel="stylesheet" type="text/css" href="plug-in/fullcalendar/packages/timegrid/main.min.css">
+    <link rel="stylesheet" type="text/css" href="plug-in/fullcalendar/packages/list/main.min.css">
+    <script type="text/javascript" src="plug-in/fullcalendar/packages/core/main.min.js"></script>
+    <script type="text/javascript" src="plug-in/fullcalendar/packages/interaction/main.min.js"></script>
+    <script type="text/javascript" src="plug-in/fullcalendar/packages/daygrid/main.min.js"></script>
+    <script type="text/javascript" src="plug-in/fullcalendar/packages/timegrid/main.min.js"></script>
+    <script type="text/javascript" src="plug-in/fullcalendar/packages/list/main.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <style>
+        /* 语言选择 */
+        #top {
+            background: #eee;
+            border-bottom: 1px solid #ddd;
+            padding: 0 10px;
+            line-height: 40px;
+            font-size: 12px;
+        }
+        /* 日历 */
+        #calendar {
+            margin: 40px auto;
+            padding: 0 10px;
+        }
+        /* Event 参数 className 的值 */
+        .done:before {
+            content:"【 已完成 】";
+            background-color:yellow;
+            color:green;
+            text-align:center;
+            font-weight:bold;
+            width:100%;
+        }
+        /* Event 参数 className 的值 */
+        .doing:before {
+            content:"【 未完成 】";
+            background-color:yellow;
+            color:red;
+            text-align:center;
+            font-weight:bold;
+        }
+
+    </style>
 </head>
 <body>
-    <template>
-        <Slider v-model="value" range></Slider>
-    </template>
-        
-    <script>
-        export default {
-            data () {
-                return {value: [20, 50]}
-            }
-        }
-    </script>
+    <div id='top'>
+        Language:
+        <select id='lang-selector'></select>
+
+    </div>
+
+    <div id='calendar'></div>
+
 </body>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var initialLangCode = 'en';
+
+        $('#calendar').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            weekends: true,
+            weekMode: 'liquid',
+            defaultView: 'month',
+            allDayText: '全天',
+            businessHours: true,
+            defaultEventMinutes: 120,
+            eventLimit: true,
+            dayClick : function( date ) {
+                //do something here...
+                console.log('dayClick触发的时间为：', date.format());
+                // ...
+            },
+            //设置是否可被单击或者拖动选择
+            selectable: true,
+            //点击或者拖动选择时，是否显示时间范围的提示信息，该属性只在agenda视图里可用
+            selectHelper: true,
+            //点击或者拖动选中之后，点击日历外的空白区域是否取消选中状态 true为取消 false为不取消，只有重新选择时才会取消
+            unselectAuto: true,
+            select: function( start, end ){
+                //do something here...
+                console.log('select触发的开始时间为：', start.format());
+                console.log('select触发的结束时间为：', end.format());
+                // ...
+            },
+            eventClick : function( event ){
+                //do something here...
+                console.log('eventClick中选中Event的id属性值为：', event.id);
+                console.log('eventClick中选中Event的title属性值为：', event.title);
+                console.log('eventClick中选中Event的start属性值为：', event.start.format('YYYY-MM-DD HH:mm'));
+                console.log('eventClick中选中Event的end属性值为：', event.end==null?'无':event.end.format('YYYY-MM-DD HH:mm'));
+                console.log('eventClick中选中Event的color属性值为：', event.color);
+                console.log('eventClick中选中Event的className属性值为：', event.className);
+                // ...
+            },
+            eventMouseover : function( event ) {
+                //do something here...
+                console.log('鼠标经过 ...');
+                console.log('eventMouseover被执行，选中Event的title属性值为：', event.title);
+                // ...
+            },
+            eventMouseout : function( event ) {
+                //do something here...
+                console.log('eventMouseout被执行，选中Event的title属性值为：', event.title);
+                console.log('鼠标离开 ...');
+                // ...
+            },
+            //Event是否可被拖动或者拖拽
+            editable: true,
+            //Event被拖动时的不透明度
+            dragOpacity: 0.5,
+            eventDrop : function( event, dayDelta, revertFunc ) {
+                //do something here...
+                console.log('eventDrop --- start ---');
+                console.log('eventDrop被执行，Event的title属性值为：', event.title);
+                if(dayDelta._days != 0){
+                    console.log('eventDrop被执行，Event的start和end时间改变了：', dayDelta._days+'天！');
+                }else if(dayDelta._milliseconds != 0){
+                    console.log('eventDrop被执行，Event的start和end时间改变了：', dayDelta._milliseconds/1000+'秒！');
+                }else{
+                    console.log('eventDrop被执行，Event的start和end时间没有改变！');
+                }
+                //revertFunc();
+                console.log('eventDrop --- end ---');
+                // ...
+            },
+            eventResize : function( event, dayDelta, revertFunc ) {
+                //do something here...
+                console.log(' --- start --- eventResize');
+                console.log('eventResize被执行，Event的title属性值为：', event.title);
+                if(dayDelta._days != 0){
+                    console.log('eventResize被执行，Event的start和end时间改变了：', dayDelta._days+'天！');
+                }else if(dayDelta._milliseconds != 0){
+                    console.log('eventResize被执行，Event的start和end时间改变了：', dayDelta._milliseconds/1000+'秒！');
+                }else{
+                    console.log('eventResize被执行，Event的start和end时间没有改变！');
+                }
+                //revertFunc();
+                console.log('--- end --- eventResize');
+                // ...
+            },
+            events: [
+                {
+                    id: 1,
+                    title: '这是一个all-day数据',
+                    allDay: true,
+                    start: '2018-12-11'
+                },
+                {
+                    id: 2,
+                    title: '开始时间为12PM',
+                    start: '2018-12-11 12:00'
+                },
+                {
+                    id: 3,
+                    title: '给一点颜色',
+                    start: '2018-12-11',
+                    color: 'red'
+                },
+                {
+                    id: 4,
+                    title: '使用className:done',
+                    start: '2018-12-10 09:00',
+                    end: '2018-12-11 18:00',
+                    color: 'blue',
+                    className: 'done'
+
+                },
+                {
+                    id: 5,
+                    title: '使用className:doing',
+                    start: '2018-12-11 09:00',
+                    end: '2018-12-12 18:00',
+                    color: 'green',
+                    className: 'doing'
+
+                },
+                {
+                    id: 6,
+                    title: '使用URL和字体颜色',
+                    start: '2018-12-11',
+                    color: 'pink',
+                    url: 'http://foreknow.com',
+                    className: 'doing',
+                    textColor: 'black'
+                },
+                {
+                    id: 7,
+                    title: '使用backgroundColor和borderColor',
+                    start: '2018-12-11 09:00',
+                    end: '2018-12-12 18:00',
+                    backgroundColor: 'gray',
+                    borderColor: 'red',
+                    className: 'done'
+
+                },
+
+            ]
+        });
+
+        //初始化语言选择的下拉菜单值
+        $.each($.fullCalendar.langs, function(langCode) {
+            $('#lang-selector').append(
+                    $('<option/>')
+                            .attr('value', langCode)
+                            .prop('selected', langCode == initialLangCode)
+                            .text(langCode)
+            );
+        });
+
+        //当选择一种语言时触发
+        $('#lang-selector').on('change', function() {
+            if (this.value) {
+                $('#calendar').fullCalendar('option', 'lang', this.value);
+            }
+        });
+    });
+</script>
 </html>

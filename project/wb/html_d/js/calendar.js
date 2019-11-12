@@ -16,7 +16,8 @@ function CalendarInit() {
 function CalendarWinResize() {
     wheight = $(window).height();
     var h1 = $("body .wrapper-top").height();
-    //console.info(h1);
+    if (h1 == 0) {
+        window.setTimeout(CalendarWinResize, 100);
+    }
     $("body .body .calendar").height(wheight-h1-4);
-    //$("body .body .calendar iframe").height(wheight-h1);
 }

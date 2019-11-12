@@ -396,6 +396,7 @@ function WeekReportEvent() {
         $(".wrap1 .week-report-table").show();
         $(".wrap1 .week-report-table .body .foot button.commit").text("添加");
         $(".wrap1 .week-report-table .body .foot button.commit").attr("value", "add");
+        $(".wrap1 .week-report-table .body .foot").css("display", "block");
 
         var i=0;
         var cols=TABLE_CONF.columns;
@@ -430,6 +431,7 @@ function WeekReportEvent() {
         $(".wrap1 .week-report-table .body .foot button.commit").text("更新");
         $(".wrap1 .week-report-table .body .foot button.commit").attr("value", "update");
         $(".wrap1 .week-report-table .body .foot button.commit").attr("row-id", id);
+        $(".wrap1 .week-report-table .body .foot").css("display", "block");
 
         var i=0;
         var columns = TABLE_CONF.columns;

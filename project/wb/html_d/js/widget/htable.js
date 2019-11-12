@@ -256,9 +256,14 @@ function HDialog() {
         hhis.add_input(labs, cls, 300, 3);
     };
 
+    hhis.add_lable = function(labs) {
+        var l = hhis.cele("lable").text(labs);
+        var td = hhis.cele("td").append(l).css({"text-align": "right", "font-size":"13px", "font-weight": "bold", "color": "#2C2B35","padding-right": "3px"});
+        return td;
+    }
+
     hhis.add_input = function (labs /*标签*/ , cls /*类名*/ , len = 150, colspan = 0 /*跨行数*/ ) {
-        var td = hhis.cele("td").append(hhis.cele("label").text(labs)).css({"text-align": "right", "font-size":"13px"});
-        hhis.odialog_body_table_body_row.append(td);
+        hhis.odialog_body_table_body_row.append(hhis.add_lable(labs));
 
         var input = hhis.cele("input").attr("type", "text").addClass(cls).width(len);
         td = hhis.cele("td").append(input);
@@ -278,16 +283,65 @@ function HDialog() {
         });
     }
 
-    hhis.add_textarea = function (labs /*标签*/ , cls /*类名*/ , wide = 300 /*宽*/ , high = 80 /*高*/ ) {
-        var td = hhis.cele("td").append(hhis.cele("label").text(labs)).css({"text-align": "right", "font-size":"13px"});
+    hhis.get_now_date = function() {
+        var date = new Date();
+        var ret = "";
+        var mon = date.getMonth()+1;
+        if (mon < 10) {
+            mon = "0"+mon;
+        }else {
+            mon = mon + "";
+        }
+        var day = date.getDate();
+        if (day < 10) {
+            day = "0" + day;
+        } else {
+            day = day + "";
+        }
+        ret = date.getFullYear()+"-" + mon + "-" + day;
+        return ret;
+    }
+
+    hhis.add_date_input = function(labs /*标签*/ , cls /*类名*/ , len = 150, colspan = 0 /*跨行数*/) {
+        hhis.odialog_body_table_body_row.append(hhis.add_lable(labs));
+
+        var dinput = hhis.cele("input").attr("type", "text").addClass(cls).width(len);
+        td = hhis.cele("td").append(dinput);
+        td.attr("colspan", colspan + "");
         hhis.odialog_body_table_body_row.append(td);
+        dinput.datepicker({
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true,
+            showWeek: true,
+            firstDay: 1,
+            dateFormat: "yy-mm-dd"
+        });
+
+        /**初始化 */
+        dinput.val(hhis.get_now_date());
+        /**CSS */
+        var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; height:32px; border-radius: 4px; padding-top: 0;padding-bottom: 0;padding-left: 3px;";
+        hhis.css_from_style_strings(dinput, cstr);
+        dinput.blur(function () {
+            var cstr = "outline: none; background: none; border: 1px solid #D9D9D9;box-shadow: none;";
+            hhis.css_from_style_strings($(this), cstr);
+        });
+        dinput.focus(function () {
+            var cstr = "border: 1px solid #4BB2FD;box-shadow: 0 0 3px #4BB2FD;background-color: #FFFCD5;transition: all 0.3s;";
+            hhis.css_from_style_strings($(this), cstr);
+        });
+    }
+
+    hhis.add_textarea = function (labs /*标签*/ , cls /*类名*/ , wide = 300 /*宽*/ , high = 80 /*高*/ ) {
+        hhis.odialog_body_table_body_row.append(hhis.add_lable(labs));
 
         var textarea = hhis.cele("textarea").addClass(cls).height(high).width(wide);
         td = hhis.cele("td").attr("colspan", "3").append(textarea);
         hhis.odialog_body_table_body_row.append(td);
 
         /**CSS */
-        var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 13px;";
+        var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 13px; padding: 1px 0 1px 3px;";
         hhis.css_from_style_strings(textarea, cstr);
         textarea.blur(function () {
             var cstr = "outline: none; background: none; border: 1px solid #D9D9D9;box-shadow: none;";
@@ -300,8 +354,7 @@ function HDialog() {
     }
 
     hhis.add_select = function (labs /*标签*/ , cls /*类名*/ , sels /*选择项*/ ) {
-        var td = hhis.cele("td").append(hhis.cele("label").text(labs)).css({"text-align": "right", "font-size":"13px"});
-        hhis.odialog_body_table_body_row.append(td);
+        hhis.odialog_body_table_body_row.append(hhis.add_lable(labs));
 
         var select = hhis.cele("select").addClass(cls);
         for (var i = 0; i < sels.length; i++) {
@@ -345,7 +398,7 @@ function HDialog() {
         hhis.css_from_style_strings(hhis.odialog_head, str);
         str = "float: left;";
         hhis.css_from_style_strings(hhis.odialog_head.find(".title"), str);
-        str = "float: right; width: 30px; ";
+        str = "float: right; width: 30px; border-radius: 3px; ";
         hhis.css_from_style_strings(hhis.odialog_head.find("button"), str);
 
         /**Body */
@@ -353,7 +406,7 @@ function HDialog() {
         hhis.css_from_style_strings(hhis.odialog_body, str);
 
         /**Foot */
-        str = "float: right; margin-right:10px; margin-top:10px; margin-bottom: 5px; width: 60px; ";
+        str = "float: right; margin-right:15px; margin-top:0px; margin-bottom: 15px; width: 60px; border-radius: 3px; font-weight: bold; color: #454257;";
         hhis.css_from_style_strings(hhis.odialog_foot.find("button"), str);
     }
 

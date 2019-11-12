@@ -1,6 +1,8 @@
 var ZMSJAP_TABLE = null;
+var BINIT = false; 
 
 function ZMSJAP_resize() {
+    if (ZMSJAP_TABLE == null) return;
     var hs = getScrollWidth();
     if (hs == 0) {
         window.setTimeout(ZMSJAP_resize, 100);
@@ -14,10 +16,13 @@ function ZMSJAP_resize() {
     var h2 = $(".body .ZMSJAP .opt-area").outerHeight()
     var h3 = $(".body .ZMSJAP .res-area thead").outerHeight();
     $(".body .ZMSJAP .res-area tbody").height(wheight-h1 -h2 - h3 - hs - 4);
-    $(".body .ZMSJAP .res-area").width(wwidth);
+    $(".body .ZMSJAP .res-area").width(wwidth+hs);
 }
 
+
 function ZMSJAP_main() {
+    if (BINIT) return;
+    BINIT = true;
 
     var TABLE_CONF = {};
     TABLE_CONF.body_height = 800;
@@ -34,12 +39,16 @@ function ZMSJAP_main() {
         {name: "周六支持",         field: "ZLZC",   width: 200, align: "left"},
         {name: "周一支持",          field: "ZYZC",  width: 200, align: "left"},
         {name: "金仕达参与人要求",  field: "CYRYQ",  width: 300, align: "left"},
+        {name: "添加日期",         field: "ADD_DATE",  width: 100, align: "center"},
     ];
 
     function query(condition = " order by ADD_DATE desc ") {
         var cols = TABLE_CONF.columns, i, sql="SELECT ";
         for(i=0; i<cols.length; i++) {
-            sql += " " + cols[i].field + ",";
+            if (cols[i].field == "ADD_DATE") {
+                sql += " date_format(" + cols[i].field + ", '%Y-%m-%d'),";
+            }else
+                sql += " " + cols[i].field + ",";
         }
         sql = sql.substring(0, sql.length-1) + " FROM zmsjap " + condition;
 
@@ -103,10 +112,10 @@ function ZMSJAP_main() {
         dlg.add_row();
         dlg.add_input("项目名称", "ITEM");
         dlg.add_input("系统版本", "XTBB");
-        dlg.add_select("分类", "FL", ['系统测试', '系统升级', '其它']);
-        dlg.add_input("地点", "ADDR");
+        dlg.add_select("分类", "FL", ['测试', '升级', '其它']);
 
         dlg.add_row();
+        dlg.add_input("地点", "ADDR");
         dlg.add_select("是否是重点", "SFZD", ['否', '是']);
 
         dlg.add_row();
@@ -129,7 +138,7 @@ function ZMSJAP_main() {
 
         dlg.confirn_handler = function() {
             var keys = "", values = "", i=0;
-            for(i=1; i<TABLE_CONF.columns.length; i++) {
+            for(i=1; i<TABLE_CONF.columns.length-1; i++) {
                 var key = TABLE_CONF.columns[i].field;
                 var value = dlg.get_value_by_class(key);
                 keys += key+",";
@@ -164,7 +173,7 @@ function ZMSJAP_main() {
         }
         var dlg = CreateDialog("修改安排");
         var columns = TABLE_CONF.columns, i=0;
-        for(i=1; i<columns.length; i++) {
+        for(i=1; i<columns.length-1; i++) {
             var value = row[i];
             var key = columns[i].field;
             dlg.set_value_by_class(key, value);
@@ -175,7 +184,7 @@ function ZMSJAP_main() {
             var cols = TABLE_CONF.columns;
             var sql = "UPDATE zmsjap SET ";
             var i=0;
-            for (i=1; i<cols.length; i++) {
+            for (i=1; i<cols.length-1; i++) {
                 var key = cols[i].field;
                 var val = dlg.get_value_by_class(key);
                 sql += key + "='" + val + "',";
@@ -195,11 +204,9 @@ function ZMSJAP_main() {
                 query();
             });
         }
-
     });
     
     $(".ZMSJAP .opt-area .exp").click(function() {
-        // console.info(ZMSJAP_TABLE.Parent.html());
         if(getExplorer()=='ie') {
             alert("不支持IE导出！");
         } else {
