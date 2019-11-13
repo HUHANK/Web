@@ -213,7 +213,7 @@
                   //console.info(arg);
               },
               eventClick: function(eventClickInfo) {
-                //   console.info(eventClickInfo);
+                  //console.info(eventClickInfo);
                   var content = window.getComputedStyle(eventClickInfo.el,":before").content;
                   if (content != "\"【个人日程】\"") return;
                   var txt = $(eventClickInfo.el).text();
