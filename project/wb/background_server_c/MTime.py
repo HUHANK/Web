@@ -54,9 +54,9 @@ def getWeekFirstLastday(weekflag):
         yearstartweekday = yearstartcalendarmsg[2]
         yearstartyear = yearstartcalendarmsg[0]
         if yearstartyear < int(year_str):
-            daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 1) * 7
+            daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 0) * 7
         else:
-            daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 2) * 7
+            daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 1) * 7
         Monday = (yearstart + datetime.timedelta(days=daydelat)).date()
         Sunday = Monday + datetime.timedelta(days=6)
         Monday = datetime.datetime.strftime(Monday, "%Y-%m-%d")

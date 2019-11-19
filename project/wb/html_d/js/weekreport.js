@@ -83,7 +83,8 @@ TABLE_CONF.columns = [
     {name: '业务主管部门',        field: 'BUSINESS_DEPART',          sel_field: "BUSINESS_DEPART",         width: '80', align: 'center'},
     {name: '设计评审时间和状态',   field: 'DESIGN_REVIEW_STATUS',     sel_field: "DESIGN_REVIEW_STATUS",    width: '100', align: 'center'},
     {name: '更新日期',     field: 'UPT_DATE', sel_field: "date_format(UPT_DATE, '%Y-%m-%d')",               width: '80', align: 'center'},
-    {name: '备注',                field: 'NOTE',                     sel_field: "NOTE",                    width: '200', align: 'center'}
+    {name: '备注',                field: 'NOTE',                     sel_field: "NOTE",                    width: '200', align: 'center'},
+    {name: '是否报研管',          field: 'SFBYG',                     sel_field: "SFBYG",                   width: '50', align: 'center'}
 ];
 
 function getTableConfObjectByField(field) {
@@ -169,8 +170,10 @@ function WeekReportInit() {
         firstDay: 1,
         dateFormat: "yy-mm-dd",
         onClose: function(dateText, inst){
+            /**再次判断是否是个人周报，个人周报就不用填写时间变更原因的 */
+            if ($(".wrap1 .week-report-table .body .field_NEED_TRACK").val() == "个人周报" ) return;
             if (WEEK_REPORT_FIELD_END_DATE_NEED == false) return;
-            //console.info(dateText);
+            
             WEEK_REPORT_FIELD_END_DATE_NEXT = dateText;
 
             if (WEEK_REPORT_FIELD_END_DATE_PREV != WEEK_REPORT_FIELD_END_DATE_NEXT)
@@ -314,6 +317,7 @@ function WeekReportEvent() {
 
     WeekReportRequiredFocusEvent();
 
+    /**删除按钮事件 */
     $( ".body .week-report .query-opt button.delete" ).click(function( event ) {
         var id = $(".week-report .query-result tbody .selected").attr("row-id");
         if (typeof id == 'undefined') {
@@ -324,6 +328,7 @@ function WeekReportEvent() {
         event.preventDefault();
     });
 
+    /**过滤器里面 */
     $(".body .week-report .query-form fieldset .container .cell .mult").click(function(event) {
         var sel = $(this).prev().children();
         if (typeof sel.attr("multiple") == 'undefined') {
@@ -335,6 +340,7 @@ function WeekReportEvent() {
         }
     });
 
+    /**过滤器点击事件 */
     $(".body .week-report .query-form fieldset legend span").click(function(event) {
         event.stopPropagation();//阻止事件冒泡即可
         var icon = $(this).prev("i");
@@ -348,7 +354,7 @@ function WeekReportEvent() {
             icon.addClass('icony02');
             bSelectData = false;
         }
-        $(this).parent().next().slideToggle(400);
+        $(this).parent().next().slideToggle(100);
 
         if (bSelectData == false) return;
 
@@ -391,6 +397,7 @@ function WeekReportEvent() {
             "<option selected>未完成</option><option>已完成</option><option>暂停</option><option selected></option>");
     });
 
+    /**添加任务按钮事件 */
     $(".body .week-report .query-opt button.add").click(function(event) {
         $("body").children(".hyl-bokeh").addClass("hyl-show");
         $(".wrap1 .week-report-table").show();
@@ -413,11 +420,13 @@ function WeekReportEvent() {
         $(".wrap1 .week-report-table .body table .field_WORKLOAD").val(0);
         $(".wrap1 .week-report-table .body table .field_GROUP").val(WEEK_REPORT_CURRENT_USER_GROUP);
         $(".wrap1 .week-report-table .body table .field_ITEM_STATUS").val("未完成");
+        $(".wrap1 .week-report-table .body table .field_SFBYG").val("否");
         //$(".wrap1 .week-report-table .body table .field_ITEM_STAGE").val("策划阶段");
         WeekReportInitRequired();
 
     });
 
+    /**更新任务按钮事件 */
     $(".body .week-report .query-opt button.update").click(function(event) {
         var id = $(".week-report .query-result tbody .selected").attr("row-id");
         if (typeof id == 'undefined') {
@@ -473,195 +482,53 @@ function WeekReportEvent() {
         WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND ITEM_STATUS IN ('未完成','') ";
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
+    /**查询按钮点击事件 */
     $(".body .week-report .query-opt button.queryi").click(function(event) {
-        var parent = $(".week-report .query-form .condition .container");
-        var SUPPLIER = parent.find(".SUPPLIER option:selected");
-        var PRIORITY = parent.find(".PRIORITY option:selected");
-        var SYSTEM = parent.find(".SYSTEM option:selected");
-        var ITEM_TYPE = parent.find(".ITEM_TYPE option:selected");
-        var ITEM = parent.find(".ITEM option:selected");
-        var ITEM_PROGRESS = parent.find(".ITEM_PROGRESS option:selected");
-        var GROUP = parent.find(".GROUP option:selected");
-        var ITEM_CHARGE = parent.find(".ITEM_CHARGE option:selected");
-        var NEED_TRACK = parent.find(".NEED_TRACK option:selected");
-        var ITEM_STATUS = parent.find(".ITEM_STATUS option:selected");
         var scondition = "";
 
-        var s = SUPPLIER;
-        var field = "SUPPLIER";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
+        var ccondifunc = function(filed_name) {
+            if (filed_name.length < 1) return;
+
+            var s = $(".week-report .query-form .condition .container ."+filed_name+" option:selected");
+            var field = MySQLSpecialFieldProcess(filed_name);
+
+            if (s.length > 0) {
+                var sf = "";
+                if (s.length == 1 ) {
+                    if ($.trim($(s[0]).text()) != "")
+                        sf = "'"+$(s[0]).text()+"',";
+                }
+                else
+                    s.each(function(index, el) {
+                        if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
+                    });
+                if (sf.length > 1) {
+                    sf = sf.substring(0, sf.length-1)
+                    if (scondition.length < 1) {
+                        scondition += " WHERE "+field+" IN ("+sf+") ";
+                    }else {
+                        scondition += " AND " + field+" IN ("+sf+") ";
+                    }
                 }
             }
         }
 
-        s = PRIORITY;
-        field = "PRIORITY";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
-
-        s = SYSTEM;
-        field = "SYSTEM";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
-
-        s = ITEM_TYPE;
-        field = "ITEM_TYPE";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
-
-        s = ITEM;
-        field = "ITEM";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
-
-        s = ITEM_PROGRESS;
-        field = "ITEM_PROGRESS";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
-
-        s = GROUP;
-        field = "GROUP";
-        field = MySQLSpecialFieldProcess(field);
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
-
-        s = ITEM_CHARGE;
-        field = "ITEM_CHARGE";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
-
-        s = NEED_TRACK;
-        field = "NEED_TRACK";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
-
-        s = ITEM_STATUS;
-        field = "ITEM_STATUS";
-        if (s.length > 0) {
-            var sf = "";
-            s.each(function(index, el) {
-                if ($(this).text().length > 1) sf += "'"+$(this).text()+"',";
-            });
-            if (sf.length > 1) {
-                sf = sf.substring(0, sf.length-1)
-                if (scondition.length < 1) {
-                    scondition += " WHERE "+field+" IN ("+sf+") ";
-                }else {
-                    scondition += " AND " + field+" IN ("+sf+") ";
-                }
-            }
-        }
+        ccondifunc("SFBYG");
+        ccondifunc("PRIORITY");
+        ccondifunc("SYSTEM");
+        ccondifunc("ITEM_TYPE");
+        ccondifunc("ITEM");
+        ccondifunc("ITEM_PROGRESS");
+        ccondifunc("GROUP");
+        ccondifunc("ITEM_CHARGE");
+        ccondifunc("NEED_TRACK");
+        ccondifunc("ITEM_STATUS");
+        // console.info(scondition);
 
         WEEK_REPORT_QUERY_CONDITION = scondition;
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
-
+    /**导出按钮点击事件 */
     $(".body .week-report .query-opt button.export").click(function(event) {
         //$("body").children(".hyl-bokeh").addClass("hyl-show");
         var cols = TABLE_CONF.columns;
@@ -729,6 +596,7 @@ function WeekReportEvent() {
         $(".wrap1 .week-report-export").hide();
     });
 
+    /**导出处理事件 */
     $(".wrap1 .week-report-export .export").click(function(event) {
         var trs = $(".wrap1 .week-report-export tbody tr[export='yes']");
         var i=0;
@@ -930,6 +798,8 @@ function WeekReportCheckFieldValueRightful()
         var ITEM_INNER_RISKS = $.trim(WeekReportGetValue("ITEM_INNER_RISKS"));
         var ITEM_OUTER_RISKS = $.trim(WeekReportGetValue("ITEM_OUTER_RISKS"));
 
+        var nowT = GetNowDate2();
+        
         if (ITEM_PROGRESS.length < 1) {
             WeekReportDialog02TiShi("请填写正确的项目进度!");
             return false;
@@ -948,6 +818,12 @@ function WeekReportCheckFieldValueRightful()
         }
         if (MILESTONE2_END_TIME.length < 1) {
             WeekReportDialog02TiShi("里程碑任务截止日期不能为空!");
+            return false;
+        }
+        /**判断里程碑的结束日期不能小于当前日期 */
+        console.info(nowT+"|"+MILESTONE1_END_TIME+"|"+MILESTONE2_END_TIME);
+        if (MILESTONE1_END_TIME < nowT || MILESTONE2_END_TIME < nowT) {
+            WeekReportDialog02TiShi("里程碑任务截止日期不能小于当前时间!");
             return false;
         }
         if (ITEM_STAGE.length < 1) {
@@ -1059,6 +935,7 @@ function WeekReportQueryTable(offset, rows) {
     sql += " ORDER BY `GROUP`, ITEM_CHARGE, UPT_DATE ";
     sql = sql + " limit "+offset+", "+rows;
 
+    //console.info(sql);
     var param = {};
     param['method'] = "SELECT";
     param['SQL'] = sql;

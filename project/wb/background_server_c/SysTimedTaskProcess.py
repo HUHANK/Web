@@ -15,10 +15,13 @@ def SysTimedTaskProcess():
     N = 0
     while True:
 
+        if N % (60*10) == 0:
+            GenCalenderData()
         if N % (15) == 0:
             TurnNextWeek()
         if N % (5) == 0:
             TurnNextWeek2()
+            weekreportToHis()
 
         if N % (60*12) == 0:
             DelExpireSession()
@@ -27,6 +30,77 @@ def SysTimedTaskProcess():
         time.sleep(60)
         if N >= 10000000:
             N = 0
+
+def weekreportToHis():
+    # db = Options['mysql']
+    db = MySQLOption()
+    db.connect()
+
+    ywt = getNowYearWeek()
+    syw = "%s%s" % (ywt[0], (ywt[1]))
+    (sDate, eDate) = getWeekFirstLastday(syw)
+
+    sql = "SELECT ParamValue FROM sys_param where ParamCode = '0007'"
+    rs = db.select3(sql)
+    # print rs[0][0]
+    if rs[0][0] >= syw:
+        return
+
+    str = u"'%s','%s','%s'"%(syw, sDate, eDate)
+    sql = u"INSERT INTO his_week_report(ID,YEAR_WEEK,START_DATE,END_DATE,ITEM,ITEM_STAGE,ITEM_PROGRESS,ITEM_STATUS,ITEM_TYPE,LAST_WEEK_WORK,THIS_WEEK_WORK,NEXT_WEEK_WORK,SYSTEM,PRIORITY,ITEM_CHARGE,`GROUP`,NEED_TRACK,NOTE,ADD_USER,ADD_DATE,UPT_USER,UPT_DATE,SFBYG) "
+    sql += u"SELECT ID," + str + u",ITEM,ITEM_STAGE,ITEM_PROGRESS,ITEM_STATUS,ITEM_TYPE,LAST_WEEK_WORK,THIS_WEEK_WORK,NEXT_WEEK_WORK,SYSTEM,PRIORITY,ITEM_CHARGE,`GROUP`,NEED_TRACK,NOTE,ADD_USER,ADD_DATE,UPT_USER,UPT_DATE,SFBYG "
+    sql += u"FROM week_report WHERE NEED_TRACK = '个人周报'"
+    print sql
+    db.update(sql)
+
+    sql = "UPDATE sys_param SET ParamValue='%s' WHERE ParamCode='0007'"%(syw)
+    print sql
+    db.update(sql)
+
+def GenCalenderData():
+    # db = Options['mysql']
+    db = MySQLOption()
+    db.connect()
+
+    sql = "DELETE FROM calendar WHERE ADD_USER = 'SYSTEM'"
+    db.update(sql)
+
+    sql = u"SELECT ID, ITEM, ITEM_PROGRESS, RISK_POINT, END_DATE FROM week_report WHERE END_DATE != '' AND NEED_TRACK='项目周报' AND ITEM_STATUS = '未完成'"
+    data = db.select3(sql)
+    for row in data:
+        id = str(row[0])
+
+        if row[1] == '':
+            continue
+        risk = ''
+        if len(row[3]) == 0:
+            risk = u"无风险"
+        else:
+            risk = u"有风险"
+        detail = row[1]+"["+risk+"]["+row[2]+"%]"
+        sql = u"INSERT INTO calendar(ID,WID, DETAIL, START_DATE, END_DATE, TYPE, SOURCE, ADD_USER) VALUES("
+        sql += id + "," + id + ",'" + detail + "','" + row[4] + "','" + row[4] + u"', '0', '1', 'SYSTEM')"
+        print sql
+        db.update(sql)
+
+    sql = u"SELECT ID, CONCAT('[',FL,']', ITEM), DATE_FORMAT(ADD_DATE,'%Y-%m-%d') FROM zmsjap"
+    data = db.select3(sql)
+    for row in data:
+        id = str(row[0])
+        detail = row[1]
+        t1 = row[2]
+
+        tt = getYearWeek(t1)
+        date = datetime.datetime.strptime(t1, '%Y-%m-%d')
+        delta = datetime.timedelta(days=(5-tt[2]))
+        n_days = date + delta
+        t2 = n_days.strftime("%Y-%m-%d")
+
+        sql = u"INSERT INTO calendar(ID,WID, DETAIL, START_DATE, END_DATE, TYPE, SOURCE, ADD_USER) VALUES("
+        sql += id +","+ id +",'"+ detail +"','" + t2 + "','" + t2 + "', '0', '2', 'SYSTEM')"
+        print (sql)
+        db.update(sql)
+
 
 def TurnNextWeek():
     (NowYear, NowWeek, d) = getNowYearWeek()

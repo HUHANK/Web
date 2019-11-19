@@ -15,25 +15,25 @@
 	<script type="text/javascript" src="js/jquery.charfirst.pinyin.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=2.9.9"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=2.9.9"></script>
+	<script type="text/javascript" src="js/ginit.js?version=3.0.3"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=3.0.3"></script>
 	<script type="text/javascript" src="js/widget/htable.js"></script>
-	<script type="text/javascript" src="js/hyl.js?version=2.9.9"></script>
-	<script type="text/javascript" src="js/calendar.js?version=2.9.9"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=2.9.9"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=2.9.9"></script>
-	<script type="text/javascript" src="js/monthreport.js?version=2.9.9"></script>
-	<script type="text/javascript" src="js/zmsjap.js?version=2.9.9"></script>
+	<script type="text/javascript" src="js/hyl.js?version=3.0.3"></script>
+	<script type="text/javascript" src="js/calendar.js?version=3.0.3"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=3.0.3"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=3.0.3"></script>
+	<script type="text/javascript" src="js/monthreport.js?version=3.0.3"></script>
+	<script type="text/javascript" src="js/zmsjap.js?version=3.0.3"></script>
 
-	<link rel="stylesheet" type="text/less" href="css/zmsjap.less?version=2.9.9">
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=2.9.9">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=2.9.9">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=2.9.9">
+	<link rel="stylesheet" type="text/less" href="css/zmsjap.less?version=3.0.3">
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=3.0.3">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=3.0.3">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=3.0.3">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=2.9.9">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=2.9.9">
-	<link rel="stylesheet" type="text/less" href="css/icony.css?version=2.9.9">
-	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=2.9.9">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=3.0.3">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=3.0.3">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=3.0.3">
+	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=3.0.3">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -102,7 +102,7 @@
 		</div>
 
 		<div class="calendar">
-			<iframe src="calendar.html?version=2.9.9" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
+			<iframe src="calendar.html?version=3.0.3" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
 		</div>
 
 		<div class="week-report">
@@ -111,8 +111,8 @@
                 	<legend><i class="icony-55 icony02"></i><span>过滤器</span></legend>
                 	<div class="container" style="display: none">
                 		<span class="cell">
-                			<span class="label">供应商</span>
-                			<span class="input"><select class="SUPPLIER"></select></span>
+                			<span class="label">是否报研管</span>
+                			<span class="input"><select class="SFBYG"></select></span>
                 			<span class="mult ui-icon ui-icon-plus"></span>
                 		</span>
                 		<span class="cell">
@@ -530,6 +530,7 @@
 						<td><label>优先级</label></td><td><select class="field_PRIORITY"><option>高</option><option>中</option><option>低</option></select></td>
 						<td><label>标签</label></td><td><select class="field_NEED_TRACK"><option>个人周报</option><option>项目周报</option></select></td>
 						<td><label>项目所处阶段</label><td><select class="field_ITEM_STAGE"><option>策划阶段</option><option>开发阶段</option><option>测试阶段</option><option>投产阶段</option></select></td></td>
+						<td><label>是否报研管</label></td><td><select class="field_SFBYG"><option>否</option><option>是</option></select></td>
 					</tr>
 					<tr>
 						<td><label>小组</label></td><td><select class="field_GROUP"></select></td>
