@@ -1,4 +1,12 @@
 /*全局变量*/
+/**WeekReport */
+var WeekReport = {};
+WeekReport.data = [];
+WeekReport.total_data_num = 0;
+/**一页显示的数据条数 */
+WeekReport.page_size = 50;
+WeekReport.now_page_num = 1;
+
 var WEEK_REPORT_EVENT_INIT=false;
 var WEEK_REPORT_PAGE_SIZE=25;
 var WEEK_REPORT_PAGE_NUM = 0;
@@ -294,7 +302,6 @@ function WeekReportEvent() {
                             alter(d.msg);
                             return;
                         }
-                        //WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
                     });
 
                     $( this ).dialog( "close" );
@@ -321,8 +328,13 @@ function WeekReportEvent() {
     $( ".body .week-report .query-opt button.delete" ).click(function( event ) {
         var id = $(".week-report .query-result tbody .selected").attr("row-id");
         if (typeof id == 'undefined') {
-            alert("请选取需要更新的行！");
+            alert("请选取需要删除的行！");
             return ;
+        }
+        var user = $(".week-report .query-result tbody .selected").find(".cITEM_CHARGE pre").text();
+        if (user != g_CURRENT_USER) {
+            alert("您无权删除【" + user + "】的周报！");
+            return;
         }
         $( "#week-report-dialog-01" ).dialog( "open" );
         event.preventDefault();
@@ -430,8 +442,14 @@ function WeekReportEvent() {
     $(".body .week-report .query-opt button.update").click(function(event) {
         var id = $(".week-report .query-result tbody .selected").attr("row-id");
         if (typeof id == 'undefined') {
-            alert("请选取需要更新的行！");
+            alert("请选取需要修改的行！");
             return ;
+        }
+
+        var user = $(".week-report .query-result tbody .selected").find(".cITEM_CHARGE pre").text();
+        if (user != g_CURRENT_USER) {
+            alert("您无权修改【" + user + "】的周报！");
+            return;
         }
 
         $(".wrap1 .week-report-table .body .date_change").hide();
@@ -474,11 +492,13 @@ function WeekReportEvent() {
         });
     });
     $(".body .week-report .query-opt button.query-all").click(function(event) {
+        WEEK_REPORT_PAGE_NUM = 0;
         WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') ";
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
 
     $(".body .week-report .query-opt button.query-active").click(function(event) {
+        WEEK_REPORT_PAGE_NUM = 0;
         WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND ITEM_STATUS IN ('未完成','') ";
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
@@ -525,6 +545,7 @@ function WeekReportEvent() {
         ccondifunc("ITEM_STATUS");
         // console.info(scondition);
 
+        WEEK_REPORT_PAGE_NUM = 0;
         WEEK_REPORT_QUERY_CONDITION = scondition;
         WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
@@ -921,6 +942,143 @@ function SelectFieldChangeReasonDetail()
     });
 }
 
+WeekReport.total_page_num = function() {
+    var total_num = WeekReport.data.length;
+    if (total_num % WeekReport.page_size == 0) {
+        return total_num/WeekReport.page_size;
+    }else {
+        return Math.ceil(total_num/WeekReport.page_size);
+    }
+}
+WeekReport.get_now_page_data = function() {
+    return WeekReport.get_n_page_data(WeekReport.now_page_num);
+}
+WeekReport.get_prev_page_data = function () {
+    /**如果翻到第一页，还向前翻，则总是返回第一页的数据 */
+    var page_num = WeekReport.now_page_num - 1;
+    if (page_num >= 1) WeekReport.now_page_num = page_num;
+    return WeekReport.get_n_page_data(WeekReport.now_page_num);
+}
+WeekReport.get_next_page_data = function () {  
+    /**如果翻到最后一页，还向后翻，则总是返回最后一页的数据 */
+    var page_num = WeekReport.now_page_num + 1;
+    if (page_num <= WeekReport.total_page_num()) WeekReport.now_page_num = page_num;
+    return WeekReport.get_n_page_data(WeekReport.now_page_num);
+}
+WeekReport.is_first_page = function() {
+    return WeekReport.now_page_num == 1 ? true : false;
+}
+WeekReport.is_last_page = function () {
+    return WeekReport.now_page_num == WeekReport.total_page_num() ? true : false;
+}
+
+WeekReport.get_n_page_data = function(page_num) {
+    var ret = [];
+    if (page_num < 1 || page_num > WeekReport.total_page_num()) return [];
+    
+    var start_row_num = (page_num - 1) * WeekReport.page_size;
+    var end_row_num = (page_num) * WeekReport.page_size;
+    var i = start_row_num;
+    for(i; i<end_row_num; i++) {
+        ret.push(WeekReport.data[i]);
+    }
+    return ret;
+}
+
+WeekReport.get_all_week_report_table_data = function(mode = null) {
+    WeekReport.data = [];
+    /**如果参数没有指定查询模式，就取设置的查询参数 */
+    if (null == mode) mode = WeekReport.QueryMode;
+    if (1 == mode) { /**只查询周报表 */
+        WeekReport.get_week_report_table_data("week_report");
+    } else if (2 == mode) { /**只查询历史周报表 */
+        WeekReport.get_week_report_table_data("his_week_report");
+    } else if (3 == mode) { /**查询周报表和历史周报表 */
+        WeekReport.get_week_report_table_data("week_report");
+        WeekReport.get_week_report_table_data("his_week_report");
+    }
+    WeekReport.total_page_num = WeekReport.data.length;
+}
+
+WeekReport.get_week_report_table_data = function(TableName) {
+    var i=0;
+    var columns = TABLE_CONF.columns;
+    var sql = "SELECT ";
+
+    for(i=0; i<columns.length; i++) {
+        sql += columns[i].sel_field + ",";
+    }
+    sql = sql.substring(0, sql.length - 1) + " FROM " + TableName + " " + WEEK_REPORT_QUERY_CONDITION;
+    sql += " ORDER BY `GROUP`, ITEM_CHARGE, UPT_DATE ";
+
+    var param = {};
+    param['method'] = "SELECT";
+    param['SQL'] = sql;
+
+    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+        if (d.ErrCode != 0) {
+            alter(d.msg);
+            return;
+        }
+        WeekReport.data = WeekReport.data.concat(d.data);
+        // console.info(d.data);
+        // console.info(WeekReport.data);
+    });
+}
+
+WeekReport.table_head_init = function() {
+    var tr = $("<tr></tr>");
+    for(var i=0; i<TABLE_CONF.columns.length; i++) {
+        var th = $("<th></th>").text(TABLE_CONF.columns[i].name);
+        th.css("width", (TABLE_CONF.columns[i].width)+"px");
+        tr.append(th);
+    }
+    $(".week-report .query-result table thead").html(tr);
+}
+
+WeekReport.table_body_bind_data = function(data) {
+    var tbody = $(".week-report .query-result table tbody");
+    tbody.html("");
+    if (data.length < 1) return;
+    var RED_COLOR_FIELDS = "RISK_POINT,MEET_FEEDBACK";
+
+    var columns = TABLE_CONF.columns;
+    var i=0, j=0;
+    for(i=0; i<data.length; i++) {
+        var row = data[i];
+        var tr = $("<tr></tr>").attr("row-id", row[0]+"");
+        for(j=0; j<row.length; j++) {
+            var field = columns[j].field;
+            var pre = $("<pre></pre>").text(row[j]);
+            var td = $("<td></td>").append(pre);
+            pre.css("text-align", columns[j].align);
+            td.css("width", columns[j].width+"px");
+            td.addClass('c'+field);
+            tr.append(td);
+            if (RED_COLOR_FIELDS.indexOf(field) != -1) {
+                td.css("color", "red");
+            }
+        }
+        tr.click(function(event){
+            $(this).siblings('.selected').removeClass('selected');
+            $(this).addClass('selected');
+        });
+        tbody.append(tr);
+    }
+
+    /**每到周四，提示更新周报 */
+    $(".week-report .query-result table tbody .cUPT_DATE").each(function(index, el) {
+        var date = new Date();
+        if ( (date.getDay() || 7) >= 4 ) {
+            var wfirstday = getFirstDayOfWeek(date);
+            if ($(this).children('pre').text() < wfirstday ) 
+            {
+                $(this).parent().addClass('ts1');
+                $(this).parent().attr("title", "请及时更新本周周报！");
+            }
+        }
+    });
+}
 function WeekReportQueryTable(offset, rows) {
     var i=0;
     var columns = TABLE_CONF.columns;
@@ -944,7 +1102,7 @@ function WeekReportQueryTable(offset, rows) {
             alter(d.msg);
             return;
         }
-
+        //console.info(d.data);
         var tbody=$(".week-report .query-result table tbody");
         tbody.html("");
         var data = d.data;

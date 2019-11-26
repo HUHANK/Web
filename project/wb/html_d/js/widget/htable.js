@@ -448,3 +448,26 @@ function HDialog() {
 
     return hhis;
 }
+
+
+/**Table 分页栏控件 */
+function HTableStatusBar(obj) {
+    var his = {};
+    his.obj  = obj;
+
+    his.chtml = function () {
+        var fbody = hComn.cele("div");
+        var cstr = "border: 1px solid red;height:40px;";
+        hComn.css_from_style_strings(fbody, cstr);
+        
+        
+
+        his.obj.append(fbody);
+    }
+    his.init = function () {
+        his.chtml();
+    }
+    
+    his.init();
+    return obj;
+}

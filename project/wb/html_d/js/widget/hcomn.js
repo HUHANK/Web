@@ -4,6 +4,34 @@ function hComn() {
 
 /**创建一个元素 */
 hComn.cele = function(ele) {return $("<" + ele + "></" + ele + ">");}
+/**创建一个input的输入框，类型为text */
+hComn.cinput = function (type = "text"/*类型*/, cls = ""/*类名*/, width = 150, require=false/*是否必填*/) {
+    var input = hComn.cele("input").attr("type", type).addClass(cls).width(width);
+
+    /**CSS */
+    var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; height:32px; border-radius: 4px; padding-top: 0;padding-bottom: 0;padding-left: 3px;";
+    if (require == true)
+        cstr = "outline: none; background: none; border: 1px solid #FF2E2E; height:32px; border-radius: 4px; padding-top: 0;padding-bottom: 0;padding-left: 3px;";
+    hComn.css_from_style_strings(input, cstr);
+
+    input.blur(function () {
+        cstr = "outline: none; background: none; border: 1px solid #D9D9D9;box-shadow: none;";
+        if (require == true) {
+            var val = $.trim($(this).val());
+            if (val.length < 1)
+                cstr = "outline: none; background: none; border: 1px solid #FF2E2E;box-shadow: none;";
+        }
+        hComn.css_from_style_strings($(this), cstr);
+    });
+    input.focus(function () {
+        var cstr = "border: 1px solid #159CFF;box-shadow: 0 0 3px #4BB2FD;background-color: #FFFCD5;transition: all 0.3s;";
+        hComn.css_from_style_strings($(this), cstr);
+    });
+    return input;
+}
+hComn.cselect = function () {
+    var select = hComn.cele("select");
+}
 
 /**获取滚动条的宽度 */
 hComn.get_scroll_width = function() {

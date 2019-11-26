@@ -122,6 +122,16 @@ def getNextWeek(year, week):
         year = year + 1
         return (year, week)
     return (year, week)
+#获取指定周的上一个周
+def getPrevWeek(year, week):
+    year = int(year)
+    week = int(week)
+    if week <= 1:
+        year = year - 1
+        (lYear, lWeek, lDay) = getYearLastWeek(year)
+        return (lYear, lWeek)
+    else:
+        return (year, week-1)
 
 def Datetime_UTC2Shanghai(str, fmt):
     """把世界时间转换成中国上海时区的标准时间"""
