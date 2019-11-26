@@ -460,7 +460,11 @@ function HTableStatusBar(obj) {
         var cstr = "border: 1px solid red;height:40px;";
         hComn.css_from_style_strings(fbody, cstr);
         
-        
+        var span = hComn.cele("span").text("111111");
+        fbody.append(span);
+
+        span = hComn.cele("span").text("2222222");
+        fbody.append(span);
 
         his.obj.append(fbody);
     }
