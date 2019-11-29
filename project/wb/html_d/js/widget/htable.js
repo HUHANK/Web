@@ -454,17 +454,184 @@ function HDialog() {
 function HTableStatusBar(obj) {
     var his = {};
     his.obj  = obj;
+    his.page_size = 0;
+    his.total_page_num = 0;
+    his.now_page_num = 0;
+
+
+    his.cbutton = function(cls, text, width = 50) {
+        var btn = hComn.cele("button").addClass(cls).text(text).width(width);
+        /**CSS */
+        var cstr = "outline: none; background: none; padding: 0; border: 1px solid #E2E2E2; font-size: 12px; line-height: 24px; color: #333333; margin: 0 1px;";
+        hComn.css_from_style_strings(btn, cstr);
+
+        btn.hover(function(){
+            cstr = "color: #099B98; ";
+            hComn.css_from_style_strings(btn, cstr);
+        }, function(){
+            cstr = "color: #333333;";
+            hComn.css_from_style_strings(btn, cstr);
+        });
+
+        btn.click(function(){
+            console.info($(this).text());
+        });
+        return btn;
+    }
+
+    his.cspan = function(cls, text) {
+        var sp = hComn.cele("span").addClass(cls).text(text);
+
+        /**CSS */
+        var cstr = "font-size: 13px;";
+        hComn.css_from_style_strings(sp, cstr);
+
+        return sp;
+    }
+
+    his.cspace = function(width=4) {
+        var sp = hComn.cele("span");
+        /**CSS */
+        var cstr = "margin: 0 " + width + "px; ";
+        hComn.css_from_style_strings(sp, cstr);
+
+        return sp;
+    }
+
+    his.cselect_page_num = function (cls) {  
+        var sel = hComn.cele("select").addClass(cls);
+        var opt = hComn.cele("option").attr("value", "10").text(" 10 条/页 ");
+        sel.append(opt);
+        opt = hComn.cele("option").attr("value", "20").text(" 20 条/页 ");
+        opt.attr("selected", true); his.page_size = 20;
+        sel.append(opt);
+        opt = hComn.cele("option").attr("value", "50").text(" 50 条/页 ");
+        sel.append(opt);
+        opt = hComn.cele("option").attr("value", "100").text(" 100 条/页 ");
+        sel.append(opt);
+
+        /**CSS */
+        var cstr = "outline: none; border: 1px solid #E2E2E2; font-size: 12px; line-height: 24px; height: 24px;";
+        hComn.css_from_style_strings(sel, cstr);
+
+        sel.change(function(){
+            console.info($(this).find("option:selected").text());
+            //his.page_size = parseInt($(this).find("option:selected").val());
+        });
+
+        return sel;
+    }
+
+    his.cinput = function(cls, width=30) {
+        var input = hComn.cele("input").addClass(cls).width(width);
+        /**CSS */
+        var cstr = "outline: none; border: 1px solid #E2E2E2; font-size: 12px; line-height: 22px; margin: 0 4px; padding: 0 4px;";
+        hComn.css_from_style_strings(input, cstr);
+
+        return input;
+    }
+
+    his.set_select_page_size_change = function(handle) {
+        his.obj.find(".page_size_sel").change(function(){
+            his.page_size = parseInt($(this).find("option:selected").val());
+            his.now_page_num = 1;
+            handle();
+            his.set_page_info(his.total_page_num, his.now_page_num);
+        });
+    }
+    his.set_page_info = function(total_pages = null, now_page = null) {
+        if (!(total_pages == null || now_page == null)) {
+            his.total_page_num = total_pages;
+            his.now_page_num = now_page;
+        }
+        his.obj.find(".page_info").text(his.now_page_num + "/" + his.total_page_num);
+    }
+    his.get_page_size = function() {
+        return his.page_size;
+    }
+    his.set_first_page_click_handle = function(handle) {
+        his.obj.find(".first").click(function() {
+            his.now_page_num = 1;
+            handle();
+            his.set_page_info(his.total_page_num, his.now_page_num);
+        });
+    }
+    his.set_last_page_click_handle = function(handle) {
+        his.obj.find(".last").click(function() {
+            his.now_page_num = his.total_page_num;
+            handle();
+            his.set_page_info(his.total_page_num, his.now_page_num);
+        });
+    }
+    his.set_next_page_click_handle = function (handle) {  
+        his.obj.find(".next").click(function() {
+            his.now_page_num = his.now_page_num + 1;
+            his.now_page_num = his.now_page_num > his.total_page_num ? his.total_page_num : his.now_page_num;
+            handle();
+            his.set_page_info(his.total_page_num, his.now_page_num);
+        });
+    }
+    his.set_prev_page_click_handle = function (handle) {
+        his.obj.find(".prev").click(function() {
+            his.now_page_num = his.now_page_num - 1;
+            his.now_page_num = his.now_page_num < 1 ? 1 : his.now_page_num;
+            handle();
+            his.set_page_info(his.total_page_num, his.now_page_num);
+        });
+    }
+    his.set_goto_page_click_handle = function(handle) {
+        his.obj.find(".turn").click(function() {
+            var pn = parseInt( his.obj.find(".goto_page").val() );
+            if ( !isNaN(pn)) {
+                his.now_page_num = pn;
+                his.now_page_num = his.now_page_num > his.total_page_num ? his.total_page_num : his.now_page_num;
+                his.now_page_num = his.now_page_num < 1 ? 1 : his.now_page_num;
+                handle();
+                his.set_page_info(his.total_page_num, his.now_page_num);
+            }
+            his.obj.find(".goto_page").val("");
+        });
+    }
+    his.set_total_data_num_info = function (num) {  
+        his.obj.find(".total_data").text(num + "");
+    }
+    his.is_first_page = function() {
+        return his.now_page_num == 1;
+    }
+    his.is_last_page = function() {
+        return his.now_page_num == his.total_page_num;
+    }
 
     his.chtml = function () {
         var fbody = hComn.cele("div");
-        var cstr = "border: 1px solid red;height:40px;";
+        var cstr = "border: 1px solid white; ";
         hComn.css_from_style_strings(fbody, cstr);
         
-        var span = hComn.cele("span").text("111111");
-        fbody.append(span);
+        fbody.append(his.cspan("", " 当前 "));
+        fbody.append(his.cspan("page_info", " 1/5 "));
+        fbody.append(his.cspan("", " 页 "));
 
-        span = hComn.cele("span").text("2222222");
-        fbody.append(span);
+        fbody.append(his.cspace(10));
+        fbody.append(his.cselect_page_num("page_size_sel"));
+        fbody.append(his.cspace(10));
+
+        fbody.append(his.cbutton("first", "首页", 40));
+        fbody.append(his.cbutton("prev", "上一页"));
+        fbody.append(his.cbutton("next", "下一页"));
+        fbody.append(his.cbutton("last", "尾页", 40));
+
+        fbody.append(his.cspace(10));
+        fbody.append(his.cspan("", "到第"));
+        fbody.append(his.cinput("goto_page", 20));
+        fbody.append(his.cspan("", "页"));
+
+        fbody.append(his.cspace(10));
+        fbody.append(his.cbutton("turn", "跳转", 40));
+        fbody.append(his.cspace(10));
+
+        fbody.append(his.cspan("", "总共 "));
+        fbody.append(his.cspan("total_data", "0"));
+        fbody.append(his.cspan("", " 条"));
 
         his.obj.append(fbody);
     }
@@ -473,5 +640,5 @@ function HTableStatusBar(obj) {
     }
     
     his.init();
-    return obj;
+    return his;
 }

@@ -6,6 +6,7 @@ WeekReport.total_data_num = 0;
 /**一页显示的数据条数 */
 WeekReport.page_size = 50;
 WeekReport.now_page_num = 1;
+WeekReport.status_bar = null;
 
 var WEEK_REPORT_EVENT_INIT=false;
 var WEEK_REPORT_PAGE_SIZE=25;
@@ -41,6 +42,7 @@ var WEEK_REPORT_FIELD_END_DATE_NEXT='';
 var WEEK_REPORT_FIELD_END_DATE_BMOD = false;
 var WEEK_REPORT_FIELD_END_DATE_NEED = false;
 var WEEK_REPORT_FIELD_CHG_REASON_DETAIL = [];
+
 
 /*Main函数*/
 function WeekReportMain() {
@@ -136,6 +138,16 @@ function WeekReportWinResize() {
 }
 
 function WeekReportInit() {
+    /**表格状态栏 */
+    WeekReport.status_bar = HTableStatusBar($(".body .week-report .query-foot"));
+    WeekReport.status_bar.set_select_page_size_change(WeekReport.render);
+    WeekReport.status_bar.set_first_page_click_handle(WeekReport.render);
+    WeekReport.status_bar.set_last_page_click_handle(WeekReport.render);
+    WeekReport.status_bar.set_next_page_click_handle(WeekReport.render);
+    WeekReport.status_bar.set_prev_page_click_handle(WeekReport.render);
+    WeekReport.status_bar.set_goto_page_click_handle(WeekReport.render);
+    /**初始化是否包含历史个人周报为空 不选 */
+    $(".week-report .query-form .condition .SFBHGRLS").prop("checked", false);
     /*初始化表头*/
     //$(".week-report .query-result table thead").css("width", "calc(100% - "+getScrollWidth()+"px)");
     var tr = $("<tr></tr>");
@@ -159,7 +171,7 @@ function WeekReportInit() {
     parent.find(".ITEM_CHARGE").val('');
     parent.find(".NEED_TRACK").val('');
     WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND ITEM_STATUS IN ('未完成','') ";
-    WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+    WeekReport.render_data();
 
     $(".wrap1 .week-report-table .body .field_START_DATE").datepicker({
         showButtonPanel: true,
@@ -292,7 +304,7 @@ function WeekReportEvent() {
                             alter(d.msg);
                             return;
                         }
-                        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+                        WeekReport.render_data(WeekReport.now_page_num);
                     });
                     
                     sql = "DELETE FROM field_value_mod_detail where WP_ID = " + id;
@@ -336,6 +348,11 @@ function WeekReportEvent() {
             alert("您无权删除【" + user + "】的周报！");
             return;
         }
+
+        if ($(".week-report .query-result tbody .selected").attr("data-flag") == "1") {
+            alert("历史存档数据请不要删除!");
+            return ;
+        }
         $( "#week-report-dialog-01" ).dialog( "open" );
         event.preventDefault();
     });
@@ -352,7 +369,7 @@ function WeekReportEvent() {
         }
     });
 
-    /**过滤器点击事件 */
+    /**过滤器点击事件 包含初始化查询控件*/
     $(".body .week-report .query-form fieldset legend span").click(function(event) {
         event.stopPropagation();//阻止事件冒泡即可
         var icon = $(this).prev("i");
@@ -366,7 +383,7 @@ function WeekReportEvent() {
             icon.addClass('icony02');
             bSelectData = false;
         }
-        $(this).parent().next().slideToggle(100);
+        $(this).parent().siblings().slideToggle(100);
 
         if (bSelectData == false) return;
 
@@ -452,6 +469,12 @@ function WeekReportEvent() {
             return;
         }
 
+        //console.info($(".week-report .query-result tbody .selected").attr("data-flag"));
+        if ($(".week-report .query-result tbody .selected").attr("data-flag") == "1") {
+            alert("历史存档数据请不要修改!");
+            return ;
+        }
+
         $(".wrap1 .week-report-table .body .date_change").hide();
         $("body").children(".hyl-bokeh").addClass("hyl-show");
         $(".wrap1 .week-report-table").show();
@@ -489,23 +512,28 @@ function WeekReportEvent() {
             WeekReportInitRequired();
 
             if ($(".wrap1 .week-report-table .body .field_NEED_TRACK").val() == "项目周报" ) WEEK_REPORT_FIELD_END_DATE_NEED = true;
+            else{
+                /**个人周报的话，帮他们自动设置本周的开始日期和结束日期 */
+                var date = new Date();
+                var ret = date.GetWeekStartAndEndDate();
+                $(".wrap1 .week-report-table .body .field_START_DATE").val(ret[0]);
+                $(".wrap1 .week-report-table .body .field_END_DATE").val(ret[1]);
+            }
         });
     });
-    $(".body .week-report .query-opt button.query-all").click(function(event) {
-        WEEK_REPORT_PAGE_NUM = 0;
-        WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') ";
-        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+    
+    $(".body .week-report .query-opt button.grzb").click(function () {  
+        WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND NEED_TRACK IN ('个人周报') ";
+        WeekReport.render_data(1);
+    });
+    $(".body .week-report .query-opt button.xmzb").click(function () {  
+        WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND NEED_TRACK IN ('项目周报') ";
+        WeekReport.render_data(1);
     });
 
-    $(".body .week-report .query-opt button.query-active").click(function(event) {
-        WEEK_REPORT_PAGE_NUM = 0;
-        WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND ITEM_STATUS IN ('未完成','') ";
-        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
-    });
     /**查询按钮点击事件 */
     $(".body .week-report .query-opt button.queryi").click(function(event) {
         var scondition = "";
-
         var ccondifunc = function(filed_name) {
             if (filed_name.length < 1) return;
 
@@ -543,11 +571,10 @@ function WeekReportEvent() {
         ccondifunc("ITEM_CHARGE");
         ccondifunc("NEED_TRACK");
         ccondifunc("ITEM_STATUS");
-        // console.info(scondition);
-
-        WEEK_REPORT_PAGE_NUM = 0;
+        
         WEEK_REPORT_QUERY_CONDITION = scondition;
-        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+        
+        WeekReport.render_data(1);
     });
     /**导出按钮点击事件 */
     $(".body .week-report .query-opt button.export").click(function(event) {
@@ -714,41 +741,11 @@ function WeekReportEvent() {
                 alter(d.msg);
                 return;
             }
-            WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
+            WeekReport.render_data(WeekReport.now_page_num);
             $("body").children(".hyl-bokeh").removeClass('hyl-show');
             $(".wrap1 .week-report-table").hide();
         });
 
-    });
-
-    $(".week-report .query-foot .page-size").click(function(event) {
-        $(this).siblings('.selected').removeClass('selected');
-        $(this).addClass('selected');
-        WEEK_REPORT_PAGE_SIZE = parseInt($(this).text());
-        WEEK_REPORT_PAGE_NUM = 0;
-        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
-    });
-
-    $(".week-report .query-foot button").click(function(event) {
-        var cls = $(this).attr("class");
-        if (cls == "prev") {
-            if (WEEK_REPORT_PAGE_NUM == WEEK_REPORT_TOTAL_PAGE_NUM) {
-                $(".week-report .query-foot button.next").attr("disabled",false);
-            }
-            WEEK_REPORT_PAGE_NUM--;
-        } else if (cls == "next") {
-            if (WEEK_REPORT_PAGE_NUM == 0) {
-                $(".week-report .query-foot button.prev").attr("disabled",false);
-            }
-            WEEK_REPORT_PAGE_NUM++;
-        }
-        // if (WEEK_REPORT_PAGE_NUM ==0) {
-        //     $(".week-report .query-foot button.prev").attr("disabled",true);
-        // }
-        // if (WEEK_REPORT_PAGE_NUM == WEEK_REPORT_TOTAL_PAGE_NUM) {
-        //     $(".week-report .query-foot button.next").attr("disabled",true);
-        // }
-        WeekReportQueryTable(WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE, WEEK_REPORT_PAGE_SIZE);
     });
 
     $(".wrap1 .week-report-table .body .field_NEED_TRACK").change(function(event) {
@@ -759,6 +756,10 @@ function WeekReportEvent() {
             WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDB;
             $(".wrap1 .week-report-table .body table .field_ITEM_STATUS").val("");
             $(".wrap1 .week-report-table .body .field_ITEM_PROGRESS").val(0);
+            var date = new Date();
+            var ret = date.GetWeekStartAndEndDate();
+            $(".wrap1 .week-report-table .body .field_START_DATE").val(ret[0]);
+            $(".wrap1 .week-report-table .body .field_END_DATE").val(ret[1]);
         }
         WeekReportInitRequired();
     });
@@ -942,6 +943,12 @@ function SelectFieldChangeReasonDetail()
     });
 }
 
+WeekReport.render = function() {
+    WeekReport.page_size = WeekReport.status_bar.page_size;
+    WeekReport.now_page_num = WeekReport.status_bar.now_page_num;
+    WeekReport.status_bar.total_page_num = WeekReport.total_page_num();
+    WeekReport.table_body_bind_data(WeekReport.get_now_page_data());
+}
 WeekReport.total_page_num = function() {
     var total_num = WeekReport.data.length;
     if (total_num % WeekReport.page_size == 0) {
@@ -980,9 +987,25 @@ WeekReport.get_n_page_data = function(page_num) {
     var end_row_num = (page_num) * WeekReport.page_size;
     var i = start_row_num;
     for(i; i<end_row_num; i++) {
+        if (WeekReport.data[i] == undefined) break;
         ret.push(WeekReport.data[i]);
     }
     return ret;
+}
+
+WeekReport.render_data = function (page_num = 1) {  
+    var sfbhgrls = $(".week-report .query-form .condition .SFBHGRLS").prop("checked");
+    var mode = 1;
+    if (sfbhgrls == true) mode = 3;
+
+    WeekReport.get_all_week_report_table_data(mode);
+    WeekReport.page_size = WeekReport.status_bar.get_page_size();
+    WeekReport.status_bar.total_page_num = WeekReport.total_page_num();
+    WeekReport.now_page_num = page_num;
+    WeekReport.status_bar.now_page_num = WeekReport.now_page_num;
+    WeekReport.status_bar.set_page_info();
+    WeekReport.status_bar.set_total_data_num_info(WeekReport.total_data_num);
+    WeekReport.render();
 }
 
 WeekReport.get_all_week_report_table_data = function(mode = null) {
@@ -992,15 +1015,16 @@ WeekReport.get_all_week_report_table_data = function(mode = null) {
     if (1 == mode) { /**只查询周报表 */
         WeekReport.get_week_report_table_data("week_report");
     } else if (2 == mode) { /**只查询历史周报表 */
-        WeekReport.get_week_report_table_data("his_week_report");
+        WeekReport.get_week_report_table_data("his_week_report", 1);
     } else if (3 == mode) { /**查询周报表和历史周报表 */
         WeekReport.get_week_report_table_data("week_report");
-        WeekReport.get_week_report_table_data("his_week_report");
+        WeekReport.get_week_report_table_data("his_week_report", 1);
     }
-    WeekReport.total_page_num = WeekReport.data.length;
+    WeekReport.total_data_num = WeekReport.data.length;
+    //console.info("总共数据量："+WeekReport.total_data_num);
 }
 
-WeekReport.get_week_report_table_data = function(TableName) {
+WeekReport.get_week_report_table_data = function(TableName, flag = 0) {
     var i=0;
     var columns = TABLE_CONF.columns;
     var sql = "SELECT ";
@@ -1020,9 +1044,11 @@ WeekReport.get_week_report_table_data = function(TableName) {
             alter(d.msg);
             return;
         }
+        for(i=0; i<d.data.length; i++) {
+            d.data[i].push(flag);
+        }
         WeekReport.data = WeekReport.data.concat(d.data);
-        // console.info(d.data);
-        // console.info(WeekReport.data);
+        //console.info(WeekReport.data);
     });
 }
 
@@ -1047,7 +1073,10 @@ WeekReport.table_body_bind_data = function(data) {
     for(i=0; i<data.length; i++) {
         var row = data[i];
         var tr = $("<tr></tr>").attr("row-id", row[0]+"");
-        for(j=0; j<row.length; j++) {
+        var flag = row[row.length-1];
+        tr.attr("data-flag", flag);
+        
+        for(j=0; j<(row.length-1); j++) {
             var field = columns[j].field;
             var pre = $("<pre></pre>").text(row[j]);
             var td = $("<td></td>").append(pre);
@@ -1068,6 +1097,7 @@ WeekReport.table_body_bind_data = function(data) {
 
     /**每到周四，提示更新周报 */
     $(".week-report .query-result table tbody .cUPT_DATE").each(function(index, el) {
+        if ($(this).parent().attr("data-flag") == "1") return;
         var date = new Date();
         if ( (date.getDay() || 7) >= 4 ) {
             var wfirstday = getFirstDayOfWeek(date);
@@ -1077,103 +1107,6 @@ WeekReport.table_body_bind_data = function(data) {
                 $(this).parent().attr("title", "请及时更新本周周报！");
             }
         }
-    });
-}
-function WeekReportQueryTable(offset, rows) {
-    var i=0;
-    var columns = TABLE_CONF.columns;
-    var sql = "SELECT ";
-
-    for(i=0; i<columns.length; i++) {
-        sql += columns[i].sel_field+",";
-    }
-    sql = sql.substring(0, sql.length-1)+" FROM week_report "
-
-    sql = sql + WEEK_REPORT_QUERY_CONDITION;
-    sql += " ORDER BY `GROUP`, ITEM_CHARGE, UPT_DATE ";
-    sql = sql + " limit "+offset+", "+rows;
-
-    //console.info(sql);
-    var param = {};
-    param['method'] = "SELECT";
-    param['SQL'] = sql;
-    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
-        if (d.ErrCode != 0) {
-            alter(d.msg);
-            return;
-        }
-        //console.info(d.data);
-        var tbody=$(".week-report .query-result table tbody");
-        tbody.html("");
-        var data = d.data;
-        var i=0;
-        var j=0;
-        for (i=0; i<data.length; i++) {
-            var row = data[i];
-            var tr = $("<tr></tr>").attr("row-id", row[0]+"");
-            for (j=0; j<row.length; j++) {
-                var feild1 = columns[j].field;
-                var pre = $("<pre></pre>").text(row[j]);
-                pre.css("text-align", columns[j].align);
-                var td = $("<td></td>").append(pre);
-                if ("RISK_POINT,MEET_FEEDBACK".indexOf(feild1) != -1) {
-                    td.css("color", "red");
-                }
-                td.css("width", columns[j].width+"px");
-                td.addClass('c'+feild1);
-                tr.append(td);
-            }
-            tr.click(function(event) {
-                $(this).siblings('.selected').removeClass('selected');
-                $(this).addClass('selected');
-            });
-            tbody.append(tr);
-        }
-    });
-
-    $(".week-report .query-result table tbody .cUPT_DATE").each(function(index, el) {
-        var date = new Date();
-        if ( (date.getDay() || 7) >= 4 ) {
-            var wfirstday = getFirstDayOfWeek(date);
-            if ($(this).children('pre').text() < wfirstday ) 
-            {
-                $(this).parent().addClass('ts1');
-                $(this).parent().attr("title", "请及时更新本周周报！");
-            }
-        }
-    });
-
-    /*------------------------------------------*/
-    WeekReportQueryGetTotalCount();
-    WEEK_REPORT_TOTAL_PAGE_NUM = parseInt(WEEK_REPORT_QUERY_TOTAL_COUNT/WEEK_REPORT_PAGE_SIZE)+0;
-    var ps = WEEK_REPORT_PAGE_NUM*WEEK_REPORT_PAGE_SIZE;
-    var txt = "("+(ps+1)+"-"+((ps+WEEK_REPORT_PAGE_SIZE)>WEEK_REPORT_QUERY_TOTAL_COUNT ? WEEK_REPORT_QUERY_TOTAL_COUNT : (ps+WEEK_REPORT_PAGE_SIZE))+"/"+(WEEK_REPORT_QUERY_TOTAL_COUNT)+")"
-    $(".week-report .query-foot .page-info").text(txt);
-
-    if (WEEK_REPORT_PAGE_NUM == 0) {
-        $(".week-report .query-foot button.prev").attr("disabled",true);
-    }
-    if (((WEEK_REPORT_PAGE_NUM+1)*WEEK_REPORT_PAGE_SIZE)> WEEK_REPORT_QUERY_TOTAL_COUNT) {
-        $(".week-report .query-foot button.next").attr("disabled",true);
-    } else if ( ((WEEK_REPORT_PAGE_NUM+1)*WEEK_REPORT_PAGE_SIZE)< WEEK_REPORT_QUERY_TOTAL_COUNT ) {
-        $(".week-report .query-foot button.next").attr("disabled",false);
-    }
-
-    SelectFieldChangeReasonDetail();
-}
-
-function WeekReportQueryGetTotalCount() {
-    var sql = "SELECT COUNT(1) FROM week_report "+WEEK_REPORT_QUERY_CONDITION;
-
-    var param = {};
-    param['method'] = "SELECT";
-    param['SQL'] = sql;
-    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
-        if (d.ErrCode != 0) {
-            alter(d.msg);
-            return;
-        }
-        WEEK_REPORT_QUERY_TOTAL_COUNT = parseInt(d.data[0][0]);
     });
 }
 
@@ -1204,7 +1137,6 @@ function WeekReportInitRequired() {
     if ($(".wrap1 .week-report-table .body .field_NEED_TRACK").val() == "项目周报" ) WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDA;
     else WEEK_REPORT_REQUIRED_FIELDS = WEEK_REPORT_REQUIRED_FIELDB;
 
-    //console.info(WEEK_REPORT_REQUIRED_FIELDS);
     var arr = WEEK_REPORT_REQUIRED_FIELDS;
     
     if ($(".wrap1 .week-report-table .body .wrequired").length > 0)

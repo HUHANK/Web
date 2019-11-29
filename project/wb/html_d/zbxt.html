@@ -15,25 +15,26 @@
 	<script type="text/javascript" src="js/jquery.charfirst.pinyin.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.min.css">
 
-	<script type="text/javascript" src="js/ginit.js?version=3.0.5"></script>
-	<script type="text/javascript" src="js/pubfunc.js?version=3.0.5"></script>
-	<script type="text/javascript" src="js/widget/htable.js"></script>
-	<script type="text/javascript" src="js/hyl.js?version=3.0.5"></script>
-	<script type="text/javascript" src="js/calendar.js?version=3.0.5"></script>
-	<script type="text/javascript" src="js/zbxt.js?version=3.0.5"></script>
-	<script type="text/javascript" src="js/weekreport.js?version=3.0.5"></script>
-	<script type="text/javascript" src="js/monthreport.js?version=3.0.5"></script>
-	<script type="text/javascript" src="js/zmsjap.js?version=3.0.5"></script>
+	<script type="text/javascript" src="js/ginit.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/pubfunc.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/widget/hcomn.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/widget/htable.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/hyl.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/calendar.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/zbxt.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/weekreport.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/monthreport.js?version=3.0.7"></script>
+	<script type="text/javascript" src="js/zmsjap.js?version=3.0.7"></script>
 
-	<link rel="stylesheet" type="text/less" href="css/zmsjap.less?version=3.0.5">
-	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=3.0.5">
-	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=3.0.5">
-	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=3.0.5">
+	<link rel="stylesheet" type="text/less" href="css/zmsjap.less?version=3.0.7">
+	<link rel="stylesheet" type="text/css" href="css/sjwh.css?version=3.0.7">
+	<link rel="stylesheet" type="text/css" href="css/popbox.css?version=3.0.7">
+	<link rel="stylesheet" type="text/css" href="css/zbxt.css?version=3.0.7">
 	<link rel="stylesheet" type="text/css" href="css/icono.min.css">
-	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=3.0.5">
-	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=3.0.5">
-	<link rel="stylesheet" type="text/less" href="css/icony.css?version=3.0.5">
-	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=3.0.5">
+	<link rel="stylesheet" type="text/less" href="css/calendar.css?version=3.0.7">
+	<link rel="stylesheet" type="text/less" href="css/weekreport.css?version=3.0.7">
+	<link rel="stylesheet" type="text/less" href="css/icony.css?version=3.0.7">
+	<link rel="stylesheet" type="text/less" href="css/monthreport.css?version=3.0.7">
 
 	<script type="text/javascript" src="js/less.min.js"></script>
 </head>
@@ -102,13 +103,19 @@
 		</div>
 
 		<div class="calendar">
-			<iframe src="calendar.html?version=3.0.5" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
+			<iframe src="calendar.html?version=3.0.7" frameborder='0' scrolling='no' width="100%" height="100%"></iframe>
 		</div>
 
 		<div class="week-report">
 			<div class="query-form">
 				<fieldset class="condition">
-                	<legend><i class="icony-55 icony02"></i><span>过滤器</span></legend>
+					<legend><i class="icony-55 icony02"></i><span>过滤器</span></legend>
+					<div style="display: none;">
+						<span style="margin-left: 20px;">
+							<input type="checkbox" name="" class="SFBHGRLS">
+							<span>是否包含历史个人周报</span>
+						</span>
+					</div>
                 	<div class="container" style="display: none">
                 		<span class="cell">
                 			<span class="label">是否报研管</span>
@@ -159,7 +166,7 @@
                 			<span class="label">项目状态</span>
                 			<span class="input"><select class="ITEM_STATUS"></select></span>
                 			<span class="mult ui-icon ui-icon-plus"></span>
-                		</span>
+						</span>
                 	</div>
                 </fieldset>
 			</div>
@@ -170,8 +177,10 @@
 				<button class="update">修改</button>
 				<button class="delete">删除</button>
 				<button class="export">导出</button>
-				<button class="query-active" title="查询本周有项目进度的项目周报和个人周报，请务必将本周无项目进度的周报暂停">查看我的活动周报</button>
-				<button class="query-all" title="查询本人的所有周报包括已完成，暂停的项目周报，个人周报">查看我所有周报</button>
+				<!-- <button class="query-active b" title="查询本周有项目进度的项目周报和个人周报，请务必将本周无项目进度的周报暂停">查看我的活动周报</button>
+				<button class="query-all b" title="查询本人的所有周报包括已完成，暂停的项目周报，个人周报">查看我所有周报</button> -->
+				<button class="b grzb">个人周报</button>
+				<button class="b xmzb">项目周报</button>
 			</div>
 			<div class="query-result">
 				<table>
@@ -182,10 +191,6 @@
 				</table>
 			</div>
 			<div class="query-foot">
-				<button class="prev"><<上一页</button>
-				<button class="next">下一页>></button>
-				<span class="page-info">(1-50/178)</span><span> 每页显示： </span>
-				<span class="page-size">10</span> , <span class="page-size selected">25</span> , <span class="page-size">50</span> , <span class="page-size">100</span>
 			</div>
 		</div>
 

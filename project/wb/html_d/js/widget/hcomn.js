@@ -66,5 +66,35 @@ Date.prototype.DateAdd = function(strInterval, Number) {
         case 'm' :return new Date(dtTmp.getFullYear(), (dtTmp.getMonth()) + Number, dtTmp.getDate(), dtTmp.getHours(), dtTmp.getMinutes(), dtTmp.getSeconds());
         case 'y' :return new Date((dtTmp.getFullYear() + Number), dtTmp.getMonth(), dtTmp.getDate(), dtTmp.getHours(), dtTmp.getMinutes(), dtTmp.getSeconds());
     }
-}  
+}
 
+Date.prototype.GetWeekStartAndEndDate = function() {
+    var date = new Date(this);
+    var wd = date.getDay() - 1;
+    var start_date = date.DateAdd("d", (-1)*wd);
+    var end_date = start_date.DateAdd("d", 6);
+    var ret = [];
+    ret.push(start_date.toJSON().substring(0, 10));
+    ret.push(end_date.toJSON().substring(0, 10));
+    return ret;
+}
+
+/**产生UUID字符串 */
+hComn.UUID = function(len = 10, radix = 100) {
+    var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split(''),
+        uuid = [],
+        i;
+    radix = radix || chars.length;
+    if (len)
+        for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+    else {
+        var r;
+        uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+        uuid[14] = '4';
+        for (i = 0; i < 36; i++) {
+            r = 0 | Math.random() * 16;
+            uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+        }
+    }
+    return uuid.join('');
+}

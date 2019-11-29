@@ -10,11 +10,16 @@
 </head>
 <body>
     <div id="foot"></div>
-
+    <input type="checkbox" name="name" value="NAME" id="XXX">选我
     <script>
-        var tb = HTableStatusBar($("#foot"));
-        // $("body").append(hComn.cinput("text", "ab", 180, true));
-        // $("body").append(hComn.cselect());
+        var d = new Date();
+        var wd = d.getDay()-1;
+        console.info(d.GetWeekStartAndEndDate());
+        console.info(wd);
+        var sd = d.DateAdd("d", wd*(-1));
+        var ed = sd.DateAdd("d", 6);
+        console.info(sd);
+        console.info(ed);
     </script>
 </body>
 </html>
