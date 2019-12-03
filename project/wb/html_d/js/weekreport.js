@@ -647,9 +647,11 @@ function WeekReportEvent() {
     /**导出处理事件 */
     $(".wrap1 .week-report-export .export").click(function(event) {
         var trs = $(".wrap1 .week-report-export tbody tr[export='yes']");
+        var sfbhgrls = $(".week-report .query-form .condition .SFBHGRLS").prop("checked");
         var i=0;
         var colums = "";
         var shead = ""; 
+        var sql = "", data = null;
         var COLS = [];
         for(i=0; i<trs.length; i++) {
             var cls = $(trs[i]).attr("class");
@@ -661,40 +663,38 @@ function WeekReportEvent() {
         shead = "<tr>" + shead + "</tr>";
         colums = colums.substring(0, colums.length-1);
 
-        var sql = "SELECT " + colums + " FROM week_report "+WEEK_REPORT_QUERY_CONDITION;
+        sql = "SELECT " + colums + " FROM week_report "+WEEK_REPORT_QUERY_CONDITION;
         sql += " ORDER BY `GROUP`,ITEM_CHARGE ";
-        var param = {};
-        param['method'] = "SELECT";
-        param['SQL'] = sql;
-        sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
-            if (d.ErrCode != 0) {
-                alter(d.msg);
-                return;
-            }
-            var data = d.data;
-            var sbody = "";
-            var i=0;
-            var j=0;
+        data = WeekReport.query_data_from_db(sql);
+        if (sfbhgrls == true) {
+            /**包含历史周报 */
+            sql = "SELECT " + colums + " FROM his_week_report "+WEEK_REPORT_QUERY_CONDITION;
+            sql += " ORDER BY `GROUP`,ITEM_CHARGE ";
+            data = data.concat(WeekReport.query_data_from_db(sql));
+        }
+        
+        var sbody = "";
+        var i=0;
+        var j=0;
 
-            for (i=0; i<data.length; i++) {
-                var row = data[i];
-                var trow = "";
-                for(j=0; j<row.length; j++) {
-                    if ("RISK_POINT,MEET_FEEDBACK".indexOf(COLS[j]) != -1) {
-                        trow += "<td style='color:red;'>" + (row[j]+"").replace(/\n/g, "<br style='mso-data-placement:same-cell;'/>") + "</td>";
-                    } else {
-                        trow += "<td style='color:black;'>" + (row[j]+"").replace(/\n/g, "<br style='mso-data-placement:same-cell;'/>") + "</td>";
-                    }
+        for (i=0; i<data.length; i++) {
+            var row = data[i];
+            var trow = "";
+            for(j=0; j<row.length; j++) {
+                if ("RISK_POINT,MEET_FEEDBACK".indexOf(COLS[j]) != -1) {
+                    trow += "<td style='color:red;'>" + (row[j]+"").replace(/\n/g, "<br style='mso-data-placement:same-cell;'/>") + "</td>";
+                } else {
+                    trow += "<td style='color:black;'>" + (row[j]+"").replace(/\n/g, "<br style='mso-data-placement:same-cell;'/>") + "</td>";
                 }
-                sbody += "<tr>" + trow + "</tr>";
             }
-            var html = "<table>" + shead + sbody + "</table>";
-            if(getExplorer()=='ie') {
-                alert("不支持IE导出！");
-            } else {
-                tableToExcel(html);
-            }
-        });
+            sbody += "<tr>" + trow + "</tr>";
+        }
+        var html = "<table>" + shead + sbody + "</table>";
+        if(getExplorer()=='ie') {
+            alert("不支持IE导出！");
+        } else {
+            tableToExcel(html);
+        }
     });
 
     $(".wrap1 .week-report-table .foot .commit").click(function(event) {
@@ -1050,6 +1050,22 @@ WeekReport.get_week_report_table_data = function(TableName, flag = 0) {
         WeekReport.data = WeekReport.data.concat(d.data);
         //console.info(WeekReport.data);
     });
+}
+
+WeekReport.query_data_from_db = function(sql) {
+    var param = {};
+    param['method'] = "SELECT";
+    param['SQL'] = sql;
+    var ret = null;
+
+    sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
+        if (d.ErrCode != 0) {
+            alter(d.msg);
+            return;
+        }
+        ret = d.data;
+    });
+    return ret;
 }
 
 WeekReport.table_head_init = function() {

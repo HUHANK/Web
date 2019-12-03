@@ -44,7 +44,7 @@ def getWeekFirstday(weekflag):
 #获取一周的第一天和最后一天
 def getWeekFirstLastday(weekflag):
     year_str = weekflag[0:4]
-    week_str = weekflag[5:]
+    week_str = weekflag[4:]
     if int(week_str)>=53:
         Monday = "Error,Week Num greater than 53!"
     else:
@@ -54,9 +54,9 @@ def getWeekFirstLastday(weekflag):
         yearstartweekday = yearstartcalendarmsg[2]
         yearstartyear = yearstartcalendarmsg[0]
         if yearstartyear < int(year_str):
-            daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 0) * 7
-        else:
             daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 1) * 7
+        else:
+            daydelat = (8 - int(yearstartweekday)) + (int(week_str) - 2) * 7
         Monday = (yearstart + datetime.timedelta(days=daydelat)).date()
         Sunday = Monday + datetime.timedelta(days=6)
         Monday = datetime.datetime.strftime(Monday, "%Y-%m-%d")
@@ -143,17 +143,8 @@ def Datetime_UTC2Shanghai2(date, fmt):
     date = date.replace(tzinfo=pytz.utc).astimezone(pytz.timezone('Asia/Shanghai'))
     return date.strftime(fmt)
 
-#print getWeekFirstday("2017#44")
-#print getNextWeek(2017, 52)
-#print getYearLastWeek(2017)
-#print time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())
-#print datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-#print getNowHours()
-#print  getYearTotalDays(2014)
-#print getNowDate2()
-#print getNowYearWeek()
 
-#print getWeekInfoByDate("20171008")
+
 
 
 

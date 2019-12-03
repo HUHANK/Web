@@ -16,7 +16,7 @@ function ZMSJAP_resize() {
     var h2 = $(".body .ZMSJAP .opt-area").outerHeight()
     var h3 = $(".body .ZMSJAP .res-area thead").outerHeight();
     $(".body .ZMSJAP .res-area tbody").height(wheight-h1 -h2 - h3 - hs - 4);
-    $(".body .ZMSJAP .res-area").width(wwidth+hs);
+    $(".body .ZMSJAP .res-area").width(wwidth);
 }
 
 
@@ -27,18 +27,22 @@ function ZMSJAP_main() {
     var TABLE_CONF = {};
     TABLE_CONF.body_height = 800;
     TABLE_CONF.columns = [
-        {name: "#",             field: "ID",        width: 40, align: "center"},
-        {name: "升级、测试项目", field: "ITEM",      width: 180, align: "center"},
-        {name: "系统版本",       field: "XTBB",     width: 100, align: "center"},
-        {name: "分类",          field: "FL",        width: 80, align: "center"},
-        {name: "上线功能",      field: "SXGN",      width: 150, align: "left"},
-        {name: "上线意义",      field: "SXYY",      width: 150, align: "left"},
-        {name: "是否为重点上线功能", field: "SFZD",  width: 100, align: "center"},
+        {name: "#",             field: "ID",        width: 30, align: "center"},
+        {name: "升级、测试项目", field: "ITEM",      width: 150, align: "center"},
+        {name: "系统版本",       field: "XTBB",     width: 90, align: "center"},
+        {name: "分类",          field: "FL",        width: 50, align: "center"},
+        {name: "上线功能",      field: "SXGN",      width: 200, align: "left"},
+        {name: "上线意义",      field: "SXYY",      width: 200, align: "left"},
+        {name: "是否为重点上线功能", field: "SFZD",  width: 80, align: "center"},
         {name: "地点",          field: "ADDR",      width: 100, align: "center"},
         {name: "负责人及联系方式", field: "FZRLXFS", width: 200, align: "left"},
         {name: "周六支持",         field: "ZLZC",   width: 200, align: "left"},
         {name: "周一支持",          field: "ZYZC",  width: 200, align: "left"},
-        {name: "金仕达参与人要求",  field: "CYRYQ",  width: 300, align: "left"},
+        {name: "金仕达参与人要求",  field: "CYRYQ",  width: 200, align: "left"},
+        {name: "本次升级情况",      field: "BCSJQK",  width: 200, align: "left"},
+        {name: "外部关联系统测试情况",field: "GLXTCSQK",  width: 200, align: "left"},
+        {name: "业务部门测试情况",  field: "YWBMCSQK",  width: 200, align: "left"},
+        {name: "后续处理方案",      field: "HXCLFA",  width: 200, align: "left"},
         {name: "添加日期",         field: "ADD_DATE",  width: 100, align: "center"},
     ];
 
@@ -66,10 +70,21 @@ function ZMSJAP_main() {
         ZMSJAP_resize();
     }
 
-    query();
+    /**刷新页面 */
+    var dt1 = new Date();
+    var sed = dt1.GetWeekStartAndEndDate();
+    var condition = " where date_format(ADD_DATE, '%Y-%m-%d') >= '" + sed[0] + "' AND date_format(ADD_DATE, '%Y-%m-%d') <='" + sed[1] + "'  order by ADD_DATE desc ";
+    query(condition);
 
-    $(".ZMSJAP .opt-area .qry").click(function(){
+    $(".ZMSJAP .opt-area .qry_all").click(function(){
         query();
+    });
+
+    $(".ZMSJAP .opt-area .qry_bz").click(function(){
+        var dt1 = new Date();
+        var sed = dt1.GetWeekStartAndEndDate();
+        var condition = " where date_format(ADD_DATE, '%Y-%m-%d') >= '" + sed[0] + "' AND date_format(ADD_DATE, '%Y-%m-%d') <='" + sed[1] + "'  order by ADD_DATE desc ";
+        query(condition);
     });
 
     function ErrMsg(title, str) {
@@ -129,6 +144,15 @@ function ZMSJAP_main() {
         dlg.add_row();
         dlg.add_textarea("负责人及联系电话", "FZRLXFS");
         dlg.add_textarea("金仕达参与人要求", "CYRYQ");
+
+        dlg.add_row();
+        dlg.add_textarea("本次升级情况", "BCSJQK");
+        dlg.add_textarea("关联系统测试情况", "GLXTCSQK");
+
+        dlg.add_row();
+        dlg.add_textarea("业务部门测试情况", "YWBMCSQK");
+        dlg.add_textarea("后续处理方案", "HXCLFA");
+
 
         dlg.set_dialog_vertical_center();
         return dlg;

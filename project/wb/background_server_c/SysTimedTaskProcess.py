@@ -38,7 +38,6 @@ def weekreportToHis():
 
     ywt = getNowYearWeek()
     syw = "%s%s" % (ywt[0], (ywt[1]))
-    (sDate, eDate) = getWeekFirstLastday(syw)
 
     sql = "SELECT ParamValue FROM sys_param where ParamCode = '0007'"
     rs = db.select3(sql)
@@ -48,6 +47,7 @@ def weekreportToHis():
 
     ywt = getPrevWeek(ywt[0], ywt[1])
     syw = "%s%s" % (ywt[0], (ywt[1]))
+    (sDate, eDate) = getWeekFirstLastday(syw)
 
     str = u"'%s','%s','%s'"%(syw, sDate, eDate)
     sql = u"INSERT INTO his_week_report(ID,YEAR_WEEK,START_DATE,END_DATE,ITEM,ITEM_STAGE,ITEM_PROGRESS,ITEM_STATUS,ITEM_TYPE,LAST_WEEK_WORK,THIS_WEEK_WORK,NEXT_WEEK_WORK,SYSTEM,PRIORITY,ITEM_CHARGE,`GROUP`,NEED_TRACK,NOTE,ADD_USER,ADD_DATE,UPT_USER,UPT_DATE,SFBYG) "

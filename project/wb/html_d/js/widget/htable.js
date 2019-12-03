@@ -27,6 +27,7 @@ function HTable(obj, config) {
             });
         }
         htable.thead = htable.cele("thead").append(tr);
+        //htable.thead.css("width", "calc(100% - " + htable.ScrollWidth + "px)");
     }
 
     htable.get_scroll_width = function () {
