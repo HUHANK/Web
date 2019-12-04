@@ -133,14 +133,6 @@ function InitHeader() {
 }
 
 function GInit(){
-
-	// Options.QueryCondition = new Object();
-	// Options.QueryCondition.User = [];
-	// Options.QueryCondition.SysModule = [];
-	// Options.QueryCondition.Property = [];
-	// Options.QueryCondition.Type = [];
-	// Options.QueryCondition.Page = 0;
-	// Options.QueryCondition.PageSize = 25;
 	GUpdateBaseinfo();
 }
 

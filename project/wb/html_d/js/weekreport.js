@@ -7,6 +7,7 @@ WeekReport.total_data_num = 0;
 WeekReport.page_size = 50;
 WeekReport.now_page_num = 1;
 WeekReport.status_bar = null;
+WeekReport.query_order_by = "";
 
 var WEEK_REPORT_EVENT_INIT=false;
 var WEEK_REPORT_PAGE_SIZE=25;
@@ -528,6 +529,7 @@ function WeekReportEvent() {
     });
     $(".body .week-report .query-opt button.xmzb").click(function () {  
         WEEK_REPORT_QUERY_CONDITION = " WHERE ITEM_CHARGE IN ('" + g_CURRENT_USER + "') AND NEED_TRACK IN ('项目周报') ";
+        WeekReport.query_order_by = " ORDER BY ITEM_STATUS ";
         WeekReport.render_data(1);
     });
 
@@ -843,7 +845,6 @@ function WeekReportCheckFieldValueRightful()
             return false;
         }
         /**判断里程碑的结束日期不能小于当前日期 */
-        console.info(nowT+"|"+MILESTONE1_END_TIME+"|"+MILESTONE2_END_TIME);
         if (MILESTONE1_END_TIME < nowT || MILESTONE2_END_TIME < nowT) {
             WeekReportDialog02TiShi("里程碑任务截止日期不能小于当前时间!");
             return false;
@@ -1033,7 +1034,11 @@ WeekReport.get_week_report_table_data = function(TableName, flag = 0) {
         sql += columns[i].sel_field + ",";
     }
     sql = sql.substring(0, sql.length - 1) + " FROM " + TableName + " " + WEEK_REPORT_QUERY_CONDITION;
-    sql += " ORDER BY `GROUP`, ITEM_CHARGE, UPT_DATE ";
+    if (WeekReport.query_order_by.length < 1)
+        sql += " ORDER BY `GROUP`, ITEM_CHARGE, UPT_DATE ";
+    else
+        sql += WeekReport.query_order_by;
+    WeekReport.query_order_by = "";
 
     var param = {};
     param['method'] = "SELECT";
@@ -1046,6 +1051,10 @@ WeekReport.get_week_report_table_data = function(TableName, flag = 0) {
         }
         for(i=0; i<d.data.length; i++) {
             d.data[i].push(flag);
+        }
+        /**如果是历史数据，就颠倒元素的顺序 */
+        if (flag == 1) {
+            d.data = d.data.reverse();
         }
         WeekReport.data = WeekReport.data.concat(d.data);
         //console.info(WeekReport.data);
@@ -1104,10 +1113,15 @@ WeekReport.table_body_bind_data = function(data) {
                 td.css("color", "red");
             }
         }
-        tr.click(function(event){
-            $(this).siblings('.selected').removeClass('selected');
-            $(this).addClass('selected');
-        });
+        if (flag == 0)
+        {
+            tr.click(function(event){
+                $(this).siblings('.selected').removeClass('selected');
+                $(this).addClass('selected');
+            });
+        } else if ( 1 == flag ) {
+            tr.css("background-color", "#F1F1F1");
+        }
         tbody.append(tr);
     }
 
@@ -1124,6 +1138,8 @@ WeekReport.table_body_bind_data = function(data) {
             }
         }
     });
+
+    SelectFieldChangeReasonDetail();
 }
 
 function WeekReportDialog02TiShi(msg) {

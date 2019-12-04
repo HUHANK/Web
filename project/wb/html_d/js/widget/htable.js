@@ -90,7 +90,7 @@ function HTable(obj, config) {
 
     htable.css_tbody_style = function () {
         htable.tbody.find("td").css({"word-wrap": 'break-word',"word-break": "break-all", "border-bottom": "1px solid #D1D1D1","border-right": "1px solid #D1D1D1", "white-space": "pre-line",});
-        htable.tbody.css({"display": "block","overflow-y": "scroll","max-height": htable.tbody_height + "px","font-size": "13px",});
+        htable.tbody.css({"display": "block","overflow-y": "scroll","max-height": htable.tbody_height + "px","font-size": "12px",});
         htable.tbody.find('tr').css({"display": "table",'table-layout': 'fixed'});
     }
 
