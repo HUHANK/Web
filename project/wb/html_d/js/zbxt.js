@@ -894,7 +894,6 @@ function sjwh_xzgl_update() {
 	zcy.html(shtml);
 
 	$(".sjwh .wrap .xzgl .xzcysz .add").click(function(){
-		//console.info($(zcy).find("option[selected='selected']").attr("name"));
 
 		var param = new Object();
 		param.SessionID  = Options.SessionID;

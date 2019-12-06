@@ -344,6 +344,7 @@ function WeekReportEvent() {
             alert("请选取需要删除的行！");
             return ;
         }
+
         var user = $(".week-report .query-result tbody .selected").find(".cITEM_CHARGE pre").text();
         if (user != g_CURRENT_USER) {
             alert("您无权删除【" + user + "】的周报！");
@@ -464,10 +465,12 @@ function WeekReportEvent() {
             return ;
         }
 
-        var user = $(".week-report .query-result tbody .selected").find(".cITEM_CHARGE pre").text();
-        if (user != g_CURRENT_USER) {
-            alert("您无权修改【" + user + "】的周报！");
-            return;
+        if (g_CURRENT_USER_IS_ADMIN != 1) {
+            var user = $(".week-report .query-result tbody .selected").find(".cITEM_CHARGE pre").text();
+            if (user != g_CURRENT_USER) {
+                alert("您无权修改【" + user + "】的周报！");
+                return;
+            }
         }
 
         //console.info($(".week-report .query-result tbody .selected").attr("data-flag"));
