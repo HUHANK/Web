@@ -266,7 +266,6 @@ function WeekReportInit() {
         }
         $(".wrap1 .week-report-table .body .field_ITEM_CHARGE").append(optgroup);
     }
-
 }
 
 function WeekReportGetValue(cls) {

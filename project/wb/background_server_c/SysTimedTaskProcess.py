@@ -52,12 +52,13 @@ def weekreportToHis():
     str = u"'%s','%s','%s'"%(syw, sDate, eDate)
     sql = u"INSERT INTO his_week_report(ID,YEAR_WEEK,START_DATE,END_DATE,ITEM,ITEM_STAGE,ITEM_PROGRESS,ITEM_STATUS,ITEM_TYPE,LAST_WEEK_WORK,THIS_WEEK_WORK,NEXT_WEEK_WORK,SYSTEM,PRIORITY,ITEM_CHARGE,`GROUP`,NEED_TRACK,NOTE,ADD_USER,ADD_DATE,UPT_USER,UPT_DATE,SFBYG) "
     sql += u"SELECT ID," + str + u",ITEM,ITEM_STAGE,ITEM_PROGRESS,ITEM_STATUS,ITEM_TYPE,LAST_WEEK_WORK,THIS_WEEK_WORK,NEXT_WEEK_WORK,SYSTEM,PRIORITY,ITEM_CHARGE,`GROUP`,NEED_TRACK,NOTE,ADD_USER,ADD_DATE,UPT_USER,UPT_DATE,SFBYG "
-    sql += u"FROM week_report WHERE NEED_TRACK = '个人周报'"
-    print sql
+    ##如果本周没有更新个人周报的就不记录本周的历史个人周报
+    sql += u"FROM week_report WHERE NEED_TRACK = '个人周报' AND ( date_format(UPT_DATE, '%Y-%m-%d') >= '" + sDate + "' and date_format(UPT_DATE, '%Y-%m-%d') <= '" + eDate + "' ) "
+    #print sql
     db.update(sql)
 
     sql = "UPDATE sys_param SET ParamValue='%s' WHERE ParamCode='0007'"%(syw)
-    print sql
+    #print sql
     db.update(sql)
 
 def GenCalenderData():

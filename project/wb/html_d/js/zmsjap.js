@@ -73,7 +73,10 @@ function ZMSJAP_main() {
     /**刷新页面 */
     var dt1 = new Date();
     var sed = dt1.GetWeekStartAndEndDate();
-    var condition = " where date_format(ADD_DATE, '%Y-%m-%d') >= '" + sed[0] + "' AND date_format(ADD_DATE, '%Y-%m-%d') <='" + sed[1] + "'  order by ADD_DATE desc ";
+    var dt2 = new Date(sed[0]);
+    dt2 = dt2.DateAdd('w', -1).toJSON().substring(0, 10);
+    //console.info(dt2, sed[1]);
+    var condition = " where date_format(ADD_DATE, '%Y-%m-%d') >= '" + dt2 + "' AND date_format(ADD_DATE, '%Y-%m-%d') <='" + sed[1] + "'  order by ADD_DATE desc ";
     query(condition);
 
     $(".ZMSJAP .opt-area .qry_all").click(function(){
