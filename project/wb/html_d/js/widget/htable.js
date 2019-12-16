@@ -155,7 +155,7 @@ function HDialog() {
     hhis.sdialog_id = "";
     hhis.cancle_handler = null;
     hhis.confirn_handler = null;
-
+    hhis.required_class = []; /**必填类名集合*/
     /**********************************************************/
 
     hhis.CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
@@ -203,7 +203,11 @@ function HDialog() {
         });
         hhis.odialog_foot.find(".confirn").click(function (event) {
             if (hhis.confirn_handler != null)
-                hhis.confirn_handler();
+            {
+                var ret = hhis.confirn_handler();
+                if (ret == false) return ret;
+            }
+                
             $("#" + did).remove();
             hhis.clear();
         });
@@ -247,10 +251,33 @@ function HDialog() {
 
     hhis.set_value_by_class = function(scls, value) {
         hhis.odialog_body.find("."+scls).val(value);
+        var i = 0;
+        /*初始化判断必填项是否为空*/
+        for(i=0; i<hhis.required_class.length; i++) {
+            if (hhis.required_class[i] == scls) {
+                value = $.trim(value);
+                if (value.length < 1) {
+                    hhis.odialog_body.find("."+scls).css("border-color", "#FD5757");
+                }else{
+                    hhis.odialog_body.find("."+scls).css("border-color", "#D9D9D9");
+                }
+            }
+        }
     }
 
     hhis.get_value_by_class = function(scls) {
         return hhis.odialog_body.find("."+scls).val();
+    }
+
+    hhis.is_required_field_empty = function(scls) {
+        var i = 0;
+        for(i=0; i<hhis.required_class.length; i++) {
+            if (hhis.required_class[i] == scls) {
+                var vl1 = hhis.odialog_body.find("."+scls).val();
+                if ($.trim(vl1).length < 1) return true;
+            }
+        }
+        return false;
     }
 
     hhis.add_input_long = function (labs, cls) {
@@ -334,18 +361,34 @@ function HDialog() {
         });
     }
 
-    hhis.add_textarea = function (labs /*标签*/ , cls /*类名*/ , wide = 300 /*宽*/ , high = 80 /*高*/ ) {
+    hhis.add_textarea = function (labs /*标签*/ , cls /*类名*/ , title = ''/*提示*/, placeholder='',/*默认提示*/ required=false/*必填*/, wide = 300 /*宽*/ , high = 80 /*高*/) {
         hhis.odialog_body_table_body_row.append(hhis.add_lable(labs));
 
         var textarea = hhis.cele("textarea").addClass(cls).height(high).width(wide);
         td = hhis.cele("td").attr("colspan", "3").append(textarea);
         hhis.odialog_body_table_body_row.append(td);
+        if (title.length > 0) {
+            textarea.attr("title", title);
+        }
+        if (placeholder.length > 0) {
+            textarea.attr("placeholder", placeholder);
+        }
 
         /**CSS */
-        var cstr = "outline: none; background: none; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 13px; padding: 1px 0 1px 3px;";
+        var cstr = "";
+        if (!required)
+            cstr = "outline: none; background: none; border: 1px solid #D9D9D9; border-radius: 4px; font-size: 13px; padding: 1px 0 1px 3px;";
+        else {
+            cstr = "outline: none; background: none; border: 1px solid #FD5757; border-radius: 4px; font-size: 13px; padding: 1px 0 1px 3px;";
+            hhis.required_class.push(cls);
+        }
         hhis.css_from_style_strings(textarea, cstr);
         textarea.blur(function () {
             var cstr = "outline: none; background: none; border: 1px solid #D9D9D9;box-shadow: none;";
+            if (required == true) {
+                var txt = $.trim($(this).val());
+                if (txt.length < 1) cstr = "outline: none; background: none; border: 1px solid #FD5757;box-shadow: none;";
+            }
             hhis.css_from_style_strings($(this), cstr);
         });
         textarea.focus(function () {
@@ -552,6 +595,7 @@ function HTableStatusBar(obj) {
     }
     his.set_first_page_click_handle = function(handle) {
         his.obj.find(".first").click(function() {
+            if (his.is_first_page()) return;
             his.now_page_num = 1;
             handle();
             his.set_page_info(his.total_page_num, his.now_page_num);
@@ -559,6 +603,7 @@ function HTableStatusBar(obj) {
     }
     his.set_last_page_click_handle = function(handle) {
         his.obj.find(".last").click(function() {
+            if (his.is_last_page()) return;
             his.now_page_num = his.total_page_num;
             handle();
             his.set_page_info(his.total_page_num, his.now_page_num);
@@ -566,6 +611,7 @@ function HTableStatusBar(obj) {
     }
     his.set_next_page_click_handle = function (handle) {  
         his.obj.find(".next").click(function() {
+            if (his.is_last_page()) return;
             his.now_page_num = his.now_page_num + 1;
             his.now_page_num = his.now_page_num > his.total_page_num ? his.total_page_num : his.now_page_num;
             handle();
@@ -574,6 +620,7 @@ function HTableStatusBar(obj) {
     }
     his.set_prev_page_click_handle = function (handle) {
         his.obj.find(".prev").click(function() {
+            if (his.is_first_page()) return;
             his.now_page_num = his.now_page_num - 1;
             his.now_page_num = his.now_page_num < 1 ? 1 : his.now_page_num;
             handle();
@@ -584,6 +631,10 @@ function HTableStatusBar(obj) {
         his.obj.find(".turn").click(function() {
             var pn = parseInt( his.obj.find(".goto_page").val() );
             if ( !isNaN(pn)) {
+                if (his.now_page_num == pn) {
+                    his.obj.find(".goto_page").val("");
+                    return;
+                }
                 his.now_page_num = pn;
                 his.now_page_num = his.now_page_num > his.total_page_num ? his.total_page_num : his.now_page_num;
                 his.now_page_num = his.now_page_num < 1 ? 1 : his.now_page_num;

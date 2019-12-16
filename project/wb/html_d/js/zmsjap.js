@@ -1,5 +1,6 @@
 var ZMSJAP_TABLE = null;
 var BINIT = false; 
+var ZMSJAP_SQL_QUERY_CONDITION = "";
 
 function ZMSJAP_resize() {
     if (ZMSJAP_TABLE == null) return;
@@ -78,9 +79,11 @@ function ZMSJAP_main() {
     //console.info(dt2, sed[1]);
     var condition = " where date_format(ADD_DATE, '%Y-%m-%d') >= '" + dt2 + "' AND date_format(ADD_DATE, '%Y-%m-%d') <='" + sed[1] + "'  order by ADD_DATE desc ";
     query(condition);
+    ZMSJAP_SQL_QUERY_CONDITION = condition;
 
     $(".ZMSJAP .opt-area .qry_all").click(function(){
         query();
+        ZMSJAP_SQL_QUERY_CONDITION = "";
     });
 
     $(".ZMSJAP .opt-area .qry_bz").click(function(){
@@ -88,6 +91,7 @@ function ZMSJAP_main() {
         var sed = dt1.GetWeekStartAndEndDate();
         var condition = " where date_format(ADD_DATE, '%Y-%m-%d') >= '" + sed[0] + "' AND date_format(ADD_DATE, '%Y-%m-%d') <='" + sed[1] + "'  order by ADD_DATE desc ";
         query(condition);
+        ZMSJAP_SQL_QUERY_CONDITION = condition;
     });
 
     function ErrMsg(title, str) {
@@ -102,6 +106,14 @@ function ZMSJAP_main() {
             return;
         }
 
+        // var upt_date = row[row.length-2];
+        // var nowd = new Date();
+        // var arr = nowd.GetWeekStartAndEndDate();
+        // if (upt_date < arr[0]) {
+        //     ErrMsg("提示", "请不要删除非本周的数据!");
+        //     return;
+        // }
+
         var dlg = HDialog();
         dlg.show();
         dlg.set_info_msg("提示", "请确认需要删除该记录!");
@@ -115,13 +127,17 @@ function ZMSJAP_main() {
                     alter(d.msg);
                     return;
                 }
-                query();
+                if (ZMSJAP_SQL_QUERY_CONDITION.length > 0) 
+                    query(ZMSJAP_SQL_QUERY_CONDITION);
+                else
+                    query();
             });
         }
     });
 
-    function CreateDialog(title = "添加安排") {
+    function CreateDialog(title = "添加安排", mode = 1) {
         var dlg = HDialog();
+        var required = false;
         dlg.dialog_width = 800;
         dlg.dialog_height = 500;
         dlg.dialog_title = title;
@@ -149,12 +165,15 @@ function ZMSJAP_main() {
         dlg.add_textarea("金仕达参与人要求", "CYRYQ");
 
         dlg.add_row();
-        dlg.add_textarea("本次升级情况", "BCSJQK");
-        dlg.add_textarea("关联系统测试情况", "GLXTCSQK");
+        if (mode == 1 || mode == 2) required = true;
+        dlg.add_textarea("本次升级情况", "BCSJQK", "本次升级的重要功能和测试关注点，提前先想好写好，以免到时遗漏", "升级测试前必填项，没有请写‘无’", required);
+        dlg.add_textarea("关联系统测试情况", "GLXTCSQK", "关联的系统和外部模块", "升级测试前必填项，没有请写‘无’", required);
 
+        required = false;
+        if (mode == 2) required = true;
         dlg.add_row();
-        dlg.add_textarea("业务部门测试情况", "YWBMCSQK");
-        dlg.add_textarea("后续处理方案", "HXCLFA");
+        dlg.add_textarea("业务部门测试情况", "YWBMCSQK", "升级后存在的问题", "升级测试后必填项，没有请写‘无’", required);
+        dlg.add_textarea("后续处理方案", "HXCLFA", "升级后存在问题的后续处理方案", "升级测试后必填项，没有请写‘无’", required);
 
 
         dlg.set_dialog_vertical_center();
@@ -170,6 +189,11 @@ function ZMSJAP_main() {
                 var value = dlg.get_value_by_class(key);
                 keys += key+",";
                 values += "'"+value+"',";
+                /*如果有必填字段为空就立马提示出来 */
+                if (dlg.is_required_field_empty(key)) {
+                    alert("必填项不能为空，请按照规则来填写信息内容。");
+                    return false;
+                }
             }
             var sql = "INSERT INTO zmsjap("+keys.substring(0, keys.length-1)+") VALUES("
                     + values.substring(0, values.length -1)+")";
@@ -180,15 +204,19 @@ function ZMSJAP_main() {
             sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
                 if (d.ErrCode != 0) {
                     alter(d.msg);
-                    return;
+                    return false;
                 }
                 var d1 = HDialog();
                 d1.show();
                 d1.set_info_msg("成功", "添加成功");
                 d1.cancle_handler = d1.confirn_handler = function() {
-                    query();
+                    if (ZMSJAP_SQL_QUERY_CONDITION.length > 0) 
+                        query(ZMSJAP_SQL_QUERY_CONDITION);
+                    else
+                        query();
                 }
             });
+            return true;
         }
     });
 
@@ -198,7 +226,22 @@ function ZMSJAP_main() {
             ErrMsg("提示", "请选择需要修改的行!");
             return;
         }
-        var dlg = CreateDialog("修改安排");
+
+        /*取记录的添加日期*/
+        var upt_date = row[row.length-2];
+        var nowd = new Date();
+        var arr = nowd.GetWeekStartAndEndDate();
+        var mode = 1;
+        if (upt_date < arr[0]) mode = 2;
+
+        var pred = nowd.DateAdd("w", -1);
+        var parr = pred.GetWeekStartAndEndDate();
+        // if (upt_date < parr[0]) {
+        //     ErrMsg("提示", "请不要修改一个星期之前的数据!");
+        //     return;
+        // }
+
+        var dlg = CreateDialog("修改安排", mode);
         var columns = TABLE_CONF.columns, i=0;
         for(i=1; i<columns.length-1; i++) {
             var value = row[i];
@@ -215,6 +258,11 @@ function ZMSJAP_main() {
                 var key = cols[i].field;
                 var val = dlg.get_value_by_class(key);
                 sql += key + "='" + val + "',";
+                /*如果有必填字段为空就立马提示出来 */
+                if (dlg.is_required_field_empty(key)) {
+                    alert("必填项不能为空，请按照规则来填写信息内容。");
+                    return false;
+                }
             }
             sql = sql.substring(0, sql.length - 1);
             sql += " WHERE ID = " + row[0];
@@ -225,11 +273,15 @@ function ZMSJAP_main() {
             sync_post_data("/exec_native_sql/", JSON.stringify(param), function(d){
                 if (d.ErrCode != 0) {
                     alter(d.msg);
-                    return;
+                    return false;
                 }
                 ErrMsg("成功", "更新成功!");
-                query();
+                if (ZMSJAP_SQL_QUERY_CONDITION.length > 0) 
+                    query(ZMSJAP_SQL_QUERY_CONDITION);
+                else
+                    query();
             });
+            return true;
         }
     });
     

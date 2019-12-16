@@ -431,6 +431,7 @@ function WeekReportEvent() {
     $(".body .week-report .query-opt button.add").click(function(event) {
         $("body").children(".hyl-bokeh").addClass("hyl-show");
         $(".wrap1 .week-report-table").show();
+        $(".wrap1 .week-report-table .body").scrollTop("0px");
         $(".wrap1 .week-report-table .body .foot button.commit").text("添加");
         $(".wrap1 .week-report-table .body .foot button.commit").attr("value", "add");
         $(".wrap1 .week-report-table .body .foot").css("display", "block");
@@ -481,6 +482,7 @@ function WeekReportEvent() {
         $(".wrap1 .week-report-table .body .date_change").hide();
         $("body").children(".hyl-bokeh").addClass("hyl-show");
         $(".wrap1 .week-report-table").show();
+        $(".wrap1 .week-report-table .body").scrollTop("0px");
         $(".wrap1 .week-report-table .body .foot button.commit").text("更新");
         $(".wrap1 .week-report-table .body .foot button.commit").attr("value", "update");
         $(".wrap1 .week-report-table .body .foot button.commit").attr("row-id", id);
@@ -1126,6 +1128,8 @@ WeekReport.table_body_bind_data = function(data) {
         }
         tbody.append(tr);
     }
+
+    $(tbody).scrollTop("0px");
 
     /**每到周四，提示更新周报 */
     $(".week-report .query-result table tbody .cUPT_DATE").each(function(index, el) {
